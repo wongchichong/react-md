@@ -1,4 +1,5 @@
 import type { MutableRefObject } from "react";
+import type React from "react";
 import { useCallback, useMemo } from "react";
 import { loop } from "../../loop";
 import type {

@@ -1,4 +1,5 @@
 import type { HTMLAttributes } from "react";
+import type React from "react";
 import { Children, cloneElement, forwardRef, isValidElement } from "react";
 import cn from "classnames";
 
@@ -151,7 +152,7 @@ export const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
 ) {
   const { isPhone, isTablet, isDesktop, isLargeDesktop } = useAppSize();
 
-  const mergedStyle: CSSProperties = {
+  const mergedStyle = {
     padding: (padding !== 0 && padding) || undefined,
     gridTemplateColumns: minCellWidth
       ? `repeat(auto-fill, minmax(${minCellWidth}, 1fr))`
@@ -164,7 +165,7 @@ export const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
       (isDesktop && desktopColumns) ||
       columns,
     [GRID_GUTTER_VAR]: gutter,
-  };
+  } as CSSProperties;
   const mergedClassName = cn(block({ "no-padding": padding === 0 }), className);
 
   if (cloneStyles && isValidElement(children)) {
@@ -173,7 +174,7 @@ export const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
     return cloneElement(child, {
       style: { ...mergedStyle, ...child.props.style },
       className: cn(mergedClassName, child.props.className),
-    });
+    } as HTMLAttributes<HTMLDivElement>);
   }
 
   let content = children;

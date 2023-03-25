@@ -64,7 +64,7 @@ export const IconRotator = forwardRef<HTMLSpanElement, IconRotatorProps>(
   ) {
     const className = cn(block({ animate, rotated }), propClassName);
     if (!forceIconWrap && isValidElement(children)) {
-      const child = Children.only<ClassNameCloneableChild>(children);
+      const child = Children.only<ClassNameCloneableChild>(children as any);
       return cloneElement(child, {
         className: cn(className, child.props.className),
       });

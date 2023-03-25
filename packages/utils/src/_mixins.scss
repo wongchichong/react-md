@@ -60,7 +60,7 @@
   $inversed-property: rmd-utils-swap-position($property);
 
   @include rmd-utils-rtl {
-    @if $swapped-value == null {
+    @if $swapped-value==null {
       $swapped-value: auto;
 
       @each $prefix in $rmd-utils-swappable-position-prefixes {
@@ -89,10 +89,12 @@
 /// should be applied.
 @mixin rmd-utils-rtl-auto-group($styles, $swapped-styles: ()) {
   @include rmd-utils-map-to-styles($styles);
+
   @include rmd-utils-rtl {
     @each $property, $value in $styles {
       $inversed-property: rmd-utils-swap-position($property);
       $inversed-value: auto;
+
       @if map-has-key($swapped-styles, $property) {
         $inversed-value: map.get($swapped-styles, $property);
       } @else if map-has-key($styles, $inversed-property) {
@@ -147,7 +149,8 @@
   $enable-momentum: $rmd-utils-ios-scroll-momentum
 ) {
   $style: overflow;
-  @if $position == 'x' or $position == 'y' {
+
+  @if $position== 'x' or $position== 'y' {
     $style: #{$style}-#{$position};
   }
 
@@ -464,19 +467,19 @@
   $desktop-columns: $rmd-grid-desktop-columns,
   $large-desktop-columns: $rmd-grid-large-desktop-columns
 ) {
-  @if $tablet-columns > $phone-columns {
+  @if $tablet-columns>$phone-columns {
     @include rmd-utils-tablet-media {
       #{$rmd-grid-columns-var}: #{$tablet-columns};
     }
   }
 
-  @if $desktop-columns > $tablet-columns {
+  @if $desktop-columns>$tablet-columns {
     @include rmd-utils-desktop-media {
       #{$rmd-grid-columns-var}: #{$desktop-columns};
     }
   }
 
-  @if $large-desktop-columns > $desktop-columns {
+  @if $large-desktop-columns>$desktop-columns {
     @include rmd-utils-large-desktop-media {
       #{$rmd-grid-columns-var}: #{$large-desktop-columns};
     }
@@ -528,7 +531,7 @@
   $tablet-columns: $rmd-grid-tablet-columns,
   $desktop-columns: $rmd-grid-desktop-columns
 ) {
-  @if $size >= $desktop-columns {
+  @if $size>=$desktop-columns {
     @include rmd-utils-desktop-media {
       // I'll need to make a desktop-only media if people actually define more columns for
       // large desktops
@@ -536,13 +539,13 @@
     }
   }
 
-  @if $size >= $tablet-columns {
+  @if $size>=$tablet-columns {
     @include rmd-utils-tablet-only-media {
       @include rmd-grid-cell-full;
     }
   }
 
-  @if $size >= $phone-columns {
+  @if $size>=$phone-columns {
     @include rmd-utils-phone-media {
       @include rmd-grid-cell-full;
     }
@@ -579,7 +582,8 @@
   $margin: $rmd-grid-list-cell-margin
 ) {
   $size: var(#{$rmd-grid-cell-size-var}, #{$max-size});
-  @if $margin and $margin > 0 {
+
+  @if $margin and $margin>0 {
     $size: calc(
       #{$size} - calc(var(#{$rmd-grid-cell-margin-var}, #{$margin}) * 2)
     );
@@ -608,6 +612,7 @@
   @if $include-height {
     @include rmd-grid-list-cell-size(height, $max-size, $margin);
   }
+
   @include rmd-grid-list-cell-size(width, $max-size, $margin);
 
   margin: var(#{$rmd-grid-cell-margin-var}, #{$margin});

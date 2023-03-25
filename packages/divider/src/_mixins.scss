@@ -2,8 +2,8 @@
 /// @group divider
 ////
 
-@import '~@react-md/theme/dist/helpers';
-@import '~@react-md/utils/dist/mixins';
+@import '@react-md/theme/dist/helpers';
+@import '@react-md/utils/dist/mixins';
 @import './variables';
 @import './functions';
 
@@ -79,6 +79,7 @@
 
   &--inset {
     @include rmd-divider-theme(margin-left, inset);
+
     @include rmd-utils-rtl {
       @include rmd-divider-theme(margin-right, inset);
 

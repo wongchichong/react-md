@@ -3,9 +3,9 @@
 /// @since 2.5.0
 ////
 
-@import '~@react-md/states/dist/mixins';
-@import '~@react-md/transition/dist/mixins';
-@import '~@react-md/utils/dist/mixins';
+@import '@react-md/states/dist/mixins';
+@import '@react-md/transition/dist/mixins';
+@import '@react-md/utils/dist/mixins';
 
 @import './functions';
 @import './variables';
@@ -63,7 +63,7 @@
 @mixin rmd-slider-container {
   $directions: (right, left);
 
-  @if $rmd-slider-container-addon-spacing != $rmd-icon-spacing-with-text {
+  @if $rmd-slider-container-addon-spacing !=$rmd-icon-spacing-with-text {
     @include rmd-icon-theme-update-var(
       text-spacing,
       $rmd-slider-container-addon-spacing
@@ -104,6 +104,7 @@
 /// @access private
 @mixin rmd-slider-track {
   @include rmd-slider-track-horizontal;
+
   @if $rmd-slider-include-vertical {
     @include rmd-slider-track-vertical;
   }
@@ -160,13 +161,13 @@
         @include rmd-slider-theme-update-var(active-size, 0px);
       }
 
-      @if $rmd-slider-inactive-track-opacity != null {
+      @if $rmd-slider-inactive-track-opacity !=null {
         &::before {
           opacity: 1;
         }
       }
 
-      @if $rmd-slider-active-track-opacity != null {
+      @if $rmd-slider-active-track-opacity !=null {
         &::after {
           opacity: 1;
         }
@@ -287,6 +288,7 @@
   @include rmd-slider-theme(height, thumb-size);
   @include rmd-slider-theme(width, thumb-size);
   @include rmd-slider-thumb-horizontal;
+
   @include rmd-utils-mouse-only {
     &:hover::after {
       transform: scale($rmd-slider-thumb-focus-scale);
@@ -297,6 +299,7 @@
       transform: scale($rmd-slider-thumb-active-scale);
     }
   }
+
   @include rmd-utils-keyboard-only {
     &:focus::after {
       transform: scale($rmd-slider-thumb-focus-scale);

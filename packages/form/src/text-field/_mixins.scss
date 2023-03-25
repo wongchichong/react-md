@@ -2,12 +2,12 @@
 /// @group form-text-field
 ////
 
-@import '~@react-md/button/dist/mixins';
-@import '~@react-md/icon/dist/mixins';
-@import '~@react-md/transition/dist/mixins';
-@import '~@react-md/typography/dist/mixins';
-@import '~@react-md/theme/dist/mixins';
-@import '~@react-md/utils/dist/mixins';
+@import '@react-md/button/dist/mixins';
+@import '@react-md/icon/dist/mixins';
+@import '@react-md/transition/dist/mixins';
+@import '@react-md/typography/dist/mixins';
+@import '@react-md/theme/dist/mixins';
+@import '@react-md/utils/dist/mixins';
 @import '../variables';
 @import '../functions';
 
@@ -74,6 +74,7 @@
         $rmd-text-field-underline-padding
       );
     }
+
     @include rmd-form-theme(border-color, text-border-color);
 
     border-bottom-style: solid;
@@ -144,6 +145,7 @@
 
   &--underline-left-addon {
     $calc-string: '#{rmd-icon-theme-var(size)} + #{$rmd-text-field-underline-label-left-offset * 2}';
+
     @if $rmd-text-field-underline-padding {
       $calc-string: '#{$calc-string} + #{$rmd-text-field-underline-padding}';
     }
@@ -160,6 +162,7 @@
 
   &--underline-right-addon {
     $calc-string: '#{rmd-icon-theme-var(size)} + #{$rmd-text-field-underline-label-left-offset * 2}';
+
     @if $rmd-text-field-underline-padding {
       $calc-string: '#{$calc-string} + #{$rmd-text-field-underline-padding}';
     }
@@ -280,6 +283,7 @@
 @mixin rmd-text-field-base {
   @include rmd-typography(body-1, font-size);
   @include rmd-utils-hide-focus-outline;
+
   @include rmd-text-field-placeholder {
     @include rmd-transition(standard);
     @include rmd-theme(color, text-secondary-on-background);
@@ -332,6 +336,7 @@
   @include rmd-form-theme(padding-right, text-padding-right);
   @include rmd-form-theme(padding-top, text-padding-top);
   @include rmd-text-field-base;
+
   @include rmd-utils-rtl {
     @include rmd-form-theme(padding-left, text-padding-right);
     @include rmd-form-theme(padding-right, text-padding-left);
@@ -407,6 +412,7 @@
   @include rmd-form-theme(padding-right, text-padding-right);
   @include rmd-form-theme(min-height, text-height);
   @include rmd-text-field-base;
+
   @include rmd-utils-rtl {
     @include rmd-form-theme(padding-left, text-padding-right);
     @include rmd-form-theme(padding-right, text-padding-left);

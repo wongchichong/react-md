@@ -26,7 +26,8 @@ export type TextContainerRenderFunction = (props: {
 /**
  * The base props for rendering the text component.
  */
-export interface TextContainerProps extends HTMLAttributes<HTMLDivElement> {
+export interface TextContainerProps
+  extends Omit<HTMLAttributes<HTMLDivElement>, "children"> {
   /**
    * An optional className to merge with typography text container styles.
    */
@@ -84,8 +85,8 @@ export const TextContainer = forwardRef<
   if (clone && isValidElement(children)) {
     const child = Children.only(children);
     return cloneElement(child, {
-      className: cn(child.props.className, className),
-    });
+      className: cn((child.props as any).className, className),
+    } as HTMLAttributes<HTMLDivElement>);
   }
 
   if (typeof children === "function") {

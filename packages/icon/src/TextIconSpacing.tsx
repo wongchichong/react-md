@@ -1,4 +1,4 @@
-import type { ReactElement, ReactNode } from "react";
+import type { HTMLAttributes, ReactElement, ReactNode } from "react";
 import { Children, cloneElement, isValidElement } from "react";
 import cn from "classnames";
 
@@ -115,7 +115,7 @@ export function TextIconSpacing({
     const icon = Children.only(propIcon);
     iconEl = cloneElement(icon, {
       className: cn(baseClassName, icon.props.className),
-    });
+    } as HTMLAttributes<any>);
   } else if (propIcon) {
     iconEl = (
       <span className={cn("rmd-text-icon-spacing", baseClassName)}>

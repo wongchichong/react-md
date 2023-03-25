@@ -1,5 +1,9 @@
 {
   "extends": "../../tsconfig.base.json",
-  "compilerOptions": { "noEmit": true, "composite": false },
+  "compilerOptions": {
+    "noEmit": true,
+    "composite": false,
+    "preserveSymlinks": true
+  },
   "include": ["src"]
 }

@@ -5,7 +5,7 @@
 @use 'sass:list';
 @use 'sass:string';
 
-@import '~@react-md/utils/dist/mixins';
+@import '@react-md/utils/dist/mixins';
 @import './variables';
 
 /// Adds a transition timing function for the provided transition type.
@@ -108,9 +108,9 @@
     );
   }
 
-  @if type-of($active-selectors) == string {
+  @if type-of($active-selectors) ==string {
     $active-string: $active-selectors + $suffix;
-  } @else if type-of($active-selectors) == list {
+  } @else if type-of($active-selectors) ==list {
     @for $i from 1 to length($active-selectors) + 1 {
       $selector: list.nth($active-selectors, $i);
 

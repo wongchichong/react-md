@@ -3,7 +3,7 @@
 /// @group theme
 ////
 
-@import '~@react-md/utils/dist/functions';
+@import '@react-md/utils/dist/functions';
 @import './variables';
 
 /// @access private
@@ -14,7 +14,7 @@
 /// This should be one of the react-md packages.
 /// @return {Color|String|Number} The value from the theme map.
 @function rmd-theme-get-var-value($theme-name, $theme-map, $theme-group) {
-  @if type-of($theme-name) == 'color' or $theme-name == 'currentColor' {
+  @if type-of($theme-name) == 'color' or $theme-name== 'currentColor' {
     @return $theme-name;
   }
 
@@ -66,9 +66,9 @@
     $theme-map,
     $theme-group
   );
-  $fallback: if($fallback == null, $validated-fallback, $fallback);
+  $fallback: if($fallback==null, $validated-fallback, $fallback);
 
-  @if $fallback == null {
+  @if $fallback==null {
     @return var(--rmd-#{$theme-group}-#{$theme-name});
   }
 
@@ -110,7 +110,8 @@
     '#{$theme-name} property'
   );
 
-  #{--rmd-#{$theme-group}-#{$theme-name}}: $value;
+  #{--rmd-#{$theme-group}-#{$theme-name}
+}: $value;
 }
 
 ///
@@ -118,9 +119,9 @@
 @mixin rmd-theme-create-root-theme($theme-map, $theme-group, $exclude: null) {
   :root {
     @each $theme-name, $theme-value in $theme-map {
-      @if $theme-value !=
-        null and
-        ($exclude == null or not index($exclude, $theme-name))
+      @if $theme-value
+        !=null and
+        ($exclude==null or not index($exclude, $theme-name))
       {
         @include rmd-theme-update-rmd-var(
           $theme-value,

@@ -4,7 +4,7 @@
 
 @use 'sass:map';
 
-@import '~@react-md/typography/dist/variables';
+@import '@react-md/typography/dist/variables';
 @import './mixins';
 
 /// Creates the font face for material icons. This takes either a font url
@@ -43,12 +43,14 @@
 
   $font-url: '';
   $font-map: null;
+
   @if type-of($font-url-or-map) == 'string' {
     $font-url: if(char-at($font-url) != '/', $font-url + '/', $font-url) +
       $font-name;
   } @else {
     $font-map: $font-url-or-map;
     $required-keys: woff2 woff truetype;
+
     @if $old-ie-support {
       $required-keys: #{$required-keys} eot;
     }
@@ -66,14 +68,14 @@
     font-weight: map.get($rmd-typography-font-weights, normal);
 
     @if $old-ie-support {
-      @if $font-map == null {
+      @if $font-map==null {
         src: url($font-url + '.eot');
       } @else {
         src: #{map.get($font-map, eot)};
       }
     }
 
-    @if $font-map == null {
+    @if $font-map==null {
       src: local($font-family), local($font-name),
         url($font-url + '.woff2') format('woff2'),
         url($font-url + '.woff')

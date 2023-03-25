@@ -2,10 +2,10 @@
 /// @group tree
 ////
 
-@import '~@react-md/icon/dist/mixins';
-@import '~@react-md/list/dist/mixins';
-@import '~@react-md/theme/dist/helpers';
-@import '~@react-md/utils/dist/mixins';
+@import '@react-md/icon/dist/mixins';
+@import '@react-md/list/dist/mixins';
+@import '@react-md/theme/dist/helpers';
+@import '@react-md/utils/dist/mixins';
 @import './variables';
 @import './functions';
 
@@ -85,6 +85,7 @@
 
   // stylelint-disable order/order
   $index: $min;
+
   @while $index < $max {
     @include rmd-tree-item-at-depth(
       $index,
@@ -162,6 +163,7 @@
 
     &--focused {
       @include rmd-utils-map-to-styles($rmd-tree-item-focused-styles);
+
       @include rmd-utils-keyboard-only {
         @include rmd-utils-map-to-styles(
           $rmd-tree-item-keyboard-focused-styles

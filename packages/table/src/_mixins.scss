@@ -2,11 +2,11 @@
 /// @group table
 ////
 
-@import '~@react-md/divider/dist/mixins';
-@import '~@react-md/theme/dist/mixins';
-@import '~@react-md/typography/dist/mixins';
-@import '~@react-md/transition/dist/mixins';
-@import '~@react-md/utils/dist/mixins';
+@import '@react-md/divider/dist/mixins';
+@import '@react-md/theme/dist/mixins';
+@import '@react-md/typography/dist/mixins';
+@import '@react-md/transition/dist/mixins';
+@import '@react-md/utils/dist/mixins';
 @import './functions';
 @import './variables';
 
@@ -65,14 +65,14 @@
 
 /// @access private
 @mixin rmd-thead {
-  @if $rmd-table-cell-height != $rmd-table-header-cell-height {
+  @if $rmd-table-cell-height !=$rmd-table-header-cell-height {
     @include rmd-table-theme-update-var(
       cell-height,
       $rmd-table-header-cell-height
     );
   }
 
-  @if $rmd-table-cell-dense-height != $rmd-table-header-cell-dense-height {
+  @if $rmd-table-cell-dense-height !=$rmd-table-header-cell-dense-height {
     // TODO: Look into a better way to do this since it makes overrides more difficult.
     .rmd-table--dense & {
       @include rmd-table-theme-update-var(
@@ -88,9 +88,9 @@
   @each $alignment in $rmd-table-cell-horizontal-alignments {
     &--#{$alignment} {
       @include rmd-utils-rtl {
-        @if $alignment == left {
+        @if $alignment==left {
           text-align: right;
-        } @else if $alignment == right {
+        } @else if $alignment==right {
           text-align: left;
         }
       }
@@ -127,18 +127,20 @@
   @include rmd-table-cell-vertical-alignments;
 
   &--header {
-    @if $rmd-table-cell-color != $rmd-table-header-cell-color {
+    @if $rmd-table-cell-color !=$rmd-table-header-cell-color {
       @include rmd-table-theme-update-var(
         cell-color,
         $rmd-table-header-cell-color
       );
     }
+
     @include rmd-typography-value(
       subtitle-2,
       font-weight,
       letter-spacing,
       line-height
     );
+
     @include rmd-utils-rtl {
       text-align: right;
     }
@@ -172,6 +174,7 @@
     // need to set a background color so the other rows/cells can be scrolled
     // underneath.
     @include rmd-theme(background-color, background);
+
     @include rmd-utils-mouse-only {
       &::after {
         @include rmd-transition(standard);
@@ -215,6 +218,7 @@
 
       left: auto;
     }
+
     @include rmd-table-theme(left, sticky-cell);
   }
 
@@ -251,14 +255,14 @@
     @each $alignment in $rmd-table-cell-horizontal-alignments {
       &--#{$alignment} {
         @include rmd-utils-rtl {
-          @if $alignment == left {
+          @if $alignment==left {
             justify-content: right;
-          } @else if $alignment == right {
+          } @else if $alignment==right {
             justify-content: left;
           }
         }
 
-        @if $alignment != left {
+        @if $alignment !=left {
           justify-content: $alignment;
         }
       }

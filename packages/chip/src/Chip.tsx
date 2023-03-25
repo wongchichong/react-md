@@ -1,4 +1,9 @@
-import type { ButtonHTMLAttributes, CSSProperties, ReactNode } from "react";
+import type {
+  ButtonHTMLAttributes,
+  CSSProperties,
+  HTMLAttributes,
+  ReactNode,
+} from "react";
 import { cloneElement, forwardRef, isValidElement } from "react";
 import cn from "classnames";
 import { TextIconSpacing, useIcon } from "@react-md/icon";
@@ -172,7 +177,7 @@ export const Chip = forwardRef<HTMLButtonElement, ChipProps>(function Chip(
       isHiddenIcon = !selected;
       leftIcon = cloneElement(selectedIcon, {
         className: block("selected-icon", { visible: selected }),
-      });
+      } as HTMLAttributes<HTMLButtonElement>);
     } else if (disableIconTransition && !selected) {
       // don't want to render it when not selected if there's no transition
       leftIcon = null;

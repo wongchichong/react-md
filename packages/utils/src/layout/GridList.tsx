@@ -25,7 +25,7 @@ import {
 export type RenderGridListChildren = (size: GridListSize) => ReactNode;
 
 export interface GridListProps
-  extends HTMLAttributes<HTMLDivElement>,
+  extends Omit<HTMLAttributes<HTMLDivElement>, "children">,
     UseGridListOptions {
   /**
    * Boolean if the resize observer should stop tracking width changes within

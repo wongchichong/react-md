@@ -2,9 +2,9 @@
 /// @group expansion-panel
 ////
 
-@import '~@react-md/theme/dist/helpers';
-@import '~@react-md/typography/dist/mixins';
-@import '~@react-md/utils/dist/mixins';
+@import '@react-md/theme/dist/helpers';
+@import '@react-md/typography/dist/mixins';
+@import '@react-md/utils/dist/mixins';
 @import './variables';
 @import './functions';
 
@@ -65,6 +65,7 @@
 
   &__icon {
     @include rmd-expansion-panel-theme(padding-left, icon-spacing);
+
     @include rmd-utils-rtl {
       @include rmd-expansion-panel-theme(padding-right, icon-spacing);
 

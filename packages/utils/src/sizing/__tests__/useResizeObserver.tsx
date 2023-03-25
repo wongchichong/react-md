@@ -101,7 +101,6 @@ describe("useResizeObserver", () => {
   let observer: MockedObserver | undefined;
   beforeAll(() => {
     ResizeObserverMock.mockImplementation((callback) => {
-      // @ts-ignore
       observer = new MockedObserver(callback);
       return observer;
     });
@@ -129,15 +128,15 @@ describe("useResizeObserver", () => {
 
     const { getByTestId, unmount } = render(<Test />);
     const div = getByTestId("div");
-    expect(onResize).not.toBeCalled();
-    expect(observe).toBeCalledWith(div);
-    expect(observe).toBeCalledTimes(1);
+    expect(onResize).not.toHaveBeenCalled();
+    expect(observe).toHaveBeenCalledWith(div);
+    expect(observe).toHaveBeenCalledTimes(1);
 
     unmount();
-    expect(onResize).not.toBeCalled();
-    expect(unobserve).toBeCalledWith(div);
-    expect(unobserve).toBeCalledTimes(1);
-    expect(disconnect).not.toBeCalled();
+    expect(onResize).not.toHaveBeenCalled();
+    expect(unobserve).toHaveBeenCalledWith(div);
+    expect(unobserve).toHaveBeenCalledTimes(1);
+    expect(disconnect).not.toHaveBeenCalled();
   });
 
   it("should handle calling the callbacks correctly", () => {
@@ -161,9 +160,9 @@ describe("useResizeObserver", () => {
       throw new Error();
     }
 
-    expect(onResize1).not.toBeCalled();
-    expect(onResize2).not.toBeCalled();
-    expect(onResize3).not.toBeCalled();
+    expect(onResize1).not.toHaveBeenCalled();
+    expect(onResize2).not.toHaveBeenCalled();
+    expect(onResize3).not.toHaveBeenCalled();
     observer.trigger();
     const expected: ResizeObserverElementData = {
       element: getByTestId("div"),
@@ -172,9 +171,9 @@ describe("useResizeObserver", () => {
       scrollHeight: 0,
       scrollWidth: 0,
     };
-    expect(onResize1).toBeCalledWith(expected);
-    expect(onResize2).toBeCalledWith(expected);
-    expect(onResize3).toBeCalledWith(expected);
+    expect(onResize1).toHaveBeenCalledWith(expected);
+    expect(onResize2).toHaveBeenCalledWith(expected);
+    expect(onResize3).toHaveBeenCalledWith(expected);
 
     unmount();
   });
@@ -200,8 +199,8 @@ describe("useResizeObserver", () => {
     ({ unmount } = render(<Test2 />));
     unmount();
 
-    expect(observe).not.toBeCalled();
-    expect(unobserve).not.toBeCalled();
+    expect(observe).not.toHaveBeenCalled();
+    expect(unobserve).not.toHaveBeenCalled();
   });
 
   it("should not trigger the onResize callback if the height changed when the disableHeight option is enabled", () => {
@@ -219,20 +218,20 @@ describe("useResizeObserver", () => {
       throw new Error();
     }
     const div = getByTestId("div");
-    expect(onResize).not.toBeCalled();
+    expect(onResize).not.toHaveBeenCalled();
     observer.trigger();
 
-    expect(onResize).toBeCalledWith({
+    expect(onResize).toHaveBeenCalledWith({
       element: div,
       height: 0,
       width: 0,
       scrollHeight: 0,
       scrollWidth: 0,
     });
-    expect(onResize).toBeCalledTimes(1);
+    expect(onResize).toHaveBeenCalledTimes(1);
 
     observer.trigger({ height: 100 });
-    expect(onResize).toBeCalledTimes(1);
+    expect(onResize).toHaveBeenCalledTimes(1);
 
     unmount();
   });
@@ -252,20 +251,20 @@ describe("useResizeObserver", () => {
       throw new Error();
     }
     const div = getByTestId("div");
-    expect(onResize).not.toBeCalled();
+    expect(onResize).not.toHaveBeenCalled();
     observer.trigger();
 
-    expect(onResize).toBeCalledWith({
+    expect(onResize).toHaveBeenCalledWith({
       element: div,
       height: 0,
       width: 0,
       scrollHeight: 0,
       scrollWidth: 0,
     });
-    expect(onResize).toBeCalledTimes(1);
+    expect(onResize).toHaveBeenCalledTimes(1);
 
     observer.trigger({ width: 1000 });
-    expect(onResize).toBeCalledTimes(1);
+    expect(onResize).toHaveBeenCalledTimes(1);
 
     unmount();
   });
@@ -324,24 +323,24 @@ describe("useResizeObserver", () => {
       scrollWidth: 0,
     };
 
-    expect(onResize1).not.toBeCalled();
-    expect(onResize2).not.toBeCalled();
-    expect(onResize3).not.toBeCalled();
+    expect(onResize1).not.toHaveBeenCalled();
+    expect(onResize2).not.toHaveBeenCalled();
+    expect(onResize3).not.toHaveBeenCalled();
 
     observer.triggerTarget(div1);
-    expect(onResize1).toBeCalledWith(expected1);
-    expect(onResize2).not.toBeCalled();
-    expect(onResize3).not.toBeCalled();
+    expect(onResize1).toHaveBeenCalledWith(expected1);
+    expect(onResize2).not.toHaveBeenCalled();
+    expect(onResize3).not.toHaveBeenCalled();
 
     observer.triggerTarget(div2);
-    expect(onResize1).toBeCalledTimes(1);
-    expect(onResize2).toBeCalledWith(expected2);
-    expect(onResize3).not.toBeCalled();
+    expect(onResize1).toHaveBeenCalledTimes(1);
+    expect(onResize2).toHaveBeenCalledWith(expected2);
+    expect(onResize3).not.toHaveBeenCalled();
 
     observer.triggerTarget(div3);
-    expect(onResize1).toBeCalledTimes(1);
-    expect(onResize2).toBeCalledTimes(1);
-    expect(onResize3).toBeCalledWith(expected3);
+    expect(onResize1).toHaveBeenCalledTimes(1);
+    expect(onResize2).toHaveBeenCalledTimes(1);
+    expect(onResize3).toHaveBeenCalledWith(expected3);
 
     unmount();
   });

@@ -2,8 +2,8 @@
 /// @group tooltip
 ////
 
-@import '~@react-md/theme/dist/helpers';
-@import '~@react-md/utils/dist/functions';
+@import '@react-md/theme/dist/helpers';
+@import '@react-md/utils/dist/functions';
 @import './variables';
 
 /// This function is used to quickly get one of the tooltip's theme values. This
@@ -56,9 +56,9 @@
     'tooltip position'
   );
 
-  @if $position == 'below' {
+  @if $position== 'below' {
     @return 'bottom';
-  } @else if $position == 'above' {
+  } @else if $position== 'above' {
     @return 'top';
   }
 
@@ -78,11 +78,11 @@
     'tooltip position'
   );
 
-  @if $position == 'left' {
+  @if $position== 'left' {
     @return 'right';
-  } @else if $position == 'right' {
+  } @else if $position== 'right' {
     @return 'left';
-  } @else if $position == 'below' {
+  } @else if $position== 'below' {
     @return 'above';
   }
 

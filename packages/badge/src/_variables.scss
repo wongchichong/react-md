@@ -2,7 +2,7 @@
 /// @group badge
 ////
 
-@import '~@react-md/theme/dist/color-palette';
+@import '@react-md/theme/dist/color-palette';
 
 /// The height and width to use for a circular badge.
 /// @type Number
@@ -25,7 +25,7 @@ $rmd-badge-default-background-color: rgba($rmd-black-base, 0.2) !default;
 /// @require $rmd-white-base
 /// @type Color
 $rmd-badge-default-color: if(
-  rmd-theme-tone($rmd-badge-default-background-color) == light,
+  rmd-theme-tone($rmd-badge-default-background-color) ==light,
   $rmd-black-base,
   $rmd-white-base
 ) !default;

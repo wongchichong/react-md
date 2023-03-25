@@ -15,11 +15,7 @@ import { MenuWidget } from "./MenuWidget";
 import type { MenuListProps, MenuOrientationProps } from "./types";
 
 /** @remarks \@since 5.0.0 */
-export interface MenuSheetProps
-  extends BaseSheetProps,
-    KeyboardFocusHookOptions<HTMLDivElement>,
-    MenuOrientationProps,
-    MenuListProps {
+export type MenuSheetProps = {
   /** {@inheritDoc MenuConfiguration.sheetHeader} */
   header?: ReactNode;
   /** {@inheritDoc MenuConfiguration.sheetFooter} */
@@ -40,7 +36,10 @@ export interface MenuSheetProps
    * Any additional props that should be passed to the `Menu` component.
    */
   menuProps?: HTMLAttributes<HTMLDivElement>;
-}
+} & BaseSheetProps &
+  KeyboardFocusHookOptions<HTMLDivElement> &
+  MenuOrientationProps &
+  MenuListProps;
 
 /**
  * Implements a `Menu` using the `Sheet` component that probably shouldn't

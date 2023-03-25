@@ -46,8 +46,8 @@
 /// provided value for a list when there is no error.
 @function rmd-utils-validate($list-or-map, $key-or-value, $error-message) {
   $type: meta.type-of($list-or-map);
-  $is-map: $type == map;
-  $is-list: $type == list;
+  $is-map: $type==map;
+  $is-list: $type==list;
 
   @if $rmd-utils-skip-validation {
     @return if($is-list, $key-or-value, map-get($list-or-map, $key-or-value));
@@ -58,6 +58,7 @@
   }
 
   $choices: if($is-map, map.keys($list-or-map), $list-or-map);
+
   @if not index($choices, $key-or-value) {
     @error "Invalid #{$error-message}: '#{$key-or-value}'. Choose one of: #{$choices}";
   }
@@ -73,6 +74,7 @@
 @function rmd-utils-swap-position($style) {
   $prefix: '';
   $position: $style;
+
   @each $valid-prefix in $rmd-utils-swappable-position-prefixes {
     @if string.index($style, '#{$valid-prefix}-') {
       $prefix: '#{$valid-prefix}-';
@@ -87,11 +89,12 @@
   );
 
   $next-position: bottom;
-  @if $position == left {
+
+  @if $position==left {
     $next-position: right;
-  } @else if $position == right {
+  } @else if $position==right {
     $next-position: left;
-  } @else if $position == bottom {
+  } @else if $position==bottom {
     $next-position: top;
   }
 

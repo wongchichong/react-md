@@ -6,9 +6,9 @@
 @use 'sass:map';
 @use 'sass:string';
 
-@import '~@react-md/theme/dist/helpers';
-@import '~@react-md/theme/dist/mixins';
-@import '~@react-md/utils/dist/mixins';
+@import '@react-md/theme/dist/helpers';
+@import '@react-md/theme/dist/mixins';
+@import '@react-md/utils/dist/mixins';
 @import './variables';
 @import './functions';
 
@@ -74,7 +74,7 @@
 /// create. When no properties are provided, it will default to using
 /// `font-size`.
 @mixin rmd-typography-value($style, $properties...) {
-  @if length($properties) == 0 {
+  @if length($properties) ==0 {
     $properties: list.append($properties, font-size);
   }
 
@@ -282,7 +282,7 @@
     }
 
     @each $decoration in $rmd-typography-decorations {
-      $suffix: $decoration + if($decoration == overline, '-decoration', '');
+      $suffix: $decoration + if($decoration==overline, '-decoration', '');
 
       &--#{$suffix} {
         text-decoration: $decoration;
@@ -349,9 +349,10 @@
 
   $font-url-prefix: '';
   $font-url: null;
-  @if $font-url-or-prefix == null or type-of($font-url-or-prefix) == 'string' {
+
+  @if $font-url-or-prefix==null or type-of($font-url-or-prefix) == 'string' {
     $font-url: if(
-      $font-url-or-prefix == null,
+      $font-url-or-prefix==null,
       '/fonts/' + string.to-lower-case(str-replace($font-name, ' ', '-')),
       $font-url-or-prefix
     );
@@ -452,8 +453,7 @@
   @each $weight in $weights {
     @if type-of($font-url-prefix-or-url-map) ==
       'string' or
-      $font-url-prefix-or-url-map ==
-      null
+      $font-url-prefix-or-url-map==null
     {
       @include rmd-typography-google-font-face(
         $font-name,

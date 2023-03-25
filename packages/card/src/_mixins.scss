@@ -2,14 +2,14 @@
 /// @group card
 ////
 
-@import '~@react-md/elevation/dist/mixins';
-@import '~@react-md/icon/dist/mixins';
-@import '~@react-md/states/dist/mixins';
-@import '~@react-md/typography/dist/mixins';
-@import '~@react-md/theme/dist/variables';
-@import '~@react-md/theme/dist/helpers';
-@import '~@react-md/theme/dist/mixins';
-@import '~@react-md/utils/dist/mixins';
+@import '@react-md/elevation/dist/mixins';
+@import '@react-md/icon/dist/mixins';
+@import '@react-md/states/dist/mixins';
+@import '@react-md/typography/dist/mixins';
+@import '@react-md/theme/dist/variables';
+@import '@react-md/theme/dist/helpers';
+@import '@react-md/theme/dist/mixins';
+@import '@react-md/utils/dist/mixins';
 @import './functions';
 @import './variables';
 
@@ -65,6 +65,7 @@
   );
   @include rmd-card-theme(background-color);
   @include rmd-card-theme(color);
+
   @include rmd-utils-mouse-only {
     // TODO: Remove misspelled version in next major release
     &--raiseable,

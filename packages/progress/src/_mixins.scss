@@ -2,9 +2,9 @@
 /// @group progress
 ////
 
-@import '~@react-md/theme/dist/helpers';
-@import '~@react-md/transition/dist/mixins';
-@import '~@react-md/utils/dist/mixins';
+@import '@react-md/theme/dist/helpers';
+@import '@react-md/transition/dist/mixins';
+@import '@react-md/utils/dist/mixins';
 @import './functions';
 @import './variables';
 
@@ -48,7 +48,7 @@
 /// @param {Map} styles - The current animation styles to use
 /// @access private
 @mixin rmd-progress-animation($styles) {
-  @if $styles != null {
+  @if $styles !=null {
     @each $percentage, $style in $styles {
       #{$percentage} {
         @include rmd-utils-map-to-styles($style);
@@ -252,7 +252,7 @@
       margin-right: auto;
     }
 
-    @if $rmd-circular-progress-small-size != null {
+    @if $rmd-circular-progress-small-size !=null {
       &--small {
         @include rmd-progress-theme-update-var(
           circular-size,

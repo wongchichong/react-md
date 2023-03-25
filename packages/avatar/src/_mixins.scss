@@ -2,9 +2,9 @@
 /// @group avatar
 ////
 
-@import '~@react-md/icon/dist/mixins';
-@import '~@react-md/theme/dist/helpers';
-@import '~@react-md/typography/dist/mixins';
+@import '@react-md/icon/dist/mixins';
+@import '@react-md/theme/dist/helpers';
+@import '@react-md/typography/dist/mixins';
 @import './variables';
 
 /// Creates the styles for one of the avatar's theme values. This is mostly
@@ -68,7 +68,7 @@
 /// a list of the background-color and color to apply
 @mixin rmd-avatar-colors($color-map: $rmd-avatar-colors) {
   @each $color-name, $values in $color-map {
-    @if length($values) != 2 {
+    @if length($values) !=2 {
       @error 'Unable to create an avatar color because the list of values is not of length 2. The first value should be the background-color and the second should be the text color. "#{$values}"';
     }
 

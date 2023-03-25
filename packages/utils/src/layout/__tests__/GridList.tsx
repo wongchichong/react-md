@@ -69,7 +69,6 @@ let observer: MockedObserver | undefined;
 let getBoundingClientRect: jest.SpyInstance<DOMRect, []>;
 beforeAll(() => {
   ResizeObserverMock.mockImplementation((callback) => {
-    // @ts-ignore
     observer = new MockedObserver(callback);
     return observer;
   });
@@ -120,29 +119,29 @@ describe("GridList", () => {
 
     const containerWidth = 1000 - 16;
 
-    expect(children).toBeCalledTimes(1);
-    expect(children).toBeCalledWith({ cellWidth: 150, columns: -1 });
+    expect(children).toHaveBeenCalledTimes(1);
+    expect(children).toHaveBeenCalledWith({ cellWidth: 150, columns: -1 });
 
     trigger(containerWidth);
 
-    expect(children).toBeCalledTimes(2);
-    expect(children).toBeCalledWith({
+    expect(children).toHaveBeenCalledTimes(2);
+    expect(children).toHaveBeenCalledWith({
       columns: 7,
       cellWidth: containerWidth / Math.ceil(containerWidth / 150),
     });
     children.mockClear();
 
     rerender(<GridList maxCellSize={400}>{children}</GridList>);
-    expect(children).toBeCalledTimes(1);
+    expect(children).toHaveBeenCalledTimes(1);
     // first render then it recalculates
-    expect(children).toBeCalledWith({
+    expect(children).toHaveBeenCalledWith({
       columns: 7,
       cellWidth: containerWidth / Math.ceil(containerWidth / 150),
     });
 
     trigger(containerWidth);
 
-    expect(children).toBeCalledWith({
+    expect(children).toHaveBeenCalledWith({
       columns: 3,
       cellWidth: containerWidth / Math.ceil(containerWidth / 400),
     });
@@ -155,12 +154,12 @@ describe("GridList", () => {
     ));
 
     render(<GridList maxCellSize={400}>{children}</GridList>);
-    expect(children).toBeCalledTimes(1);
-    expect(children).toBeCalledWith({ columns: -1, cellWidth: 400 });
+    expect(children).toHaveBeenCalledTimes(1);
+    expect(children).toHaveBeenCalledWith({ columns: -1, cellWidth: 400 });
 
     trigger(containerWidth);
-    expect(children).toBeCalledTimes(2);
-    expect(children).toBeCalledWith({
+    expect(children).toHaveBeenCalledTimes(2);
+    expect(children).toHaveBeenCalledWith({
       columns: 3,
       cellWidth: containerWidth / Math.ceil(containerWidth / 400),
     });

@@ -2,8 +2,8 @@
 /// @group divider
 ////
 
-@import '~@react-md/theme/dist/color-a11y';
-@import '~@react-md/theme/dist/variables';
+@import '@react-md/theme/dist/color-a11y';
+@import '@react-md/theme/dist/variables';
 
 /// The size for the divider. This really just modifies the border-width.
 /// @type Number
@@ -56,7 +56,7 @@ $rmd-divider-background-color-on-dark: rgba($rmd-white-base, 0.12) !default;
 /// @require $rmd-theme-background
 /// @type Color
 $rmd-divider-background-color: if(
-  rmd-theme-tone($rmd-theme-background) == light,
+  rmd-theme-tone($rmd-theme-background) ==light,
   $rmd-divider-background-color-on-light,
   $rmd-divider-background-color-on-dark
 ) !default;

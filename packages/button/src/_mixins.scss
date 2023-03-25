@@ -2,16 +2,16 @@
 /// @group button
 ////
 
-@import '~@react-md/elevation/dist/mixins';
-@import '~@react-md/icon/dist/variables';
-@import '~@react-md/icon/dist/mixins';
-@import '~@react-md/states/dist/mixins';
-@import '~@react-md/typography/dist/mixins';
-@import '~@react-md/theme/dist/variables';
-@import '~@react-md/theme/dist/helpers';
-@import '~@react-md/theme/dist/mixins';
-@import '~@react-md/transition/dist/mixins';
-@import '~@react-md/utils/dist/mixins';
+@import '@react-md/elevation/dist/mixins';
+@import '@react-md/icon/dist/variables';
+@import '@react-md/icon/dist/mixins';
+@import '@react-md/states/dist/mixins';
+@import '@react-md/typography/dist/mixins';
+@import '@react-md/theme/dist/variables';
+@import '@react-md/theme/dist/helpers';
+@import '@react-md/theme/dist/mixins';
+@import '@react-md/transition/dist/mixins';
+@import '@react-md/utils/dist/mixins';
 @import './functions';
 @import './variables';
 
@@ -130,10 +130,12 @@
   @if $rmd-button-text-icon-inherit-color {
     @include rmd-icon-theme-update-var(color, currentColor);
   }
+
   @include rmd-button-base;
   @include rmd-states-surface;
-  @if $rmd-button-circular-progress-size !=
-    null and
+
+  @if $rmd-button-circular-progress-size
+    !=null and
     mixin-exists(rmd-progress-theme-update-var)
   {
     @include rmd-progress-theme-update-var(
@@ -264,7 +266,7 @@
   @each $name, $styles in $rmd-button-floating-positions {
     &--#{$name} {
       @each $property, $value in $styles {
-        @if $property == left or $property == right {
+        @if $property==left or $property==right {
           @include rmd-utils-rtl-auto($property, $value);
         } @else {
           #{$property}: #{$value};

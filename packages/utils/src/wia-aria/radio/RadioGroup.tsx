@@ -9,7 +9,7 @@ import type {
 import { createRef, forwardRef, useCallback, useMemo, useState } from "react";
 
 import { loop } from "../../loop";
-import type { LabelRequiredForA11y } from "../../types";
+import type { LabelA11y, LabelRequiredForA11y } from "../../types";
 import { tryToSubmitRelatedForm } from "../tryToSubmitRelatedForm";
 import { RadioWidget } from "./RadioWidget";
 import type {
@@ -66,7 +66,9 @@ export interface BaseRadioGroupProps
 /**
  * @remarks \@since 2.7.0
  */
-export type RadioGroupProps = LabelRequiredForA11y<BaseRadioGroupProps>;
+export type RadioGroupProps = LabelRequiredForA11y<
+  BaseRadioGroupProps & LabelA11y
+>;
 
 /**
  * The `RadioGroup` is a low-level component that does not provide any styles

@@ -2,9 +2,9 @@
 /// @group elevation
 ////
 
-@import '~@react-md/theme/dist/functions';
-@import '~@react-md/transition/dist/mixins';
-@import '~@react-md/utils/dist/mixins';
+@import '@react-md/theme/dist/functions';
+@import '@react-md/transition/dist/mixins';
+@import '@react-md/utils/dist/mixins';
 @import './functions';
 @import './variables';
 
@@ -67,12 +67,12 @@
   $opacity-boost: 0
 ) {
   $start-shadow: if(
-    $start == none or $start == 0,
+    $start==none or $start==0,
     none,
     rmd-elevation($start, $color, $opacity-boost)
   );
   $end-shadow: if(
-    $end == none or $end == 0,
+    $end==none or $end==0,
     none,
     rmd-elevation($end, $color, $opacity-boost)
   );

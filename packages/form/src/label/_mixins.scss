@@ -2,10 +2,10 @@
 /// @group form-label
 ////
 
-@import '~@react-md/icon/dist/mixins';
-@import '~@react-md/typography/dist/mixins';
-@import '~@react-md/transition/dist/mixins';
-@import '~@react-md/utils/dist/mixins';
+@import '@react-md/icon/dist/mixins';
+@import '@react-md/typography/dist/mixins';
+@import '@react-md/transition/dist/mixins';
+@import '@react-md/utils/dist/mixins';
 @import '../variables';
 @import '../functions';
 
@@ -40,6 +40,7 @@
     active-color,
     rmd-form-theme-var(text-active-color)
   );
+
   @include rmd-utils-rtl {
     left: auto;
     right: 0;
@@ -69,6 +70,7 @@
   &--active {
     @include rmd-form-theme(background-color, label-active-background-color);
     @include rmd-form-theme(padding, label-active-padding);
+
     @include rmd-utils-rtl {
       transform: translate(
         rmd-utils-negate-var(rmd-form-theme-var(label-left-offset)),

@@ -3,9 +3,9 @@ import { createElement } from "react";
 import { TextIconSpacing } from "@react-md/icon";
 import type { SimpleListItemProps } from "@react-md/list";
 
-export interface ListboxOptionProps extends SimpleListItemProps {
+export type ListboxOptionProps = SimpleListItemProps & {
   [labelKey: string]: ReactNode;
-}
+};
 
 export type ListboxOption = ListboxOptionProps | string | number | null;
 

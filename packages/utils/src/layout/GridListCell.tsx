@@ -31,7 +31,7 @@ export const GridListCell = forwardRef<HTMLDivElement, GridListCellProps>(
       const child = Children.only(children);
       return cloneElement(child, {
         className: cn(cellClassName, child.props.className),
-      });
+      } as HTMLAttributes<HTMLDivElement>);
     }
 
     return (

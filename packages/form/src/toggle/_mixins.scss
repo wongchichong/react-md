@@ -4,13 +4,13 @@
 
 @use 'sass:color';
 
-@import '~@react-md/button/dist/mixins';
-@import '~@react-md/icon/dist/mixins';
-@import '~@react-md/menu/dist/mixins';
-@import '~@react-md/progress/dist/mixins';
-@import '~@react-md/states/dist/mixins';
-@import '~@react-md/theme/dist/mixins';
-@import '~@react-md/utils/dist/mixins';
+@import '@react-md/button/dist/mixins';
+@import '@react-md/icon/dist/mixins';
+@import '@react-md/menu/dist/mixins';
+@import '@react-md/progress/dist/mixins';
+@import '@react-md/states/dist/mixins';
+@import '@react-md/theme/dist/mixins';
+@import '@react-md/utils/dist/mixins';
 @import '../variables';
 @import '../functions';
 
@@ -82,7 +82,7 @@
 @mixin rmd-toggle-hidden {
   @include rmd-input-hidden;
 
-  @if $rmd-toggle-active-color != $rmd-toggle-inactive-color {
+  @if $rmd-toggle-active-color !=$rmd-toggle-inactive-color {
     &:checked + .rmd-toggle__icon {
       color: $rmd-toggle-active-color;
     }
@@ -164,7 +164,7 @@
   }
 
   &--checked {
-    @if $rmd-toggle-active-color != $rmd-toggle-inactive-color {
+    @if $rmd-toggle-active-color !=$rmd-toggle-inactive-color {
       @include rmd-icon-theme-update-var(color, $rmd-toggle-active-color);
     }
 
@@ -174,7 +174,7 @@
   }
 
   &--indeterminate-checked {
-    @if $rmd-toggle-active-color != $rmd-toggle-inactive-color {
+    @if $rmd-toggle-active-color !=$rmd-toggle-inactive-color {
       @include rmd-icon-theme-update-var(color, $rmd-toggle-active-color);
     }
 
@@ -264,6 +264,7 @@
 @mixin rmd-switch-input {
   @include rmd-input-hidden;
   @include rmd-states-focus-shadow('&:focus + .rmd-switch__ball');
+
   @include rmd-utils-keyboard-only {
     &:focus + .rmd-switch__ball {
       @include rmd-states-theme-update-var(
@@ -279,6 +280,7 @@
       );
     }
   }
+
   @include rmd-utils-touch-only {
     &:focus + .rmd-switch__ball,
     &:hover + .rmd-switch__ball {
@@ -303,6 +305,7 @@
 @mixin rmd-switch-ball {
   @include rmd-utils-hide-focus-outline;
   @include rmd-transition(standard);
+
   @include rmd-utils-rtl {
     left: auto;
     right: calc(-50% + #{$rmd-switch-ball-offset});

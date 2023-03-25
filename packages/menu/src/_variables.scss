@@ -4,9 +4,9 @@
 
 @use 'sass:map';
 
-@import '~@react-md/theme/dist/mixins';
-@import '~@react-md/list/dist/functions';
-@import '~@react-md/utils/dist/variables';
+@import '@react-md/theme/dist/mixins';
+@import '@react-md/list/dist/functions';
+@import '@react-md/utils/dist/variables';
 
 /// The elevation for menus. This should be a number from 0 to 24 (inclusive) as
 /// it gets passed to the `rmd-elevation` mixin.

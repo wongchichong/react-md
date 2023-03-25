@@ -12,7 +12,7 @@ const githubRegExp = new RegExp(githubUrl, "g");
 
 const START_TOKEN = "<!-- DOCS_REMOVE -->";
 const STOP_TOKEN = "<!-- DOCS_REMOVE_END -->";
-const SEP_REGEXP = new RegExp(sep, "g");
+const SEP_REGEXP = new RegExp(sep === "\\" ? "\\\\" : sep, "g");
 
 function removeDocSpecific(markdown: string, filePath?: string): string {
   const startIndex = markdown.indexOf(START_TOKEN);

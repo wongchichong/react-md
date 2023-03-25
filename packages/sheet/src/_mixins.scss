@@ -2,10 +2,10 @@
 /// @group sheet
 ////
 
-@import '~@react-md/elevation/dist/mixins';
-@import '~@react-md/transition/dist/mixins';
-@import '~@react-md/theme/dist/mixins';
-@import '~@react-md/utils/dist/mixins';
+@import '@react-md/elevation/dist/mixins';
+@import '@react-md/transition/dist/mixins';
+@import '@react-md/theme/dist/mixins';
+@import '@react-md/utils/dist/mixins';
 @import './variables';
 @import './functions';
 
@@ -56,36 +56,38 @@
       );
 
       &--#{$position} {
-        @if $position == left {
+        @if $position==left {
           @include rmd-sheet-theme-update-var(
             transform-offscreen,
             translate3d(-100%, 0, 0)
           );
+
           @include rmd-utils-rtl-auto(left, 0) {
             @include rmd-sheet-theme-update-var(
               transform-offscreen,
               translate3d(100%, 0, 0)
             );
           }
-        } @else if $position == right {
+        } @else if $position==right {
           @include rmd-sheet-theme-update-var(
             transform-offscreen,
             translate3d(100%, 0, 0)
           );
+
           @include rmd-utils-rtl-auto(right, 0) {
             @include rmd-sheet-theme-update-var(
               transform-offscreen,
               translate3d(-100%, 0, 0)
             );
           }
-        } @else if $position == top {
+        } @else if $position==top {
           @include rmd-sheet-theme-update-var(
             transform-offscreen,
             translate3d(0, -100%, 0)
           );
 
           top: 0;
-        } @else if $position == bottom {
+        } @else if $position==bottom {
           @include rmd-sheet-theme-update-var(
             transform-offscreen,
             translate3d(0, 100%, 0)
@@ -121,6 +123,7 @@
         rmd-sheet-theme-var(raised-background-color)
       );
     }
+
     @include rmd-elevation($rmd-sheet-raised-elevation);
 
     z-index: $rmd-sheet-raised-z-index;
@@ -150,6 +153,7 @@
       width,
       rmd-sheet-theme-var(touch-width)
     );
+
     @include rmd-utils-tablet-media {
       @include rmd-sheet-theme-update-var(
         width,

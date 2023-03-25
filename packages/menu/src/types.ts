@@ -101,10 +101,7 @@ export interface MenuConfiguration extends MenuOrientationProps {
 export type MenuConfigurationContext = Required<MenuConfiguration>;
 
 /** @remarks \@since 5.0.0 */
-export interface MenuWidgetProps
-  extends HTMLAttributes<HTMLDivElement>,
-    KeyboardFocusHookOptions<HTMLDivElement>,
-    MenuOrientationProps {
+export type MenuWidgetProps = {
   /**
    * An id required for a11y.
    */
@@ -117,7 +114,9 @@ export interface MenuWidgetProps
    * @defaultValue `false`
    */
   disableElevation?: boolean;
-}
+} & HTMLAttributes<HTMLDivElement> &
+  KeyboardFocusHookOptions<HTMLDivElement> &
+  MenuOrientationProps;
 
 /** @remarks \@since 5.0.0 */
 export interface MenuProps

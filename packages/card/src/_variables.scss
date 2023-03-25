@@ -4,9 +4,9 @@
 
 @use 'sass:map';
 
-@import '~@react-md/divider/dist/functions';
-@import '~@react-md/divider/dist/variables';
-@import '~@react-md/theme/dist/functions';
+@import '@react-md/divider/dist/functions';
+@import '@react-md/divider/dist/variables';
+@import '@react-md/theme/dist/functions';
 
 /// The elevation to use for cards that are not raisable.
 /// @type Number
@@ -65,7 +65,7 @@ $rmd-card-color: rmd-theme-var(on-surface) !default;
 /// @require $rmd-theme-surface
 /// @type Color
 $rmd-card-secondary-color: if(
-  rmd-theme-tone($rmd-theme-surface) == light,
+  rmd-theme-tone($rmd-theme-surface) ==light,
   rmd-theme-var(text-primary-on-light),
   rmd-theme-var(text-primary-on-dark)
 ) !default;

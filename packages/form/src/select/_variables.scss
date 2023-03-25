@@ -4,9 +4,9 @@
 
 @use 'sass:map';
 
-@import '~@react-md/theme/dist/color-palette';
-@import '~@react-md/theme/dist/functions';
-@import '~@react-md/utils/dist/variables';
+@import '@react-md/theme/dist/color-palette';
+@import '@react-md/theme/dist/functions';
+@import '@react-md/utils/dist/variables';
 
 /// The additional amount of padding to apply to the top of the select field
 /// container in addition to normal text field padding. This is used so the

@@ -57,5 +57,5 @@ export function Portal({
     return null;
   }
 
-  return createPortal(children, container);
+  return createPortal(children, container) as any;
 }

@@ -4,7 +4,7 @@
 
 @use 'sass:map';
 
-@import '~@react-md/theme/dist/functions';
+@import '@react-md/theme/dist/functions';
 @import './variables';
 
 /// Returns a box shadow string for the current material design elevation. This
@@ -37,7 +37,7 @@
     @error "$z-value must be a unitless number, but received '#{$z-value}'";
   }
 
-  @if $z-value < 0 or $z-value > 24 {
+  @if $z-value < 0 or $z-value>24 {
     @error "$z-value must be between 0 and 24, but received '#{$z-value}'";
   }
 

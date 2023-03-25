@@ -74,7 +74,6 @@ describe("TextArea", () => {
   let observer: MockedObserver | undefined;
   beforeAll(() => {
     ResizeObserverMock.mockImplementation((callback) => {
-      // @ts-ignore
       observer = new MockedObserver(callback);
       return observer;
     });

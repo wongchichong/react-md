@@ -2,12 +2,12 @@
 /// @group form-select
 ////
 
-@import '~@react-md/elevation/dist/mixins';
-@import '~@react-md/icon/dist/mixins';
-@import '~@react-md/list/dist/mixins';
-@import '~@react-md/transition/dist/mixins';
-@import '~@react-md/typography/dist/mixins';
-@import '~@react-md/utils/dist/mixins';
+@import '@react-md/elevation/dist/mixins';
+@import '@react-md/icon/dist/mixins';
+@import '@react-md/list/dist/mixins';
+@import '@react-md/transition/dist/mixins';
+@import '@react-md/typography/dist/mixins';
+@import '@react-md/utils/dist/mixins';
 @import '../text-field/mixins';
 @import '../functions';
 @import '../variables';
@@ -94,6 +94,7 @@
     @include rmd-form-theme(padding-top, text-padding-top);
     @include rmd-typography(body-1, font-size);
     @include rmd-typography-text-overflow-ellipsis;
+
     @include rmd-utils-rtl {
       @include rmd-form-theme(padding-left, text-padding-right);
       @include rmd-form-theme(padding-right, text-padding-left);

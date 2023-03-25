@@ -2,8 +2,8 @@
 /// @group icon
 ////
 
-@import '~@react-md/theme/dist/helpers';
-@import '~@react-md/utils/dist/mixins';
+@import '@react-md/theme/dist/helpers';
+@import '@react-md/utils/dist/mixins';
 @import './functions';
 @import './variables';
 
@@ -109,7 +109,7 @@
   $spacing: $rmd-icon-spacing-with-text,
   $property: margin-left
 ) {
-  @if $property == 'margin-left' or $property == 'margin-right' {
+  @if $property== 'margin-left' or $property== 'margin-right' {
     @include rmd-utils-rtl-auto($property, $spacing, 0);
   } @else {
     #{$property}: $spacing;
@@ -146,7 +146,7 @@
   $below-selector: '&--below',
   $spacing: $rmd-icon-spacing-with-text
 ) {
-  @if $before-selector != null {
+  @if $before-selector !=null {
     #{$before-selector} {
       @include rmd-icon-text-spacing(
         rmd-icon-theme-var(text-spacing),
@@ -155,7 +155,7 @@
     }
   }
 
-  @if $after-selector != null {
+  @if $after-selector !=null {
     #{$after-selector} {
       @include rmd-icon-text-spacing(
         rmd-icon-theme-var(text-spacing),
@@ -164,7 +164,7 @@
     }
   }
 
-  @if $above-selector != null {
+  @if $above-selector !=null {
     #{$above-selector} {
       @include rmd-icon-text-spacing(
         rmd-icon-theme-var(text-spacing),
@@ -173,7 +173,7 @@
     }
   }
 
-  @if $below-selector != null {
+  @if $below-selector !=null {
     #{$below-selector} {
       @include rmd-icon-text-spacing(
         rmd-icon-theme-var(text-spacing),
@@ -223,6 +223,7 @@
       height: rmd-icon-theme-var(size) !important;
       width: rmd-icon-theme-var(size) !important;
     }
+
     // stylelint-enable declaration-no-important
 
     @if $rmd-icon-include-dense {

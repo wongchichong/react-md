@@ -73,7 +73,8 @@ export type TypographyRenderFunction = (props: {
   className: string;
 }) => ReactElement;
 
-export interface TypographyProps extends HTMLAttributes<TypographyHTMLElement> {
+export interface TypographyProps
+  extends Omit<HTMLAttributes<TypographyHTMLElement>, "children"> {
   /**
    * An optional className to merge into typography styles.
    */

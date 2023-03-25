@@ -3,9 +3,9 @@
 /// @since 2.5.0
 ////
 
-@import '~@react-md/icon/dist/variables';
-@import '~@react-md/theme/dist/color-palette';
-@import '~@react-md/theme/dist/functions';
+@import '@react-md/icon/dist/variables';
+@import '@react-md/theme/dist/color-palette';
+@import '@react-md/theme/dist/functions';
 
 /// Boolean if vertical slider styles should be generated.
 /// @type Boolean
@@ -157,8 +157,7 @@ $rmd-slider-container-addon-spacing: $rmd-slider-thumb-size !default;
 
 /// @type Boolean
 /// @access private
-$rmd-slider-is-same-track-color: $rmd-slider-active-track-color ==
-  $rmd-slider-inactive-track-color;
+$rmd-slider-is-same-track-color: $rmd-slider-active-track-color==$rmd-slider-inactive-track-color;
 
 /// A Map of all the "themeable" parts of the slider package. Every key in this
 /// map will be used to create a css variable to dynamically update the values

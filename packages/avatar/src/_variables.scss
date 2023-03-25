@@ -2,8 +2,8 @@
 /// @group avatar
 ////
 
-@import '~@react-md/typography/dist/functions';
-@import '~@react-md/theme/dist/variables';
+@import '@react-md/typography/dist/functions';
+@import '@react-md/theme/dist/variables';
 
 /// The default text color for the avatar. This will be used until the `color`
 /// prop is provided to the `Avatar` component.
@@ -28,7 +28,7 @@ $rmd-avatar-background-color: $rmd-grey-700 !default;
 /// @type Color
 $rmd-avatar-border-color: rgba(
   if(
-    rmd-theme-tone($rmd-theme-background) == light,
+    rmd-theme-tone($rmd-theme-background) ==light,
     $rmd-black-base,
     $rmd-white-base
   ),

@@ -623,8 +623,8 @@ slight build performance improvement for large projects. To start using the new
 module system, update all the `@import` statements as shown below:
 
 ```diff
--@import '~@react-md/theme/dist/mixins';
--@import '~@react-md/utils/dist/mixins';
+-@import '@react-md/theme/dist/mixins';
+-@import '@react-md/utils/dist/mixins';
 -// other react-md imports
 +@use 'react-md' as *;
 
@@ -634,7 +634,7 @@ module system, update all the `@import` statements as shown below:
 If you override variables within `react-md`:
 
 ```diff
--@import '~@react-md/theme/dist/color-palette';
+-@import '@react-md/theme/dist/color-palette';
 -$rmd-theme-light: false;
 -$rmd-theme-primary: $rmd-purple-500;
 -$rmd-theme-secondary: $rmd-pink-a-200;

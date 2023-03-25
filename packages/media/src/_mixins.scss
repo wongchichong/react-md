@@ -4,8 +4,8 @@
 
 @use 'sass:math';
 
-@import '~@react-md/theme/dist/mixins';
-@import '~@react-md/utils/dist/functions';
+@import '@react-md/theme/dist/mixins';
+@import '@react-md/utils/dist/functions';
 @import './variables';
 
 /// Used to enforce a specific aspect ratio for a media item by using the
@@ -111,32 +111,32 @@
     'rmd-media-overlay-positions'
   );
 
-  @if $position == left or $position == right or $position == center {
+  @if $position==left or $position==right or $position==center {
     bottom: 0;
     top: 0;
     width: $rmd-media-overlay-horizontal-width;
 
-    @if $position == left {
+    @if $position==left {
       left: 0;
-    } @else if $position == right {
+    } @else if $position==right {
       right: 0;
-    } @else if $position == center {
+    } @else if $position==center {
       left: 50%;
       transform: translateX(-50%);
     }
-  } @else if $position == top or $position == bottom or $position == middle {
+  } @else if $position==top or $position==bottom or $position==middle {
     left: 0;
     right: 0;
 
-    @if $position == top {
+    @if $position==top {
       top: 0;
-    } @else if $position == bottom {
+    } @else if $position==bottom {
       bottom: 0;
-    } @else if $position == middle {
+    } @else if $position==middle {
       top: 50%;
       transform: translateY(-50%);
     }
-  } @else if $position == absolute-center {
+  } @else if $position==absolute-center {
     left: 50%;
     top: 50%;
     transform: translateX(-50%) translateY(-50%);
@@ -156,7 +156,7 @@
   $background-color: $rmd-media-overlay-background-color,
   $color: null
 ) {
-  @if $color == null {
+  @if $color==null {
     $light: rmd-theme-tone($background-color) == 'light';
     $color: rmd-theme-var(
       if($light, text-primary-on-light, text-primary-on-dark)
@@ -180,7 +180,7 @@
   position: absolute;
   z-index: 1;
 
-  @if $rmd-media-overlay-positions != null {
+  @if $rmd-media-overlay-positions !=null {
     @each $position in $rmd-media-overlay-positions {
       &--#{$position} {
         @include rmd-media-overlay-position($position);

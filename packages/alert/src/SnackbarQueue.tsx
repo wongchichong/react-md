@@ -92,7 +92,7 @@ function SnackbarQueueT<M extends ToastMessage = ToastMessage>(
             onClick={onClick}
             theme="secondary"
           >
-            {providedAction}
+            {providedAction as any}
           </Button>
         );
       } else {

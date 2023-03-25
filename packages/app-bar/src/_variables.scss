@@ -2,10 +2,10 @@
 /// @group app-bar
 ////
 
-@import '~@react-md/button/dist/variables';
-@import '~@react-md/icon/dist/variables';
-@import '~@react-md/theme/dist/color-palette';
-@import '~@react-md/theme/dist/variables';
+@import '@react-md/button/dist/variables';
+@import '@react-md/icon/dist/variables';
+@import '@react-md/theme/dist/color-palette';
+@import '@react-md/theme/dist/variables';
 
 /// The z-index to use for the fixed app bar. Ideally this value should be less
 /// than any of the "temporary" materials like overlays, sheets, and menus.
@@ -113,7 +113,7 @@ $rmd-app-bar-default-light-theme-background-color: $rmd-grey-100 !default;
 /// @require $rmd-white-base
 /// @type Color
 $rmd-app-bar-default-light-theme-color: if(
-  rmd-theme-tone($rmd-app-bar-default-light-theme-background-color) == light,
+  rmd-theme-tone($rmd-app-bar-default-light-theme-background-color) ==light,
   $rmd-black-base,
   $rmd-white-base
 ) !default;
@@ -133,7 +133,7 @@ $rmd-app-bar-default-dark-theme-background-color: $rmd-grey-900 !default;
 /// @require $rmd-white-base
 /// @type Color
 $rmd-app-bar-default-dark-theme-color: if(
-  rmd-theme-tone($rmd-app-bar-default-dark-theme-background-color) == light,
+  rmd-theme-tone($rmd-app-bar-default-dark-theme-background-color) ==light,
   $rmd-black-base,
   $rmd-white-base
 ) !default;
@@ -145,7 +145,7 @@ $rmd-app-bar-default-dark-theme-color: if(
 /// @require rmd-theme-tone
 /// @type Color
 $rmd-app-bar-default-background-color: if(
-  rmd-theme-tone($rmd-theme-background) == light,
+  rmd-theme-tone($rmd-theme-background) ==light,
   $rmd-app-bar-default-light-theme-background-color,
   $rmd-app-bar-default-dark-theme-background-color
 ) !default;
@@ -157,7 +157,7 @@ $rmd-app-bar-default-background-color: if(
 /// @require rmd-theme-tone
 /// @type Color
 $rmd-app-bar-default-color: if(
-  rmd-theme-tone($rmd-app-bar-default-background-color) == light,
+  rmd-theme-tone($rmd-app-bar-default-background-color) ==light,
   $rmd-app-bar-default-light-theme-color,
   $rmd-app-bar-default-dark-theme-color
 ) !default;

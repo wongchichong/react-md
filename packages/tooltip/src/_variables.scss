@@ -2,11 +2,11 @@
 /// @group tooltip
 ////
 
-@import '~@react-md/theme/dist/color-palette';
-@import '~@react-md/theme/dist/color-a11y';
-@import '~@react-md/theme/dist/functions';
-@import '~@react-md/transition/dist/variables';
-@import '~@react-md/utils/dist/variables';
+@import '@react-md/theme/dist/color-palette';
+@import '@react-md/theme/dist/color-a11y';
+@import '@react-md/theme/dist/functions';
+@import '@react-md/transition/dist/variables';
+@import '@react-md/utils/dist/variables';
 
 /// The background color to use for tooltips.
 /// @type Color
@@ -18,7 +18,7 @@ $rmd-tooltip-background-color: #616161 !default;
 /// @require rmd-theme-tone
 /// @type Color
 $rmd-tooltip-color: if(
-  rmd-theme-tone($rmd-tooltip-background-color) == light,
+  rmd-theme-tone($rmd-tooltip-background-color) ==light,
   rmd-theme-var(text-primary-on-light),
   rmd-theme-var(text-primary-on-dark)
 ) !default;

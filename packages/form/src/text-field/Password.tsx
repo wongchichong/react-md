@@ -125,7 +125,7 @@ export const Password = forwardRef<HTMLInputElement, PasswordProps>(
     );
 
     const visible = type === "text";
-    let visibilityIcon = useIcon("password", propVisibilityIcon);
+    let visibilityIcon = useIcon("password", propVisibilityIcon as any);
     if (isConfigurableIcon(propVisibilityIcon)) {
       visibilityIcon = visible
         ? propVisibilityIcon.visible

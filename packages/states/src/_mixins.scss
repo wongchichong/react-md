@@ -2,11 +2,11 @@
 /// @group states
 ////
 
-@import '~@react-md/transition/dist/variables';
-@import '~@react-md/transition/dist/mixins';
-@import '~@react-md/theme/dist/color-palette';
-@import '~@react-md/theme/dist/helpers';
-@import '~@react-md/utils/dist/mixins';
+@import '@react-md/transition/dist/variables';
+@import '@react-md/transition/dist/mixins';
+@import '@react-md/theme/dist/color-palette';
+@import '@react-md/theme/dist/helpers';
+@import '@react-md/utils/dist/mixins';
 @import './variables';
 @import './functions';
 
@@ -200,6 +200,7 @@
 ) {
   @include rmd-utils-hide-focus-outline;
   @include rmd-states-focus-shadow($focus-selector, $css-modules: $css-modules);
+
   @include rmd-utils-touch-only($css-modules) {
     &:focus,
     &:hover {
@@ -253,6 +254,7 @@
         background-color,
         rmd-states-theme-var(pressed-color)
       );
+
       @include rmd-utils-keyboard-only($css-modules) {
         @include rmd-states-theme-update-var(
           background-color,

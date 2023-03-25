@@ -5,9 +5,9 @@
 @use 'sass:color';
 @use 'sass:map';
 
-@import '~@react-md/states/dist/variables';
-@import '~@react-md/transition/dist/variables';
-@import '~@react-md/theme/dist/functions';
+@import '@react-md/states/dist/variables';
+@import '@react-md/transition/dist/variables';
+@import '@react-md/theme/dist/functions';
 
 /// Boolean if the chip should disable the background color change when it gains
 /// keyboard focus. This is disabled by default since the focus shadow looks a
@@ -84,7 +84,7 @@ $rmd-chip-themed-background-color: rmd-theme-get-swatch(
 /// @require $rmd-white-base
 /// @type Color
 $rmd-chip-themed-color: if(
-  rmd-theme-tone($rmd-chip-themed-background-color) == light,
+  rmd-theme-tone($rmd-chip-themed-background-color) ==light,
   $rmd-black-base,
   $rmd-white-base
 ) !default;
@@ -103,7 +103,7 @@ $rmd-chip-solid-light-background-color: $rmd-grey-300 !default;
 /// @require $rmd-white-base
 /// @type Color
 $rmd-chip-solid-light-color: if(
-  rmd-theme-tone($rmd-chip-solid-light-background-color) == light,
+  rmd-theme-tone($rmd-chip-solid-light-background-color) ==light,
   $rmd-black-base,
   $rmd-white-base
 ) !default;
@@ -135,7 +135,7 @@ $rmd-chip-solid-dark-background-color: if(
 /// @require $rmd-white-base
 /// @type Color
 $rmd-chip-solid-dark-color: if(
-  rmd-theme-tone($rmd-chip-solid-dark-background-color) == light,
+  rmd-theme-tone($rmd-chip-solid-dark-background-color) ==light,
   $rmd-black-base,
   $rmd-white-base
 ) !default;
@@ -195,7 +195,7 @@ $rmd-chip-outline-light-background-color: $rmd-theme-light-surface !default;
 /// @require $rmd-white-base
 /// @type Color
 $rmd-chip-outline-light-color: if(
-  rmd-theme-tone($rmd-chip-outline-light-background-color) == light,
+  rmd-theme-tone($rmd-chip-outline-light-background-color) ==light,
   $rmd-black-base,
   $rmd-white-base
 ) !default;
@@ -220,7 +220,7 @@ $rmd-chip-outline-dark-background-color: if(
 /// @require $rmd-white-base
 /// @type Color
 $rmd-chip-outline-dark-color: if(
-  rmd-theme-tone($rmd-chip-outline-dark-background-color) == light,
+  rmd-theme-tone($rmd-chip-outline-dark-background-color) ==light,
   $rmd-black-base,
   $rmd-white-base
 ) !default;

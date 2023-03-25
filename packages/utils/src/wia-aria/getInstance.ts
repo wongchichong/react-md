@@ -18,7 +18,7 @@ export type RefOrInstance =
  * @internal
  */
 export function getInstance(refOrInstance: RefOrInstance): HTMLElement | null {
-  let instance = null;
+  let instance: HTMLElement | null = null;
   if (refOrInstance) {
     if (refOrInstance instanceof HTMLElement) {
       instance = refOrInstance;

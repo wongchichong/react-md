@@ -159,7 +159,7 @@ export const GridCell = forwardRef<HTMLDivElement, GridCellProps>(
       return cloneElement(child, {
         style: { ...child.props.style, ...cellStyle },
         className: cn(cellClassName, child.props.className),
-      });
+      } as HTMLAttributes<HTMLDivElement>);
     }
 
     return (
