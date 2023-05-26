@@ -15,7 +15,7 @@ import { MediaContainer } from "@react-md/media";
 
 import Container from "./Container";
 
-export default function ExpandableCards(): ReactElement {
+export default function ExpandableCards(): Child {
   const [expanded, , , toggle] = useToggle(false);
   return (
     <Container centered>

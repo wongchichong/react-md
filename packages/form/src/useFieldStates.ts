@@ -1,25 +1,25 @@
 import type {
-  ChangeEvent,
-  ChangeEventHandler,
-  FocusEvent,
-  FocusEventHandler,
-} from "react";
-import { useCallback, useEffect, useRef, useState } from "react";
+  // ChangeEvent,
+  // ChangeEventHandler,
+  // JSX.TargetedFocusEvent,
+  // FocusEventHandler,
+} from 'voby'
+import { $, useEffect } from 'voby'
 
 /**
  * @internal
  * @remarks \@since 2.5.2
  */
-type FormElement = HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement;
+export type FormElement = (HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement) & TargetedEvent<EventTarget, Event>
 
 /**
  * @internal
  * @remarks \@since 2.5.2
  */
 interface EventHandlers<E extends FormElement> {
-  onBlur?: FocusEventHandler<E>;
-  onFocus?: FocusEventHandler<E>;
-  onChange?: ChangeEventHandler<E>;
+  onBlur?: FocusEventHandler<E>
+  onFocus?: FocusEventHandler<E>
+  onChange?: /* Change */ JSX.EventHandler<E>
 }
 
 /**
@@ -27,8 +27,8 @@ interface EventHandlers<E extends FormElement> {
  * @remarks \@since 2.5.2
  */
 interface FieldStatesOptions<E extends FormElement> extends EventHandlers<E> {
-  value?: string | readonly string[];
-  defaultValue?: string | readonly string[];
+  value?: FunctionMaybe<Nullable<string>> | readonly string[]
+  defaultValue?: FunctionMaybe<Nullable<string>> | readonly string[]
 }
 
 /**
@@ -43,12 +43,12 @@ interface ReturnValue<E extends FormElement>
    * also make sure that number inputs will still be considered valued when
    * there is a `badInput` validity error.
    */
-  valued: boolean;
+  valued: boolean
 
   /**
    * Boolean if the TextField or TextArea currently has focus.
    */
-  focused: boolean;
+  focused: boolean
 }
 
 /**
@@ -65,80 +65,78 @@ export function useFieldStates<E extends FormElement>({
   value,
   defaultValue,
 }: FieldStatesOptions<E>): ReturnValue<E> {
-  const [focused, setFocused] = useState(false);
-  const [valued, setValued] = useState(() => {
+  const focused = $(false)
+  const valued = $((() => {
     if (typeof value === "undefined") {
-      return typeof defaultValue !== "undefined" && defaultValue.length > 0;
+      return typeof defaultValue !== "undefined" && defaultValue.length > 0
     }
 
-    return value.length > 0;
-  });
+    return value.length > 0
+  })())
 
-  const handleBlur = useCallback(
-    (event: FocusEvent<E>) => {
-      if (onBlur) {
-        onBlur(event);
+  const handleBlur = $((event: JSX.TargetedFocusEvent<E>) => {
+    if (onBlur) {
+      //@ts-ignore
+      onBlur(event)
+    }
+
+    focused(false)
+    const input = event.currentTarget
+    //@ts-ignore
+    if (input.getAttribute("type") === "number") {
+      //@ts-ignore
+      input.checkValidity()
+      //@ts-ignore
+      valued(input.validity.badInput || (value ?? input.value).length > 0)
+    }
+  })
+
+  const handleFocus = $((event: JSX.TargetedFocusEvent<E>) => {
+    if (onFocus) {
+      //@ts-ignore
+      onFocus(event)
+    }
+
+    focused(true)
+  })
+
+  //@ts-ignore
+  const handleChange = $((event: ChangeEvent<E>) => {
+    if (onChange) {
+      //@ts-ignore
+      onChange(event)
+    }
+
+    const input = event.currentTarget
+    if (input.getAttribute("type") === "number") {
+      input.checkValidity()
+      /* istanbul ignore next */
+      if (input.validity.badInput) {
+        return
       }
+    }
 
-      setFocused(false);
-      const input = event.currentTarget;
-      if (input.getAttribute("type") === "number") {
-        input.checkValidity();
-        setValued(input.validity.badInput || (value ?? input.value).length > 0);
-      }
-    },
-    [onBlur, value]
-  );
-
-  const handleFocus = useCallback(
-    (event: FocusEvent<E>) => {
-      if (onFocus) {
-        onFocus(event);
-      }
-
-      setFocused(true);
-    },
-    [onFocus]
-  );
-
-  const handleChange = useCallback(
-    (event: ChangeEvent<E>) => {
-      if (onChange) {
-        onChange(event);
-      }
-
-      const input = event.currentTarget;
-      if (input.getAttribute("type") === "number") {
-        input.checkValidity();
-        /* istanbul ignore next */
-        if (input.validity.badInput) {
-          return;
-        }
-      }
-
-      setValued(input.value.length > 0);
-    },
-    [onChange]
-  );
+    valued(input.value.length > 0)
+  })
 
   // another way to handle this could be to just make the `valued` state derived
   // based on the `value`, but it gets wonky for number fields. This technically
   // still fails right now for number fields if you don't use the
   // `useNumberField` hook since the `value` will be set back to the empty
   // string on invalid numbers.
-  const prevValue = useRef(value);
+  const prevValue = $(value)
   useEffect(() => {
-    if (prevValue.current !== value && typeof value === "string") {
-      prevValue.current = value;
-      setValued(value.length > 0);
+    if (prevValue() !== value && typeof value === "string") {
+      prevValue(value)
+      valued(value.length > 0)
     }
-  }, [value]);
+  })
 
   return {
-    valued,
-    focused,
+    valued: valued(),
+    focused: focused(),
     onBlur: handleBlur,
     onFocus: handleFocus,
     onChange: handleChange,
-  };
+  }
 }

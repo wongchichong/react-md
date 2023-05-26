@@ -1,11 +1,11 @@
-import type { ReactNode } from "react";
-import { caseInsensitiveFilter, fuzzyFilter } from "@react-md/utils";
+import '@react-md/react'
+import { caseInsensitiveFilter, fuzzyFilter } from "@react-md/utils"
 
 import type {
-  AutoCompleteData,
-  AutoCompleteFilterFunction,
-  FilterFunction,
-} from "./types";
+    AutoCompleteData,
+    AutoCompleteFilterFunction,
+    FilterFunction,
+} from "./types"
 
 /**
  * Generates an id for each result in the autocomplete's listbox.
@@ -15,7 +15,7 @@ import type {
  * @returns an id string
  */
 export function getResultId(id: string, index: number): string {
-  return `${id}-result-${index + 1}`;
+    return `${id}-result-${index + 1}`
 }
 
 /**
@@ -30,16 +30,16 @@ export function getResultId(id: string, index: number): string {
  * @returns a renderable node to display
  */
 export function getResultLabel(
-  datum: Readonly<AutoCompleteData>,
-  labelKey: string,
-  _query: string
-): ReactNode {
-  if (typeof datum === "string") {
-    return datum;
-  }
+    datum: Readonly<AutoCompleteData>,
+    labelKey: string,
+    _query: string
+): Child {
+    if (typeof datum === "string") {
+        return datum
+    }
 
-  const label = datum[labelKey];
-  return datum.children || (typeof label === "undefined" ? null : label);
+    const label = datum[labelKey]
+    return datum.children || (typeof label === "undefined" ? null : label)
 }
 
 /**
@@ -51,23 +51,23 @@ export function getResultLabel(
  * @returns a searchable string.
  */
 export function getResultValue(
-  datum: Readonly<AutoCompleteData>,
-  valueKey: string
+    datum: Readonly<AutoCompleteData>,
+    valueKey: string
 ): string {
-  if (typeof datum === "string") {
-    return datum;
-  }
+    if (typeof datum === "string") {
+        return datum
+    }
 
-  const value = datum[valueKey];
-  if (
-    process.env.NODE_ENV !== "production" &&
-    typeof value !== "string" &&
-    typeof value !== "number"
-  ) {
-    throw new Error("Unable to extract a result value string");
-  }
+    const value = datum[valueKey]
+    if (
+        process.env.NODE_ENV !== "production" &&
+        typeof value !== "string" &&
+        typeof value !== "number"
+    ) {
+        throw new Error("Unable to extract a result value string")
+    }
 
-  return `${value}`;
+    return `${String(value)}`
 }
 
 /**
@@ -75,7 +75,7 @@ export function getResultValue(
  * Useful when the filtering is done somewhere else like a server/API
  * @internal
  */
-export const noFilter: FilterFunction = (_, data) => data;
+export const noFilter: FilterFunction = (_, data) => data
 
 /**
  * Gets the filter function to use within the Autocomplete based on the provided
@@ -84,28 +84,28 @@ export const noFilter: FilterFunction = (_, data) => data;
  * @internal
  */
 export function getFilterFunction<O extends {} = {}>(
-  filter: AutoCompleteFilterFunction<O>
+    filter: AutoCompleteFilterFunction<O>
 ): FilterFunction<O> {
-  if (typeof filter === "function") {
-    return filter;
-  }
+    if (typeof filter === "function") {
+        return filter
+    }
 
-  switch (filter) {
-    case "fuzzy":
-      return fuzzyFilter;
-    case "case-insensitive":
-      return caseInsensitiveFilter;
-    case "none":
-      return noFilter;
-    default:
-      if (process.env.NODE_ENV !== "production") {
-        throw new Error(
-          `Invalid filter function: "${filter}". Supported values are: "fuzzy", "case-insensitive", "none", or a custom function.`
-        );
-      }
+    switch (filter) {
+        case "fuzzy":
+            return fuzzyFilter
+        case "case-insensitive":
+            return caseInsensitiveFilter
+        case "none":
+            return noFilter
+        default:
+            if (process.env.NODE_ENV !== "production") {
+                throw new Error(
+                    `Invalid filter function: "${filter}". Supported values are: "fuzzy", "case-insensitive", "none", or a custom function.`
+                )
+            }
 
-      return noFilter;
-  }
+            return noFilter
+    }
 }
 
 /**
@@ -134,7 +134,7 @@ export function getFilterFunction<O extends {} = {}>(
  * @param datum - The result data to type guard against.
  */
 export function isResultOf<T extends {}>(
-  datum: Readonly<AutoCompleteData>
+    datum: Readonly<AutoCompleteData>
 ): datum is T {
-  return !!datum && typeof datum === "object";
+    return !!datum && typeof datum === "object"
 }

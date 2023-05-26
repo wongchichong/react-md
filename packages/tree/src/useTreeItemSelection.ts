@@ -1,6 +1,6 @@
-import { useCallback, useState } from "react";
+import { $, $$ } from 'voby'
 
-import type { SelectedIds, TreeItemId, TreeItemSelection } from "./types";
+import type { SelectedIds, TreeItemId, TreeItemSelection } from "./types"
 
 /**
  * A hook that implements the base functionality for selecting different tree
@@ -13,44 +13,39 @@ import type { SelectedIds, TreeItemId, TreeItemSelection } from "./types";
  * @returns an object containing props that can be passed to the `Tree`
  * component to handle the selection state within the tree
  */
-export function useTreeItemSelection(
-  defaultSelectedIds: SelectedIds | (() => SelectedIds),
-  multiSelect = false
-): Required<TreeItemSelection> {
-  const [selectedIds, setSelectedIds] = useState(defaultSelectedIds);
-  const onItemSelect = useCallback(
-    (itemId: TreeItemId) => {
-      setSelectedIds((selectedIds) => {
-        if (!multiSelect) {
-          if (selectedIds[0] === itemId && selectedIds.length === 1) {
-            return selectedIds;
-          }
+export function useTreeItemSelection(defaultSelectedIds: FunctionMaybe<SelectedIds>, multiSelect = false): Required<TreeItemSelection> {
+    const selectedIds = $($$(defaultSelectedIds))
 
-          return [itemId];
-        }
+    const onItemSelect = (itemId: TreeItemId) => {
+        selectedIds((selectedIds) => {
+            if (!multiSelect) {
+                if (selectedIds[0] === itemId && selectedIds.length === 1) {
+                    return selectedIds
+                }
 
-        const i = selectedIds.indexOf(itemId);
-        const nextSelectedIds = selectedIds.slice();
-        if (i === -1) {
-          nextSelectedIds.push(itemId);
-        } else {
-          nextSelectedIds.splice(i, 1);
-        }
+                return [itemId]
+            }
 
-        return nextSelectedIds;
-      });
-    },
-    [multiSelect]
-  );
+            const i = selectedIds.indexOf(itemId)
+            const nextSelectedIds = selectedIds.slice()
+            if (i === -1) {
+                nextSelectedIds.push(itemId)
+            } else {
+                nextSelectedIds.splice(i, 1)
+            }
 
-  const onMultiItemSelect = useCallback((itemIds: SelectedIds) => {
-    setSelectedIds(itemIds);
-  }, []);
+            return nextSelectedIds
+        })
+    }
 
-  return {
-    selectedIds,
-    multiSelect,
-    onItemSelect,
-    onMultiItemSelect,
-  };
+    const onMultiItemSelect = (itemIds: SelectedIds) => {
+        selectedIds(itemIds)
+    }
+
+    return {
+        selectedIds,
+        multiSelect,
+        onItemSelect,
+        onMultiItemSelect,
+    }
 }

@@ -1,36 +1,31 @@
-import type { MutableRefObject, Ref, RefCallback } from "react";
-import { useCallback, useRef } from "react";
+import type {  Observable/* , Refs */ } from 'voby'
+import { $ } from 'voby'
 
-import { applyRef } from "./applyRef";
+import { applyRef } from "./applyRef"
 
 /**
  * @remarks \@since 2.3.0
  */
-export type EnsuredRefs<E extends HTMLElement> = readonly [
-  MutableRefObject<E | null>,
-  RefCallback<E | null>
-];
+export type EnsuredRefs<E extends HTMLElement> = [
+  Observable<E | null>,
+  (instance: E | null) => void
+]
 
 /**
  * This is mostly an internal hook that allows for an optional ref (normally
  * from props or hook options) to be merged with a hook's required `ref`. This
- * will return a MutableRefObject used for DOM manipulation in a custom hook
+ * will return a MutableRef used for DOM manipulation in a custom hook
  * followed by a ref callback function that should be passed to the DOM node
  * that will ensure that both the optional `propRef` and hook ref are updated.
  *
  * @remarks \@since 2.3.0
  */
-export function useEnsuredRef<E extends HTMLElement>(
-  propRef?: Ref<E | null>
-): EnsuredRefs<E> {
-  const ref = useRef<E | null>(null);
-  const refHandler = useCallback(
-    (instance: E | null) => {
-      applyRef(instance, propRef);
-      ref.current = instance;
-    },
-    [propRef]
-  );
+export function useEnsuredRef<E extends HTMLElement>(propRef?: Refs<E | null>): EnsuredRefs<E> {
+  const ref = $<E | null>(null)
+  const refHandler = (instance: E | null) => {
+    applyRef(instance, propRef)
+    ref(instance)
+  }
 
-  return [ref, refHandler];
+  return [ref, refHandler]
 }

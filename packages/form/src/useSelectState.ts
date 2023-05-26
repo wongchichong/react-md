@@ -1,7 +1,7 @@
-import { useCallback, useState } from "react";
+import { $, $$ } from 'voby'
 
-type DefaultValue<T extends string> = T | (() => T);
-type ReturnValue<T extends string> = [T, (nextValue: string) => void];
+type DefaultValue<T extends string> = T | (() => T)
+type ReturnValue<T extends string> = [T, (nextValue: string) => void]
 
 /**
  * This is a simple hook that will allow you to "strongly" type a `Select`
@@ -12,12 +12,12 @@ type ReturnValue<T extends string> = [T, (nextValue: string) => void];
  * dispatch function to update the state.
  */
 export function useSelectState<T extends string>(
-  defaultValue: DefaultValue<T>
+    defaultValue: DefaultValue<T>
 ): ReturnValue<T> {
-  const [value, setValue] = useState<T>(defaultValue);
-  const setTypedValue = useCallback((nextValue: string) => {
-    setValue(nextValue as T);
-  }, []);
+    const value = $<T>($$(defaultValue as any))
+    const setTypedValue = $((nextValue: string) => {
+        value(nextValue as T)
+    })
 
-  return [value, setTypedValue];
+    return [value(), setTypedValue]
 }

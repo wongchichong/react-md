@@ -27,6 +27,7 @@ export const PACKAGE_NAMES = [
   "overlay",
   "portal",
   "progress",
+  "react",
   "sheet",
   "states",
   "table",

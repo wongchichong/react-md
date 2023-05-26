@@ -1,17 +1,18 @@
-import type { ReactElement, ReactNode } from "react";
+import type { ReactElement, ReactNode } from "react"
 import {
-  createContext,
-  useContext,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
-import Cookie from "js-cookie";
+    createContext,
+    useContext,
+    useEffect,
+    useMemo,
+    useRef,
+    useState,
+} from "react"
+import Cookie from "js-cookie"
+import '@react-md/react'
 
-import { EventName, sendAnalyticsEvent } from "utils/analytics";
+import { EventName, sendAnalyticsEvent } from "../../utils/analytics"
 
-export const CODE_PREFERENCE = "codePref";
+export const CODE_PREFERENCE = "codePref"
 
 /**
  * Should the sandboxes and code preview use TypeScript or Javascript?
@@ -19,94 +20,94 @@ export const CODE_PREFERENCE = "codePref";
  * This should eventually be updated to modify markdown as well. Bit more
  * difficult.
  */
-export type CodePreference = "ts" | "js";
+export type CodePreference = "ts" | "js"
 
 export interface CodePreferenceContext {
-  pref: CodePreference;
-  toggle(): void;
+    pref: CodePreference
+    toggle(): void
 }
 
 const context = createContext<CodePreferenceContext>({
-  pref: "ts",
-  toggle: () => {
-    throw new Error("not implemented");
-  },
-});
+    pref: "ts",
+    toggle: () => {
+        throw new Error("not implemented")
+    },
+})
 
 if (process.env.NODE_ENV !== "production") {
-  context.displayName = "CodePreferenceContext";
+    context.displayName = "CodePreferenceContext"
 }
-const { Provider } = context;
+const { Provider } = context
 
 export function useCodePreference(): CodePreferenceContext {
-  return useContext(context);
+    return useContext(context)
 }
 
 export function useJs(): boolean {
-  return useCodePreference().pref === "js";
+    return useCodePreference().pref === "js"
 }
 
 export function toCodePreference(pref: string | undefined): CodePreference {
-  return pref === "js" ? "js" : "ts";
+    return pref === "js" ? "js" : "ts"
 }
 
 export function getDefaultCodePreference(
-  cookies?: Record<string, string | undefined>
+    cookies?: Record<string, string | undefined>
 ): CodePreference {
-  if (cookies) {
-    return toCodePreference(cookies[CODE_PREFERENCE]);
-  }
-
-  if (typeof localStorage !== "undefined") {
-    const localPref = localStorage.getItem(CODE_PREFERENCE);
-    if (localPref) {
-      return toCodePreference(localPref);
+    if (cookies) {
+        return toCodePreference(cookies[CODE_PREFERENCE])
     }
-  }
 
-  return toCodePreference(Cookie.get(CODE_PREFERENCE));
+    if (typeof localStorage !== "undefined") {
+        const localPref = localStorage.getItem(CODE_PREFERENCE)
+        if (localPref) {
+            return toCodePreference(localPref)
+        }
+    }
+
+    return toCodePreference(Cookie.get(CODE_PREFERENCE))
 }
 
 export interface CodePreferenceProviderProps {
-  children: ReactNode;
-  defaultPreference: CodePreference;
+    children: Children
+    defaultPreference: CodePreference
 }
 
 export function CodePreferenceProvider({
-  children,
-  defaultPreference,
-}: CodePreferenceProviderProps): ReactElement {
-  const [pref, setPref] = useState(defaultPreference);
-  const value = useMemo(
-    () => ({
-      pref,
-      toggle() {
-        setPref((prev) => (prev === "js" ? "ts" : "js"));
-      },
-    }),
-    [pref]
-  );
+    children,
+    defaultPreference,
+}: CodePreferenceProviderProps): Child {
+    const [pref, setPref] = useState(defaultPreference)
+    const value = useMemo(
+        () => ({
+            pref,
+            toggle() {
+                setPref((prev) => (prev === "js" ? "ts" : "js"))
+            },
+        }),
+        [pref]
+    )
 
-  const firstRender = useRef(true);
-  useEffect(() => {
-    if (firstRender.current) {
-      firstRender.current = false;
-      const def = getDefaultCodePreference();
-      if (def !== pref) {
-        Cookie.set(CODE_PREFERENCE, def, { sameSite: "Strict" });
-        setPref(def);
-      }
+    const firstRender = useRef(true)
+    useEffect(() => {
+        if (firstRender.current) {
+            firstRender.current = false
+            const def = getDefaultCodePreference()
+            if (def !== pref) {
+                Cookie.set(CODE_PREFERENCE, def, { sameSite: "Strict" })
+                setPref(def)
+            }
 
-      return;
-    }
+            return
+        }
 
-    sendAnalyticsEvent({
-      name: EventName.CodePreference,
-      lang: pref,
-    });
-    Cookie.set(CODE_PREFERENCE, pref, { sameSite: "Strict" });
-    localStorage.setItem(CODE_PREFERENCE, pref);
-  }, [pref]);
+        sendAnalyticsEvent({
+            name: EventName.CodePreference,
+            lang: pref,
+        })
+        Cookie.set(CODE_PREFERENCE, pref, { sameSite: "Strict" })
+        localStorage.setItem(CODE_PREFERENCE, pref)
+    }, [pref])
 
-  return <Provider value={value}>{children}</Provider>;
+    return <Provider value={value}>{children}</Provider>
 }

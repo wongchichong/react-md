@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "esnext",
+    "sourceMap": true,
+    "tsBuildInfoFile": "./dist/tsconfig.tsbuildinfo",
+    "composite": true,
+    "jsx": "preserve",
+    "jsxImportSource": "voby",
+    "skipLibCheck": true,
+    "strict": true,
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    // "downlevelIteration": true,
+    "noFallthroughCasesInSwitch": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "preserveSymlinks": true,
+    "noImplicitAny": false,
+    "strictNullChecks": false,
+    "declaration": true,
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "types": ["voby/dist/types/jsx/jsx", "node"]
+  }
+}

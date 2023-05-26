@@ -1,5 +1,26 @@
 {
   "extends": "../../tsconfig.base.json",
-  "compilerOptions": { "noEmit": true, "composite": false },
-  "include": ["src"]
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "declarationDir": "./dist/types",
+    "composite": true,
+    "jsx": "preserve",
+    "jsxImportSource": "voby"
+  },
+  "exclude": [
+    "vite.config.ts",
+    "vite.config.umd.ts",
+    "./src ori/**",
+    "**/scripts/**",
+    "**/dist/**",
+    "**/lib/**",
+    "**/types/**",
+    "**/__tests__/**"
+  ],
+  "references": [
+    {
+      "path": "../icon"
+    }
+  ]
 }

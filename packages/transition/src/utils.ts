@@ -1,45 +1,41 @@
-import { getViewportSize } from "@react-md/utils";
+import { getViewportSize } from "@react-md/utils"
 import type {
-  CSSTransitionClassNames,
-  CSSTransitionClassNamesObject,
-  TransitionActions,
-  TransitionTimeout,
-  TransitionTimeoutObject,
-} from "./types";
+    CSSTransitionClassNames,
+    CSSTransitionClassNamesObject,
+    TransitionActions,
+    TransitionTimeout,
+    TransitionTimeoutObject,
+} from "./types"
+import { CSSProperties, $$ } from "voby"
 
 /**
  * @remarks \@since 4.0.0
  * @internal
  */
 export interface TransitionTimeoutOptions extends Required<TransitionActions> {
-  timeout: TransitionTimeout;
+    timeout: FunctionMaybe<TransitionTimeout>
 }
 
 /**
  * @remarks \@since 4.0.0
  * @internal
  */
-export function getTransitionTimeout({
-  timeout,
-  appear,
-  enter,
-  exit,
-}: Readonly<TransitionTimeoutOptions>): Readonly<
-  Required<TransitionTimeoutObject>
-> {
-  if (typeof timeout === "number") {
-    return {
-      appear: appear ? timeout : 0,
-      enter: enter ? timeout : 0,
-      exit: exit ? timeout : 0,
-    };
-  }
+export function getTransitionTimeout({ timeout, appear, enter, exit, }: Readonly<TransitionTimeoutOptions>): Readonly<Required<TransitionTimeoutObject>> {
+    const to = $$(timeout)
 
-  return {
-    appear: (appear && (timeout.appear ?? timeout.enter)) || 0,
-    enter: (enter && timeout.enter) || 0,
-    exit: (exit && timeout.exit) || 0,
-  };
+    if (typeof to === "number") {
+        return {
+            appear: appear ? to : 0,
+            enter: enter ? to : 0,
+            exit: exit ? to : 0,
+        }
+    }
+
+    return {
+        appear: (appear && (to.appear ?? to.enter)) || 0,
+        enter: (enter && to.enter) || 0,
+        exit: (exit && to.exit) || 0,
+    }
 }
 
 /**
@@ -47,9 +43,9 @@ export function getTransitionTimeout({
  * @internal
  */
 export interface CollapseSizing {
-  maxHeight?: number;
-  paddingTop?: number;
-  paddingBottom?: number;
+    maxHeight?: CSSProperties['maxHeight']
+    paddingTop?: CSSProperties['paddingTop']
+    paddingBottom?: CSSProperties['paddingBottom']
 }
 
 /**
@@ -62,35 +58,35 @@ export interface CollapseSizing {
  * @internal
  */
 export function getElementSizing(element: HTMLElement | null): CollapseSizing {
-  let maxHeight;
-  let paddingTop;
-  let paddingBottom;
-  if (element) {
-    maxHeight = element.scrollHeight;
+    let maxHeight
+    let paddingTop
+    let paddingBottom
+    if (element) {
+        maxHeight = element.scrollHeight
 
-    // clone the element (not deep) just to figure out it's padding without the
-    // inline styles applied
-    const cloned = element.cloneNode(false) as HTMLElement;
-    cloned.style.maxHeight = "";
-    cloned.style.padding = "";
-    cloned.style.paddingLeft = element.style.paddingLeft;
-    cloned.style.paddingRight = element.style.paddingRight;
-    cloned.style.visibility = "hidden";
+        // clone the element (not deep) just to figure out it's padding without the
+        // inline styles applied
+        const cloned = element.cloneNode(false) as HTMLElement
+        cloned.style.maxHeight = ""
+        cloned.style.padding = ""
+        cloned.style.paddingLeft = element.style.paddingLeft
+        cloned.style.paddingRight = element.style.paddingRight
+        cloned.style.visibility = "hidden"
 
-    const container = element.parentElement || document.body;
-    container.appendChild(cloned);
-    const style = window.getComputedStyle(cloned);
-    if (style.paddingTop) {
-      paddingTop = parseFloat(style.paddingTop);
+        const container = element.parentElement || document.body
+        container.appendChild(cloned)
+        const style = window.getComputedStyle(cloned)
+        if (style.paddingTop) {
+            paddingTop = parseFloat(style.paddingTop)
+        }
+
+        if (style.paddingBottom) {
+            paddingBottom = parseFloat(style.paddingBottom)
+        }
+        container.removeChild(cloned)
     }
 
-    if (style.paddingBottom) {
-      paddingBottom = parseFloat(style.paddingBottom);
-    }
-    container.removeChild(cloned);
-  }
-
-  return { maxHeight, paddingTop, paddingBottom };
+    return { maxHeight, paddingTop, paddingBottom }
 }
 
 /**
@@ -98,59 +94,55 @@ export function getElementSizing(element: HTMLElement | null): CollapseSizing {
  * @internal
  */
 export interface TransitionClassNamesOptions extends TransitionTimeoutOptions {
-  classNames: CSSTransitionClassNames;
+    classNames: FunctionMaybe<CSSTransitionClassNames>
 }
 
 /**
  * @remarks \@since 4.0.0
  * @internal
  */
-export function getTransitionClassNames({
-  classNames,
-  ...timeoutOptions
-}: TransitionClassNamesOptions): Readonly<
-  Required<CSSTransitionClassNamesObject>
-> {
-  const timeout = getTransitionTimeout(timeoutOptions);
+export function getTransitionClassNames({ classNames: cs, ...timeoutOptions }: TransitionClassNamesOptions): Readonly<Required<CSSTransitionClassNamesObject>> {
+    const classNames = $$(cs)
+    const timeout = getTransitionTimeout(timeoutOptions)
 
-  if (typeof classNames === "string") {
-    const { appear, enter, exit } = timeout;
+    if (typeof classNames === "string") {
+        const { appear, enter, exit } = timeout
+        return {
+            appear: appear ? `${classNames}--appear` : "",
+            appearActive: appear ? `${classNames}--appear-active` : "",
+            appearDone: "",
+            enter: enter ? `${classNames}--enter` : "",
+            enterActive: enter ? `${classNames}--enter-active` : "",
+            enterDone: "",
+            exit: exit ? `${classNames}--exit` : "",
+            exitActive: exit ? `${classNames}--exit-active` : "",
+            exitDone: "",
+        }
+    }
+
+    const {
+        enter = "",
+        enterActive = "",
+        enterDone = "",
+        exit = "",
+        exitActive = "",
+        exitDone = "",
+        appear = (timeout.appear && enter) || "",
+        appearActive = (timeout.appear && enterActive) || "",
+        appearDone = (timeout.appear && enterDone) || "",
+    } = classNames
+
     return {
-      appear: appear ? `${classNames}--appear` : "",
-      appearActive: appear ? `${classNames}--appear-active` : "",
-      appearDone: "",
-      enter: enter ? `${classNames}--enter` : "",
-      enterActive: enter ? `${classNames}--enter-active` : "",
-      enterDone: "",
-      exit: exit ? `${classNames}--exit` : "",
-      exitActive: exit ? `${classNames}--exit-active` : "",
-      exitDone: "",
-    };
-  }
-
-  const {
-    enter = "",
-    enterActive = "",
-    enterDone = "",
-    exit = "",
-    exitActive = "",
-    exitDone = "",
-    appear = (timeout.appear && enter) || "",
-    appearActive = (timeout.appear && enterActive) || "",
-    appearDone = (timeout.appear && enterDone) || "",
-  } = classNames;
-
-  return {
-    appear,
-    appearActive,
-    appearDone,
-    enter,
-    enterActive,
-    enterDone,
-    exit,
-    exitActive,
-    exitDone,
-  };
+        appear,
+        appearActive,
+        appearDone,
+        enter,
+        enterActive,
+        enterDone,
+        exit,
+        exitActive,
+        exitDone,
+    }
 }
 
 /**
@@ -158,8 +150,8 @@ export function getTransitionClassNames({
  * @internal
  */
 interface IsWithinViewportOptions {
-  fixedElement: HTMLElement;
-  fixedToElement: HTMLElement;
+    fixedElement: HTMLElement
+    fixedToElement: HTMLElement
 }
 
 /**
@@ -167,17 +159,17 @@ interface IsWithinViewportOptions {
  * @internal
  */
 export function isWithinViewport({
-  fixedElement,
-  fixedToElement,
+    fixedElement,
+    fixedToElement,
 }: IsWithinViewportOptions): boolean {
-  const fixedElementRect = fixedElement.getBoundingClientRect();
-  const fixedToElementRect = fixedToElement.getBoundingClientRect();
-  const vh = getViewportSize("height");
-  const vw = getViewportSize("width");
-  const top = Math.min(fixedElementRect.top, fixedToElementRect.top);
-  const right = Math.max(fixedElementRect.right, fixedToElementRect.right);
-  const bottom = Math.max(fixedElementRect.bottom, fixedToElementRect.bottom);
-  const left = Math.min(fixedElementRect.left, fixedToElementRect.left);
+    const fixedElementRect = fixedElement.getBoundingClientRect()
+    const fixedToElementRect = fixedToElement.getBoundingClientRect()
+    const vh = getViewportSize("height")
+    const vw = getViewportSize("width")
+    const top = Math.min(fixedElementRect.top, fixedToElementRect.top)
+    const right = Math.max(fixedElementRect.right, fixedToElementRect.right)
+    const bottom = Math.max(fixedElementRect.bottom, fixedToElementRect.bottom)
+    const left = Math.min(fixedElementRect.left, fixedToElementRect.left)
 
-  return bottom >= 0 && top <= vh && right >= 0 && left <= vw;
+    return bottom >= 0 && top <= vh && right >= 0 && left <= vw
 }

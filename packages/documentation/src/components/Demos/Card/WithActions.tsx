@@ -10,7 +10,7 @@ import {
 import { Typography } from "@react-md/typography";
 import Container from "./Container";
 
-export default function WithActions(): ReactElement {
+export default function WithActions(): Child {
   return (
     <Container>
       <Card raisable>

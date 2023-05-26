@@ -1,17 +1,17 @@
-import type { ReactElement } from "react";
+// import type { Element } from 'voby';
 
-import { useAppSize } from "./useAppSize";
+import { useAppSize } from "./useAppSize"
 
 export interface MediaOnlyProps {
-  /**
-   * The children to display.
-   */
-  children: ReactElement | null;
+    /**
+     * The children to display.
+     */
+    children: Children //ReactElement | null
 
-  /**
-   * An optional fallback element to show when the media queries do not match.
-   */
-  fallback?: ReactElement | null;
+    /**
+     * An optional fallback element to show when the media queries do not match.
+     */
+    fallback?: Children //ReactElement | null
 }
 
 /**
@@ -20,15 +20,15 @@ export interface MediaOnlyProps {
  * true for both phones and tablets.
  */
 export function MobileOnly({
-  children,
-  fallback = null,
-}: MediaOnlyProps): ReactElement | null {
-  const { isPhone, isTablet } = useAppSize();
-  if (isPhone || isTablet) {
-    return children;
-  }
+    children,
+    fallback = null,
+}: MediaOnlyProps)/* : ReactElement | null */ {
+    const { isPhone, isTablet } = useAppSize()
+    if (isPhone || isTablet) {
+        return children
+    }
 
-  return fallback;
+    return fallback
 }
 
 /**
@@ -36,15 +36,15 @@ export function MobileOnly({
  * considered in phone mode via the `AppSizeContext`.
  */
 export function PhoneOnly({
-  children,
-  fallback = null,
-}: MediaOnlyProps): ReactElement | null {
-  const { isPhone } = useAppSize();
-  if (isPhone) {
-    return children;
-  }
+    children,
+    fallback = null,
+}: MediaOnlyProps)/* : ReactElement | null  */ {
+    const { isPhone } = useAppSize()
+    if (isPhone) {
+        return children
+    }
 
-  return fallback;
+    return fallback
 }
 
 /**
@@ -52,15 +52,15 @@ export function PhoneOnly({
  * considered in tablet mode via the `AppSizeContext`.
  */
 export function TabletOnly({
-  children,
-  fallback = null,
-}: MediaOnlyProps): ReactElement | null {
-  const { isTablet } = useAppSize();
-  if (isTablet) {
-    return children;
-  }
+    children,
+    fallback = null,
+}: MediaOnlyProps)/* : ReactElement | null */ {
+    const { isTablet } = useAppSize()
+    if (isTablet) {
+        return children
+    }
 
-  return fallback;
+    return fallback
 }
 
 /**
@@ -68,13 +68,13 @@ export function TabletOnly({
  * considered in desktop mode via the `AppSizeContext`.
  */
 export function DesktopOnly({
-  children,
-  fallback = null,
-}: MediaOnlyProps): ReactElement | null {
-  const { isDesktop } = useAppSize();
-  if (isDesktop) {
-    return children;
-  }
+    children,
+    fallback = null,
+}: MediaOnlyProps)/* : ReactElement | null */ {
+    const { isDesktop } = useAppSize()
+    if (isDesktop) {
+        return children
+    }
 
-  return fallback;
+    return fallback
 }

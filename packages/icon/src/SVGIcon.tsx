@@ -1,15 +1,14 @@
-import type { HTMLAttributes, ReactNode } from "react";
-import { forwardRef } from "react";
-import cn from "classnames";
-import { bem } from "@react-md/utils";
+// import type { HTMLAttributes,  ReactNode } from 'voby'
 
-export interface SVGIconProps extends HTMLAttributes<SVGSVGElement> {
+import { bem } from "@react-md/utils"
+
+export interface SVGIconProps<T extends EventTarget = SVGSVGElement> extends HTMLAttributes<T> {
   /**
    * Boolean if the SVG should gain the `focusable` attribute. This is disabled
    * by default since IE11 and Edge actually default this to true and keyboard's
    * will tab focus all SVGs.
    */
-  focusable?: "false" | "true" | boolean;
+  focusable?: FunctionMaybe<Nullable<"false" | "true" | number>>
 
   /**
    * The `viewBox` attribute allows you to specify that a given set of graphics
@@ -29,13 +28,13 @@ export interface SVGIconProps extends HTMLAttributes<SVGSVGElement> {
    * the top left corner (0, 0) to the bottom right (25, 20) and each unit will
    * be worth `10px`.
    */
-  viewBox?: string;
+  viewBox?: FunctionMaybe<Nullable<string>>
 
   /**
    * An optional `xmlns` string to provide. The `use` prop will not work without
    * this prop defined.
    */
-  xmlns?: string;
+  xmlns?: FunctionMaybe<Nullable<string>>
 
   /**
    * This should be a link to a part of an SVG sprite map. So normally one of
@@ -51,27 +50,27 @@ export interface SVGIconProps extends HTMLAttributes<SVGSVGElement> {
    * NOTE: IE **does not support** external SVGs. Please see the demo for more
    * details.
    */
-  use?: string;
+  use?: FunctionMaybe<Nullable<string>>
 
   /**
    * Boolean if the icon should use the dense spec.
    */
-  dense?: boolean;
+  dense?: FunctionMaybe<Nullable<boolean>>
 
   /**
    * Any `<svg>` children to render to create your icon. This can not be used
    * with the `use` prop.
    */
-  children?: ReactNode;
+  children?: Children
 }
 
-const block = bem("rmd-icon");
+const block = bem("rmd-icon")
 
 /**
  * The `SVGIcon` component is used to render inline SVG icons or SVG icons in a
  * sprite map as an icon.
  */
-export const SVGIcon = forwardRef<SVGSVGElement, SVGIconProps>(function SVGIcon(
+export const SVGIcon = (function SVGIcon(
   {
     "aria-hidden": ariaHidden = true,
     focusable = "false",
@@ -81,13 +80,13 @@ export const SVGIcon = forwardRef<SVGSVGElement, SVGIconProps>(function SVGIcon(
     className,
     use,
     children: propChildren,
+    ref,
     ...props
-  },
-  ref
-) {
-  let children = propChildren;
+  }: SVGIconProps & { "aria-hidden"?: FunctionMaybe<Nullable<boolean>> }) {
+
+  let children = propChildren
   if (!children && use) {
-    children = <use xlinkHref={use} />;
+    children = <use xlinkHref={use} />
   }
 
   return (
@@ -95,12 +94,12 @@ export const SVGIcon = forwardRef<SVGSVGElement, SVGIconProps>(function SVGIcon(
       {...props}
       aria-hidden={ariaHidden}
       ref={ref}
-      className={cn(block({ svg: true, dense }), className)}
+      className={[block({ svg: true, dense }) as any, className]}
       focusable={focusable}
       xmlns={xmlns}
       viewBox={viewBox}
     >
       {children}
     </svg>
-  );
-});
+  )
+})

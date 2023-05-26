@@ -1,27 +1,27 @@
-import type { MutableRefObject } from "react";
-import { useEffect } from "react";
+import type { ObservableMaybe, Observable } from 'voby'
+import { useEffect } from 'voby'
 
-import { containsElement } from "./containsElement";
+import { containsElement } from "./containsElement"
 
 /**
- * Gets the HTMLElement or null from a provided RefObject or HTMLElement/null
+ * Gets the HTMLElement or null from a provided Ref or HTMLElement/null
  * @internal
  */
 export function getElement<E extends HTMLElement>(
-  element: MutableRefObject<E | null> | E | null
+    element: Observable<E | null> | E | null
 ): E | null {
-  if (!element) {
-    return null;
-  }
+    if (!element) {
+        return null
+    }
 
-  if (typeof (element as MutableRefObject<E | null>).current !== "undefined") {
-    return (element as MutableRefObject<E | null>).current;
-  }
+    if (typeof (element as Observable<E | null>)() !== "undefined") {
+        return (element as Observable<E | null>)()
+    }
 
-  return element as E | null;
+    return element as E | null
 }
 
-type Contains = typeof containsElement;
+type Contains = typeof containsElement
 
 /**
  * The on outside click handler that can be used to check for additional logic
@@ -32,32 +32,32 @@ type Contains = typeof containsElement;
  * - a nice "safe" contains function that handles nulls
  */
 export type OnOutsideClick<E extends HTMLElement> = (
-  element: E | null,
-  target: HTMLElement | null,
-  contains: Contains
-) => void;
+    element: E | null,
+    target: HTMLElement | null,
+    contains: Contains
+) => void
 
 /**
  * @typeParam E - The HTMLElement type of the container element that should not
  * trigger the close behavior if an element inside is clicked.
  */
 export interface CloseOnOutsideClickOptions<E extends HTMLElement> {
-  /**
-   * Boolean if the behavior is enabled.
-   */
-  enabled: boolean;
+    /**
+     * Boolean if the behavior is enabled.
+     */
+    enabled: FunctionMaybe<boolean>
 
-  /**
-   * The element that should not trigger the onOutsideClick callback when it or
-   * a child has been clicked.
-   */
-  element: E | null | MutableRefObject<E | null>;
+    /**
+     * The element that should not trigger the onOutsideClick callback when it or
+     * a child has been clicked.
+     */
+    element: E | null | ObservableMaybe<E | null>
 
-  /**
-   * A callback function when an element outside has been clicked. This is
-   * normally something that closes temporary elements.
-   */
-  onOutsideClick: OnOutsideClick<E>;
+    /**
+     * A callback function when an element outside has been clicked. This is
+     * normally something that closes temporary elements.
+     */
+    onOutsideClick: OnOutsideClick<E>
 }
 
 /**
@@ -71,27 +71,27 @@ export interface CloseOnOutsideClickOptions<E extends HTMLElement> {
  * @typeParam E - The type of element
  */
 export function useCloseOnOutsideClick<E extends HTMLElement>({
-  enabled,
-  element,
-  onOutsideClick,
+    enabled,
+    element,
+    onOutsideClick,
 }: CloseOnOutsideClickOptions<E>): void {
-  useEffect(() => {
-    if (!enabled) {
-      return;
-    }
+    useEffect(() => {
+        if (!enabled) {
+            return
+        }
 
-    function handleClick(event: MouseEvent): void {
-      const target = event.target as HTMLElement | null;
-      const el = getElement<E>(element);
+        function handleClick(event: MouseEvent): void {
+            const target = event.target as HTMLElement | null
+            const el = getElement<E>(element)
 
-      if (!containsElement(el, target)) {
-        onOutsideClick(el, target, containsElement);
-      }
-    }
+            if (!containsElement(el, target)) {
+                onOutsideClick(el, target, containsElement)
+            }
+        }
 
-    window.addEventListener("click", handleClick);
-    return () => {
-      window.removeEventListener("click", handleClick);
-    };
-  }, [enabled, element, onOutsideClick]);
+        window.addEventListener("click", handleClick)
+        return () => {
+            window.removeEventListener("click", handleClick)
+        }
+    })
 }

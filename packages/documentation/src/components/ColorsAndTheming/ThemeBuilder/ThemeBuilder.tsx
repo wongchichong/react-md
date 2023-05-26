@@ -10,7 +10,7 @@ import ThemeUsage from "./ThemeUsage";
 
 import styles from "./ThemeBuilder.module.scss";
 
-export default function ThemeBuilder(): ReactElement {
+export default function ThemeBuilder(): Child {
   const { primary, secondary, accent, theme } = useTheme();
   const primaryName = `rmd-${primary}-500` as "rmd-teal-500";
   const primaryColor = scssVariables[primaryName];

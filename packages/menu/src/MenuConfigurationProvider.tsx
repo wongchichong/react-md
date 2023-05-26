@@ -1,6 +1,6 @@
-import type { ReactElement, ReactNode } from "react";
-import { createContext, useContext, useMemo } from "react";
-import type { MenuConfiguration, MenuConfigurationContext } from "./types";
+
+import { createContext, useContext, useMemo } from 'voby'
+import type { MenuConfiguration, MenuConfigurationContext } from "./types"
 
 /** @remarks \@since 5.0.0 */
 export const DEFAULT_MENU_CONFIGURATION: Readonly<MenuConfigurationContext> = {
@@ -10,7 +10,7 @@ export const DEFAULT_MENU_CONFIGURATION: Readonly<MenuConfigurationContext> = {
   sheetFooter: null,
   sheetPosition: "bottom",
   sheetVerticalSize: "touch",
-};
+}
 
 /**
  * @internal
@@ -18,13 +18,14 @@ export const DEFAULT_MENU_CONFIGURATION: Readonly<MenuConfigurationContext> = {
  */
 const context = createContext<MenuConfigurationContext>(
   DEFAULT_MENU_CONFIGURATION
-);
-context.displayName = "MenuConfiguration";
+)
+//@ts-ignore
+context.displayName = "MenuConfiguration"
 /**
  * @internal
  * @remarks \@since 5.0.0
  */
-const { Provider } = context;
+const { Provider } = context
 
 /**
  * This is probably just an internal only hook that allows you to get the
@@ -44,7 +45,7 @@ export function useMenuConfiguration({
   sheetPosition,
   sheetVerticalSize,
 }: MenuConfiguration = {}): Readonly<MenuConfigurationContext> {
-  const inherited = useContext(context);
+  const inherited = useContext(context)
 
   return {
     horizontal: horizontal ?? inherited.horizontal,
@@ -55,12 +56,12 @@ export function useMenuConfiguration({
       sheetFooter === null ? null : sheetFooter ?? inherited.sheetFooter,
     sheetPosition: sheetPosition ?? inherited.sheetPosition,
     sheetVerticalSize: sheetVerticalSize ?? inherited.sheetVerticalSize,
-  };
+  }
 }
 
 /** @remarks \@since 5.0.0 */
 export interface MenuConfigurationProviderProps extends MenuConfiguration {
-  children: ReactNode;
+  children: Children
 }
 
 /**
@@ -72,7 +73,7 @@ export interface MenuConfigurationProviderProps extends MenuConfiguration {
 export function MenuConfigurationProvider({
   children,
   ...configuration
-}: MenuConfigurationProviderProps): ReactElement {
+}: MenuConfigurationProviderProps): Element {
   const {
     horizontal,
     renderAsSheet,
@@ -80,26 +81,16 @@ export function MenuConfigurationProvider({
     sheetFooter,
     sheetPosition,
     sheetVerticalSize,
-  } = useMenuConfiguration(configuration);
+  } = useMenuConfiguration(configuration)
 
-  const value = useMemo<MenuConfigurationContext>(
-    () => ({
-      horizontal,
-      renderAsSheet,
-      sheetHeader,
-      sheetFooter,
-      sheetPosition,
-      sheetVerticalSize,
-    }),
-    [
-      horizontal,
-      renderAsSheet,
-      sheetFooter,
-      sheetHeader,
-      sheetPosition,
-      sheetVerticalSize,
-    ]
-  );
+  const value = useMemo<MenuConfigurationContext>(() => ({
+    horizontal,
+    renderAsSheet,
+    sheetHeader,
+    sheetFooter,
+    sheetPosition,
+    sheetVerticalSize,
+  }))
 
-  return <Provider value={value}>{children}</Provider>;
+  return <Provider value={value}>{children}</Provider>
 }

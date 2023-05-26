@@ -1,6 +1,5 @@
-import type { Dispatch, ReactElement, ReactNode, SetStateAction } from "react";
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
-import { noop } from "./utils";
+import { createContext, useContext, useEffect, useMemo, $, $$, Observable, } from 'voby'
+import { noop } from "./utils"
 
 /**
  * @internal
@@ -13,7 +12,7 @@ export interface HoverableMenuBar {
    * beforehand. Instead, hovering over a `MenuItemButton` for this time in
    * milliseconds will display the `Menu`.
    */
-  hoverTimeout?: number;
+  hoverTimeout?: FunctionMaybe<Nullable<number>>
 }
 
 /**
@@ -27,31 +26,31 @@ export interface MenuBarContext extends HoverableMenuBar {
    * of a `MenuButton` while maintaining the dropdown icon and keyboard behavior
    * of a `MenuButton`.
    */
-  root: boolean;
+  root: FunctionMaybe<boolean>
 
   /**
    * Boolean if the `MenuBar` functionality is enabled.
    */
-  menubar: boolean;
+  menubar: FunctionMaybe<boolean>
 
   /**
    * This isn't tied directly to a `MenuBar`, but this is used to determine if
    * there is a parent `Menu` so the `DropdownMenu` can be rendered as a
    * `MenuItemButton` instead of a `MenuButton`.
    */
-  menuitem: boolean;
+  menuitem: FunctionMaybe<boolean>
 
   /**
    * This is the current DOM id for the `MenuButton` or `MenuItemButton` this is
    * currently visible within the `MenuBar`. If the `MenuBar` behavior has not
    * been enabled or no `Menu` are visible, this will be an empty string;
    */
-  activeId: string;
+  activeId: Observable<string>
 
   /**
    * This is used to manually set the {@link activeId} based on menu visibility.
    */
-  setActiveId: Dispatch<SetStateAction<string>>;
+  // setActiveId: Dispatch<SetStateAction<string>>
 
   /**
    * Boolean if at least one menu has finished the enter animation. This is used
@@ -59,7 +58,7 @@ export interface MenuBarContext extends HoverableMenuBar {
    * since it is distracting to have to wait `0.2ms` each time a new menu gains
    * visibility.
    */
-  animatedOnce: boolean;
+  animatedOnce: Observable<boolean>
 
   /**
    * This should be called with the menu's `onEntered` option so that the
@@ -67,27 +66,28 @@ export interface MenuBarContext extends HoverableMenuBar {
    * becomes an empty string (no visible menus), this should be called again
    * with `false` so that the menu animations are visible.
    */
-  setAnimatedOnce: Dispatch<SetStateAction<boolean>>;
+  // setAnimatedOnce: ObservableMaybe<boolean>
 }
 
 const context = createContext<MenuBarContext>({
   root: false,
   menubar: false,
   menuitem: false,
-  activeId: "",
-  setActiveId: noop,
-  animatedOnce: false,
-  setAnimatedOnce: noop,
-});
-context.displayName = "MenuBar";
-const { Provider } = context;
+  activeId: $(""),
+  // setActiveId: noop,
+  animatedOnce: $(false),
+  // setAnimatedOnce: $(null)//noop,
+})
+//@ts-ignore
+context.displayName = "MenuBar"
+const { Provider } = context
 
 /**
  * @internal
  * @remarks \@since 5.0.0
  */
 export function useMenuBarContext(): Readonly<MenuBarContext> {
-  return useContext(context);
+  return useContext(context)
 }
 
 /**
@@ -101,7 +101,7 @@ export interface MenuBarProviderProps extends HoverableMenuBar {
    * @defaultValue `true`
    * @see {@link MenuBarContext.root}
    */
-  root?: boolean;
+  root?: FunctionMaybe<Nullable<boolean>>
 
   /**
    * This is used so that when the user is moving through the `MenuBar` while a
@@ -116,9 +116,9 @@ export interface MenuBarProviderProps extends HoverableMenuBar {
    *
    * @defaultValue `""`
    */
-  defaultActiveId?: string;
+  defaultActiveId?: FunctionMaybe<Nullable<string>>
 
-  children: ReactNode;
+  children: Children
 }
 
 /**
@@ -130,28 +130,25 @@ export function MenuBarProvider({
   root = true,
   defaultActiveId = "",
   hoverTimeout,
-}: MenuBarProviderProps): ReactElement {
-  const { menubar } = useMenuBarContext();
-  const [activeId, setActiveId] = useState(defaultActiveId);
-  const [animatedOnce, setAnimatedOnce] = useState(!!defaultActiveId);
-  const value = useMemo<MenuBarContext>(
-    () => ({
-      root,
-      menubar: root || menubar,
-      menuitem: true,
-      activeId,
-      setActiveId,
-      hoverTimeout,
-      animatedOnce,
-      setAnimatedOnce,
-    }),
-    [activeId, animatedOnce, hoverTimeout, menubar, root]
-  );
+}: MenuBarProviderProps): Element {
+  const { menubar } = useMenuBarContext()
+  const activeId = $($$(defaultActiveId))
+  const animatedOnce = $(!!defaultActiveId)
+  const value = useMemo<MenuBarContext>(() => ({
+    root,
+    menubar: root || menubar,
+    menuitem: true,
+    // activeId(),
+    activeId,
+    hoverTimeout,
+    // animatedOnce(),
+    animatedOnce,
+  }))
   useEffect(() => {
-    if (!activeId) {
-      setAnimatedOnce(false);
+    if (!activeId()) {
+      animatedOnce(false)
     }
-  }, [activeId]);
+  })
 
-  return <Provider value={value}>{children}</Provider>;
+  return <Provider value={value}>{children}</Provider>
 }

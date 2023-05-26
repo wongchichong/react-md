@@ -1,17 +1,14 @@
-import type { ElementType, HTMLAttributes } from "react";
-import { forwardRef } from "react";
-import cn from "classnames";
-import { bem } from "@react-md/utils";
-
+import { bem } from "@react-md/utils"
+import { Component, $$ } from 'voby'
 import {
-  InheritContext,
-  ParentContext,
-  useInheritContext,
-  useParentContext,
-} from "./useInheritContext";
+    InheritContext,
+    ParentContext,
+    useInheritContext,
+    useParentContext,
+} from "./useInheritContext"
 
-export type AppBarPosition = "top" | "bottom";
-export type AppBarTheme = "clear" | "primary" | "secondary" | "default";
+export type AppBarPosition = "top" | "bottom"
+export type AppBarTheme = "clear" | "primary" | "secondary" | "default"
 
 /**
  * `AppBar`s have multiple heights available:
@@ -33,71 +30,71 @@ export type AppBarTheme = "clear" | "primary" | "secondary" | "default";
  * for styling purposes only for other components like `Tabs`.
  */
 export type AppBarHeight =
-  | "none"
-  | "normal"
-  | "prominent"
-  | "dense"
-  | "prominent-dense";
+    | "none"
+    | "normal"
+    | "prominent"
+    | "dense"
+    | "prominent-dense"
 
 export interface AppBarProps extends HTMLAttributes<HTMLDivElement> {
-  /**
-   * The component for the `AppBar` to render as. This should normally either
-   * just be the default `"header"` or a `"div"` component.
-   *
-   * It is generally recommended to not provide other React components for this
-   * prop even though it is possible since it leads to bad practice and props
-   * might not get passed as one would expect.
-   */
-  component?: ElementType;
+    /**
+     * The component for the `AppBar` to render as. This should normally either
+     * just be the default `"header"` or a `"div"` component.
+     *
+     * It is generally recommended to not provide other React components for this
+     * prop even though it is possible since it leads to bad practice and props
+     * might not get passed as one would expect.
+     */
+    component?: Component
 
-  /**
-   * Boolean if the `AppBar` should be fixed to the top or bottom of the page.
-   */
-  fixed?: boolean;
+    /**
+     * Boolean if the `AppBar` should be fixed to the top or bottom of the page.
+     */
+    fixed?: FunctionMaybe<Nullable<boolean>>
 
-  /**
-   * The position within the page to "fix" the `AppBar` when the `fixed` prop is
-   * enabled.
-   */
-  fixedPosition?: AppBarPosition;
+    /**
+     * The position within the page to "fix" the `AppBar` when the `fixed` prop is
+     * enabled.
+     */
+    fixedPosition?: FunctionMaybe<Nullable<AppBarPosition>>
 
-  /**
-   * Boolean if the fixed `AppBar` should gain elevation. This is recommended to
-   * stay enabled unless you manually apply a border to help separate the
-   * `AppBar` from other content.
-   */
-  fixedElevation?: boolean;
+    /**
+     * Boolean if the fixed `AppBar` should gain elevation. This is recommended to
+     * stay enabled unless you manually apply a border to help separate the
+     * `AppBar` from other content.
+     */
+    fixedElevation?: FunctionMaybe<Nullable<boolean>>
 
-  /**
-   * The height to use for the app bar. See the `AppBarHeight` type for more
-   * information.
-   */
-  height?: AppBarHeight;
+    /**
+     * The height to use for the app bar. See the `AppBarHeight` type for more
+     * information.
+     */
+    height?: FunctionMaybe<Nullable<AppBarHeight>>
 
-  /**
-   * The theme to apply to the `AppBar`.
-   */
-  theme?: AppBarTheme;
+    /**
+     * The theme to apply to the `AppBar`.
+     */
+    theme?: FunctionMaybe<Nullable<AppBarTheme>>
 
-  /**
-   * Boolean if the content of the `AppBar` should be allowed to wrap. When this
-   * is omitted, it will be considered true for `"none"`, `"prominent"` and
-   * `"prominent-dense"` heights
-   */
-  flexWrap?: boolean;
+    /**
+     * Boolean if the content of the `AppBar` should be allowed to wrap. When this
+     * is omitted, it will be considered true for `"none"`, `"prominent"` and
+     * `"prominent-dense"` heights
+     */
+    flexWrap?: FunctionMaybe<Nullable<boolean>>
 
-  /**
-   * Boolean if the `AppBarNav`, `AppBarTitle`, and `AppBarActions` should
-   * inherit the color that for the provided `theme`. If this value is
-   * `undefined`, the color will only be inherited when the theme is set to
-   * `primary` or `secondary`. However if this value is a boolean, it will be
-   * used instead. So if you set this to `false` and set the `theme` to
-   * `"primary"`, the defined primary text color will not be inherited.
-   */
-  inheritColor?: boolean;
+    /**
+     * Boolean if the `AppBarNav`, `AppBarTitle`, and `AppBarActions` should
+     * inherit the color that for the provided `theme`. If this value is
+     * `undefined`, the color will only be inherited when the theme is set to
+     * `primary` or `secondary`. However if this value is a boolean, it will be
+     * used instead. So if you set this to `false` and set the `theme` to
+     * `"primary"`, the defined primary text color will not be inherited.
+     */
+    inheritColor?: FunctionMaybe<Nullable<boolean>>
 }
 
-const block = bem("rmd-app-bar");
+const block = bem("rmd-app-bar")
 
 /**
  * This component is used to create a top-level app bar in your application that
@@ -108,8 +105,7 @@ const block = bem("rmd-app-bar");
  * converted by the app bar. You can also use any of the exposed mixins to add
  * these offsets as well.
  */
-export const AppBar = forwardRef<HTMLDivElement, AppBarProps>(function AppBar(
-  {
+export const AppBar = ({
     className,
     children,
     theme: propTheme = "primary",
@@ -120,49 +116,48 @@ export const AppBar = forwardRef<HTMLDivElement, AppBarProps>(function AppBar(
     fixedElevation = true,
     inheritColor,
     flexWrap = height === "none" ||
-      height === "prominent" ||
-      height === "prominent-dense",
+    height === "prominent" ||
+    height === "prominent-dense",
+    ref,
     ...remaining
-  },
-  ref
-) {
-  const parentContext = useParentContext();
-  const inheritContext = useInheritContext(undefined);
+}: AppBarProps
+) => {
+    const parentContext = useParentContext()
+    const inheritContext = useInheritContext(undefined)
 
-  let inherit: boolean;
-  let theme = propTheme;
-  let Component = propComponent;
-  if (typeof inheritColor === "boolean") {
-    inherit = inheritColor;
-  } else if (parentContext) {
-    inherit = inheritContext;
-    theme = "clear";
-    Component = "div";
-  } else {
-    inherit = theme !== "clear" && theme !== "default";
-  }
+    let inherit: boolean
+    let theme = propTheme
+    let Component = propComponent
+    if (typeof inheritColor === "boolean") {
+        inherit = inheritColor
+    } else if (parentContext) {
+        inherit = inheritContext
+        theme = "clear"
+        Component = "div"
+    } else {
+        inherit = theme !== "clear" && theme !== "default"
+    }
 
-  return (
-    <ParentContext.Provider value>
-      <InheritContext.Provider value={inherit}>
-        <Component
-          {...remaining}
-          className={cn(
-            block({
-              [theme]: theme !== "clear",
-              [height]: height !== "none",
-              wrap: flexWrap,
-              fixed,
-              [fixedPosition]: fixed,
-              "fixed-elevation": fixed && fixedElevation,
-            }),
-            className
-          )}
-          ref={ref}
-        >
-          {children}
-        </Component>
-      </InheritContext.Provider>
-    </ParentContext.Provider>
-  );
-});
+    return (
+        <ParentContext.Provider value>
+            <InheritContext.Provider value={inherit}>
+                {/* @ts-ignore */}
+                <Component {...remaining}
+                    className={[
+                        block({
+                            [$$(theme)]: theme !== "clear",
+                            [$$(height)]: height !== "none",
+                            wrap: flexWrap,
+                            fixed,
+                            [$$(fixedPosition)]: fixed,
+                            "fixed-elevation": fixed && fixedElevation,
+                        }) as any,
+                        className
+                    ]}
+                    ref={ref} >
+                    {children}
+                </Component>
+            </InheritContext.Provider>
+        </ParentContext.Provider>
+    )
+}

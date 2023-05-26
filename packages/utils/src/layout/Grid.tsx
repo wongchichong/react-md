@@ -1,11 +1,12 @@
-import type { HTMLAttributes } from "react";
-import type React from "react";
-import { Children, cloneElement, forwardRef, isValidElement } from "react";
-import cn from "classnames";
+//
 
-import { bem } from "../bem";
-import { useAppSize } from "../sizing/useAppSize";
-import { GridCell } from "./GridCell";
+import { CSSProperties as CSSProps, cloneElement/* , forwardRef, isValidElement */ } from 'voby'
+
+
+import { bem } from "../bem"
+import { useAppSize } from "../sizing/useAppSize"
+import { GridCell } from "./GridCell"
+import { Children } from '@react-md/react'
 
 /**
  * This CSS Variable allows you to override the number of columns that should be
@@ -15,7 +16,7 @@ import { GridCell } from "./GridCell";
  *
  * @internal
  */
-export const GRID_COLUMNS_VAR = "--rmd-grid-cols";
+export const GRID_COLUMNS_VAR = "--rmd-grid-cols"
 
 /**
  * This CSS Variable allows you to override the gutter (grid-gap) between each
@@ -23,105 +24,105 @@ export const GRID_COLUMNS_VAR = "--rmd-grid-cols";
  *
  * @internal
  */
-export const GRID_GUTTER_VAR = "--rmd-grid-gutter";
+export const GRID_GUTTER_VAR = "--rmd-grid-gutter"
 
 export interface GridProps extends HTMLAttributes<HTMLDivElement> {
-  /**
-   * Boolean if the `children` should have the grid `style` and `className`
-   * props cloned using `React.cloneElement`. This is useful if you just want to
-   * use the grid styles without the additional wrapper `<div>`.
-   *
-   * Note: if this prop is provided, all of the `HTMLAttributes` props will be
-   * ignored as well as the `clone` and `wrapOnly` props.
-   *
-   * @remarks \@since 2.3.0
-   */
-  cloneStyles?: boolean;
+    /**
+     * Boolean if the `children` should have the grid `style` and `className`
+     * props cloned using `React.cloneElement`. This is useful if you just want to
+     * use the grid styles without the additional wrapper `<div>`.
+     *
+     * Note: if this prop is provided, all of the `HTMLAttributes` props will be
+     * ignored as well as the `clone` and `wrapOnly` props.
+     *
+     * @remarks \@since 2.3.0
+     */
+    cloneStyles?: FunctionMaybe<Nullable<boolean>>
 
-  /**
-   * Boolean if the `children` should be updated to be wrapped in the `GridCell`
-   * component and clone the `className` into each child automatically. This is
-   * really just a convenience prop so you don't always need to import both the
-   * `Grid` and `GridCell` components to create a grid.
-   */
-  clone?: boolean;
+    /**
+     * Boolean if the `children` should be updated to be wrapped in the `GridCell`
+     * component and clone the `className` into each child automatically. This is
+     * really just a convenience prop so you don't always need to import both the
+     * `Grid` and `GridCell` components to create a grid.
+     */
+    clone?: FunctionMaybe<Nullable<boolean>>
 
-  /**
-   * Boolean if the `children` should be updated to be wrapped in the `GridCell`
-   * component.  This is really just a convenience prop so you don't always need
-   * to import both the `Grid` and `GridCell` components to create a grid/
-   */
-  wrapOnly?: boolean;
+    /**
+     * Boolean if the `children` should be updated to be wrapped in the `GridCell`
+     * component.  This is really just a convenience prop so you don't always need
+     * to import both the `Grid` and `GridCell` components to create a grid/
+     */
+    wrapOnly?: FunctionMaybe<Nullable<boolean>>
 
-  /**
-   * This prop allows you to generate your grid with a dynamic amount of columns
-   * instead of a static size. This will update the grid to ignore all the
-   * `columns` props and update the grid to show as many columns as possible by
-   * updating the `grid-template-columns` style to be:
-   *
-   * ```scss
-   * grid-template-columns: repeat(auto-fill, minmax($min-cell-width, 1fr));
-   * ```
-   *
-   * This **needs to be a number with a unit**. Check out the documentation on
-   * the `minmax` css function for some more info.
-   *
-   * @see https://developer.mozilla.org/en-US/docs/Web/CSS/minmax
-   */
-  minCellWidth?: "min-content" | "max-content" | "auto" | string;
+    /**
+     * This prop allows you to generate your grid with a dynamic amount of columns
+     * instead of a static size. This will update the grid to ignore all the
+     * `columns` props and update the grid to show as many columns as possible by
+     * updating the `grid-template-columns` style to be:
+     *
+     * ```scss
+     * grid-template-columns: repeat(auto-fill, minmax($min-cell-width, 1fr));
+     * ```
+     *
+     * This **needs to be a number with a unit**. Check out the documentation on
+     * the `minmax` css function for some more info.
+     *
+     * @see https://developer.mozilla.org/en-US/docs/Web/CSS/minmax
+     */
+    minCellWidth?: "min-content" | "max-content" | "auto" | string
 
-  /**
-   * An optional number of columns to apply for all media types. Providing one
-   * of the media-specific column props will override this value for those
-   * breakpoints still.
-   */
-  columns?: number;
+    /**
+     * An optional number of columns to apply for all media types. Providing one
+     * of the media-specific column props will override this value for those
+     * breakpoints still.
+     */
+    columns?: FunctionMaybe<Nullable<number>>
 
-  /**
-   * An optional number of columns to display for phones.
-   */
-  phoneColumns?: number;
+    /**
+     * An optional number of columns to display for phones.
+     */
+    phoneColumns?: FunctionMaybe<Nullable<number>>
 
-  /**
-   * An optional number of columns to display for tablets.
-   */
-  tabletColumns?: number;
+    /**
+     * An optional number of columns to display for tablets.
+     */
+    tabletColumns?: FunctionMaybe<Nullable<number>>
 
-  /**
-   * An optional number of columns to display for desktop screens.
-   */
-  desktopColumns?: number;
+    /**
+     * An optional number of columns to display for desktop screens.
+     */
+    desktopColumns?: FunctionMaybe<Nullable<number>>
 
-  /**
-   * An optional number of columns to display for large desktop screens.
-   */
-  largeDesktopColumns?: number;
+    /**
+     * An optional number of columns to display for large desktop screens.
+     */
+    largeDesktopColumns?: FunctionMaybe<Nullable<number>>
 
-  /**
-   * This is really just a pass-through of the `style` prop that allows you to
-   * quickly update the base padding for the grid.
-   */
-  padding?: number | string;
+    /**
+     * This is really just a pass-through of the `style` prop that allows you to
+     * quickly update the base padding for the grid.
+     */
+    padding?: FunctionMaybe<Nullable<number>> | string
 
-  /**
-   * This will override the default grid cell's gutter value (the space between
-   * each cell). This **needs to be a number with a unit** since it is set to a
-   * css variable. Examples:
-   *
-   * - `1rem`
-   * - `16px`
-   * - `1em`
-   * - `5%`
-   */
-  gutter?: string;
+    /**
+     * This will override the default grid cell's gutter value (the space between
+     * each cell). This **needs to be a number with a unit** since it is set to a
+     * css variable. Examples:
+     *
+     * - `1rem`
+     * - `16px`
+     * - `1em`
+     * - `5%`
+     */
+    gutter?: FunctionMaybe<Nullable<string>>
 }
 
-type CSSProperties = React.CSSProperties & {
-  [GRID_GUTTER_VAR]?: string;
-  [GRID_COLUMNS_VAR]?: number;
-};
+type CSSProperties = CSSProps & {
+    [GRID_GUTTER_VAR]?: FunctionMaybe<Nullable<string>>;
+    [GRID_COLUMNS_VAR]?: FunctionMaybe<Nullable<number>>
+}
 
-const block = bem("rmd-grid");
+const block = bem("rmd-grid")
 
 /**
  * The grid component is generally used for a base layout in your app to provide
@@ -130,64 +131,66 @@ const block = bem("rmd-grid");
  * Note: This component relies on the `AppSizeListener` as a parent component to
  * work and will throw an error if it does not exist as a parent.
  */
-export const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
-  {
-    style,
-    className,
-    children,
-    clone = false,
-    cloneStyles = false,
-    wrapOnly = false,
-    columns,
-    phoneColumns,
-    tabletColumns,
-    desktopColumns,
-    largeDesktopColumns,
-    padding,
-    gutter,
-    minCellWidth,
-    ...props
-  },
-  ref
-) {
-  const { isPhone, isTablet, isDesktop, isLargeDesktop } = useAppSize();
+export const Grid = (
+    {
+        style,
+        className,
+        children,
+        clone = false,
+        cloneStyles = false,
+        wrapOnly = false,
+        columns,
+        phoneColumns,
+        tabletColumns,
+        desktopColumns,
+        largeDesktopColumns,
+        padding,
+        gutter,
+        minCellWidth,
+        ref,
+        ...props
+    }: GridProps
+): Child => {
+    const { isPhone, isTablet, isDesktop, isLargeDesktop } = useAppSize()
 
-  const mergedStyle = {
-    padding: (padding !== 0 && padding) || undefined,
-    gridTemplateColumns: minCellWidth
-      ? `repeat(auto-fill, minmax(${minCellWidth}, 1fr))`
-      : undefined,
-    ...style,
-    [GRID_COLUMNS_VAR]:
-      (isPhone && phoneColumns) ||
-      (isTablet && tabletColumns) ||
-      (isLargeDesktop && largeDesktopColumns) ||
-      (isDesktop && desktopColumns) ||
-      columns,
-    [GRID_GUTTER_VAR]: gutter,
-  } as CSSProperties;
-  const mergedClassName = cn(block({ "no-padding": padding === 0 }), className);
+    const mergedStyle = {
+        padding: (padding !== 0 && padding) || undefined,
+        gridTemplateColumns: minCellWidth
+            ? `repeat(auto-fill, minmax(${minCellWidth}, 1fr))`
+            : undefined,
+        ...(style as StyleProperties),
+        [GRID_COLUMNS_VAR]:
+            (isPhone && phoneColumns) ||
+            (isTablet && tabletColumns) ||
+            (isLargeDesktop && largeDesktopColumns) ||
+            (isDesktop && desktopColumns) ||
+            columns,
+        [GRID_GUTTER_VAR]: gutter,
+    } as CSSProperties
+    const mergedClassName = [block({ "no-padding": padding === 0 }) as any, className]
 
-  if (cloneStyles && isValidElement(children)) {
-    const child = Children.only(children);
+    if (cloneStyles /* && isValidElement(children) */) {
+        const child = Children.only(children)
 
-    return cloneElement(child, {
-      style: { ...mergedStyle, ...child.props.style },
-      className: cn(mergedClassName, child.props.className),
-    } as HTMLAttributes<HTMLDivElement>);
-  }
+        return cloneElement(child, {
+            //@ts-ignore
+            style: { ...mergedStyle, ...child.props.style },
+            //@ts-ignore
+            className: cn(mergedClassName, child.props.className),
+        } as HTMLAttributes<HTMLDivElement>)
+    }
 
-  let content = children;
-  if (clone || wrapOnly) {
-    content = Children.map(
-      children,
-      (child) => child && <GridCell clone={clone}>{child}</GridCell>
-    );
-  }
+    let content = children
+    if (clone || wrapOnly) {
+        content = Children.map(
+            children,
+            (child) => child && <GridCell clone={clone}>{child}</GridCell>
+        )
+    }
 
-  return (
-    <div {...props} ref={ref} style={mergedStyle} className={mergedClassName}>
-      {content}
+    //@ts-ignore
+    return <div {...props} ref={ref} style={mergedStyle} className={mergedClassName}>
+        {content}
     </div>
-  );
-});
+
+}

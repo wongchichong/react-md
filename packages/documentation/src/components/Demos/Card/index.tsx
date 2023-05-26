@@ -37,7 +37,7 @@ const demos = [
   },
 ];
 
-export default function Card(): ReactElement {
+export default function Card(): Child {
   return (
     <DemoPage demos={demos} packageName="card" disableCard phoneFullPage />
   );

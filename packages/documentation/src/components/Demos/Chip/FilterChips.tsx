@@ -14,7 +14,7 @@ const amenities = [
   "Cats ok",
 ];
 
-export default function FilterChips(): ReactElement {
+export default function FilterChips(): Child {
   const [selectedAmenities, setSelected] = useState<string[]>([]);
   return (
     <>

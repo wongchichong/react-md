@@ -1,114 +1,122 @@
-import { render, fireEvent } from "@testing-library/react";
+import '@testing-library/jest-dom'
+import '@testing-library/jest-dom/extend-expect'
+import '@types/testing-library__jest-dom'
 
-import { Dir, useDir } from "../Dir";
+import { debug } from 'jest-preview'
+
+import { test as describe, expect, test as vi } from '@jest/globals'
+import { render } from "voby/testing"
+
+import { Dir, useDir } from "../Dir"
 
 const Child = () => {
-  const { dir, toggleDir } = useDir();
-  return (
-    <button type="button" onClick={toggleDir}>
-      {dir}
-    </button>
-  );
-};
+    const { dir, toggleDir } = useDir()
+    return (
+        <button type="button" onClick={toggleDir}>
+            {dir}
+        </button>
+    )
+}
 
 describe("Dir", () => {
-  it("should default to the root html dir prop if exists or fallback to ltr", () => {
-    document.documentElement.setAttribute("dir", "rtl");
+    it("should default to the root html dir prop if exists or fallback to ltr", () => {
+        document.documentElement.setAttribute("dir", "rtl")
+        debug()
+        let { unmount } = render(
+            <Dir>
+                <span />
+            </Dir>
+        )
+        expect(document.documentElement).toHaveAttribute("dir", "rtl")
+        unmount()
+        expect(document.documentElement).not.toHaveAttribute("dir");
 
-    let { unmount } = render(
-      <Dir>
-        <span />
-      </Dir>
-    );
-    expect(document.documentElement).toHaveAttribute("dir", "rtl");
-    unmount();
-    expect(document.documentElement).not.toHaveAttribute("dir");
+        ({ unmount } = render(
+            <Dir>
+                <span />
+            </Dir>
+        ))
+        expect(document.documentElement).toHaveAttribute("dir", "ltr")
+        unmount()
+        expect(document.documentElement).not.toHaveAttribute("dir")
+    })
 
-    ({ unmount } = render(
-      <Dir>
-        <span />
-      </Dir>
-    ));
-    expect(document.documentElement).toHaveAttribute("dir", "ltr");
-    unmount();
-    expect(document.documentElement).not.toHaveAttribute("dir");
-  });
+    it("should update the root html with the defaultDir", () => {
+        expect(document.documentElement).not.toHaveAttribute("dir")
 
-  it("should update the root html with the defaultDir", () => {
-    expect(document.documentElement).not.toHaveAttribute("dir");
+        const { unmount } = render(
+            <Dir defaultDir="ltr">
+                <span />
+            </Dir>
+        )
 
-    const { unmount } = render(
-      <Dir defaultDir="ltr">
-        <span />
-      </Dir>
-    );
+        expect(document.documentElement).toHaveAttribute("dir", "ltr")
+        unmount()
+        expect(document.documentElement).not.toHaveAttribute("dir")
+    })
 
-    expect(document.documentElement).toHaveAttribute("dir", "ltr");
-    unmount();
-    expect(document.documentElement).not.toHaveAttribute("dir");
-  });
+    it("should clone the dir into a child element", () => {
+        const { getByTestId } = render(
+            <Dir defaultDir="ltr">
+                <Dir defaultDir="rtl">
+                    <span data-testid="span" />
+                </Dir>
+            </Dir>
+        )
 
-  it("should clone the dir into a child element", () => {
-    const { getByTestId } = render(
-      <Dir defaultDir="ltr">
-        <Dir defaultDir="rtl">
-          <span data-testid="span" />
-        </Dir>
-      </Dir>
-    );
+        const span = getByTestId("span")
+        expect(span).toHaveAttribute("dir", "rtl")
+    })
 
-    const span = getByTestId("span");
-    expect(span).toHaveAttribute("dir", "rtl");
-  });
+    it("should allow a child component to access and toggle the direction", () => {
+        const { getByRole } = render(
+            <Dir>
+                <Child />
+            </Dir>
+        )
 
-  it("should allow a child component to access and toggle the direction", () => {
-    const { getByRole } = render(
-      <Dir>
-        <Child />
-      </Dir>
-    );
+        const button = getByRole("button")
+        expect(document.documentElement).toHaveAttribute("dir", "ltr")
+        expect(button).toHaveTextContent("ltr")
 
-    const button = getByRole("button");
-    expect(document.documentElement).toHaveAttribute("dir", "ltr");
-    expect(button).toHaveTextContent("ltr");
-    fireEvent.click(button);
-    expect(document.documentElement).toHaveAttribute("dir", "rtl");
-    expect(button).toHaveTextContent("rtl");
-  });
+        button.click()
+        expect(document.documentElement).toHaveAttribute("dir", "rtl")
+        expect(button).toHaveTextContent("rtl")
+    })
 
-  it("should toggle the correct parent with multiple Dir components", () => {
-    const { getByRole } = render(
-      <Dir>
-        <Dir defaultDir="rtl">
-          <Child />
-        </Dir>
-      </Dir>
-    );
+    it("should toggle the correct parent with multiple Dir components", () => {
+        const { getByRole } = render(
+            <Dir>
+                <Dir defaultDir="rtl">
+                    <Child />
+                </Dir>
+            </Dir>
+        )
 
-    const button = getByRole("button");
-    expect(document.documentElement).toHaveAttribute("dir", "ltr");
-    expect(button).toHaveTextContent("rtl");
-    fireEvent.click(button);
+        const button = getByRole("button")
+        expect(document.documentElement).toHaveAttribute("dir", "ltr")
+        expect(button).toHaveTextContent("rtl")
+        button.click()
 
-    expect(document.documentElement).toHaveAttribute("dir", "ltr");
-    expect(button).toHaveTextContent("ltr");
-  });
+        expect(document.documentElement).toHaveAttribute("dir", "ltr")
+        expect(button).toHaveTextContent("ltr")
+    })
 
-  it("should throw an error if the toggleDir function is called without initializing a Dir component", () => {
-    let toggleDir: (() => void) | undefined;
-    const Test = () => {
-      ({ toggleDir } = useDir());
-      return null;
-    };
+    it("should throw an error if the toggleDir function is called without initializing a Dir component", () => {
+        let toggleDir: (() => void) | undefined
+        const Test = () => {
+            ({ toggleDir } = useDir())
+            return null
+        }
 
-    render(<Test />);
+        render(<Test />)
 
-    if (typeof toggleDir === "undefined") {
-      throw new Error();
-    }
+        if (typeof toggleDir === "undefined") {
+            throw new Error()
+        }
 
-    expect(toggleDir).toThrowError(
-      "Tried to toggle the current writing direction without initializing the `Dir` component."
-    );
-  });
-});
+        expect(toggleDir).toThrowError(
+            "Tried to toggle the current writing direction without initializing the `Dir` component."
+        )
+    })
+})

@@ -1,19 +1,20 @@
-import { useEffect, useState } from "react";
+import { useEffect, $ } from 'voby'
+// import type { EffectFunction } from 'oby'
 
 /**
  * An extremely simple "pollyfill" for the `window.screen.orientation` just for
  * the `type` value that is required for the `useOrientation` hook.
  */
 export const getOrientationType = (): OrientationType => {
-  const screenOrientation = window.screen.orientation?.type;
+  const screenOrientation = window.screen.orientation?.type
   if (typeof screenOrientation === "string") {
-    return screenOrientation;
+    return screenOrientation
   }
 
-  const { availHeight, availWidth } = window.screen;
+  const { availHeight, availWidth } = window.screen
 
-  return availHeight > availWidth ? "portrait-primary" : "landscape-primary";
-};
+  return availHeight > availWidth ? "portrait-primary" : "landscape-primary"
+}
 
 /**
  * This media query is used to determine the current orientation of the app
@@ -29,30 +30,30 @@ export const getOrientationType = (): OrientationType => {
 export function useOrientation(
   defaultValue?: OrientationType
 ): OrientationType {
-  const [value, setValue] = useState<OrientationType>(() => {
+  const value = $<OrientationType>((() => {
     if (defaultValue) {
-      return defaultValue;
+      return defaultValue
     }
 
     if (typeof window !== "undefined") {
-      return getOrientationType();
+      return getOrientationType()
     }
 
-    return "landscape-primary";
-  });
+    return "landscape-primary"
+  })())
 
   useEffect(() => {
     if (typeof window === "undefined") {
-      return;
+      return
     }
 
     const handler = (): void => {
-      setValue(getOrientationType());
-    };
-    window.addEventListener("orientationchange", handler);
+      value(getOrientationType())
+    }
+    window.addEventListener("orientationchange", handler)
 
-    return () => window.removeEventListener("orientationchange", handler);
-  }, []);
+    return () => window.removeEventListener("orientationchange", handler)
+  })
 
-  return value;
+  return value()
 }

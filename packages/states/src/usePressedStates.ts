@@ -1,17 +1,17 @@
-import { useCallback, useState } from "react";
-import { useRefCache } from "@react-md/utils";
+import { $ } from 'voby'
+// import { $ } from "@react-md/utils"
 
-import type { MergableRippleHandlers } from "./ripples/types";
-import { isBubbled } from "./ripples/utils";
+import type { MergableRippleHandlers } from "./ripples/types"
+import { isBubbled } from "./ripples/utils"
 
 interface PressedStatesOptions<E extends HTMLElement = HTMLElement> {
-  handlers?: MergableRippleHandlers<E>;
-  disableSpacebarClick?: boolean;
+    handlers?: MergableRippleHandlers<E>
+    disableSpacebarClick?: FunctionMaybe<Nullable<boolean>>
 }
 
 interface ReturnValue<E extends HTMLElement> {
-  pressed: boolean;
-  handlers: MergableRippleHandlers<E>;
+    pressed: boolean
+    handlers: MergableRippleHandlers<E>
 }
 
 /**
@@ -27,135 +27,138 @@ interface ReturnValue<E extends HTMLElement> {
  * from a programmatic click event.
  */
 export function usePressedStates<E extends HTMLElement = HTMLElement>({
-  handlers = {},
-  disableSpacebarClick = false,
+    handlers = {},
+    disableSpacebarClick = false,
 }: PressedStatesOptions<E> = {}): ReturnValue<E> {
-  const [pressed, setPressed] = useState(false);
-  const ref = useRefCache({ ...handlers, pressed });
+    const pressed = $(false)
+    const ref = $({ ...handlers, pressed })
 
-  const handleKeyDown = useCallback(
-    (event: React.KeyboardEvent<E>) => {
-      const { onKeyDown, pressed } = ref.current;
-      if (onKeyDown) {
-        onKeyDown(event);
-      }
+    const handleKeyDown = $((event: JSX.TargetedKeyboardEvent<E>) => {
+        const { onKeyDown, pressed } = ref()
+        if (onKeyDown) {
+            //@ts-ignore
+            onKeyDown(event)
+        }
 
-      const { key } = event;
-      if (
-        !pressed &&
-        (key === "Enter" || (!disableSpacebarClick && key === " "))
-      ) {
-        setPressed(true);
-      }
-    },
-    // disabled since useRefCache for ref
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [disableSpacebarClick]
-  );
+        const { key } = event
+        if (
+            !pressed() &&
+            (key === "Enter" || (!disableSpacebarClick && key === " "))
+        ) {
+            pressed(true)
+        }
+    })
 
-  const handleKeyUp = useCallback((event: React.KeyboardEvent<E>) => {
-    const { onKeyUp, pressed } = ref.current;
-    if (onKeyUp) {
-      onKeyUp(event);
+    const handleKeyUp = $((event: JSX.TargetedKeyboardEvent<E>) => {
+        const { onKeyUp, pressed } = ref()
+        if (onKeyUp) {
+            //@ts-ignore
+            onKeyUp(event)
+        }
+
+        if (pressed()) {
+            pressed(false)
+        }
+        // disabled since useRefCache for ref
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    })
+
+    const handleMouseDown = $((event: JSX.TargetedMouseEvent<E>) => {
+        const { onMouseDown, pressed } = ref()
+        if (onMouseDown) {
+            //@ts-ignore
+            onMouseDown(event)
+        }
+
+        if (!pressed() && event.button === 0 && !isBubbled(event)) {
+            pressed(true)
+        }
+        // disabled since useRefCache for ref
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    })
+
+    const handleMouseUp = $((event: JSX.TargetedMouseEvent<E>) => {
+        const { onMouseUp, pressed } = ref()
+        if (onMouseUp) {
+            //@ts-ignore
+            onMouseUp(event)
+        }
+
+        if (pressed()) {
+            pressed(false)
+        }
+        // disabled since useRefCache for ref
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    })
+
+    const handleMouseLeave = $((event: JSX.TargetedMouseEvent<E>) => {
+        const { onMouseLeave, pressed } = ref()
+        if (onMouseLeave) {
+            //@ts-ignore
+            onMouseLeave(event)
+        }
+
+        if (pressed()) {
+            pressed(false)
+        }
+        // disabled since useRefCache for ref
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    })
+
+    const handleTouchStart = $((event: JSX.TargetedTouchEvent<E>) => {
+        const { onTouchStart, pressed } = ref()
+        if (onTouchStart) {
+            //@ts-ignore
+            onTouchStart(event)
+        }
+
+        if (!pressed() && !isBubbled(event)) {
+            pressed(true)
+        }
+        // disabled since useRefCache for ref
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    })
+
+    const handleTouchMove = $((event: JSX.TargetedTouchEvent<E>) => {
+        const { onTouchMove, pressed } = ref()
+        if (onTouchMove) {
+            //@ts-ignore
+            onTouchMove(event)
+        }
+
+        if (pressed()) {
+            pressed(false)
+        }
+        // disabled since useRefCache for ref
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    })
+
+    const handleTouchEnd = $((event: JSX.TargetedTouchEvent<E>) => {
+        const { onTouchEnd, pressed } = ref()
+        if (onTouchEnd) {
+            //@ts-ignore
+            onTouchEnd(event)
+        }
+
+        if (pressed()) {
+            pressed(false)
+        }
+        // disabled since useRefCache for ref
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    })
+
+    return {
+        pressed: pressed(),
+        handlers: {
+            onClick: handlers.onClick,
+            onKeyDown: handleKeyDown,
+            onKeyUp: handleKeyUp,
+            onMouseDown: handleMouseDown,
+            onMouseUp: handleMouseUp,
+            onMouseLeave: handleMouseLeave,
+            onTouchStart: handleTouchStart,
+            onTouchMove: handleTouchMove,
+            onTouchEnd: handleTouchEnd,
+        },
     }
-
-    if (pressed) {
-      setPressed(false);
-    }
-    // disabled since useRefCache for ref
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const handleMouseDown = useCallback((event: React.MouseEvent<E>) => {
-    const { onMouseDown, pressed } = ref.current;
-    if (onMouseDown) {
-      onMouseDown(event);
-    }
-
-    if (!pressed && event.button === 0 && !isBubbled(event)) {
-      setPressed(true);
-    }
-    // disabled since useRefCache for ref
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const handleMouseUp = useCallback((event: React.MouseEvent<E>) => {
-    const { onMouseUp, pressed } = ref.current;
-    if (onMouseUp) {
-      onMouseUp(event);
-    }
-
-    if (pressed) {
-      setPressed(false);
-    }
-    // disabled since useRefCache for ref
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const handleMouseLeave = useCallback((event: React.MouseEvent<E>) => {
-    const { onMouseLeave, pressed } = ref.current;
-    if (onMouseLeave) {
-      onMouseLeave(event);
-    }
-
-    if (pressed) {
-      setPressed(false);
-    }
-    // disabled since useRefCache for ref
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const handleTouchStart = useCallback((event: React.TouchEvent<E>) => {
-    const { onTouchStart, pressed } = ref.current;
-    if (onTouchStart) {
-      onTouchStart(event);
-    }
-
-    if (!pressed && !isBubbled(event)) {
-      setPressed(true);
-    }
-    // disabled since useRefCache for ref
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const handleTouchMove = useCallback((event: React.TouchEvent<E>) => {
-    const { onTouchMove, pressed } = ref.current;
-    if (onTouchMove) {
-      onTouchMove(event);
-    }
-
-    if (pressed) {
-      setPressed(false);
-    }
-    // disabled since useRefCache for ref
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const handleTouchEnd = useCallback((event: React.TouchEvent<E>) => {
-    const { onTouchEnd, pressed } = ref.current;
-    if (onTouchEnd) {
-      onTouchEnd(event);
-    }
-
-    if (pressed) {
-      setPressed(false);
-    }
-    // disabled since useRefCache for ref
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  return {
-    pressed,
-    handlers: {
-      onClick: handlers.onClick,
-      onKeyDown: handleKeyDown,
-      onKeyUp: handleKeyUp,
-      onMouseDown: handleMouseDown,
-      onMouseUp: handleMouseUp,
-      onMouseLeave: handleMouseLeave,
-      onTouchStart: handleTouchStart,
-      onTouchMove: handleTouchMove,
-      onTouchEnd: handleTouchEnd,
-    },
-  };
 }

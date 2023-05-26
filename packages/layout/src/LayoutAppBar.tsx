@@ -1,67 +1,65 @@
-import { forwardRef } from "react";
-import type { AppBarProps } from "@react-md/app-bar";
-import { AppBar } from "@react-md/app-bar";
+;
+import type { AppBarProps } from "@react-md/app-bar"
+import { AppBar } from "@react-md/app-bar"
 
-import { LayoutAppBarTitle } from "./LayoutAppBarTitle";
-import type { LayoutWithNavToggle } from "./LayoutNavToggle";
-import { LayoutNavToggle } from "./LayoutNavToggle";
-import { useLayoutConfig } from "./LayoutProvider";
-import type { LayoutWithTitle } from "./types";
+import { LayoutAppBarTitle } from "./LayoutAppBarTitle"
+import type { LayoutWithNavToggle } from "./LayoutNavToggle"
+import { LayoutNavToggle } from "./LayoutNavToggle"
+import { useLayoutConfig } from "./LayoutProvider"
+import type { LayoutWithTitle } from "./types"
 
 export interface BaseLayoutAppBarProps extends Omit<AppBarProps, "title"> {
-  /**
-   * Boolean if the `AppBar` should be fixed to the top of the page. Unlike the
-   * regular `AppBar`, this will be defaulted to `true`
-   */
-  fixed?: boolean;
+    /**
+     * Boolean if the `AppBar` should be fixed to the top of the page. Unlike the
+     * regular `AppBar`, this will be defaulted to `true`
+     */
+    fixed?: FunctionMaybe<Nullable<boolean>>
 }
 
-export interface LayoutAppBarProps
-  extends BaseLayoutAppBarProps,
+export interface LayoutAppBarProps//<T>
+    extends BaseLayoutAppBarProps,
     LayoutWithNavToggle,
-    LayoutWithTitle {}
+    LayoutWithTitle { }
 
 /**
  * This is the default implementation for an `AppBar` within the `Layout` that
  * will conditionally render the default `LayoutNavToggle` button and
  * `AppBarTitle` depending on specific props that were provided.
  */
-export const LayoutAppBar = forwardRef<HTMLDivElement, LayoutAppBarProps>(
-  function LayoutAppBar(
+export const LayoutAppBar = (
     {
-      children,
-      fixed = true,
-      navToggle: propNavToggle,
-      navToggleProps,
-      customTitle,
-      title: titleChildren,
-      titleProps,
-      ...props
-    },
-    ref
-  ) {
-    const { baseId, layout } = useLayoutConfig();
+        children,
+        fixed = true,
+        navToggle: propNavToggle,
+        navToggleProps,
+        customTitle,
+        title: titleChildren,
+        titleProps,
+        ref,
+        ...props
+    }: LayoutAppBarProps //<HTMLDivElement>
+) => {
+    const { baseId, layout } = useLayoutConfig()
 
-    let nav = propNavToggle;
+    let nav = propNavToggle
     if (typeof nav === "undefined") {
-      // set the key to the current layout since we want the button to re-mount
-      // on layout changes so the transition does not occur
-      nav = <LayoutNavToggle key={layout} {...navToggleProps} />;
+        // set the key to the current layout since we want the button to re-mount
+        // on layout changes so the transition does not occur
+        nav = <LayoutNavToggle id={layout} {...navToggleProps} />
     }
 
-    let title = customTitle;
+    let title = customTitle
     if (typeof title === "undefined") {
-      title = (
-        <LayoutAppBarTitle {...titleProps}>{titleChildren}</LayoutAppBarTitle>
-      );
+        title = (
+            <LayoutAppBarTitle {...titleProps}>{titleChildren}</LayoutAppBarTitle>
+        )
     }
 
     return (
-      <AppBar id={`${baseId}-header`} {...props} ref={ref} fixed={fixed}>
-        {nav}
-        {title}
-        {children}
-      </AppBar>
-    );
-  }
-);
+        <AppBar id={`${baseId}-header`} {...props} ref={ref} fixed={fixed}>
+            {nav}
+            {title}
+            {children}
+        </AppBar>
+    )
+}

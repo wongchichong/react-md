@@ -1,100 +1,100 @@
-import type { CSSProperties } from "react";
-import { useState } from "react";
-import cn from "classnames";
-import { useEnsuredRef } from "@react-md/utils";
+import type { CSSProperties } from 'voby'
+import { $, $$, mergeStyles } from 'voby'
+
+import { useEnsuredRef } from "@react-md/utils"
 
 import type {
-  CSSTransitionElementProps,
-  CSSTransitionHookReturnValue,
-  PreconfiguredCSSTransitionOptions,
-  TransitionTimeout,
-  TransitionTimeoutObject,
-} from "./types";
-import { useTransition } from "./useTransition";
-import { getElementSizing, getTransitionTimeout } from "./utils";
+    CSSTransitionElementProps,
+    CSSTransitionHookReturnValue,
+    PreconfiguredCSSTransitionOptions,
+    TransitionTimeout,
+    TransitionTimeoutObject,
+} from "./types"
+import { useTransition } from "./useTransition"
+import { getElementSizing, getTransitionTimeout } from "./utils"
 
 /**
  * @remarks \@since 2.0.0
  */
-export const DEFAULT_COLLAPSE_MIN_HEIGHT = 0;
+export const DEFAULT_COLLAPSE_MIN_HEIGHT = 0
 
 /**
  * @remarks \@since 2.0.0
  */
-export const DEFAULT_COLLAPSE_MIN_PADDING_TOP = 0;
+export const DEFAULT_COLLAPSE_MIN_PADDING_TOP = 0
 
 /**
  * @remarks \@since 2.0.0
  */
-export const DEFAULT_COLLAPSE_MIN_PADDING_BOTTOM = 0;
+export const DEFAULT_COLLAPSE_MIN_PADDING_BOTTOM = 0
 
 /**
  * @remarks \@since 2.0.0
  */
 export const DEFAULT_COLLAPSE_TIMEOUT: Readonly<TransitionTimeoutObject> = {
-  enter: 250,
-  exit: 200,
-};
+    enter: 250,
+    exit: 200,
+}
 
 /**
  * @remarks \@since 4.0.0
  */
 export interface CollapseConfigurationStyle {
-  /**
-   * The minimum height that the collapsed element can be which defaults to `0`.
-   * This can either be a number of pixels or a string CSS height value.
-   *
-   * Setting this value to any non-zero value will allow for the element to
-   * shrink to the defined min-height, and then expand to the full height once
-   * no longer collapsed.
-   *
-   * Note: If the `minHeight`, `minPaddingTop`, and `minPaddingBottom` options
-   * are all set to `0` (default), the child will be removed from the DOM while
-   * collapsed.
-   *
-   * @see {@link DEFAULT_COLLAPSE_MIN_HEIGHT}
-   * @defaultValue `DEFAULT_COLLAPSE_MIN_HEIGHT`
-   */
-  minHeight?: number | string;
+    /**
+     * The minimum height that the collapsed element can be which defaults to `0`.
+     * This can either be a number of pixels or a string CSS height value.
+     *
+     * Setting this value to any non-zero value will allow for the element to
+     * shrink to the defined min-height, and then expand to the full height once
+     * no longer collapsed.
+     *
+     * Note: If the `minHeight`, `minPaddingTop`, and `minPaddingBottom` options
+     * are all set to `0` (default), the child will be removed from the DOM while
+     * collapsed.
+     *
+     * @see {@link DEFAULT_COLLAPSE_MIN_HEIGHT}
+     * @defaultValue `DEFAULT_COLLAPSE_MIN_HEIGHT`
+     */
+    minHeight?: CSSProperties["minHeight"] //FunctionMaybe<Nullable<number>> | string
 
-  /**
-   * The minimum padding-top that the collapsed element can be which defaults to
-   * `0`. This can either be a number of pixels or a string CSS `padding-top`
-   * value.
-   *
-   * Note: If the `minHeight`, `minPaddingTop`, and `minPaddingBottom` options
-   * are all set to `0` (default), the child will be removed from the DOM while
-   * collapsed.
-   *
-   * @see {@link DEFAULT_COLLAPSE_MIN_PADDING_TOP}
-   * @defaultValue `DEFAULT_COLLAPSE_MIN_PADDING_TOP`
-   */
-  minPaddingTop?: number | string;
+    /**
+     * The minimum padding-top that the collapsed element can be which defaults to
+     * `0`. This can either be a number of pixels or a string CSS `padding-top`
+     * value.
+     *
+     * Note: If the `minHeight`, `minPaddingTop`, and `minPaddingBottom` options
+     * are all set to `0` (default), the child will be removed from the DOM while
+     * collapsed.
+     *
+     * @see {@link DEFAULT_COLLAPSE_MIN_PADDING_TOP}
+     * @defaultValue `DEFAULT_COLLAPSE_MIN_PADDING_TOP`
+     */
+    minPaddingTop?: CSSProperties["minHeight"] //FunctionMaybe<Nullable<number>> | string
 
-  /**
-   * The minimum padding-bottom that the collapsed element can be which defaults
-   * to `0`. This can either be a number of pixels or a string CSS
-   * `padding-bottom` value.
-   *
-   * Note: If the `minHeight`, `minPaddingTop`, and `minPaddingBottom` options
-   * are all set to `0` (default), the child will be removed from the DOM while
-   * collapsed.
-   *
-   * @see {@link DEFAULT_COLLAPSE_MIN_PADDING_BOTTOM}
-   * @defaultValue `DEFAULT_COLLAPSE_MIN_PADDING_BOTTOM`
-   */
-  minPaddingBottom?: number | string;
+    /**
+     * The minimum padding-bottom that the collapsed element can be which defaults
+     * to `0`. This can either be a number of pixels or a string CSS
+     * `padding-bottom` value.
+     *
+     * Note: If the `minHeight`, `minPaddingTop`, and `minPaddingBottom` options
+     * are all set to `0` (default), the child will be removed from the DOM while
+     * collapsed.
+     *
+     * @see {@link DEFAULT_COLLAPSE_MIN_PADDING_BOTTOM}
+     * @defaultValue `DEFAULT_COLLAPSE_MIN_PADDING_BOTTOM`
+     */
+    minPaddingBottom?: CSSProperties["minHeight"] //FunctionMaybe<Nullable<number>> | string
 }
 
 /**
  * @remarks \@since 4.0.0
  */
 export interface CollapseStyle extends CollapseConfigurationStyle {
-  /**
-   * This will only be set when the {@link TransitionStage} is `"entering"` or
-   * `"exiting"` as `"${timeout}ms"`.
-   */
-  transitionDuration?: string;
+    /**
+     * This will only be set when the {@link TransitionStage} is `"entering"` or
+     * `"exiting"` as `"${timeout}ms"`.
+     */
+    transitionDuration?: FunctionMaybe<Nullable<string>>
 }
 
 /**
@@ -106,21 +106,21 @@ export interface CollapseStyle extends CollapseConfigurationStyle {
  * @remarks \@since 4.0.0
  */
 export interface CollapseElementProps<E extends HTMLElement>
-  extends CSSTransitionElementProps<E> {
-  /**
-   * A merged styled object required for the collapse transition to work.
-   *
-   * @see {@link CollapseStyle}
-   * @see {@link CollapseTransitionHookOptions.style}
-   */
-  style: CSSProperties;
+    extends CSSTransitionElementProps<E> {
+    /**
+     * A merged styled object required for the collapse transition to work.
+     *
+     * @see {@link CollapseStyle}
+     * @see {@link CollapseTransitionHookOptions.style}
+     */
+    style: CSSProperties
 
-  /**
-   * This will be set to true when the element is fully collapsed and the
-   * {@link CollapseTransitionHookOptions.temporary} is set to `false`. This
-   * should be applied as the `hidden` attribute to a DOM node.
-   */
-  hidden: boolean;
+    /**
+     * This will be set to true when the element is fully collapsed and the
+     * {@link CollapseTransitionHookOptions.temporary} is set to `false`. This
+     * should be applied as the `hidden` attribute to a DOM node.
+     */
+    hidden: boolean
 }
 
 /**
@@ -129,28 +129,28 @@ export interface CollapseElementProps<E extends HTMLElement>
  * @remarks \@since 4.0.0
  */
 export interface CollapseTransitionHookOptions<E extends HTMLElement>
-  extends PreconfiguredCSSTransitionOptions<E>,
+    extends PreconfiguredCSSTransitionOptions<E>,
     CollapseConfigurationStyle {
-  /**
-   * An optional style to merge with the required collapse transition styles.
-   *
-   * If any keys from the {@link CollapseStyle} are included in this object,
-   * these styles will override and possibly break the collapse transition.
-   */
-  style?: CSSProperties;
+    /**
+     * An optional style to merge with the required collapse transition styles.
+     *
+     * If any keys from the {@link CollapseStyle} are included in this object,
+     * these styles will override and possibly break the collapse transition.
+     */
+    style?: FunctionMaybe<Nullable<string | StyleProperties>>
 
-  /**
-   *
-   * @see {@link DEFAULT_COLLAPSE_TIMEOUT}
-   * @defaultValue `DEFAULT_COLLAPSE_TIMEOUT`
-   */
-  timeout?: TransitionTimeout;
+    /**
+     *
+     * @see {@link DEFAULT_COLLAPSE_TIMEOUT}
+     * @defaultValue `DEFAULT_COLLAPSE_TIMEOUT`
+     */
+    timeout?: FunctionMaybe<Nullable<TransitionTimeout>>
 
-  /**
-   *
-   * @defaultValue `minHeight === 0 && minPaddingTop === 0 && minPaddingBottom === 0`
-   */
-  temporary?: boolean;
+    /**
+     *
+     * @defaultValue `minHeight === 0 && minPaddingTop === 0 && minPaddingBottom === 0`
+     */
+    temporary?: FunctionMaybe<Nullable<boolean>>
 }
 
 /**
@@ -159,49 +159,49 @@ export interface CollapseTransitionHookOptions<E extends HTMLElement>
  * @remarks \@since 4.0.0
  */
 export interface CollapseTransitionHookReturnValue<E extends HTMLElement>
-  extends CSSTransitionHookReturnValue<E>,
+    extends CSSTransitionHookReturnValue<E>,
     CollapseElementProps<E> {
-  /**
-   * This is just a convenience object so that you don't need to destructure as
-   * many variables to pass to an element.
-   *
-   * @example
-   * Simple Usage
-   * ```tsx
-   * const { elementProps, rendered } = useCollapseTransition({
-   *   // ...options
-   *   transitionIn,
-   * });
-   *
-   * if (!rendered) {
-   *   return null
-   * }
-   *
-   * return <div {...elementProps}>{children}</div>;
-   *
-   * // This is the long-hand version
-   * const { ref, style, className, hidden, rendered } = useCollapseTransition({
-   *   // ...options
-   *   transitionIn,
-   * });
-   *
-   * if (!rendered) {
-   *   return null
-   * }
-   *
-   * return (
-   *   <div
-   *     ref={ref}
-   *     style={style}
-   *     className={className}
-   *     hidden={hidden}
-   *   >
-   *     {children}
-   *   </div>
-   * );
-   * ```
-   */
-  elementProps: Readonly<CollapseElementProps<E>>;
+    /**
+     * This is just a convenience object so that you don't need to destructure as
+     * many variables to pass to an element.
+     *
+     * @example
+     * Simple Usage
+     * ```tsx
+     * const { elementProps, rendered } = useCollapseTransition({
+     *   // ...options
+     *   transitionIn,
+     * });
+     *
+     * if (!rendered) {
+     *   return null
+     * }
+     *
+     * return <div {...elementProps}>{children}</div>;
+     *
+     * // This is the long-hand version
+     * const { ref, style, className, hidden, rendered } = useCollapseTransition({
+     *   // ...options
+     *   transitionIn,
+     * });
+     *
+     * if (!rendered) {
+     *   return null
+     * }
+     *
+     * return (
+     *   <div
+     *     ref={ref}
+     *     style={style}
+     *     className={className}
+     *     hidden={hidden}
+     *   >
+     *     {children}
+     *   </div>
+     * );
+     * ```
+     */
+    elementProps: Readonly<CollapseElementProps<E>>
 }
 
 /**
@@ -220,7 +220,7 @@ export interface CollapseTransitionHookReturnValue<E extends HTMLElement>
  * import { useCollapseTransition } from "@react-md/transition";
  * import { Typography } from "@react-md/typography";
  *
- * function Example(): ReactElement {
+ * function Example(): Element {
  *   const [collapsed, setCollapsed] = useState(true);
  *   const { elementProps, rendered } =
  *     useCollapseTransition({
@@ -271,7 +271,7 @@ export interface CollapseTransitionHookReturnValue<E extends HTMLElement>
  * // }
  *
  *
- * function Example(): ReactElement {
+ * function Example(): Element {
  *   const [collapsed, setCollapsed] = useState(true);
  *   const { elementProps } =
  *     useCollapseTransition({
@@ -305,148 +305,145 @@ export interface CollapseTransitionHookReturnValue<E extends HTMLElement>
  * @remarks \@since 4.0.0
  */
 export function useCollapseTransition<E extends HTMLElement>({
-  nodeRef: propNodeRef,
-  style: propStyle,
-  className,
-  transitionIn,
-  timeout = DEFAULT_COLLAPSE_TIMEOUT,
-  minHeight = DEFAULT_COLLAPSE_MIN_HEIGHT,
-  minPaddingTop = DEFAULT_COLLAPSE_MIN_PADDING_TOP,
-  minPaddingBottom = DEFAULT_COLLAPSE_MIN_PADDING_BOTTOM,
-  temporary = minHeight === 0 && minPaddingTop === 0 && minPaddingBottom === 0,
-  appear = false,
-  enter = true,
-  exit = true,
-  onEnter,
-  onEntering,
-  onEntered,
-  onExit,
-  onExiting,
-  onExited,
+    nodeRef: propNodeRef,
+    style: propStyle,
+    className,
+    transitionIn,
+    timeout = DEFAULT_COLLAPSE_TIMEOUT,
+    minHeight = DEFAULT_COLLAPSE_MIN_HEIGHT,
+    minPaddingTop = DEFAULT_COLLAPSE_MIN_PADDING_TOP,
+    minPaddingBottom = DEFAULT_COLLAPSE_MIN_PADDING_BOTTOM,
+    temporary = minHeight === 0 && minPaddingTop === 0 && minPaddingBottom === 0,
+    appear = false,
+    enter = true,
+    exit = true,
+    onEnter,
+    onEntering,
+    onEntered,
+    onExit,
+    onExiting,
+    onExited,
 }: CollapseTransitionHookOptions<E>): CollapseTransitionHookReturnValue<E> {
-  const [nodeRef, refCallback] = useEnsuredRef(propNodeRef);
-  const [style, setStyle] = useState<CSSProperties | undefined>(() => {
-    if (transitionIn) {
-      return undefined;
+    const [nodeRef, Refs] = useEnsuredRef(propNodeRef)
+    const style = $<CSSProperties | undefined>($$(() => {
+        if (transitionIn) {
+            return undefined
+        }
+
+        return {
+            maxHeight: minHeight,
+            paddingTop: minPaddingTop,
+            paddingBottom: minPaddingBottom,
+        }
+    }))
+
+
+    const transitionTimeout = getTransitionTimeout({
+        timeout,
+        appear,
+        enter,
+        exit,
+    })
+
+    const { appearing, rendered, ref, stage, transitionTo } = useTransition({
+        nodeRef: Refs as any,
+        timeout,
+        transitionIn,
+        reflow: true,
+        appear,
+        enter,
+        exit,
+        temporary,
+        onEnter(appearing) {
+            onEnter?.(appearing)
+            style({
+                maxHeight: minHeight,
+                paddingTop: minPaddingTop,
+                paddingBottom: minPaddingBottom,
+            })
+        },
+        onEntering(appearing) {
+            onEntering?.(appearing)
+            const { maxHeight, paddingTop, paddingBottom } = getElementSizing($$(nodeRef) as any)
+
+            const duration = appearing
+                ? transitionTimeout.appear
+                : transitionTimeout.enter
+
+            style({
+                maxHeight: maxHeight,
+                paddingTop,
+                paddingBottom,
+                transitionDuration: `${duration}ms`,
+            })
+        },
+        onEntered(appearing) {
+            onEntered?.(appearing)
+            style(undefined)
+        },
+        onExit() {
+            onExit?.()
+            const { maxHeight, paddingTop, paddingBottom } = getElementSizing($$(nodeRef) as any)
+
+            style({
+                maxHeight: maxHeight,
+                paddingTop,
+                paddingBottom,
+                transitionDuration: `${transitionTimeout.exit}ms`,
+            })
+        },
+        onExiting() {
+            onExiting?.()
+            style({
+                maxHeight: minHeight,
+                paddingTop: minPaddingTop,
+                paddingBottom: minPaddingBottom,
+                transitionDuration: `${transitionTimeout.exit}ms`,
+            })
+        },
+        onExited() {
+            onExited?.()
+            style({
+                maxHeight: minHeight,
+                paddingTop: minPaddingTop,
+                paddingBottom: minPaddingBottom,
+            })
+        },
+    })
+    const entering = stage === "enter" || stage === "entering"
+    const exiting = stage === "exit" || stage === "exiting"
+    const collapsible =
+        transitionTimeout.enter !== 0 || transitionTimeout.exit !== 0
+
+    const elementProps: CollapseElementProps<E> = {
+        ref,
+        style: mergeStyles($$(style), $$(propStyle)),
+        //@ts-ignore
+        className: [
+            {
+                "rmd-collapse": collapsible,
+                "rmd-collapse--enter": entering,
+                "rmd-collapse--leave": exiting,
+                "rmd-collapse--no-overflow": !transitionIn || style(),
+            },
+            className
+        ] || undefined,
+        hidden:
+            !transitionIn &&
+            rendered &&
+            stage === "exited" &&
+            !temporary &&
+            minHeight === 0 &&
+            minPaddingTop === 0 &&
+            minPaddingBottom === 0,
     }
 
     return {
-      maxHeight: minHeight,
-      paddingTop: minPaddingTop,
-      paddingBottom: minPaddingBottom,
-    };
-  });
-
-  const transitionTimeout = getTransitionTimeout({
-    timeout,
-    appear,
-    enter,
-    exit,
-  });
-
-  const { appearing, rendered, ref, stage, transitionTo } = useTransition({
-    nodeRef: refCallback,
-    timeout,
-    transitionIn,
-    reflow: true,
-    appear,
-    enter,
-    exit,
-    temporary,
-    onEnter(appearing) {
-      onEnter?.(appearing);
-      setStyle({
-        maxHeight: minHeight,
-        paddingTop: minPaddingTop,
-        paddingBottom: minPaddingBottom,
-      });
-    },
-    onEntering(appearing) {
-      onEntering?.(appearing);
-      const { maxHeight, paddingTop, paddingBottom } = getElementSizing(
-        nodeRef.current
-      );
-
-      const duration = appearing
-        ? transitionTimeout.appear
-        : transitionTimeout.enter;
-
-      setStyle({
-        maxHeight,
-        paddingTop,
-        paddingBottom,
-        transitionDuration: `${duration}ms`,
-      });
-    },
-    onEntered(appearing) {
-      onEntered?.(appearing);
-      setStyle(undefined);
-    },
-    onExit() {
-      onExit?.();
-      const { maxHeight, paddingTop, paddingBottom } = getElementSizing(
-        nodeRef.current
-      );
-
-      setStyle({
-        maxHeight,
-        paddingTop,
-        paddingBottom,
-        transitionDuration: `${transitionTimeout.exit}ms`,
-      });
-    },
-    onExiting() {
-      onExiting?.();
-      setStyle({
-        maxHeight: minHeight,
-        paddingTop: minPaddingTop,
-        paddingBottom: minPaddingBottom,
-        transitionDuration: `${transitionTimeout.exit}ms`,
-      });
-    },
-    onExited() {
-      onExited?.();
-      setStyle({
-        maxHeight: minHeight,
-        paddingTop: minPaddingTop,
-        paddingBottom: minPaddingBottom,
-      });
-    },
-  });
-  const entering = stage === "enter" || stage === "entering";
-  const exiting = stage === "exit" || stage === "exiting";
-  const collapsible =
-    transitionTimeout.enter !== 0 || transitionTimeout.exit !== 0;
-
-  const elementProps: CollapseElementProps<E> = {
-    ref,
-    style: { ...style, ...propStyle },
-    className:
-      cn(
-        {
-          "rmd-collapse": collapsible,
-          "rmd-collapse--enter": entering,
-          "rmd-collapse--leave": exiting,
-          "rmd-collapse--no-overflow": !transitionIn || style,
-        },
-        className
-      ) || undefined,
-    hidden:
-      !transitionIn &&
-      rendered &&
-      stage === "exited" &&
-      !temporary &&
-      minHeight === 0 &&
-      minPaddingTop === 0 &&
-      minPaddingBottom === 0,
-  };
-
-  return {
-    ...elementProps,
-    stage,
-    rendered,
-    appearing,
-    elementProps,
-    transitionTo,
-  };
+        ...elementProps,
+        stage,
+        rendered,
+        appearing,
+        elementProps,
+        transitionTo,
+    }
 }

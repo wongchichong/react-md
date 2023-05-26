@@ -1,6 +1,4 @@
-import type { CSSProperties } from "react";
-
-import type { RadioItemStyleObject, RadioItem } from "./types";
+import type { RadioItemStyleObject, RadioItem } from "./types"
 
 /**
  * Small util to get the value from a {@link RadioItem}.
@@ -10,7 +8,7 @@ import type { RadioItemStyleObject, RadioItem } from "./types";
  * @remarks \@since 2.7.0
  */
 export function getRadioItemValue(value: RadioItem): string {
-  return typeof value === "string" ? value : value.value;
+  return typeof value === "string" ? value : value.value
 }
 
 /**
@@ -23,7 +21,7 @@ export function getRadioItemValue(value: RadioItem): string {
  */
 export const defaultGetRadioStyle = (
   item: RadioItemStyleObject
-): CSSProperties | undefined => item.style;
+)/* : CSSProperties | undefined */ => item.style
 
 /**
  * This util will return the `className` string only if the `RadioItemValue`
@@ -33,6 +31,4 @@ export const defaultGetRadioStyle = (
  * @returns an optional className to provide to the radio
  * @remarks \@since 2.7.0
  */
-export const defaultGetRadioClassName = (
-  item: RadioItemStyleObject
-): string | undefined => item.className;
+export const defaultGetRadioClassName = (item: RadioItemStyleObject)/* : string | undefined */ => item.class //.className;

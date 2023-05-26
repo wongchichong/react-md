@@ -1,8 +1,9 @@
-import type { Dispatch, SetStateAction } from "react";
-import { useCallback, useState } from "react";
+import { Observable, $$ } from 'voby'
+import { $ } from 'voby'
 
-type ChangeEventHandler = React.ChangeEventHandler<HTMLInputElement>;
-type SetChecked = Dispatch<SetStateAction<boolean>>;
+//@ts-ignore
+type ChangeEventHandler = ChangeEventHandler<HTMLInputElement>
+// type SetChecked = Dispatch<SetStateAction<boolean>>
 
 /**
  * A small hook that can be used for controlling the state of a single Checkbox
@@ -16,21 +17,18 @@ type SetChecked = Dispatch<SetStateAction<boolean>>;
  * then a manual set checked action.
  */
 export function useChecked(
-  defaultChecked: boolean | (() => boolean),
-  onChange?: ChangeEventHandler
-): [boolean, ChangeEventHandler, SetChecked] {
-  const [checked, setChecked] = useState(defaultChecked);
+    defaultChecked: boolean | (() => boolean),
+    onChange?: ChangeEventHandler
+): [Observable<boolean>, ChangeEventHandler] {
+    const checked = $($$(defaultChecked))
 
-  const handleChange = useCallback<ChangeEventHandler>(
-    (event) => {
-      if (onChange) {
-        onChange(event);
-      }
+    const handleChange = $<ChangeEventHandler>((event) => {
+        if (onChange) {
+            onChange(event)
+        }
 
-      setChecked(event.currentTarget.checked);
-    },
-    [onChange]
-  );
+        checked(event.currentTarget.checked)
+    })
 
-  return [checked, handleChange, setChecked];
+    return [checked, handleChange, /* setChecked */]
 }

@@ -2,7 +2,7 @@ import type { ReactElement } from "react";
 
 import styles from "./NotFoundSVG.module.scss";
 
-export default function NotFoundSVG(): ReactElement {
+export default function NotFoundSVG(): Child {
   return (
     <svg
       viewBox="0 0 1920 1080"

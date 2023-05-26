@@ -1,15 +1,7 @@
 // This is a generated file from running the "createIcons" script. This file should not be updated manually.
-import { forwardRef } from "react";
 
 import { FontIcon, FontIconProps } from "@react-md/icon";
 
-export const SignalCellularNoSimFontIcon = forwardRef<
-  HTMLElement,
-  FontIconProps
->(function SignalCellularNoSimFontIcon(props, ref) {
-  return (
-    <FontIcon {...props} ref={ref}>
-      signal_cellular_no_sim
-    </FontIcon>
-  );
-});
+export const SignalCellularNoSimFontIcon = ({ref, ...props}: FontIconProps<HTMLElement>) => {
+    return <FontIcon {...props} ref={ref}>signal_cellular_no_sim</FontIcon>;
+}

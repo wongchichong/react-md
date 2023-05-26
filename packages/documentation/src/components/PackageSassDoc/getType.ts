@@ -1,4 +1,5 @@
-import type { FormattedSassDocItem } from "utils/sassdoc";
+import type { FormattedSassDocItem } from "@react-md/dev-utils/src/utils/";
+import "@react-md/dev-utils/@types/sassdoc";
 
 export default function getType(
   type: FormattedSassDocItem["type"]

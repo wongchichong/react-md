@@ -1,13 +1,13 @@
-import type { ChangeEvent, Dispatch, FocusEvent, SetStateAction } from "react";
-import { useCallback, useRef, useState } from "react";
-import { withinRange } from "@react-md/utils";
+import { Observable, $$ } from 'voby'
+import { $ } from 'voby'
+import { withinRange } from "@react-md/utils"
 
 import type {
   ProvidedTextFieldMessageProps,
   ProvidedTextFieldProps,
   TextFieldHookOptions,
-} from "./useTextField";
-import { useTextField } from "./useTextField";
+} from "./useTextField"
+import { useTextField } from "./useTextField"
 
 /**
  * @remarks \@since 2.5.0
@@ -16,12 +16,12 @@ export interface NumberFieldConstraints {
   /**
    * An optional min value for the number field.
    */
-  min?: number;
+  min?: FunctionMaybe<Nullable<number>>
 
   /**
    * An optional max value for the number field.
    */
-  max?: number;
+  max?: FunctionMaybe<Nullable<number>>
 
   /**
    * An optional step amount to use.
@@ -29,7 +29,7 @@ export interface NumberFieldConstraints {
    * Note: The `min` and `max` values must be divisible by this value when any
    * are defined.
    */
-  step?: number;
+  step?: FunctionMaybe<Nullable<number>>
 }
 
 /**
@@ -37,11 +37,11 @@ export interface NumberFieldConstraints {
  */
 export interface ProvidedNumberFieldProps
   extends NumberFieldConstraints,
-    ProvidedTextFieldProps {
+  ProvidedTextFieldProps {
   /**
    * Always set the `TextField` type to `number`.
    */
-  type: "number";
+  type: "number"
 }
 
 /**
@@ -55,38 +55,38 @@ export interface ProvidedNumberFieldProps
  *
  * @remarks \@since 2.5.0
  */
-export type FixNumberOnBlur = boolean | "min" | "max";
+export type FixNumberOnBlur = boolean | "min" | "max"
 
 /**
  * @remarks \@since 2.5.0
  */
 export interface ProvidedNumberFieldMessageProps
   extends ProvidedNumberFieldProps,
-    Pick<ProvidedTextFieldMessageProps, "messageProps"> {}
+  Pick<ProvidedTextFieldMessageProps, "messageProps"> { }
 
 /**
  * @remarks \@since 2.5.0
  */
 export interface NumberFieldHookOptions
   extends Omit<TextFieldHookOptions, "defaultValue">,
-    NumberFieldConstraints {
+  NumberFieldConstraints {
   /**
    * The default **number** value to use which can be a `number` or `undefined`.
    * When this value is set to a `number` (or a function that returns a
    * `number`), the returned value will never be `undefined`.
    */
-  defaultValue?: number | (() => number | undefined);
+  defaultValue?: FunctionMaybe<Nullable<number>> | (() => number | undefined)
 
   /**
    * @see {@link FixNumberOnBlur}
    */
-  fixOnBlur?: FixNumberOnBlur;
+  fixOnBlur?: FixNumberOnBlur
 
   /**
    * Boolean if the `number` value should be updated as the user types instead
    * of only once the text field has been blurred.
    */
-  updateOnChange?: boolean;
+  updateOnChange?: FunctionMaybe<Nullable<boolean>>
 }
 
 /**
@@ -97,8 +97,9 @@ export interface NumberFieldHookControls {
    * Resets the `number` value to the `defaultValue` and clears any error
    * states.
    */
-  reset(): void;
-  setNumber: Dispatch<SetStateAction<number | undefined>>;
+  reset(): void
+  // setNumber: Dispatch<SetStateAction<number | undefined>>;
+  number?: Observable<number | undefined>
 }
 
 /**
@@ -112,7 +113,7 @@ export type NumberFieldHookReturnType = [
   number | undefined,
   ProvidedNumberFieldProps | ProvidedNumberFieldMessageProps,
   NumberFieldHookControls
-];
+]
 
 // all the overloads for the `useNumberField` -- not sure if there's an easier
 // way to type these...
@@ -161,46 +162,46 @@ export type NumberFieldHookReturnType = [
  */
 export function useNumberField(
   options: NumberFieldHookOptions & {
-    defaultValue: number | (() => number);
-    disableMessage: true;
+    defaultValue: number | (() => number)
+    disableMessage: true
   }
-): [number, ProvidedNumberFieldProps, NumberFieldHookControls];
+): [number, ProvidedNumberFieldProps, NumberFieldHookControls]
 export function useNumberField(
   options: NumberFieldHookOptions & {
-    defaultValue: number | (() => number);
-    disableMessage: false;
+    defaultValue: number | (() => number)
+    disableMessage: false
   }
-): [number, ProvidedNumberFieldMessageProps, NumberFieldHookControls];
+): [number, ProvidedNumberFieldMessageProps, NumberFieldHookControls]
 export function useNumberField(
   options: NumberFieldHookOptions & {
-    defaultValue: number | (() => number);
-    disableMessage?: boolean;
+    defaultValue: number | (() => number)
+    disableMessage?: FunctionMaybe<Nullable<boolean>>
   }
-): [number, ProvidedNumberFieldMessageProps, NumberFieldHookControls];
+): [number, ProvidedNumberFieldMessageProps, NumberFieldHookControls]
 
 export function useNumberField(
   options: NumberFieldHookOptions & {
-    disableMessage: true;
+    disableMessage: true
   }
-): [number | undefined, ProvidedNumberFieldProps, NumberFieldHookControls];
+): [number | undefined, ProvidedNumberFieldProps, NumberFieldHookControls]
 export function useNumberField(
   options: NumberFieldHookOptions & {
-    disableMessage: false;
+    disableMessage: false
   }
 ): [
-  number | undefined,
-  ProvidedNumberFieldMessageProps,
-  NumberFieldHookControls
-];
+    number | undefined,
+    ProvidedNumberFieldMessageProps,
+    NumberFieldHookControls
+  ]
 export function useNumberField(
   options: NumberFieldHookOptions & {
-    disableMessage?: boolean;
+    disableMessage?: FunctionMaybe<Nullable<boolean>>
   }
 ): [
-  number | undefined,
-  ProvidedNumberFieldMessageProps,
-  NumberFieldHookControls
-];
+    number | undefined,
+    ProvidedNumberFieldMessageProps,
+    NumberFieldHookControls
+  ]
 export function useNumberField({
   id,
   defaultValue,
@@ -221,90 +222,92 @@ export function useNumberField({
   onErrorChange,
   getErrorIcon,
   getErrorMessage,
-  min,
-  max,
+  min: mn,
+  max: mx,
   step,
   fixOnBlur = true,
   updateOnChange = true,
 }: NumberFieldHookOptions): NumberFieldHookReturnType {
-  const [number, setNumber] = useState(defaultValue);
-  const initial = useRef(number);
+  const number = $($$(defaultValue))
+  const initial = $(number())
+  const min = $$(mn), max = $$(mx)
 
-  const handleBlur = useCallback(
-    (event: FocusEvent<HTMLInputElement>) => {
-      if (onBlur) {
-        onBlur(event);
-      }
+  const handleBlur = $((event: JSX.TargetedFocusEvent<HTMLInputElement>) => {
+    if (onBlur) {
+      //@ts-ignore
+      onBlur(event)
+    }
 
-      if (event.isPropagationStopped()) {
-        return;
-      }
+    //@ts-ignore
+    if (event.isPropagationStopped()) {
+      return
+    }
 
-      const input = event.currentTarget;
-      input.setCustomValidity("");
-      input.checkValidity();
-      if (
-        !fixOnBlur ||
-        // do nothing else since it's a weird value like: `"--0"` which causes
-        // the value to be `""` and `numberAsValue` to be `NaN`
-        input.validity.badInput ||
-        (input.validity.rangeUnderflow && fixOnBlur === "max") ||
-        (input.validity.rangeOverflow && fixOnBlur === "min")
-      ) {
-        return;
-      }
+    const input = event.currentTarget
+    //@ts-ignore
+    input.setCustomValidity("")
+    //@ts-ignore
+    input.checkValidity()
+    if (
+      !fixOnBlur ||
+      // do nothing else since it's a weird value like: `"--0"` which causes
+      // the value to be `""` and `numberAsValue` to be `NaN`
+      //@ts-ignore
+      input.validity.badInput || (input.validity.rangeUnderflow && fixOnBlur === "max") || (input.validity.rangeOverflow && fixOnBlur === "min")
+    ) {
+      return
+    }
 
-      let value = input.valueAsNumber;
-      if (input.value === "" && typeof initial.current === "number") {
-        value = min ?? initial.current;
-      }
+    //@ts-ignore
+    let value = input.valueAsNumber
+    //@ts-ignore
+    if (input.value === "" && typeof initial() === "number") {
+      value = min ?? initial()
+    }
 
-      // can't have both rangeUnderflow and rangeOverflow at the same time, so
-      // it's "safe" to always provide both
-      value = withinRange(value, min, max);
-      if (!Number.isNaN(value)) {
-        setNumber(value);
-        input.value = `${value}`;
-      } else if (typeof initial.current === "undefined") {
-        setNumber(undefined);
-      }
-    },
-    [onBlur, fixOnBlur, min, max]
-  );
+    // can't have both rangeUnderflow and rangeOverflow at the same time, so
+    // it's "safe" to always provide both
+    value = withinRange(value, min, max)
+    if (!Number.isNaN(value)) {
+      number(value)
+      //@ts-ignore
+      input.value = `${value}`
+    } else if (typeof initial() === "undefined") {
+      number(undefined)
+    }
+  })
 
-  const handleChange = useCallback(
-    (event: ChangeEvent<HTMLInputElement>) => {
-      if (onChange) {
-        onChange(event);
-      }
+  //@ts-ignore
+  const handleChange = $((event: ChangeEvent<HTMLInputElement>) => {
+    if (onChange) {
+      onChange(event)
+    }
 
-      if (event.isPropagationStopped() || !updateOnChange) {
-        return;
-      }
+    if (event.isPropagationStopped() || !updateOnChange) {
+      return
+    }
 
-      const input = event.currentTarget;
-      input.checkValidity();
-      const value = withinRange(event.currentTarget.valueAsNumber, min, max);
-      if (
-        !input.validity.valid &&
-        !input.validity.rangeUnderflow &&
-        !input.validity.rangeOverflow
-      ) {
-        return;
-      }
+    const input = event.currentTarget
+    input.checkValidity()
+    const value = withinRange(event.currentTarget.valueAsNumber, min, max)
+    if (
+      !input.validity.valid &&
+      !input.validity.rangeUnderflow &&
+      !input.validity.rangeOverflow
+    ) {
+      return
+    }
 
-      if (!Number.isNaN(value)) {
-        setNumber(value);
-      } else if (initial.current === undefined) {
-        setNumber(undefined);
-      }
-    },
-    [onChange, updateOnChange, min, max]
-  );
+    if (!Number.isNaN(value)) {
+      number(value)
+    } else if (initial(undefined)) {
+      number(undefined)
+    }
+  })
 
-  const [, props, { setState }] = useTextField({
+  const [, props, { state }] = useTextField({
     id,
-    defaultValue: `${number ?? ""}`,
+    defaultValue: `${number() ?? ""}`,
     theme,
     pattern,
     required,
@@ -322,49 +325,45 @@ export function useNumberField({
     onErrorChange,
     getErrorIcon,
     getErrorMessage,
-  });
+  })
 
-  const reset = useCallback(() => {
-    setNumber(initial.current);
-    setState({
-      value: `${initial.current ?? ""}`,
+  const reset = $(() => {
+    number(initial())
+    state({
+      value: `${initial() ?? ""}`,
       error: false,
       errorMessage: "",
-    });
-  }, [setState]);
+    })
+  })
 
-  const updateNumber = useCallback<
-    Dispatch<SetStateAction<number | undefined>>
-  >(
-    (value) => {
-      if (typeof value === "function") {
-        setNumber((prevNumber) => {
-          const updated = value(prevNumber);
-          setState((prevState) => ({
-            ...prevState,
-            value: `${updated ?? ""}`,
-          }));
+  //@ts-ignore
+  const updateNumber = $<number | undefined>($$((value) => {
+    if (typeof value === "function") {
+      number((prevNumber) => {
+        const updated = value(prevNumber)
+        state((prevState) => ({
+          ...prevState,
+          value: `${updated ?? ""}`,
+        }))
 
-          return updated;
-        });
-        return;
-      }
+        return updated
+      })
+      return
+    }
 
-      setNumber(value);
-      setState((prevState) => ({
-        ...prevState,
-        value: `${value ?? ""}`,
-      }));
-    },
-    [setState]
-  );
+    number(value)
+    state((prevState) => ({
+      ...prevState,
+      value: `${value ?? ""}`,
+    }))
+  }))
 
   return [
-    number,
+    number(),
     { ...props, min, max, step, type: "number" },
     {
       reset,
-      setNumber: updateNumber,
+      number: updateNumber,
     },
-  ];
+  ]
 }

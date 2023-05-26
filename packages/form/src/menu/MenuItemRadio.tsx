@@ -1,10 +1,10 @@
-import { forwardRef } from "react";
-import { useIcon } from "@react-md/icon";
-import type { BaseMenuItemInputToggleProps } from "./MenuItemInputToggle";
-import { MenuItemInputToggle } from "./MenuItemInputToggle";
+
+import { useIcon } from "@react-md/icon"
+import type { BaseMenuItemInputToggleProps } from "./MenuItemInputToggle"
+import { MenuItemInputToggle } from "./MenuItemInputToggle"
 
 /** @remarks \@since 2.8.0 */
-export type MenuItemRadioProps = BaseMenuItemInputToggleProps;
+export type MenuItemRadioProps = BaseMenuItemInputToggleProps
 
 /**
  * This is a simple wrapper for the {@link MenuItemInputToggle} component to
@@ -26,7 +26,7 @@ export type MenuItemRadioProps = BaseMenuItemInputToggleProps;
  * import { DropdownMenu } from "@react-md/menu";
  * import { MenuItemRadio } from "@react-md/form";
  *
- * function Example(): ReactElement {
+ * function Example(): Child {
  *   const [value, setValue] = useState("value1");
  *
  *   return (
@@ -64,7 +64,7 @@ export type MenuItemRadioProps = BaseMenuItemInputToggleProps;
  * import { DropdownMenu, MenuItemGroup, MenuItemSeparator } from "@react-md/menu";
  * import { MenuItemRadio, MenuItemSwitch } from "@react-md/form";
  *
- * function Example(): ReactElement {
+ * function Example(): Child {
  *   const [value, setValue] = useState("value1");
  *
  *   return (
@@ -107,11 +107,10 @@ export type MenuItemRadioProps = BaseMenuItemInputToggleProps;
  *
  * @remarks \@since 2.8.0
  */
-export const MenuItemRadio = forwardRef<HTMLLIElement, MenuItemRadioProps>(
-  function MenuItemRadio({ icon: propIcon, ...props }, ref) {
-    const icon = useIcon("radio", propIcon);
-    return (
-      <MenuItemInputToggle {...props} ref={ref} icon={icon} type="radio" />
-    );
-  }
-);
+export const MenuItemRadio = ({ icon: propIcon, ref, ...props }) => {
+  const icon = useIcon("radio", propIcon)
+  //@ts-ignore
+  return <MenuItemInputToggle {...props} ref={ref} icon={icon} type="radio" />
+
+}
+

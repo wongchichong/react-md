@@ -3,7 +3,7 @@ import TooltippedBadgedButton from "./TooltippedBadgedButton";
 
 import styles from "./SimpleExamples.module.scss";
 
-export default function WithTooltips(): ReactElement {
+export default function WithTooltips(): Child {
   return (
     <>
       <TooltippedBadgedButton

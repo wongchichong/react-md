@@ -1,4 +1,4 @@
-import type { MutableRefObject, Ref } from "react";
+import { $$ } from 'voby'
 
 /**
  * A small utility function that allows me to apply a passed in ref along with
@@ -7,14 +7,17 @@ import type { MutableRefObject, Ref } from "react";
  * @param instance - The DOM Node instance
  * @param ref - The prop ref
  */
-export function applyRef<E>(instance: E | null, ref?: Ref<E>): void {
-  if (!ref) {
-    return;
-  }
+export function applyRef<E>(instance: FunctionMaybe<E | null>, ref?: Refs<E>): void {
+  if (!ref)
+    return
 
-  if (typeof ref === "function") {
-    ref(instance);
-  } else if (typeof ref === "object") {
-    (ref as MutableRefObject<E | null>).current = instance;
-  }
+  const e = $$(instance)
+  if (typeof ref === "function")
+    ref(e)
+  else if (Array.isArray(ref))
+    ref.flat().forEach(r => (r as Ref)(e))
+
+  // else if (typeof ref === "object") {
+  //   (ref as ObservableMaybe<E | null>).current = instance;
+  // }
 }

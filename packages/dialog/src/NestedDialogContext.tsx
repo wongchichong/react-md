@@ -1,37 +1,41 @@
-import type { ReactElement, ReactNode } from "react";
+/// <reference types="@react-md/react"/>
+
+import '@react-md/react'
+
 import {
   createContext,
-  useCallback,
+  $,
   useContext,
   useMemo,
-  useState,
-} from "react";
+} from 'voby'
 
 interface NestedDialogContext {
-  stack: readonly string[];
-  add: (dialogId: string) => void;
-  remove: (dialogId: string) => void;
+  stack: readonly string[]
+  add: (dialogId: string) => void
+  remove: (dialogId: string) => void
 }
 
 const noop = (): void => {
   // do nothing
-};
+}
 
 const context = createContext<NestedDialogContext>({
   stack: [],
   add: noop,
   remove: noop,
-});
+})
 
 /* istanbul ignore next */
+//@ts-ignore
 if (process.env.NODE_ENV !== "production") {
-  context.displayName = "NestedDialogContext";
+  //@ts-ignore
+  context.displayName = "NestedDialogContext"
 }
 
-const { Provider } = context;
+const { Provider } = context
 
 export interface NestedDialogContextProviderProps {
-  children: ReactNode;
+  children: Children
 }
 
 /**
@@ -42,12 +46,10 @@ export interface NestedDialogContextProviderProps {
  * This should be added to the root of your app if you would like to enable this
  * feature.
  */
-export function NestedDialogContextProvider({
-  children,
-}: NestedDialogContextProviderProps): ReactElement {
-  const [stack, setStack] = useState<readonly string[]>([]);
-  const add = useCallback((dialogId: string) => {
-    setStack((prevStack) => {
+export function NestedDialogContextProvider({ children, }: NestedDialogContextProviderProps): Element {
+  const stack = $<readonly string[]>([])
+  const add = $((dialogId: string) => {
+    stack((prevStack) => {
       /* istanbul ignore next */
       if (
         process.env.NODE_ENV !== "production" &&
@@ -56,24 +58,24 @@ export function NestedDialogContextProvider({
         /* eslint-disable no-console */
         console.warn(
           "Tried to add a duplicate dialog id to the `NestedDialogContext`."
-        );
+        )
         console.warn(
           `This means that you have two dialogs with the same id: \`${dialogId}\`.`
-        );
+        )
         console.warn(
           "This should be fixed before moving to production since this will break accessibility and is technically invalid."
-        );
+        )
       }
 
-      return prevStack.concat(dialogId);
-    });
-  }, []);
-  const remove = useCallback((dialogId: string) => {
-    setStack((prevStack) => prevStack.filter((id) => id !== dialogId));
-  }, []);
-  const value = useMemo(() => ({ stack, add, remove }), [add, remove, stack]);
+      return prevStack.concat(dialogId)
+    })
+  })
+  const remove = $((dialogId: string) => {
+    stack((prevStack) => prevStack.filter((id) => id !== dialogId))
+  })
+  const value = useMemo(() => ({ stack: stack(), add, remove }))
 
-  return <Provider value={value}>{children}</Provider>;
+  return <Provider value={value}>{children}</Provider>
 }
 
 /**
@@ -83,5 +85,5 @@ export function NestedDialogContextProvider({
  * @internal
  */
 export function useNestedDialogContext(): NestedDialogContext {
-  return useContext(context);
+  return useContext(context)
 }

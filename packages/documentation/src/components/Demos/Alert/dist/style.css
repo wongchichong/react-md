@@ -1,0 +1,39 @@
+.code {
+  font-family: Roboto, sans-serif;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  font-weight: 400;
+  letter-spacing: 0.0357142857em;
+  text-decoration: inherit;
+  text-transform: inherit;
+  font-family: "Source Code Pro", Consolas, Monaco, monospace;
+}
+
+.inline {
+  color: var(--code-color);
+  white-space: pre-wrap;
+}
+
+.ticked::before, .ticked::after {
+  content: "`";
+}
+
+.oneline {
+  white-space: nowrap;
+}.output {
+  box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  height: 25rem;
+  margin-bottom: 2rem;
+  padding: 1rem;
+}.output {
+  box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  height: 25rem;
+  margin-bottom: 2rem;
+  padding: 1rem;
+}

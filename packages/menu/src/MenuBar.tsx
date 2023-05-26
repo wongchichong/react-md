@@ -1,13 +1,13 @@
-import type { ReactElement } from "react";
-import { KeyboardMovementProvider } from "@react-md/utils";
+import type { Element } from 'voby'
+import { KeyboardMovementProvider } from "@react-md/utils"
 
-import type { HoverableMenuBar } from "./MenuBarProvider";
-import { MenuBarProvider } from "./MenuBarProvider";
-import type { MenuBarWidgetProps } from "./MenuBarWidget";
-import { MenuBarWidget } from "./MenuBarWidget";
+import type { HoverableMenuBar } from "./MenuBarProvider"
+import { MenuBarProvider } from "./MenuBarProvider"
+import type { MenuBarWidgetProps } from "./MenuBarWidget"
+import { MenuBarWidget } from "./MenuBarWidget"
 
 /** @remarks \@since 5.0.0 */
-export type MenuBarProps = MenuBarWidgetProps & HoverableMenuBar;
+export type MenuBarProps = MenuBarWidgetProps & HoverableMenuBar
 
 /**
  * The `MenuBar` component is used to link child `DropdownGroup`s' visibility
@@ -20,7 +20,7 @@ export type MenuBarProps = MenuBarWidgetProps & HoverableMenuBar;
  * import type { ReactElement } from "react";
  * import { MenuBar, DropdownMenu, MenuItem } from "@react-md/menu";
  *
- * function Example(): ReactElement {
+ * function Example(): Element {
  *   return (
  *     <MenuBar aria-label="Example">
  *       <DropdownMenu id="menubar-item-1" buttonChildren="Item 1">
@@ -39,19 +39,19 @@ export type MenuBarProps = MenuBarWidgetProps & HoverableMenuBar;
  * @remarks \@since 5.0.0
  */
 export function MenuBar({
-  hoverTimeout,
-  ...props
-}: MenuBarProps): ReactElement {
-  return (
-    <MenuBarProvider hoverTimeout={hoverTimeout}>
-      <KeyboardMovementProvider
-        loopable
-        searchable
-        incrementKeys={["ArrowRight"]}
-        decrementKeys={["ArrowLeft"]}
-      >
-        <MenuBarWidget {...props} />
-      </KeyboardMovementProvider>
-    </MenuBarProvider>
-  );
+    hoverTimeout,
+    ...props
+}: MenuBarProps): Element {
+    return (
+        <MenuBarProvider hoverTimeout={hoverTimeout}>
+            <KeyboardMovementProvider
+                loopable
+                searchable
+                incrementKeys={["ArrowRight"]}
+                decrementKeys={["ArrowLeft"]}
+            >
+                <MenuBarWidget {...props} />
+            </KeyboardMovementProvider>
+        </MenuBarProvider>
+    )
 }

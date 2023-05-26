@@ -3,7 +3,8 @@ import { Dialog, DialogContent, DialogHeader } from "@react-md/dialog";
 import { Typography } from "@react-md/typography";
 import { useAppSize } from "@react-md/utils";
 
-import tocs from "constants/meta/tocs";
+//@ts-ignore
+import tocs from "../../constants/meta/tocs";
 
 import List from "./List";
 import Toggle from "./Toggle";

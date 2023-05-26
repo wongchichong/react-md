@@ -1,0 +1,26 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "./bin",
+    "rootDir": "./scripts",
+    "target": "ESNext",
+    "module": "CommonJS"
+  },
+  "exclude": [
+    "vite.config.ts",
+    "vite.config.umd.ts",
+    "./src/**",
+    "./src ori/**",
+    "**/dist/**",
+    "**/voby/**",
+    "**/lib/**",
+    "**/bin/**",
+    "**/types/**",
+    "**/__tests__/**"
+  ],
+  "references": [
+    {
+      "path": "../icon"
+    }
+  ]
+}

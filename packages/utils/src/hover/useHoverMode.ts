@@ -1,27 +1,27 @@
-import type { Dispatch, MouseEvent, SetStateAction } from "react";
-import { useCallback, useEffect, useRef, useState } from "react";
+// import type { Dispatch, JSX.TargetedMouseEvent, SetStateAction } from 'voby'
+import { $, Observable, useEffect, $$ } from 'voby'
 
-import { useUserInteractionMode } from "../mode";
-import { useOnUnmount } from "../useOnUnmount";
-import { DEFAULT_HOVER_MODE_EXIT_TIME } from "./constants";
-import type { HoverModeActions } from "./useHoverModeContext";
-import { useHoverModeContext } from "./useHoverModeContext";
+import { useUserInteractionMode } from "../mode"
+import { useOnUnmount } from "../useOnUnmount"
+import { DEFAULT_HOVER_MODE_EXIT_TIME } from "./constants"
+import type { HoverModeActions } from "./useHoverModeContext"
+import { useHoverModeContext } from "./useHoverModeContext"
 
 /** @remarks \@since 5.0.0 */
 export interface HoverModeHoverEventHandlers {
-  /**
-   * An optional event handler to merge with the hover mode visibility handler.
-   * If this function calls `event.stopPropagation()`, the hover mode behavior
-   * will be disabled.
-   */
-  onMouseEnter<E extends HTMLElement>(event: MouseEvent<E>): void;
+    /**
+     * An optional event handler to merge with the hover mode visibility handler.
+     * If this function calls `event.stopPropagation()`, the hover mode behavior
+     * will be disabled.
+     */
+    onMouseEnter<E extends HTMLElement>(event: JSX.TargetedMouseEvent<E>): void
 
-  /**
-   * An optional event handler to merge with the hover mode visibility handler.
-   * If this function calls `event.stopPropagation()`, the hover mode behavior
-   * will be disabled.
-   */
-  onMouseLeave<E extends HTMLElement>(event: MouseEvent<E>): void;
+    /**
+     * An optional event handler to merge with the hover mode visibility handler.
+     * If this function calls `event.stopPropagation()`, the hover mode behavior
+     * will be disabled.
+     */
+    onMouseLeave<E extends HTMLElement>(event: JSX.TargetedMouseEvent<E>): void
 }
 
 /**
@@ -34,12 +34,12 @@ export interface HoverModeHoverEventHandlers {
  * using them on multiple components.
  */
 export interface HoverModeEventHandlers extends HoverModeHoverEventHandlers {
-  /**
-   * An optional event handler to merge with the hover mode visibility handler.
-   * If this function calls `event.stopPropagation()`, the hover mode behavior
-   * will be disabled.
-   */
-  onClick<E extends HTMLElement>(event: MouseEvent<E>): void;
+    /**
+     * An optional event handler to merge with the hover mode visibility handler.
+     * If this function calls `event.stopPropagation()`, the hover mode behavior
+     * will be disabled.
+     */
+    onClick<E extends HTMLElement>(event: JSX.TargetedMouseEvent<E>): void
 }
 
 /**
@@ -47,80 +47,80 @@ export interface HoverModeEventHandlers extends HoverModeHoverEventHandlers {
  * @remarks \@since 5.0.0 No longer has event handlers or a separate "sticky" API.
  */
 export interface HoverModeOptions {
-  /**
-   * Boolean if the hover mode functionality should be disabled.
-   *
-   * @defaultValue `false`
-   */
-  disabled?: boolean;
+    /**
+     * Boolean if the hover mode functionality should be disabled.
+     *
+     * @defaultValue `false`
+     */
+    disabled?: FunctionMaybe<Nullable<boolean>>
 
-  /**
-   * Boolean if the element should start visible.
-   *
-   * @defaultValue `false`
-   */
-  defaultVisible?: boolean;
+    /**
+     * Boolean if the element should start visible.
+     *
+     * @defaultValue `false`
+     */
+    defaultVisible?: FunctionMaybe<Nullable<boolean>>
 
-  /**
-   * The amount of time to wait once the mouse has left the element before
-   * setting the visibility to `false`.
-   *
-   * @defaultValue {@link DEFAULT_HOVER_MODE_EXIT_TIME}
-   */
-  exitVisibilityDelay?: number;
+    /**
+     * The amount of time to wait once the mouse has left the element before
+     * setting the visibility to `false`.
+     *
+     * @defaultValue {@link DEFAULT_HOVER_MODE_EXIT_TIME}
+     */
+    exitVisibilityDelay?: FunctionMaybe<Nullable<number>>
 }
 
 /**
  * @remarks \@since 5.0.0
  */
 export interface HoverModeHookReturnValue
-  extends HoverModeActions,
+    extends HoverModeActions,
     HoverModeEventHandlers {
-  /**
-   * Boolean if the hover mode is currently working.
-   */
-  active: boolean;
+    /**
+     * Boolean if the hover mode is currently working.
+     */
+    active: FunctionMaybe<boolean>
 
-  /**
-   * Boolean if the the `visible` state is `true` because the user clicked an
-   * element.
-   */
-  stuck: boolean;
+    /**
+     * Boolean if the the `visible` state is `true` because the user clicked an
+     * element.
+     */
+    stuck: Observable<boolean>
 
-  /**
-   * Boolean if the temporary element should be visible.
-   */
-  visible: boolean;
+    /**
+     * Boolean if the temporary element should be visible.
+     */
+    visible: Observable<boolean>
 
-  /**
-   * A function to manually set the visibility state if you need even more
-   * custom behavior.
-   */
-  setVisible: Dispatch<SetStateAction<boolean>>;
+    /**
+     * A function to manually set the visibility state if you need even more
+     * custom behavior.
+     */
+    // setVisible: ObservableMaybe<boolean>
 
-  /**
-   * A convenience prop that allows you to spread all the hover mode event
-   * handlers onto a single component if no custom functionality is required.
-   *
-   * @remarks \@since 5.0.0
-   */
-  handlers: Readonly<HoverModeEventHandlers>;
+    /**
+     * A convenience prop that allows you to spread all the hover mode event
+     * handlers onto a single component if no custom functionality is required.
+     *
+     * @remarks \@since 5.0.0
+     */
+    handlers: Readonly<HoverModeEventHandlers>
 
-  /**
-   * A convenience prop that allows you to spread only the `onMouseEnter` and
-   * `onMouseLeave` the hover mode event handlers onto a single component if no
-   * custom functionality is required.
-   *
-   * @remarks \@since 5.0.0
-   */
-  hoverHandlers: Readonly<HoverModeHoverEventHandlers>;
+    /**
+     * A convenience prop that allows you to spread only the `onMouseEnter` and
+     * `onMouseLeave` the hover mode event handlers onto a single component if no
+     * custom functionality is required.
+     *
+     * @remarks \@since 5.0.0
+     */
+    hoverHandlers: Readonly<HoverModeHoverEventHandlers>
 
-  /**
-   * Clears the current `onMouseEnter` visibility timer.
-   *
-   * @remarks \@since 5.0.0
-   */
-  clearHoverTimeout(): void;
+    /**
+     * Clears the current `onMouseEnter` visibility timer.
+     *
+     * @remarks \@since 5.0.0
+     */
+    clearHoverTimeout(): void
 }
 
 /**
@@ -137,7 +137,7 @@ export interface HoverModeHookReturnValue
  *   value: string;
  * }
  *
- * export default function Color({ value }: Props): ReactElement {
+ * export default function Color({ value }: Props): Child {
  *   const { visible, onMouseEnter, onMouseLeave } =
  *     useHoverMode({ exitVisibilityDelay: 0 });
  *
@@ -215,131 +215,111 @@ export interface HoverModeHookReturnValue
  * @returns either the {@link HoverModeReturnValue} or {@link HoverModeReturnValue}
  */
 export function useHoverMode({
-  disabled = false,
-  defaultVisible = false,
-  exitVisibilityDelay = DEFAULT_HOVER_MODE_EXIT_TIME,
+    disabled = false,
+    defaultVisible = false,
+    exitVisibilityDelay = DEFAULT_HOVER_MODE_EXIT_TIME,
 }: HoverModeOptions = {}): HoverModeHookReturnValue {
-  const mode = useUserInteractionMode();
-  const isTouch = mode === "touch";
-  const [visible, setVisible] = useState(defaultVisible);
-  const [stuck, setStuck] = useState(false);
-  const timeoutRef = useRef<number>();
-  const {
-    visibleInTime,
-    enableHoverMode,
-    disableHoverMode,
-    startDisableTimer,
-  } = useHoverModeContext();
-  const active = visibleInTime === 0;
+    const mode = useUserInteractionMode()
+    const isTouch = mode === "touch"
+    const visible = $($$(defaultVisible))
+    const stuck = $(false)
+    const timeoutRef = $<number>()
+    const {
+        visibleInTime,
+        enableHoverMode,
+        disableHoverMode,
+        startDisableTimer,
+    } = useHoverModeContext()
+    const active = visibleInTime === 0
 
-  useEffect(() => {
-    if (!visible) {
-      setStuck(false);
+    useEffect(() => {
+        if (!visible()) {
+            stuck(false)
+        }
+    })
+
+    useOnUnmount(() => {
+        window.clearTimeout(timeoutRef())
+    })
+
+    const clearHoverTimeout = $(() => {
+        window.clearTimeout(timeoutRef())
+    })
+
+    const onMouseEnter = $(<E extends HTMLElement>(event: JSX.TargetedMouseEvent<E>) => {
+        //@ts-ignore
+        if (stuck() || disabled || isTouch || event.isPropagationStopped()) {
+            return
+        }
+
+        clearHoverTimeout()
+        if (visibleInTime === 0) {
+            enableHoverMode()
+            visible(true)
+            return
+        }
+
+        timeoutRef(window.setTimeout(() => {
+            enableHoverMode()
+            visible(true)
+        }, $$(visibleInTime)))
+    })
+
+    const onMouseLeave = $(<E extends HTMLElement>(event: JSX.TargetedMouseEvent<E>) => {
+        //@ts-ignore
+        if (stuck() || disabled || isTouch || event.isPropagationStopped()) {
+            return
+        }
+
+        startDisableTimer()
+        clearHoverTimeout()
+        if (exitVisibilityDelay === 0) {
+            visible(false)
+            return
+        }
+
+        timeoutRef(window.setTimeout(() => {
+            visible(false)
+        }, $$(exitVisibilityDelay)))
+    })
+
+    const onClick = $(<E extends HTMLElement>(event: JSX.TargetedMouseEvent<E>) => {
+        //@ts-ignore
+        if (event.isPropagationStopped()) {
+            return
+        }
+
+        // If the hover mode functionality is disabled, just allow this to behave
+        // like a toggle visibility handler.
+        if (!stuck() && !disabled) {
+            stuck(true)
+            visible(true)
+        } else {
+            stuck(false)
+            visible((prevVisible) => !prevVisible)
+        }
+    })
+
+    return {
+        active,
+        stuck,
+        // setVisible: visible,
+        visible, //: visible(),
+        onClick,
+        onMouseEnter,
+        onMouseLeave,
+        enableHoverMode,
+        disableHoverMode,
+        startDisableTimer,
+        clearHoverTimeout,
+        handlers: {
+            onClick,
+            onMouseEnter,
+            onMouseLeave,
+        },
+        hoverHandlers: {
+            onMouseEnter,
+            onMouseLeave,
+        },
     }
-  }, [visible]);
-
-  useOnUnmount(() => {
-    window.clearTimeout(timeoutRef.current);
-  });
-
-  const clearHoverTimeout = useCallback(() => {
-    window.clearTimeout(timeoutRef.current);
-  }, []);
-
-  const onMouseEnter = useCallback(
-    <E extends HTMLElement>(event: MouseEvent<E>) => {
-      if (stuck || disabled || isTouch || event.isPropagationStopped()) {
-        return;
-      }
-
-      clearHoverTimeout();
-      if (visibleInTime === 0) {
-        enableHoverMode();
-        setVisible(true);
-        return;
-      }
-
-      timeoutRef.current = window.setTimeout(() => {
-        enableHoverMode();
-        setVisible(true);
-      }, visibleInTime);
-    },
-    [
-      clearHoverTimeout,
-      disabled,
-      enableHoverMode,
-      isTouch,
-      stuck,
-      visibleInTime,
-    ]
-  );
-
-  const onMouseLeave = useCallback(
-    <E extends HTMLElement>(event: MouseEvent<E>) => {
-      if (stuck || disabled || isTouch || event.isPropagationStopped()) {
-        return;
-      }
-
-      startDisableTimer();
-      clearHoverTimeout();
-      if (exitVisibilityDelay === 0) {
-        setVisible(false);
-        return;
-      }
-
-      timeoutRef.current = window.setTimeout(() => {
-        setVisible(false);
-      }, exitVisibilityDelay);
-    },
-    [
-      clearHoverTimeout,
-      disabled,
-      exitVisibilityDelay,
-      isTouch,
-      startDisableTimer,
-      stuck,
-    ]
-  );
-
-  const onClick = useCallback(
-    <E extends HTMLElement>(event: MouseEvent<E>) => {
-      if (event.isPropagationStopped()) {
-        return;
-      }
-
-      // If the hover mode functionality is disabled, just allow this to behave
-      // like a toggle visibility handler.
-      if (!stuck && !disabled) {
-        setStuck(true);
-        setVisible(true);
-      } else {
-        setStuck(false);
-        setVisible((prevVisible) => !prevVisible);
-      }
-    },
-    [disabled, stuck]
-  );
-
-  return {
-    active,
-    stuck,
-    visible,
-    setVisible,
-    onClick,
-    onMouseEnter,
-    onMouseLeave,
-    enableHoverMode,
-    disableHoverMode,
-    startDisableTimer,
-    clearHoverTimeout,
-    handlers: {
-      onClick,
-      onMouseEnter,
-      onMouseLeave,
-    },
-    hoverHandlers: {
-      onMouseEnter,
-      onMouseLeave,
-    },
-  };
 }

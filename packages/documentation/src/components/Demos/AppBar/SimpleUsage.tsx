@@ -16,7 +16,7 @@ import Container from "./Container";
 
 const themes: AppBarTheme[] = ["primary", "secondary", "default", "clear"];
 
-export default function SimpleUsage(): ReactElement {
+export default function SimpleUsage(): Child {
   return (
     <Container>
       {themes.map((theme, i) => (

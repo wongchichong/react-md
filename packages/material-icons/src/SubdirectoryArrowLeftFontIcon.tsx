@@ -1,15 +1,7 @@
 // This is a generated file from running the "createIcons" script. This file should not be updated manually.
-import { forwardRef } from "react";
 
 import { FontIcon, FontIconProps } from "@react-md/icon";
 
-export const SubdirectoryArrowLeftFontIcon = forwardRef<
-  HTMLElement,
-  FontIconProps
->(function SubdirectoryArrowLeftFontIcon(props, ref) {
-  return (
-    <FontIcon {...props} ref={ref}>
-      subdirectory_arrow_left
-    </FontIcon>
-  );
-});
+export const SubdirectoryArrowLeftFontIcon = ({ref, ...props}: FontIconProps<HTMLElement>) => {
+    return <FontIcon {...props} ref={ref}>subdirectory_arrow_left</FontIcon>;
+}

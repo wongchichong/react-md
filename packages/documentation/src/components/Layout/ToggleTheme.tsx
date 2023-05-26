@@ -12,7 +12,7 @@ export interface ToggleThemeProps {
   as: "action" | "menuitem";
 }
 
-export default function ToggleTheme({ as }: ToggleThemeProps): ReactElement {
+export default function ToggleTheme({ as }: ToggleThemeProps): Child {
   const { theme } = useTheme();
   const { toggleTheme } = useThemeActions();
   const isLight = theme === "light";

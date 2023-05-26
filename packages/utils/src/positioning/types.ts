@@ -14,7 +14,7 @@
  * Bottom:
  * - the container bottom is in-line with the bottom of the element
  */
-export type VerticalPosition = "above" | "below" | "center" | "top" | "bottom";
+export type VerticalPosition = "above" | "below" | "center" | "top" | "bottom"
 
 /**
  * Left:
@@ -38,15 +38,15 @@ export type HorizontalPosition =
   | "right"
   | "center"
   | "inner-left"
-  | "inner-right";
+  | "inner-right"
 
 /**
  * An object containing the x and y positions to anchor a fixed element to
  * another container element.
  */
 export interface PositionAnchor {
-  x: HorizontalPosition;
-  y: VerticalPosition;
+  x: HorizontalPosition
+  y: VerticalPosition
 }
 
 /**
@@ -54,7 +54,7 @@ export interface PositionAnchor {
  * across all of react-md as it'll use the "center" version of the opposite type
  * when creating a fixed position.
  */
-export type SimplePosition = "above" | "below" | "left" | "right";
+export type SimplePosition = "above" | "below" | "left" | "right"
 
 /**
  * An optional configuration for calculating and setting the width of the
@@ -70,7 +70,7 @@ export type SimplePosition = "above" | "below" | "left" | "right";
  *
  * @defaultValue `"auto"`
  */
-export type PositionWidth = "auto" | "equal" | "min";
+export type PositionWidth = "auto" | "equal" | "min"
 
 export interface InitialCoords {
   /**
@@ -79,7 +79,7 @@ export interface InitialCoords {
    * the other positioning logic will still be in effect to ensure the element
    * will be visible within the viewport.
    */
-  initialX?: number;
+  initialX?: FunctionMaybe<Nullable<number>>
 
   /**
    * The initial y value to use when calculating the position instead of
@@ -87,7 +87,7 @@ export interface InitialCoords {
    * the other positioning logic will still be in effect to ensure the element
    * will be visible within the viewport.
    */
-  initialY?: number;
+  initialY?: FunctionMaybe<Nullable<number>>
 }
 
 /** @remarks \@since 4.0.0 */
@@ -97,7 +97,7 @@ export interface CalculateFixedPositionOptions extends InitialCoords {
    *
    * @defaultValue `BELOW_CENTER_ANCHOR`
    */
-  anchor?: PositionAnchor;
+  anchor?: FunctionMaybe<Nullable<PositionAnchor>>
 
   /**
    * The viewwidth margin to apply so that the element doesn't need to be
@@ -105,7 +105,7 @@ export interface CalculateFixedPositionOptions extends InitialCoords {
    *
    * @defaultValue `16`
    */
-  vwMargin?: number;
+  vwMargin?: FunctionMaybe<Nullable<number>>
 
   /**
    * The viewwidth margin to apply so that the element doesn't need to be
@@ -113,7 +113,7 @@ export interface CalculateFixedPositionOptions extends InitialCoords {
    *
    * @defaultValue `16`
    */
-  vhMargin?: number;
+  vhMargin?: FunctionMaybe<Nullable<number>>
 
   /**
    * The container width margin to apply so that the element doesn't need to be
@@ -121,7 +121,7 @@ export interface CalculateFixedPositionOptions extends InitialCoords {
    *
    * @defaultValue `0`
    */
-  xMargin?: number;
+  xMargin?: FunctionMaybe<Nullable<number>>
 
   /**
    * The container height margin to apply so that the element doesn't need to be
@@ -129,10 +129,10 @@ export interface CalculateFixedPositionOptions extends InitialCoords {
    *
    * @defaultValue `0`
    */
-  yMargin?: number;
+  yMargin?: FunctionMaybe<Nullable<number>>
 
   /** {@inheritDoc PositionWidth} */
-  width?: PositionWidth;
+  width?: PositionWidth
 
   /**
    * Boolean if the style object should include the `transformOrigin` value
@@ -140,7 +140,7 @@ export interface CalculateFixedPositionOptions extends InitialCoords {
    *
    * @defaultValue `false`
    */
-  transformOrigin?: boolean;
+  transformOrigin?: FunctionMaybe<Nullable<boolean>>
 
   /**
    * Boolean if the fixed element should no longer be able to overlap the
@@ -150,7 +150,7 @@ export interface CalculateFixedPositionOptions extends InitialCoords {
    *
    * @defaultValue `false`
    */
-  preventOverlap?: boolean;
+  preventOverlap?: FunctionMaybe<Nullable<boolean>>
 
   /**
    * Boolean if the auto-swapping behavior should be disabled. It's normally
@@ -161,7 +161,7 @@ export interface CalculateFixedPositionOptions extends InitialCoords {
    * @remarks \@since 5.0.0 This will always be `true` if the
    * {@link FixedPositionOptions.container} is `null`.
    */
-  disableSwapping?: boolean;
+  disableSwapping?: FunctionMaybe<Nullable<boolean>>
 
   /**
    * Boolean if the fixed positioning should no longer prevent the fixed element
@@ -170,19 +170,19 @@ export interface CalculateFixedPositionOptions extends InitialCoords {
    *
    * @defaultValue `false`
    */
-  disableVHBounds?: boolean;
+  disableVHBounds?: FunctionMaybe<Nullable<boolean>>
 }
 
 export interface FixedPositionOptions extends CalculateFixedPositionOptions {
   /**
    * The container element that the `element` should be fixed to.
    */
-  container: HTMLElement | null;
+  container: HTMLElement | null
 
   /**
    * The element that is fixed to a `container` element.
    */
-  element: HTMLElement | null;
+  element: HTMLElement | null
 }
 
 /**
@@ -197,12 +197,12 @@ export interface FixedPositionOptions extends CalculateFixedPositionOptions {
  * @internal
  */
 export interface Coords {
-  top?: number;
-  right?: number;
-  bottom?: number;
-  left?: number;
-  width?: number;
-  minWidth?: number;
+  top?: FunctionMaybe<Nullable<number>>
+  right?: FunctionMaybe<Nullable<number>>
+  bottom?: FunctionMaybe<Nullable<number>>
+  left?: FunctionMaybe<Nullable<number>>
+  width?: FunctionMaybe<Nullable<number>>
+  minWidth?: FunctionMaybe<Nullable<number>>
 }
 
 /**
@@ -220,13 +220,13 @@ export interface FixedPositionStyle extends Coords {
    * This will be `"fixed"` unless
    * {@link CalculateFixedPositionOptions.disableVHBounds} is set to `true`.
    */
-  position: "fixed" | "absolute";
+  position: FunctionMaybe<"fixed" | "absolute">
 
   /**
    * This will be `undefined` unless
    * {@link CalculateFixedPositionOptions.transformOrigin} is set to `true`
    */
-  transformOrigin?: string;
+  transformOrigin?: FunctionMaybe<Nullable<string>>
 }
 
 /**
@@ -240,14 +240,14 @@ export interface FixedPosition {
    * provided horizontal position anchor if additional manual updates should be
    * applied.
    */
-  actualX: HorizontalPosition;
+  actualX: FunctionMaybe<HorizontalPosition>
 
   /**
    * The calculated vertical position that can be used to compare to the
    * provided horizontal position anchor if additional manual updates should be
    * applied.
    */
-  actualY: VerticalPosition;
+  actualY: FunctionMaybe<VerticalPosition>
   /** {@inheritDoc FixedPositionStyle} */
-  style?: FixedPositionStyle;
+  style?: FunctionMaybe<FixedPositionStyle>
 }

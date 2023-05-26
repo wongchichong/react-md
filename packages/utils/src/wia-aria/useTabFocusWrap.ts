@@ -1,25 +1,24 @@
-import type React from "react";
-import { useCallback, useRef } from "react";
+import { $ } from 'voby'
 
-import { getFocusableElements } from "./getFocusableElements";
+import { getFocusableElements } from "./getFocusableElements"
 
 interface Options<E extends HTMLElement> {
-  /**
-   * Boolean if the focus wrap behavior should be disabled.
-   */
-  disabled?: boolean;
+    /**
+     * Boolean if the focus wrap behavior should be disabled.
+     */
+    disabled?: FunctionMaybe<Nullable<boolean>>
 
-  /**
-   * Boolean if the list of focusable elements should not be cached after the
-   * first tab key press. This should only be set to `true` if you have a lot of
-   * dynamic content whin your element and the first and last elements change.
-   */
-  disableFocusCache?: boolean;
+    /**
+     * Boolean if the list of focusable elements should not be cached after the
+     * first tab key press. This should only be set to `true` if you have a lot of
+     * dynamic content whin your element and the first and last elements change.
+     */
+    disableFocusCache?: FunctionMaybe<Nullable<boolean>>
 
-  /**
-   * An optional keydown event handler to merge with the focus wrap behavior.
-   */
-  onKeyDown?: React.KeyboardEventHandler<E>;
+    /**
+     * An optional keydown event handler to merge with the focus wrap behavior.
+     */
+    onKeyDown?: KeyboardEventHandler<E>
 }
 
 /**
@@ -33,45 +32,43 @@ interface Options<E extends HTMLElement> {
  * prop if this functionality is disabled.
  */
 export function useTabFocusWrap<E extends HTMLElement>({
-  disabled = false,
-  disableFocusCache = false,
-  onKeyDown,
-}: Options<E>): React.KeyboardEventHandler<E> | undefined {
-  const focusables = useRef<readonly HTMLElement[]>([]);
+    disabled = false,
+    disableFocusCache = false,
+    onKeyDown,
+}: Options<E>): JSX.KeyboardEventHandler<E> | undefined {
+    const focusables = $<readonly HTMLElement[]>([])
 
-  const handleKeyDown = useCallback<React.KeyboardEventHandler<E>>(
-    (event): void => {
-      if (onKeyDown) {
-        onKeyDown(event);
-      }
+    const handleKeyDown = $<JSX.KeyboardEventHandler<E>>((event): void => {
+        if (onKeyDown) {
+            //@ts-ignore
+            onKeyDown(event)
+        }
 
-      if (event.key !== "Tab") {
-        return;
-      }
+        if (event.key !== "Tab") {
+            return
+        }
 
-      if (disableFocusCache || !focusables.current.length) {
-        focusables.current = getFocusableElements(event.currentTarget);
-      }
+        if (disableFocusCache || !focusables().length) {
+            focusables(getFocusableElements(event.currentTarget))
+        }
 
-      const elements = focusables.current;
-      const l = elements.length;
-      if (l === 0) {
-        return;
-      }
+        const elements = focusables()
+        const l = elements.length
+        if (l === 0) {
+            return
+        }
 
-      if (l === 1) {
-        event.preventDefault();
-        elements[0].focus();
-      } else if (elements[0] === event.target && event.shiftKey) {
-        event.preventDefault();
-        elements[l - 1].focus();
-      } else if (elements[l - 1] === event.target && !event.shiftKey) {
-        event.preventDefault();
-        elements[0].focus();
-      }
-    },
-    [onKeyDown, disableFocusCache]
-  );
+        if (l === 1) {
+            event.preventDefault()
+            elements[0].focus()
+        } else if (elements[0] === event.target && event.shiftKey) {
+            event.preventDefault()
+            elements[l - 1].focus()
+        } else if (elements[l - 1] === event.target && !event.shiftKey) {
+            event.preventDefault()
+            elements[0].focus()
+        }
+    })
 
-  return disabled ? onKeyDown : handleKeyDown;
+    return disabled ? onKeyDown : handleKeyDown
 }

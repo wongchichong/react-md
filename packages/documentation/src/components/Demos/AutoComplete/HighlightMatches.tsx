@@ -21,7 +21,7 @@ import styles from "./HighlightMatches.module.scss";
 
 const desserts = dessertList.map(({ name }) => name);
 
-export default function HighlightMatches(): ReactElement {
+export default function HighlightMatches(): Child {
   const [dessert, setDessert] = useState<Dessert | null>(null);
   const onAutoComplete = useCallback<AutoCompleteHandler>(({ dataIndex }) => {
     setDessert(dessertList[dataIndex]);

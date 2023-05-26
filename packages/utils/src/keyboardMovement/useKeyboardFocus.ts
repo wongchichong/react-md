@@ -1,21 +1,21 @@
 import type {
-  FocusEventHandler,
-  KeyboardEvent,
-  KeyboardEventHandler,
-  MutableRefObject,
-} from "react";
-import { useRef } from "react";
-import { useUserInteractionMode } from "../mode/UserInteractionModeListener";
+  // FocusEventHandler,
+  // JSX.TargetedKeyboardEvent,
+  // KeyboardEventHandler,
+  ObservableMaybe,
+} from 'voby'
+import { $, $$ } from 'voby'
+import { useUserInteractionMode } from "../mode/UserInteractionModeListener"
 
-import { findMatchIndex } from "../search/findMatchIndex";
-import { useKeyboardFocusContext } from "./movementContext";
+import { findMatchIndex } from "../search/findMatchIndex"
+import { useKeyboardFocusContext } from "./movementContext"
 import {
   focusElement,
   getFirstFocusableIndex,
   getLastFocusableIndex,
   getNextFocusableIndex,
   isNotFocusable,
-} from "./utils";
+} from "./utils"
 
 /**
  * @remarks \@since 5.0.0
@@ -23,7 +23,7 @@ import {
  */
 const noop = (): void => {
   // do nothing
-};
+}
 
 /**
  * @remarks \@since 5.0.0
@@ -32,20 +32,18 @@ export interface KeyboardFocusArg<E extends HTMLElement> {
   /**
    * The keyboard key/letter that was pressed. (`event.key`).
    */
-  key: string;
+  key: FunctionMaybe<string>
 
   /**
    * The keyboard event.
    */
-  event: KeyboardEvent<E>;
+  event: JSX.TargetedKeyboardEvent<E>
 }
 
 /**
  * @remarks \@since 5.0.0
  */
-export type KeyboardFocusHandler<E extends HTMLElement> = (
-  arg: KeyboardFocusArg<E>
-) => void;
+export type KeyboardFocusHandler<E extends HTMLElement> = (arg: KeyboardFocusArg<E>) => void
 
 /**
  * Optional event handlers that can be called for specific custom focus
@@ -55,38 +53,38 @@ export type KeyboardFocusHandler<E extends HTMLElement> = (
  * @remarks \@since 5.0.0
  */
 export interface KeyboardFocusCallbacks<E extends HTMLElement> {
-  onFocus?: FocusEventHandler<E>;
-  onKeyDown?: KeyboardEventHandler<E>;
+  onFocus?: FocusEventHandler<E>
+  onKeyDown?: KeyboardEventHandler<E>
 
   /**
    * This is called whenever a single letter has been pressed and
    * {@link KeyboardMovementBehavior.searchable} is `true`.
    */
-  onSearch?: KeyboardFocusHandler<E>;
+  onSearch?: KeyboardFocusHandler<E>
 
   /**
    * This is called whenever one of the
    * {@link KeyboardMovementBehavior.incrementKeys} are pressed.
    */
-  onIncrement?: KeyboardFocusHandler<E>;
+  onIncrement?: KeyboardFocusHandler<E>
 
   /**
    * This is called whenever one of the
    * {@link KeyboardMovementBehavior.decrementKeys} are pressed.
    */
-  onDecrement?: KeyboardFocusHandler<E>;
+  onDecrement?: KeyboardFocusHandler<E>
 
   /**
    * This is called whenever one of the
    * {@link KeyboardMovementBehavior.jumpToFirstKeys} are pressed.
    */
-  onJumpToFirst?: KeyboardFocusHandler<E>;
+  onJumpToFirst?: KeyboardFocusHandler<E>
 
   /**
    * This is called whenever one of the
    * {@link KeyboardMovementBehavior.jumpToLastKeys} are pressed.
    */
-  onJumpToLast?: KeyboardFocusHandler<E>;
+  onJumpToLast?: KeyboardFocusHandler<E>
 }
 
 /**
@@ -103,7 +101,7 @@ export interface KeyboardFocusHookOptions<E extends HTMLElement>
    * the container element
    * @param container - The container element that gained focus
    */
-  getDefaultFocusIndex?(elements: readonly HTMLElement[], container: E): number;
+  getDefaultFocusIndex?(elements: readonly HTMLElement[], container: E): number
 
   /**
    * An optional function to call when the custom focused element should change.
@@ -113,14 +111,14 @@ export interface KeyboardFocusHookOptions<E extends HTMLElement>
    * @param nextFocusIndex - The next focus index which can be used for
    * additional movement behavior.
    */
-  onFocusChange?(element: HTMLElement, nextFocusIndex: number): void;
+  onFocusChange?(element: HTMLElement, nextFocusIndex: number): void
 }
 
 /** @remarks \@since 5.0.0 */
 export interface KeyboardFocusHookReturnValue<E extends HTMLElement> {
-  onFocus: FocusEventHandler<E>;
-  onKeyDown: KeyboardEventHandler<E>;
-  focusIndex: MutableRefObject<number>;
+  onFocus: FocusEventHandler<E>
+  onKeyDown: KeyboardEventHandler<E>
+  focusIndex: ObservableMaybe<number>
 }
 
 /**
@@ -139,75 +137,79 @@ export function useKeyboardFocus<E extends HTMLElement>(
     onJumpToLast = noop,
     onFocusChange = focusElement,
     getDefaultFocusIndex,
-  } = options;
-  const mode = useUserInteractionMode();
-  const focusIndex = useRef(-1);
+  } = options
+  const mode = useUserInteractionMode()
+  const focusIndex = $(-1)
   const { config, loopable, searchable, watching, includeDisabled } =
-    useKeyboardFocusContext();
+    useKeyboardFocusContext()
 
   return {
     focusIndex,
     onFocus(event) {
-      onFocus(event);
+      //@ts-ignore
+      onFocus(event)
+      //@ts-ignore
       if (event.isPropagationStopped()) {
-        return;
+        return
       }
 
       if (event.target !== event.currentTarget) {
-        const i = watching.current.findIndex(
+        const i = $$(watching).findIndex(
           ({ element }) => element === event.target
-        );
+        )
         if (i !== -1) {
-          focusIndex.current = i;
+          focusIndex(i)
         }
-        return;
+        return
       }
 
-      let defaultFocusIndex: number;
+      let defaultFocusIndex: number
       if (getDefaultFocusIndex) {
         defaultFocusIndex = getDefaultFocusIndex(
-          watching.current.map(({ element }) => element),
+          $$(watching).map(({ element }) => element),
           event.currentTarget
-        );
+        )
       } else {
         defaultFocusIndex = getFirstFocusableIndex(
-          watching.current,
-          includeDisabled
-        );
+          $$(watching),
+          $$(includeDisabled)
+        )
       }
 
       // this makes it so that if you click the container element without
       // clicking any child, it doesn't focus the first element again
       if (defaultFocusIndex === -1 || mode !== "keyboard") {
-        return;
+        return
       }
 
-      focusIndex.current = defaultFocusIndex;
-      const element = watching.current[focusIndex.current]?.element;
-      element && onFocusChange(element, focusIndex.current);
+      focusIndex(defaultFocusIndex)
+      const element = $$(watching)[focusIndex()]?.element
+      element && onFocusChange($$(element), focusIndex())
+
     },
     onKeyDown(event) {
-      onKeyDown(event);
+      //@ts-ignore
+      onKeyDown(event)
+      //@ts-ignore
       if (event.isPropagationStopped()) {
-        return;
+        return
       }
 
-      const { key, altKey, ctrlKey, metaKey, shiftKey } = event;
-      const { incrementKeys, decrementKeys, jumpToFirstKeys, jumpToLastKeys } =
-        config.current;
+      const { key, altKey, ctrlKey, metaKey, shiftKey } = event
+      const { incrementKeys, decrementKeys, jumpToFirstKeys, jumpToLastKeys } = $$(config)
 
       const update = (index: number): void => {
-        event.preventDefault();
-        event.stopPropagation();
-        if (focusIndex.current === index) {
-          return;
+        event.preventDefault()
+        event.stopPropagation()
+        if (focusIndex(index)) {
+          return
         }
 
-        focusIndex.current = index;
+        focusIndex(index)
 
-        const element = watching.current[index]?.element;
-        element && onFocusChange(element, focusIndex.current);
-      };
+        const element = $$(watching)[index]?.element
+        element && onFocusChange($$(element), focusIndex())
+      }
 
       if (
         searchable &&
@@ -219,65 +221,70 @@ export function useKeyboardFocus<E extends HTMLElement>(
         !metaKey &&
         !shiftKey
       ) {
-        onSearch({ key, event });
+        onSearch({ key, event })
+        //@ts-ignore
         if (event.isPropagationStopped()) {
-          return;
+          return
         }
 
-        const values = watching.current.map(({ content, element }) => {
-          if (isNotFocusable(element, includeDisabled)) {
-            return "";
+        const values = $$(watching).map(({ content, element }) => {
+          if (isNotFocusable(element, $$(includeDisabled))) {
+            return ""
           }
 
-          return content;
-        });
+          return $$(content)
+        })
 
-        update(findMatchIndex(key, values, focusIndex.current));
-      } else if (jumpToFirstKeys.includes(key)) {
-        onJumpToFirst({ key, event });
+        update(findMatchIndex(key, values, focusIndex()))
+      } else if ($$(jumpToFirstKeys).includes(key)) {
+        onJumpToFirst({ key, event })
+        //@ts-ignore
         if (event.isPropagationStopped()) {
-          return;
+          return
         }
 
-        update(getFirstFocusableIndex(watching.current, includeDisabled));
-      } else if (jumpToLastKeys.includes(key)) {
-        onJumpToLast({ key, event });
+        update(getFirstFocusableIndex($$(watching), $$(includeDisabled)))
+      } else if ($$(jumpToLastKeys).includes(key)) {
+        onJumpToLast({ key, event })
+        //@ts-ignore
         if (event.isPropagationStopped()) {
-          return;
+          return
         }
 
-        update(getLastFocusableIndex(watching.current, includeDisabled));
-      } else if (incrementKeys.includes(key)) {
-        onIncrement({ key, event });
+        update(getLastFocusableIndex($$(watching), $$(includeDisabled)))
+      } else if ($$(incrementKeys).includes(key)) {
+        onIncrement({ key, event })
+        //@ts-ignore
         if (event.isPropagationStopped()) {
-          return;
+          return
         }
 
         update(
           getNextFocusableIndex({
-            loopable,
-            watching: watching.current,
+            loopable: $$(loopable),
+            watching: $$(watching),
             increment: true,
-            includeDisabled,
-            currentFocusIndex: focusIndex.current,
+            includeDisabled: $$(includeDisabled),
+            currentFocusIndex: focusIndex(),
           })
-        );
-      } else if (decrementKeys.includes(key)) {
-        onDecrement({ key, event });
+        )
+      } else if ($$(decrementKeys).includes(key)) {
+        onDecrement({ key, event })
+        //@ts-ignore
         if (event.isPropagationStopped()) {
-          return;
+          return
         }
 
         update(
           getNextFocusableIndex({
-            loopable,
-            watching: watching.current,
+            loopable: $$(loopable),
+            watching: $$(watching),
             increment: false,
-            includeDisabled,
-            currentFocusIndex: focusIndex.current,
+            includeDisabled: $$(includeDisabled),
+            currentFocusIndex: focusIndex(),
           })
-        );
+        )
       }
     },
-  };
+  }
 }

@@ -52,7 +52,7 @@ const demos = [
   },
 ];
 
-export default function Chip(): ReactElement {
+export default function Chip(): Child {
   return (
     <DemoPage demos={demos} packageName="chip" fonts={["Material Icons"]} />
   );

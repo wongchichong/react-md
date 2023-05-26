@@ -1,5 +1,5 @@
-import type React from "react";
-import type { FocusType, KeyConfig, MovementKey } from "./types";
+
+import type { FocusType, KeyConfig, MovementKey } from "./types"
 
 /**
  * An extremely simple function that is used to generate an id for an item
@@ -13,14 +13,14 @@ import type { FocusType, KeyConfig, MovementKey } from "./types";
  */
 export function getItemId(id: string, i: number): string {
   if (!id) {
-    throw new Error("The id must be a string with a length greater than 0");
+    throw new Error("The id must be a string with a length greater than 0")
   }
 
   if (i < 0) {
-    throw new RangeError("The provided index must be greater than 0");
+    throw new RangeError("The provided index must be greater than 0")
   }
 
-  return `${id}-item-${i + 1}`;
+  return `${id}-item-${i + 1}`
 }
 
 /**
@@ -44,7 +44,7 @@ export function transformKeys(
     altKey: key.includes("Alt+"),
     key: key.replace(/(Shift|Meta|Alt|Control)\+/g, ""),
     type,
-  }));
+  }))
 }
 
 /**
@@ -60,10 +60,10 @@ export function transformKeys(
  * @internal
  */
 export function getKeyboardConfig(
-  event: KeyboardEvent | React.KeyboardEvent,
+  event: KeyboardEvent, //| React.KeyboardEvent,
   keys: readonly KeyConfig[]
 ): KeyConfig | null {
-  const { key, altKey, ctrlKey, metaKey, shiftKey } = event;
+  const { key, altKey, ctrlKey, metaKey, shiftKey } = event
   return (
     keys.find(
       (k) =>
@@ -73,7 +73,7 @@ export function getKeyboardConfig(
         k.metaKey === metaKey &&
         k.shiftKey === shiftKey
     ) || null
-  );
+  )
 }
 
 /**
@@ -85,7 +85,7 @@ export function getKeyboardConfig(
  * @internal
  */
 export function getStringifiedKeyConfig(config: KeyConfig): string {
-  const { key, altKey, ctrlKey, metaKey, shiftKey, type } = config;
+  const { key, altKey, ctrlKey, metaKey, shiftKey, type } = config
   const suffix = [
     metaKey && "Meta",
     ctrlKey && "Control",
@@ -94,7 +94,7 @@ export function getStringifiedKeyConfig(config: KeyConfig): string {
     key,
   ]
     .filter(Boolean)
-    .join("+");
+    .join("+")
 
-  return `${type}-${suffix}`;
+  return `${type}-${suffix}`
 }

@@ -32,7 +32,7 @@ function ConfiguredSlider({
   before,
   after,
   disabled,
-}: ConfiguredSliderProps): ReactElement {
+}: ConfiguredSliderProps): Child {
   const [value, controls] = useSlider(undefined, {
     min,
     max,
@@ -56,7 +56,7 @@ function ConfiguredSlider({
   );
 }
 
-export default function ConfigurableSlider(): ReactElement {
+export default function ConfigurableSlider(): Child {
   const [min, minProps, minControls] = useNumberField({
     id: "configurable-slider-min",
     defaultValue: 0,

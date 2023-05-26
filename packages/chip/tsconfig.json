@@ -1,5 +1,39 @@
 {
   "extends": "../../tsconfig.base.json",
-  "compilerOptions": { "noEmit": true, "composite": false },
-  "include": ["src"]
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "declarationDir": "./dist/types"
+    //"composite": true,
+  },
+  "include": ["./src"],
+  "exclude": [
+    "vite.config.ts",
+    "vite.config.umd.ts",
+    "./src ori",
+    "**/dist/**",
+    "**/lib/**",
+    "**/types/**",
+    "**/__tests__/**"
+  ],
+  "references": [
+    {
+      "path": "../elevation"
+    },
+    {
+      "path": "../icon"
+    },
+    {
+      "path": "../states"
+    },
+    {
+      "path": "../theme"
+    },
+    {
+      "path": "../typography"
+    },
+    {
+      "path": "../utils"
+    }
+  ]
 }

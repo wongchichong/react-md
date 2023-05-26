@@ -1,14 +1,7 @@
 // This is a generated file from running the "createIcons" script. This file should not be updated manually.
-import { forwardRef } from "react";
 
 import { FontIcon, FontIconProps } from "@react-md/icon";
 
-export const MonetizationOnFontIcon = forwardRef<HTMLElement, FontIconProps>(
-  function MonetizationOnFontIcon(props, ref) {
-    return (
-      <FontIcon {...props} ref={ref}>
-        monetization_on
-      </FontIcon>
-    );
-  }
-);
+export const MonetizationOnFontIcon = ({ref, ...props}: FontIconProps<HTMLElement>) => {
+    return <FontIcon {...props} ref={ref}>monetization_on</FontIcon>;
+}

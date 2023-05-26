@@ -1,53 +1,54 @@
-import type { YCoordConfig } from "./getCoord";
+import { $$ } from "voby"
+import type { YCoordConfig } from "./getCoord"
 import {
-  getAboveCoord,
-  getBelowCoord,
-  getBottomCoord,
-  getCenterYCoord,
-  getTopCoord,
-} from "./getCoord";
-import { getViewportSize } from "./getViewportSize";
-import type { FixedPositionOptions, VerticalPosition } from "./types";
+    getAboveCoord,
+    getBelowCoord,
+    getBottomCoord,
+    getCenterYCoord,
+    getTopCoord,
+} from "./getCoord"
+import { getViewportSize } from "./getViewportSize"
+import type { FixedPositionOptions, VerticalPosition } from "./types"
 
 /**
  * @internal
  */
 interface YPosition {
-  top: number;
-  bottom?: number;
-  actualY: VerticalPosition;
+    top: FunctionMaybe<number>
+    bottom?: FunctionMaybe<Nullable<number>>
+    actualY: FunctionMaybe<VerticalPosition>
 }
 
 /**
  * @internal
  */
 export interface FixConfig extends YCoordConfig {
-  vhMargin: number;
-  screenBottom: number;
-  preventOverlap: boolean;
-  disableSwapping: boolean;
-  disableVHBounds: boolean;
+    vhMargin: FunctionMaybe<number>
+    screenBottom: FunctionMaybe<number>
+    preventOverlap: FunctionMaybe<boolean>
+    disableSwapping: FunctionMaybe<boolean>
+    disableVHBounds: FunctionMaybe<boolean>
 }
 
 /**
  * @internal
  */
 interface Options
-  extends Required<
-    Pick<
-      FixedPositionOptions,
-      | "yMargin"
-      | "vhMargin"
-      | "preventOverlap"
-      | "disableSwapping"
-      | "disableVHBounds"
-    >
-  > {
-  y: VerticalPosition;
-  vh: number;
-  initialY?: number;
-  elHeight: number;
-  containerRect: DOMRect;
+    extends Required<
+        Pick<
+            FixedPositionOptions,
+            | "yMargin"
+            | "vhMargin"
+            | "preventOverlap"
+            | "disableSwapping"
+            | "disableVHBounds"
+        >
+    > {
+    y: FunctionMaybe<VerticalPosition>
+    vh: FunctionMaybe<number>
+    initialY?: FunctionMaybe<Nullable<number>>
+    elHeight: FunctionMaybe<number>
+    containerRect: FunctionMaybe<DOMRect>
 }
 
 /**
@@ -61,51 +62,54 @@ interface Options
  * @internal
  */
 export function createAnchoredAbove(config: FixConfig): YPosition {
-  const {
-    yMargin,
-    vhMargin,
-    screenBottom,
-    elHeight,
-    containerRect,
-    preventOverlap,
-    disableSwapping,
-    disableVHBounds,
-  } = config;
-  let top = getAboveCoord(config);
-  let actualY: VerticalPosition = "above";
+    const {
+        yMargin: ym,
+        vhMargin: vm,
+        screenBottom: sb,
+        elHeight: eh,
+        containerRect: cr,
+        preventOverlap: po,
+        disableSwapping: ds,
+        disableVHBounds: db,
+    } = config
 
-  if (disableVHBounds) {
-    // can't actually allow a top value as a negative number since browsers
-    // won't scroll upwards pas the normal page top
-    return { actualY, top: Math.max(0, top) };
-  }
+    const vhMargin = $$(vm), elHeight = $$(eh), screenBottom = $$(sb), containerRect = $$(cr), yMargin = $$(ym), disableSwapping = $$(ds), disableVHBounds = $$(db), preventOverlap = $$(po)
 
-  if (top > vhMargin) {
-    // don't need to do anything else since the top is still in the viewport and
-    // since it's positioned above, we already know it can't overlap the
-    // container element
-    return { actualY, top };
-  }
+    let top = getAboveCoord(config)
+    let actualY: VerticalPosition = "above"
 
-  const swappedTop = getBelowCoord(config);
-  if (disableSwapping || swappedTop + elHeight > screenBottom) {
-    top = Math.min(top, vhMargin);
-  } else {
-    actualY = "below";
-    top = swappedTop;
-  }
+    if (disableVHBounds) {
+        // can't actually allow a top value as a negative number since browsers
+        // won't scroll upwards pas the normal page top
+        return { actualY, top: Math.max(0, top) }
+    }
 
-  let bottom: number | undefined;
-  if (
-    preventOverlap &&
-    // can't overlap if it's positioned below
-    actualY === "above" &&
-    top + elHeight > containerRect.top
-  ) {
-    bottom = window.innerHeight - containerRect.top + yMargin;
-  }
+    if (top > vhMargin) {
+        // don't need to do anything else since the top is still in the viewport and
+        // since it's positioned above, we already know it can't overlap the
+        // container element
+        return { actualY, top }
+    }
 
-  return { actualY, top, bottom };
+    const swappedTop = getBelowCoord(config)
+    if (disableSwapping || swappedTop + elHeight > screenBottom) {
+        top = Math.min(top, vhMargin)
+    } else {
+        actualY = "below"
+        top = swappedTop
+    }
+
+    let bottom: FunctionMaybe<number> | undefined
+    if (
+        preventOverlap &&
+        // can't overlap if it's positioned below
+        actualY === "above" &&
+        top + elHeight > containerRect.top
+    ) {
+        bottom = window.innerHeight - containerRect.top + yMargin
+    }
+
+    return { actualY, top, bottom }
 }
 
 /**
@@ -119,24 +123,26 @@ export function createAnchoredAbove(config: FixConfig): YPosition {
  * @internal
  */
 export function createAnchoredTop(config: FixConfig): YPosition {
-  const { vhMargin, screenBottom, elHeight, disableSwapping, disableVHBounds } =
-    config;
-  let top = getTopCoord(config);
-  let actualY: VerticalPosition = "top";
+    const { vhMargin: vm, screenBottom: sb, elHeight: eh, disableSwapping: ds, disableVHBounds: db } = config
 
-  if (disableVHBounds || top + elHeight <= screenBottom) {
-    return { actualY, top };
-  }
+    const vhMargin = $$(vm), elHeight = $$(eh), screenBottom = $$(sb), disableSwapping = $$(ds), disableVHBounds = $$(db)
 
-  const swappedTop = getBottomCoord(config);
-  if (disableSwapping || swappedTop < vhMargin) {
-    top = Math.max(top, vhMargin);
-  } else {
-    actualY = "bottom";
-    top = swappedTop;
-  }
+    let top = getTopCoord(config)
+    let actualY: VerticalPosition = "top"
 
-  return { actualY, top };
+    if (disableVHBounds || top + elHeight <= screenBottom) {
+        return { actualY, top }
+    }
+
+    const swappedTop = getBottomCoord(config)
+    if (disableSwapping || swappedTop < vhMargin) {
+        top = Math.max(top, vhMargin)
+    } else {
+        actualY = "bottom"
+        top = swappedTop
+    }
+
+    return { actualY, top }
 }
 
 /**
@@ -148,19 +154,21 @@ export function createAnchoredTop(config: FixConfig): YPosition {
  * @internal
  */
 export function createAnchoredCenter(config: FixConfig): YPosition {
-  const { vhMargin, screenBottom, elHeight, disableVHBounds } = config;
-  let top = getCenterYCoord(config);
-  const actualY: VerticalPosition = "center";
-  if (disableVHBounds) {
-    return { actualY, top: Math.max(0, top) };
-  }
+    const { vhMargin: vm, screenBottom: sb, elHeight: eh, /* disableSwapping: ds, */ disableVHBounds: db } = config
+    const vhMargin = $$(vm), elHeight = $$(eh), screenBottom = $$(sb), /* disableSwapping = $$(ds), */ disableVHBounds = $$(db)
 
-  top = Math.max(vhMargin, top);
-  if (top + elHeight > screenBottom) {
-    top = screenBottom - elHeight;
-  }
+    let top = getCenterYCoord(config)
+    const actualY: VerticalPosition = "center"
+    if (disableVHBounds) {
+        return { actualY, top: Math.max(0, top) }
+    }
 
-  return { actualY, top };
+    top = Math.max(vhMargin, top)
+    if (top + elHeight > screenBottom) {
+        top = screenBottom - elHeight
+    }
+
+    return { actualY, top }
 }
 
 /**
@@ -174,23 +182,24 @@ export function createAnchoredCenter(config: FixConfig): YPosition {
  * @internal
  */
 export function createAnchoredBottom(config: FixConfig): YPosition {
-  const { vhMargin, screenBottom, elHeight, disableSwapping, disableVHBounds } =
-    config;
-  let top = getBottomCoord(config);
-  let actualY: VerticalPosition = "bottom";
-  if (disableVHBounds || top > vhMargin) {
-    return { actualY, top };
-  }
+    const { vhMargin: vm, screenBottom: sb, elHeight: eh, disableSwapping: ds, disableVHBounds: db } = config
+    const vhMargin = $$(vm), elHeight = $$(eh), screenBottom = $$(sb), disableSwapping = $$(ds), disableVHBounds = $$(db)
 
-  const swappedTop = getTopCoord(config);
-  if (disableSwapping || swappedTop + elHeight > screenBottom) {
-    top = Math.min(top, screenBottom - elHeight);
-  } else {
-    actualY = "top";
-    top = swappedTop;
-  }
+    let top = getBottomCoord(config)
+    let actualY: VerticalPosition = "bottom"
+    if (disableVHBounds || top > vhMargin) {
+        return { actualY, top }
+    }
 
-  return { actualY, top };
+    const swappedTop = getTopCoord(config)
+    if (disableSwapping || swappedTop + elHeight > screenBottom) {
+        top = Math.min(top, screenBottom - elHeight)
+    } else {
+        actualY = "top"
+        top = swappedTop
+    }
+
+    return { actualY, top }
 }
 
 /**
@@ -204,50 +213,43 @@ export function createAnchoredBottom(config: FixConfig): YPosition {
  * @internal
  */
 export function createAnchoredBelow(config: FixConfig): YPosition {
-  const {
-    yMargin,
-    vhMargin,
-    elHeight,
-    screenBottom,
-    containerRect,
-    preventOverlap,
-    disableSwapping,
-    disableVHBounds,
-  } = config;
-  let top = getBelowCoord(config);
-  let actualY: VerticalPosition = "below";
-  if (disableVHBounds || top + elHeight <= screenBottom) {
-    return { actualY, top };
-  }
+    const { yMargin: ym, vhMargin: vm, screenBottom: sb, elHeight: eh, disableSwapping: ds, disableVHBounds: db, containerRect: cr, preventOverlap: po } = config
+    const yMargin = $$(ym), vhMargin = $$(vm), elHeight = $$(eh), screenBottom = $$(sb), disableSwapping = $$(ds), disableVHBounds = $$(db), containerRect = $$(cr), preventOverlap = $$(po)
 
-  if (preventOverlap) {
-    const availableTop = containerRect.top - yMargin;
-    if (disableSwapping || availableTop < screenBottom - top) {
-      return {
-        actualY,
-        top,
-        bottom: vhMargin,
-      };
+    let top = getBelowCoord(config)
+    let actualY: VerticalPosition = "below"
+    if (disableVHBounds || top + elHeight <= screenBottom) {
+        return { actualY, top }
     }
 
-    return {
-      actualY: "above",
-      top: Math.max(vhMargin, availableTop - elHeight),
-      // this makes it so that the bottom of the fixed element is the top of the container
-      // element. this ensures that it won't ever overlap the container element
-      bottom: getViewportSize("height") - availableTop,
-    };
-  }
+    if (preventOverlap) {
+        const availableTop = containerRect.top - yMargin
+        if (disableSwapping || availableTop < screenBottom - top) {
+            return {
+                actualY,
+                top,
+                bottom: vhMargin,
+            }
+        }
 
-  const swappedTop = getAboveCoord(config);
-  if (disableSwapping || swappedTop < vhMargin) {
-    top = Math.max(top, screenBottom - elHeight);
-  } else {
-    actualY = "above";
-    top = swappedTop;
-  }
+        return {
+            actualY: "above",
+            top: Math.max(vhMargin, availableTop - elHeight),
+            // this makes it so that the bottom of the fixed element is the top of the container
+            // element. this ensures that it won't ever overlap the container element
+            bottom: getViewportSize("height") - availableTop,
+        }
+    }
 
-  return { actualY, top };
+    const swappedTop = getAboveCoord(config)
+    if (disableSwapping || swappedTop < vhMargin) {
+        top = Math.max(top, screenBottom - elHeight)
+    } else {
+        actualY = "above"
+        top = swappedTop
+    }
+
+    return { actualY, top }
 }
 
 /**
@@ -256,49 +258,53 @@ export function createAnchoredBelow(config: FixConfig): YPosition {
  * @internal
  */
 export function createVerticalPosition({
-  y,
-  vh,
-  vhMargin,
-  yMargin,
-  elHeight,
-  initialY,
-  containerRect,
-  disableSwapping,
-  preventOverlap,
-  disableVHBounds,
-}: Options): YPosition {
-  if (!disableVHBounds && !preventOverlap && elHeight > vh - vhMargin * 2) {
-    // the element is too big to be displayed in the viewport, so just span the
-    // full viewport excluding margins
-    return {
-      top: vhMargin,
-      bottom: vhMargin,
-      actualY: "center",
-    };
-  }
-
-  const config: FixConfig = {
-    vhMargin,
-    yMargin,
-    elHeight,
+    y: y_,
+    vh: vh_,
+    vhMargin: vm,
+    yMargin: ym,
+    elHeight: eh,
     initialY,
-    containerRect,
-    screenBottom: vh - vhMargin,
-    preventOverlap,
-    disableSwapping,
-    disableVHBounds,
-  };
+    containerRect: cr,
+    disableSwapping: ds,
+    preventOverlap: po,
+    disableVHBounds: db,
+}: Options): YPosition {
+    const yMargin = $$(ym), vhMargin = $$(vm), elHeight = $$(eh), disableSwapping = $$(ds), disableVHBounds = $$(db), containerRect = $$(cr), preventOverlap = $$(po),
+        vh = $$(vh_), y = $$(y_)
 
-  switch (y) {
-    case "above":
-      return createAnchoredAbove(config);
-    case "top":
-      return createAnchoredTop(config);
-    case "center":
-      return createAnchoredCenter(config);
-    case "bottom":
-      return createAnchoredBottom(config);
-    case "below":
-      return createAnchoredBelow(config);
-  }
+
+    if (!disableVHBounds && !preventOverlap && elHeight > vh - vhMargin * 2) {
+        // the element is too big to be displayed in the viewport, so just span the
+        // full viewport excluding margins
+        return {
+            top: vhMargin,
+            bottom: vhMargin,
+            actualY: "center",
+        }
+    }
+
+    const config: FixConfig = {
+        vhMargin,
+        yMargin,
+        elHeight,
+        initialY,
+        containerRect,
+        screenBottom: vh - vhMargin,
+        preventOverlap,
+        disableSwapping,
+        disableVHBounds,
+    }
+
+    switch (y) {
+        case "above":
+            return createAnchoredAbove(config)
+        case "top":
+            return createAnchoredTop(config)
+        case "center":
+            return createAnchoredCenter(config)
+        case "bottom":
+            return createAnchoredBottom(config)
+        case "below":
+            return createAnchoredBelow(config)
+    }
 }

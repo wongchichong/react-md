@@ -11,7 +11,7 @@ export interface GithubLinkProps {
   as: "action" | "menuitem";
 }
 
-export default function GithubLink({ as }: GithubLinkProps): ReactElement {
+export default function GithubLink({ as }: GithubLinkProps): Child {
   const className = useActionClassName();
   const { elementProps, tooltipProps } = useTooltip({
     baseId: "main-github-link",

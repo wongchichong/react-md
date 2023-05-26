@@ -1,11 +1,10 @@
-import type { ElementType, HTMLAttributes, ReactElement } from "react";
-import { forwardRef } from "react";
+import type { Component } from 'voby'
 
-import { useEnsuredRef } from "../useEnsuredRef";
-import { useFocusOnMount } from "./useFocusOnMount";
-import type { FocusFallback } from "./usePreviousFocus";
-import { usePreviousFocus } from "./usePreviousFocus";
-import { useTabFocusWrap } from "./useTabFocusWrap";
+import { useEnsuredRef } from "../useEnsuredRef"
+import { useFocusOnMount } from "./useFocusOnMount"
+import type { FocusFallback } from "./usePreviousFocus"
+import { usePreviousFocus } from "./usePreviousFocus"
+import { useTabFocusWrap } from "./useTabFocusWrap"
 
 export interface FocusContainerOptionsProps {
   /**
@@ -21,21 +20,21 @@ export interface FocusContainerOptionsProps {
    * this list.  So if your children aren't changing the first and last
    * elements, there's no need to disable the cache.
    */
-  disableFocusCache?: boolean;
+  disableFocusCache?: FunctionMaybe<Nullable<boolean>>
 
   /**
    * The default behavior for the focus container is to focus an element once it
    * is mounted and the `disabled` prop is not enabled. This behavior can be
    * disabled if this is not wanted for some reason.
    */
-  disableFocusOnMount?: boolean;
+  disableFocusOnMount?: FunctionMaybe<Nullable<boolean>>
 
   /**
    * Boolean if the focus behavior should be disabled. This should really be
    * used if you are using nested focus containers for temporary material (such
    * as dialogs or menus).
    */
-  disableTabFocusWrap?: boolean;
+  disableTabFocusWrap?: FunctionMaybe<Nullable<boolean>>
 
   /**
    * Boolean if the element that gets focused on mount should try to not scroll
@@ -43,7 +42,7 @@ export interface FocusContainerOptionsProps {
    * normally remain `false`, but it is useful to set to `true` if the
    * `FocusContainer` is within a transition that appears offscreen.
    */
-  disableFocusOnMountScroll?: boolean;
+  disableFocusOnMountScroll?: FunctionMaybe<Nullable<boolean>>
 
   /**
    * The default behavior for the focus container is to attempt to focus the
@@ -51,14 +50,14 @@ export interface FocusContainerOptionsProps {
    * generally used for temporary material. If there are cases where this
    * behavior is not wanted, you can enable this prop.
    */
-  disableFocusOnUnmount?: boolean;
+  disableFocusOnUnmount?: FunctionMaybe<Nullable<boolean>>
 
   /**
    * This is the element that should be focused by default when the component is
    * mounted.  This can either be the first or last focusable item or a query
    * selector string that is run against this component to focus.
    */
-  defaultFocus?: "first" | "last" | string;
+  defaultFocus?: FunctionMaybe<Nullable<"first" | "last" | string>>
 
   /**
    * When the focus container unmounts, it will attempt to re-focus the element
@@ -73,62 +72,61 @@ export interface FocusContainerOptionsProps {
    * This can either be a query selector string, a specific HTMLElement, or a
    * function that finds a specific HTMLElement to focus.
    */
-  unmountFocusFallback?: FocusFallback;
+  unmountFocusFallback?: FocusFallback
 }
 
 export interface FocusContainerProps
   extends FocusContainerOptionsProps,
-    HTMLAttributes<HTMLElement> {
+  HTMLAttributes<HTMLElement> {
   /**
    * The component to render the focus container as. This should really not be
    * used as it is more for internal usage. The only base requirements for this
    * prop is that it must either be a element string (`"div"`, `"span"`, etc) or
    * a custom component that has forwarded the ref to the DOM node.
    */
-  component?: ElementType;
+  component?: Component //ElementType
 }
 
 /**
  * The `FocusContainer` is a wrapper for a few of the accessibility hooks to
  * maintain focus within an element.
  */
-export const FocusContainer = forwardRef<HTMLDivElement, FocusContainerProps>(
-  function FocusContainer(
-    {
-      children,
-      onKeyDown,
-      component: Component = "div",
-      defaultFocus = "first",
-      disableFocusCache = false,
-      disableFocusOnMount = false,
-      disableFocusOnMountScroll = false,
-      disableFocusOnUnmount = false,
-      disableTabFocusWrap = false,
-      unmountFocusFallback = "",
-      ...props
-    },
-    forwardedRef
-  ): ReactElement {
-    const [ref, refHandler] = useEnsuredRef(forwardedRef);
+export const FocusContainer = (
+  {
+    children,
+    onKeyDown,
+    component: Component = "div",
+    defaultFocus = "first",
+    disableFocusCache = false,
+    disableFocusOnMount = false,
+    disableFocusOnMountScroll = false,
+    disableFocusOnUnmount = false,
+    disableTabFocusWrap = false,
+    unmountFocusFallback = "",
+    ref,
+    ...props
+  }: FocusContainerProps
+) => {
+  const [ref1, refHandler] = useEnsuredRef(ref)
 
-    usePreviousFocus(disableFocusOnUnmount, unmountFocusFallback);
-    useFocusOnMount(
-      ref,
-      defaultFocus,
-      disableFocusOnMountScroll,
-      false,
-      disableFocusOnMount
-    );
-    const handleKeyDown = useTabFocusWrap({
-      disabled: disableTabFocusWrap,
-      disableFocusCache,
-      onKeyDown,
-    });
+  usePreviousFocus(disableFocusOnUnmount, unmountFocusFallback)
+  useFocusOnMount(
+    ref1,
+    defaultFocus,
+    disableFocusOnMountScroll,
+    false,
+    disableFocusOnMount
+  )
+  const handleKeyDown = useTabFocusWrap({
+    disabled: disableTabFocusWrap,
+    disableFocusCache,
+    onKeyDown,
+  })
 
-    return (
-      <Component {...props} onKeyDown={handleKeyDown} ref={refHandler}>
-        {children}
-      </Component>
-    );
-  }
-);
+  return (
+    /** @ts-ignore */
+    <Component {...props} onKeyDown={handleKeyDown} ref={refHandler}>
+      {children}
+    </Component>
+  )
+}

@@ -5,22 +5,26 @@ import {
   ImageRenderer,
   useSluggedId,
 } from "react-marked-renderer";
-import {
-  Checkbox,
-  Divider,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHeader,
-  TableRow,
-  Typography,
-} from "react-md";
+// import {
+//   Checkbox,
+//   Divider,
+//   Table,
+//   TableBody,
+//   TableCell,
+//   TableContainer,
+//   TableHeader,
+//   TableRow,
+//   Typography,
+// } from "@react-md";
+import { Checkbox } from '@react-md/form';
+import { Divider } from '@react-md/divider';
+import { Table, TableBody, TableCell, TableContainer, TableHeader, TableRow } from '@react-md/table';
+import { Typography } from '@react-md/typography';
 
-import Blockquote from "components/Blockquote";
-import Code from "components/Code";
-import CodeBlock from "components/CodeBlock";
-import Link from "components/Link";
+import Blockquote from "../../components/Blockquote";
+import Code from "../../components/Code";
+import CodeBlock from "../../components/CodeBlock";
+import Link from "../../components/Link";
 
 import styles from "./renderers.module.scss";
 
@@ -31,13 +35,13 @@ export const renderers: MarkdownRenderers = {
   },
 
   link: function LinkRenderer({
-    type: _type,
-    raw: _raw,
-    text: _text,
-    tokens: _tokens,
+    // type: _type,
+    // raw: _raw,
+    // text: _text,
+    // tokens: _tokens,
     ...props
   }) {
-    return <Link {...props} />;
+    return <Link {...props as any} />;
   },
 
   paragraph: function Paragraph({ children }) {
@@ -48,7 +52,7 @@ export const renderers: MarkdownRenderers = {
     );
   },
 
-  heading: function Heading({ depth, tokens, children }) {
+  heading: function Heading({ depth, tokens, children }: any) {
     type Headline =
       | "headline-1"
       | "headline-2"
@@ -95,7 +99,7 @@ export const renderers: MarkdownRenderers = {
     return <Code className="language-none">{children}</Code>;
   },
 
-  codeblock: function Codeblock({ lang, text }) {
+  codeblock: function Codeblock({ lang, text }: any) {
     return <CodeBlock language={lang}>{text}</CodeBlock>;
   },
 

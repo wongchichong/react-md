@@ -1,7 +1,6 @@
-import type { ReactElement, ReactNode } from "react";
-import { createContext, useContext, useMemo } from "react";
+import { createContext, useContext, useMemo } from 'voby'
 
-import { FontIcon } from "./FontIcon";
+import { FontIcon } from "./FontIcon"
 
 /**
  * @remarks \@since 5.0.0 The `download` icon has been renamed to `upload`.
@@ -10,71 +9,71 @@ export interface ConfigurableIcons {
   /**
    * The general icon for navigating backwards or closing an item to the left.
    */
-  back?: ReactNode;
+  back?: Child
 
   /**
    * The general icon to use for checkboxes.
    */
-  checkbox?: ReactNode;
+  checkbox?: Child
 
   /**
    * The general icon to use for dropdown menus or content that expands
    * vertically in a new material instead of inline like the `expander` icon.
    */
-  dropdown?: ReactNode;
+  dropdown?: Child
 
   /**
    * The general icon to use when there are form errors.
    *
    * @remarks \@since 2.5.0
    */
-  error?: ReactNode;
+  error?: Child
 
   /**
    * The general icon to use for expanding content vertically.
    */
-  expander?: ReactNode;
+  expander?: Child
 
   /**
    * The general icon for navigating forwards or closing an item to the right.
    * This is also used internally for nested dropdown menus.
    */
-  forward?: ReactNode;
+  forward?: Child
 
   /**
    * The general icon to use for displaying a main navigation menu.
    */
-  menu?: ReactNode;
+  menu?: Child
 
   /**
    * The general icon for displaying notifications. This is used internally in
    * the `BadgedButton` in the `@react-md/badge` package.
    */
-  notification?: ReactNode;
+  notification?: Child
 
   /**
    * The general icon for temporarily displaying a password's field value as
    * plain text.
    */
-  password?: ReactNode;
+  password?: Child
 
   /**
    * The general icon to use for radio buttons.
    */
-  radio?: ReactNode;
+  radio?: Child
 
   /**
    * The general icon to use for showing that something has been selected that
    * is not a radio or checkbox. This is used internally for the `Chip` in the
    * `@react-md/chip` package.
    */
-  selected?: ReactNode;
+  selected?: Child
 
   /**
    * The general icon for sorting content. This defaults to the sort ascending
    * behavior.
    */
-  sort?: ReactNode;
+  sort?: Child
 
   /**
    * The general icon to use for the `FileInput` component (normally file
@@ -82,10 +81,10 @@ export interface ConfigurableIcons {
    *
    * @remarks \@since 5.0.0
    */
-  upload?: ReactNode;
+  upload?: Child
 }
 
-export type ConfiguredIcons = Required<ConfigurableIcons>;
+export type ConfiguredIcons = Required<ConfigurableIcons>
 
 const DEFAULT_ICONS: ConfiguredIcons = {
   back: <FontIcon>keyboard_arrow_left</FontIcon>,
@@ -101,10 +100,10 @@ const DEFAULT_ICONS: ConfiguredIcons = {
   radio: <FontIcon>radio_button_checked</FontIcon>,
   selected: <FontIcon>check</FontIcon>,
   sort: <FontIcon>arrow_upward</FontIcon>,
-};
+}
 
-const context = createContext<ConfiguredIcons>(DEFAULT_ICONS);
-const { Provider } = context;
+const context = createContext<ConfiguredIcons>(DEFAULT_ICONS)
+const { Provider } = context
 
 /**
  * Gets one of the configured icons from the `IconProvider`. This is probably
@@ -118,16 +117,14 @@ const { Provider } = context;
  * @param override - An optional override to use instead of the inherited icon.
  * @returns The overridden icon value or the inherited icon.
  */
-export function useIcon(
-  name: keyof ConfigurableIcons,
-  override?: ReactNode | undefined
-): ReactNode {
-  const icons = useContext(context);
+export function useIcon(name: keyof ConfigurableIcons, override?: Child | undefined): Child {
+  const icons = useContext(context)
+
   if (typeof override !== "undefined") {
-    return override;
+    return override
   }
 
-  return icons[name];
+  return icons[name]
 }
 
 export interface IconProviderProps extends ConfigurableIcons {
@@ -136,7 +133,7 @@ export interface IconProviderProps extends ConfigurableIcons {
    * required since this component is pretty much worthless to use if you don't
    * inherit the overridden icons.
    */
-  children: ReactNode;
+  children: Child
 }
 
 /**
@@ -161,9 +158,8 @@ export function IconProvider({
   selected = DEFAULT_ICONS.selected,
   sort = DEFAULT_ICONS.sort,
   upload = DEFAULT_ICONS.upload,
-}: IconProviderProps): ReactElement {
-  const value = useMemo<ConfiguredIcons>(
-    () => ({
+}: IconProviderProps): Element {
+  const value = useMemo<ConfiguredIcons>(() => ({
       back,
       checkbox,
       dropdown,
@@ -177,23 +173,7 @@ export function IconProvider({
       selected,
       sort,
       upload,
-    }),
-    [
-      back,
-      checkbox,
-      dropdown,
-      error,
-      expander,
-      forward,
-      menu,
-      notification,
-      password,
-      radio,
-      selected,
-      sort,
-      upload,
-    ]
-  );
+    }))
 
-  return <Provider value={value}>{children}</Provider>;
+  return <Provider value={value}>{children}</Provider>
 }

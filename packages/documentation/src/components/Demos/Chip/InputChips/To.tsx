@@ -15,7 +15,7 @@ import type { Contact } from "./contacts";
 import contacts from "./contacts";
 import styles from "./To.module.scss";
 
-export default function To(): ReactElement {
+export default function To(): Child {
   const [chips, setChips] = useState<Contact[]>([]);
   const data = useMemo<(AutoCompleteData & { label: string })[]>(
     () =>

@@ -8,7 +8,7 @@ import { COPYRIGHT } from "constants/unicode";
 
 import styles from "./CustomizingBadges.module.scss";
 
-export default function CustomizingBadges(): ReactElement {
+export default function CustomizingBadges(): Child {
   return (
     <>
       <BadgeContainer className={styles.container}>

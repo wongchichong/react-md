@@ -1,5 +1,19 @@
 {
   "extends": "../../tsconfig.base.json",
-  "compilerOptions": { "noEmit": true, "composite": false },
-  "include": ["src"]
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "declarationDir": "./dist/types",
+    "skipLibCheck": true,
+    "composite": true
+  },
+  "exclude": [
+    "vite.config.ts",
+    "vite.config.umd.ts",
+    "./src ori/**",
+    "**/dist/**",
+    "**/lib/**",
+    "**/types/**",
+    "**/__tests__/**"
+  ]
 }

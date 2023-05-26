@@ -11,7 +11,8 @@ import {
 import Code from "components/Code";
 import { Markdown } from "components/Markdown";
 import { M_DASH } from "constants/unicode";
-import type { ParameterizedItemParameter } from "utils/sassdoc";
+import type { ParameterizedItemParameter } from "@react-md/dev-utils/src/utils/";
+import "@react-md/dev-utils/@types/sassdoc";
 
 import styles from "./Parameters.module.scss";
 

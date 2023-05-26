@@ -1,23 +1,23 @@
-import type { ReactElement } from "react";
+import type { ReactElement } from "react"
 import {
-  Tree,
-  useTreeItemSelection,
-  useTreeItemExpansion,
-} from "@react-md/tree";
+    Tree,
+    useTreeItemSelection,
+    useTreeItemExpansion,
+} from "@react-md/tree"
 
-import folders from "./folders";
+import folders from "./folders"
 
-export default function SingleSelectTree(): ReactElement {
-  const selection = useTreeItemSelection([], false);
-  const expansion = useTreeItemExpansion([]);
+export default function SingleSelectTree(): Child {
+    const selection = useTreeItemSelection([], false)
+    const expansion = useTreeItemExpansion([])
 
-  return (
-    <Tree
-      id="single-select-tree"
-      data={folders}
-      aria-label="Tree"
-      {...selection}
-      {...expansion}
-    />
-  );
+    return (
+        <Tree
+            id="single-select-tree"
+            data={folders}
+            aria-label="Tree"
+            {...selection}
+            {...expansion}
+        />
+    )
 }

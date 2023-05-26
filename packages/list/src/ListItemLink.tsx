@@ -1,19 +1,17 @@
-import type { AnchorHTMLAttributes, ElementType } from "react";
-import { forwardRef } from "react";
-import cn from "classnames";
-import type { InteractionStatesOptions } from "@react-md/states";
-import { useInteractionStates } from "@react-md/states";
+import type { InteractionStatesOptions } from "@react-md/states"
+import { useInteractionStates } from "@react-md/states"
 
-import type { SimpleListItemProps } from "./getListItemHeight";
-import { getListItemHeight } from "./getListItemHeight";
-import type { ListItemChildrenProps } from "./ListItemChildren";
-import { ListItemChildren } from "./ListItemChildren";
+import type { SimpleListItemProps } from "./getListItemHeight"
+import { getListItemHeight } from "./getListItemHeight"
+import type { ListItemChildrenProps } from "./ListItemChildren"
+import { ListItemChildren } from "./ListItemChildren"
+import { Component } from 'voby'
 
 export interface ListItemLinkProps
-  extends AnchorHTMLAttributes<HTMLAnchorElement>,
-    ListItemChildrenProps,
-    Pick<SimpleListItemProps, "threeLines" | "height">,
-    InteractionStatesOptions<HTMLAnchorElement> {
+  extends Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'disabled'>,
+  ListItemChildrenProps,
+  Pick<SimpleListItemProps, "threeLines" | "height">,
+  InteractionStatesOptions<HTMLAnchorElement> {
   /**
    * An optional component to render as. This should really only be used if you
    * are using a router library like
@@ -21,18 +19,18 @@ export interface ListItemLinkProps
    * {@link https://github.com/reach/router|@reach/router}. This will call
    * `createElement` with this value and provide all props and class name.
    */
-  component?: ElementType;
+  component?: Component
 }
 
 export interface ListItemLinkWithComponentProps extends ListItemLinkProps {
-  component: ElementType;
+  component: Component
 
   /**
    * I'm not really sure of a good way to implement this, but when the
    * `component` prop is provided, all valid props from that component should
    * also be allowed.
    */
-  [key: string]: unknown;
+  [key: string]: unknown
 }
 
 /**
@@ -40,11 +38,8 @@ export interface ListItemLinkWithComponentProps extends ListItemLinkProps {
  * that has the main `ListItem` styles. It will probably be better to just use
  * the `ListItemChildren` within your `Link` component instead.
  */
-export const ListItemLink = forwardRef<
-  HTMLAnchorElement | ElementType,
-  ListItemLinkProps | ListItemLinkWithComponentProps
->(function ListItemLink(
-  {
+export const ListItemLink = //HTMLAnchorElement | ElementType,
+  ({
     className: propClassName,
     textClassName,
     secondaryTextClassName,
@@ -70,37 +65,35 @@ export const ListItemLink = forwardRef<
     rippleClassNames,
     rippleClassName,
     rippleContainerClassName,
+    ref,
     ...props
-  },
-  ref
-) {
-  const height = getListItemHeight({
-    height: propHeight,
-    leftAddon,
-    leftAddonType,
-    rightAddon,
-    rightAddonType,
-    secondaryText,
-  });
-  const { ripples, className, handlers } = useInteractionStates({
-    className: propClassName,
-    handlers: props,
-    disableRipple,
-    disableProgrammaticRipple,
-    rippleTimeout,
-    rippleClassNames,
-    rippleClassName,
-    rippleContainerClassName,
-    disableSpacebarClick,
-    disablePressedFallback,
-  });
+  }: ListItemLinkProps | ListItemLinkWithComponentProps
+  ) => {
+    const height = getListItemHeight({
+      height: propHeight as any,
+      leftAddon,
+      leftAddonType,
+      rightAddon,
+      rightAddonType,
+      secondaryText,
+    })
+    const { ripples, className, handlers } = useInteractionStates({
+      className: propClassName,
+      handlers: props,
+      disableRipple,
+      disableProgrammaticRipple,
+      rippleTimeout,
+      rippleClassNames,
+      rippleClassName,
+      rippleContainerClassName,
+      disableSpacebarClick,
+      disablePressedFallback,
+    })
 
-  return (
-    <Component
-      {...props}
-      {...handlers}
+    //@ts-ignore
+    return <Component {...props} {...handlers}
       ref={ref}
-      className={cn(
+      className={[
         "rmd-list-item rmd-list-item--clickable rmd-list-item--link",
         {
           [`rmd-list-item--${height}`]:
@@ -108,7 +101,7 @@ export const ListItemLink = forwardRef<
           "rmd-list-item--three-lines": !!secondaryText && threeLines,
         },
         className
-      )}
+      ]}
     >
       <ListItemChildren
         textClassName={textClassName}
@@ -128,5 +121,4 @@ export const ListItemLink = forwardRef<
       </ListItemChildren>
       {ripples}
     </Component>
-  );
-});
+  }

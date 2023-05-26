@@ -1,9 +1,9 @@
-import { useEffect } from "react";
+import { useEffect, $$ } from 'voby'
 
-import type { Focus } from "./focusElementWithin";
-import { focusElementWithin } from "./focusElementWithin";
-import type { RefOrInstance } from "./getInstance";
-import { getInstance } from "./getInstance";
+import type { Focus } from "./focusElementWithin"
+import { focusElementWithin } from "./focusElementWithin"
+import type { RefOrInstance } from "./getInstance"
+import { getInstance } from "./getInstance"
 
 /**
  * This hook is used to focus an element once a component has mounted. To help
@@ -29,29 +29,29 @@ import { getInstance } from "./getInstance";
  * @param disabled - Boolean if the focus behavior should be disabled.
  */
 export function useFocusOnMount(
-  refOrInstance: RefOrInstance,
-  defaultFocus: Focus,
-  preventScroll = false,
-  programmatic = false,
-  disabled = false
+    refOrInstance: RefOrInstance,
+    defaultFocus: FunctionMaybe<Focus>,
+    preventScroll: FunctionMaybe<boolean> = false,
+    programmatic: FunctionMaybe<boolean> = false,
+    disabled: FunctionMaybe<boolean> = false
 ): void {
-  useEffect(() => {
-    if (disabled) {
-      return;
-    }
+    useEffect(() => {
+        if (disabled) {
+            return
+        }
 
-    const frame = window.requestAnimationFrame(() => {
-      const instance = getInstance(refOrInstance);
-      if (!instance) {
-        return;
-      }
+        const frame = window.requestAnimationFrame(() => {
+            const instance = getInstance(refOrInstance)
+            if (!instance) {
+                return
+            }
 
-      instance.focus({ preventScroll });
-      focusElementWithin(instance, defaultFocus, programmatic, preventScroll);
-    });
+            instance.focus({ preventScroll: $$(preventScroll) })
+            focusElementWithin(instance, $$(defaultFocus), $$(programmatic), $$(preventScroll))
+        })
 
-    return () => {
-      window.cancelAnimationFrame(frame);
-    };
-  }, [defaultFocus, disabled, refOrInstance, programmatic, preventScroll]);
+        return () => {
+            window.cancelAnimationFrame(frame)
+        }
+    })
 }

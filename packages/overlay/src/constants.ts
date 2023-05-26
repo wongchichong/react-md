@@ -1,7 +1,6 @@
-import type {
-  CSSTransitionClassNamesObject,
-  TransitionTimeout,
-} from "@react-md/transition";
+import type { 
+CSSTransitionClassNamesObject, 
+TransitionTimeout,  } from "@react-md/transition";
 
 /**
  * @remarks \@since 2.4.0

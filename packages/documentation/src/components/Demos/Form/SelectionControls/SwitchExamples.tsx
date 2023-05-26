@@ -1,7 +1,7 @@
 import type { ReactElement } from "react";
 import { Form, Switch } from "@react-md/form";
 
-export default function SwitchExamples(): ReactElement {
+export default function SwitchExamples(): Child {
   return (
     <Form>
       <Switch id="switch-1" name="switch" label="Switch" />

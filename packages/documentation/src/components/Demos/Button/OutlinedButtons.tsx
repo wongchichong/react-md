@@ -3,7 +3,7 @@ import { Button } from "@react-md/button";
 
 import Container from "./Container";
 
-export default function OutlinedButtons(): ReactElement {
+export default function OutlinedButtons(): Child {
   return (
     <Container>
       <Button id="outlined-button-1" theme="primary" themeType="outline">

@@ -1,13 +1,12 @@
-import type { ReactNode } from "react";
-import { createElement } from "react";
-import { TextIconSpacing } from "@react-md/icon";
-import type { SimpleListItemProps } from "@react-md/list";
+import { createElement } from 'voby'
+import { TextIconSpacing } from "@react-md/icon"
+import type { SimpleListItemProps } from "@react-md/list"
 
 export type ListboxOptionProps = SimpleListItemProps & {
-  [labelKey: string]: ReactNode;
-};
+  [labelKey: string]: Child
+}
 
-export type ListboxOption = ListboxOptionProps | string | number | null;
+export type ListboxOption = ListboxOptionProps | string | number | null
 
 /**
  * A type guard that simply checks if the option is considered an object of list
@@ -18,12 +17,10 @@ export type ListboxOption = ListboxOptionProps | string | number | null;
  * will ensure that the option is typed as ListboxOptionProps
  * @internal
  */
-export function isListboxOptionProps(
-  option: ListboxOption
-): option is ListboxOptionProps {
+export function isListboxOptionProps(option: ListboxOption): option is ListboxOptionProps {
   return (
     option !== "" && option !== 0 && !!option && typeof option === "object"
-  );
+  )
 }
 
 /**
@@ -35,7 +32,7 @@ export function isListboxOptionProps(
  * @internal
  */
 export function defaultIsOptionDisabled(option: ListboxOption): boolean {
-  return isListboxOptionProps(option) && !!option.disabled;
+  return isListboxOptionProps(option) && !!option.disabled
 }
 
 /**
@@ -51,7 +48,7 @@ export function defaultIsOptionDisabled(option: ListboxOption): boolean {
  * @returns a "unique" id for the option
  */
 export function getOptionId(baseId: string, index: number): string {
-  return `${baseId}-option-${index + 1}`;
+  return `${baseId}-option-${index + 1}`
 }
 
 /**
@@ -72,17 +69,17 @@ export function getOptionId(baseId: string, index: number): string {
 export function getOptionLabel(
   option: ListboxOption,
   labelKey: string
-): ReactNode {
+): Child {
   if (isListboxOptionProps(option)) {
     if (typeof option.children !== "undefined") {
-      return option.children;
+      return option.children
     }
 
-    const label = option[labelKey];
-    return typeof label === "undefined" ? null : label;
+    const label = option[labelKey]
+    return typeof label === "undefined" ? null : label
   }
 
-  return option;
+  return option
 }
 
 /**
@@ -107,17 +104,17 @@ export function getDisplayLabel(
   option: ListboxOption,
   labelKey: string,
   includeLeft: boolean
-): ReactNode {
+): Child {
   if (!option && option !== 0) {
-    return null;
+    return null
   }
 
-  const label = getOptionLabel(option, labelKey);
+  const label = getOptionLabel(option, labelKey)
   if (!includeLeft || !isListboxOptionProps(option)) {
-    return label;
+    return label
   }
 
-  const { leftAddon } = option;
+  const { leftAddon } = option
 
-  return createElement(TextIconSpacing, { icon: leftAddon }, label);
+  return createElement(TextIconSpacing, { icon: leftAddon }, label)
 }

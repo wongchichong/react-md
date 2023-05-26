@@ -15,7 +15,7 @@ const fruits = [
   "Strawberry",
 ];
 
-export default function SimpleExample(): ReactElement {
+export default function SimpleExample(): Child {
   return (
     <ExampleGrid>
       <AutoComplete

@@ -1,25 +1,25 @@
-import type { HTMLAttributes, ReactElement, Ref } from "react";
-import { forwardRef } from "react";
-import cn from "classnames";
-import { bem } from "@react-md/utils";
+import type { ObservableMaybe } from 'voby'
 
-export type BadgeContainerProps = HTMLAttributes<HTMLSpanElement>;
 
-const block = bem("rmd-badge-container");
+import { bem } from "@react-md/utils"
+
+export type BadgeContainerProps<T extends EventTarget = HTMLSpanElement> = HTMLAttributes<T>
+
+const block = bem("rmd-badge-container")
 
 /**
  * This is a really simple component that will just allow you to position a
  * badge relative to another component.
  */
-export const BadgeContainer = forwardRef<HTMLSpanElement, BadgeContainerProps>(
-  function BadgeContainer(
-    { className, children, ...props }: BadgeContainerProps,
-    ref?: Ref<HTMLSpanElement>
-  ): ReactElement {
+export const BadgeContainer = (
+    { className, children,
+        ref, //?: Observable<HTMLSpanElement>
+        ...props }: BadgeContainerProps<HTMLSpanElement>,
+): Element => {
     return (
-      <span {...props} className={cn(block(), className)} ref={ref}>
-        {children}
-      </span>
-    );
-  }
-);
+        <span {...props} className={[block(), className]} ref={ref}>
+            {children}
+        </span>
+    )
+}
+

@@ -14,7 +14,7 @@ export interface ErrorRendererProps {
 
 export default function ErrorRenderer({
   error,
-}: ErrorRendererProps): ReactElement {
+}: ErrorRendererProps): Child {
   if ("files" in error) {
     const { key, files } = error;
     return (

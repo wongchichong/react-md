@@ -5,7 +5,7 @@ import { Typography } from "@react-md/typography";
 
 import Container from "./Container";
 
-export default function WithMedia(): ReactElement {
+export default function WithMedia(): Child {
   return (
     <Container>
       <Card>

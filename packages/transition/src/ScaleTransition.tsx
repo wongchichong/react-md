@@ -1,12 +1,12 @@
-import type { ReactElement } from "react";
-import { Children, cloneElement } from "react";
-import cn from "classnames";
-import type { RenderConditionalPortalProps } from "@react-md/portal";
-import { ConditionalPortal } from "@react-md/portal";
+import { cloneElement } from 'voby'
+import { Children } from '@react-md/react'
 
-import type { CSSTransitionComponentImplementation } from "./types";
-import type { ScaleTransitionHookOptions } from "./useScaleTransition";
-import { useScaleTransition } from "./useScaleTransition";
+import type { RenderConditionalPortalProps } from "@react-md/portal"
+import { ConditionalPortal } from "@react-md/portal"
+
+import type { CSSTransitionComponentImplementation } from "./types"
+import type { ScaleTransitionHookOptions } from "./useScaleTransition"
+import { useScaleTransition } from "./useScaleTransition"
 
 /**
  * @typeParam E - The HTMLElement type used or the ref required for the
@@ -15,9 +15,9 @@ import { useScaleTransition } from "./useScaleTransition";
  * @remarks \@since 4.0.0 The typeParam was added
  */
 export interface ScaleTransitionProps<E extends HTMLElement>
-  extends CSSTransitionComponentImplementation<E>,
+    extends CSSTransitionComponentImplementation<E>,
     RenderConditionalPortalProps,
-    ScaleTransitionHookOptions<E> {}
+    ScaleTransitionHookOptions<E> { }
 
 /**
  * A component implementation of the {@link useScaleTransition} hook that just
@@ -32,7 +32,7 @@ export interface ScaleTransitionProps<E extends HTMLElement>
  * import { Button } from "@react-md/button";
  * import { useFixedPositioning, useScaleTransition } from "@react-md/transition";
  *
- * function Example(): ReactElement {
+ * function Example(): Element {
  *   const buttonRef = useRef<HTMLButtonElement>(null);
  *   const [transitionIn, setTransitionIn] = useState(false);
  *   const { style, transitionOptions } = useFixedPositioning({
@@ -63,27 +63,21 @@ export interface ScaleTransitionProps<E extends HTMLElement>
  * @remarks \@since 2.0.0
  * @remarks \@since 4.0.0 The typeParam was added and the API was updated.
  */
-export function ScaleTransition<E extends HTMLElement>({
-  portal,
-  portalInto,
-  portalIntoId,
-  children,
-  className,
-  ...options
-}: ScaleTransitionProps<E>): ReactElement {
-  const child = Children.only(children);
-  const { elementProps, rendered } = useScaleTransition({
-    ...options,
-    className: cn(child.props.className, className),
-  });
+export function ScaleTransition<E extends HTMLElement>({ portal, portalInto, portalIntoId, children, className, ...options }: ScaleTransitionProps<E>): Element {
+    const child = Children.only(children)
+    const { elementProps, rendered } = useScaleTransition({
+        ...options,
+        //@ts-ignore
+        className: [child.className, className],
+    })
 
-  return (
-    <ConditionalPortal
-      portal={portal}
-      portalInto={portalInto}
-      portalIntoId={portalIntoId}
-    >
-      {rendered && cloneElement(children, elementProps)}
-    </ConditionalPortal>
-  );
+    return (
+        <ConditionalPortal
+            portal={portal}
+            portalInto={portalInto}
+            portalIntoId={portalIntoId}
+        >
+            {rendered && cloneElement(children, elementProps)}
+        </ConditionalPortal>
+    )
 }

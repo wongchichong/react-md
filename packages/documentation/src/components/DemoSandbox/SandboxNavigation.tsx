@@ -23,7 +23,7 @@ export default function SandboxNavigation({
   fileName,
   onRequestFiles,
   onRequestClose,
-}: SandboxNavigationProps): ReactElement {
+}: SandboxNavigationProps): Child {
   const { isPhone } = useAppSize();
 
   return (

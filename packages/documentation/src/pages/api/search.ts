@@ -1,6 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import Fuse from "fuse.js";
 import { qsToString, qsToInt } from "utils/routes";
+
+//@ts-ignore
 import metadata from "constants/meta/search";
 
 const indexer = new Fuse(metadata, {

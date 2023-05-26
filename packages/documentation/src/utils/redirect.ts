@@ -1,9 +1,9 @@
-import type { NextFC } from "next";
-import Router from "next/router";
+import type { NextFC } from "next"
+import Router from "next/router"
 
 export interface RedirectConfig {
-  concat?: boolean;
-  statusCode?: number;
+    concat?: FunctionMaybe<Nullable<boolean>>
+    statusCode?: FunctionMaybe<Nullable<number>>
 }
 
 /**
@@ -11,25 +11,25 @@ export interface RedirectConfig {
  * used from te `pages` folder.
  */
 export default function redirect(
-  to: string,
-  { concat = true, statusCode = 302 }: RedirectConfig = {}
+    to: string,
+    { concat = true, statusCode = 302 }: RedirectConfig = {}
 ): NextFC {
-  const Redirect: NextFC = () => null;
+    const Redirect: NextFC = () => null
 
-  Redirect.getInitialProps = ({ res, pathname }) => {
-    const indexPath = concat ? `${pathname}/${to}` : to;
+    Redirect.getInitialProps = ({ res, pathname }) => {
+        const indexPath = concat ? `${pathname}/${to}` : to
 
-    if (res) {
-      res.writeHead(statusCode, {
-        Location: indexPath,
-      });
-      res.end();
-    } else {
-      Router.replace(indexPath);
+        if (res) {
+            res.writeHead(statusCode, {
+                Location: indexPath,
+            })
+            res.end()
+        } else {
+            Router.replace(indexPath)
+        }
+
+        return {}
     }
 
-    return {};
-  };
-
-  return Redirect;
+    return Redirect
 }

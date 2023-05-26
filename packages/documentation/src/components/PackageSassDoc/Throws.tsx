@@ -1,6 +1,7 @@
 import type { ReactElement } from "react";
 import { Typography } from "@react-md/typography";
-import type { ItemThrow } from "utils/sassdoc";
+//@ts-ignore
+import type { ItemThrow } from "@react-md/dev-utils/@types/sassdoc";
 
 export interface ThrowsProps {
   throws: ItemThrow | undefined;

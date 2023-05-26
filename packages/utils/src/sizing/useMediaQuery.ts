@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, $, $$ } from 'voby'
 
 /**
  * A helper hook that is used to create a memoized media query tester for
@@ -19,42 +19,43 @@ import { useEffect, useState } from "react";
  * @returns true if the media query is a match.
  */
 export function useMediaQuery(
-  query: string,
-  defaultValue?: boolean,
-  disabled = false,
-  checkImmediately: boolean = typeof window !== "undefined"
+    query: string,
+    defaultValue?: FunctionMaybe<Nullable<boolean>>,
+    disabled = false,
+    checkImmediately: boolean = typeof window !== "undefined"
 ): boolean {
-  const [matches, setMatches] = useState(() => {
-    if (typeof defaultValue !== "undefined") {
-      return defaultValue;
-    }
+    const dv = $$(defaultValue)
 
-    if (!disabled && checkImmediately && typeof window !== "undefined") {
-      return window.matchMedia(query).matches;
-    }
+    const matches = $($$(() => {
+        if (typeof dv !== "undefined") {
+            return dv
+        }
 
-    return false;
-  });
+        if (!disabled && checkImmediately && typeof window !== "undefined") {
+            return window.matchMedia(query).matches
+        }
 
-  useEffect(() => {
-    if (typeof window === "undefined" || disabled) {
-      return;
-    }
+        return false
+    }))
 
-    const mq = window.matchMedia(query);
-    const updater = ({ matches }: MediaQueryListEvent): void =>
-      setMatches(matches);
+    useEffect(() => {
+        if (typeof window === "undefined" || disabled) {
+            return
+        }
 
-    mq.addEventListener("change", updater);
+        const mq = window.matchMedia(query)
+        const updater = ({ matches: m }: MediaQueryListEvent): void => { matches(m) }
 
-    if (mq.matches !== matches) {
-      setMatches(mq.matches);
-    }
+        mq.addEventListener("change", updater)
 
-    return () => {
-      mq.removeEventListener("change", updater);
-    };
-  }, [disabled, matches, query]);
+        if (mq.matches !== matches()) {
+            matches(mq.matches)
+        }
 
-  return matches;
+        return () => {
+            mq.removeEventListener("change", updater)
+        }
+    })
+
+    return matches()
 }

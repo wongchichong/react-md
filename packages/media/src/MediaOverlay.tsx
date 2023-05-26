@@ -1,6 +1,6 @@
-import type { HTMLAttributes } from "react";
-import { forwardRef } from "react";
-import cn from "classnames";
+
+
+
 
 /**
  * The overlay positions relative to the `MediaContainer` component.  Most of
@@ -8,19 +8,19 @@ import cn from "classnames";
  * vertically while `center` will be centered `horizontally`.
  */
 export type MediaOverlayPosition =
-  | "top"
-  | "right"
-  | "bottom"
-  | "left"
-  | "middle"
-  | "center"
-  | "absolute-center";
+    | "top"
+    | "right"
+    | "bottom"
+    | "left"
+    | "middle"
+    | "center"
+    | "absolute-center"
 
-export interface MediaOverlayProps extends HTMLAttributes<HTMLDivElement> {
-  /**
-   * The position of the overlay within the `MediaContainer`.
-   */
-  position?: MediaOverlayPosition;
+export interface MediaOverlayProps<T extends EventTarget = HTMLDivElement> extends HTMLAttributes<T> {
+    /**
+     * The position of the overlay within the `MediaContainer`.
+     */
+    position?: MediaOverlayPosition
 }
 
 /**
@@ -28,22 +28,18 @@ export interface MediaOverlayProps extends HTMLAttributes<HTMLDivElement> {
  * items within the `MediaContainer` component. You will need to apply most of
  * your own styles as this is really just used for positioning.
  */
-export const MediaOverlay = forwardRef<HTMLDivElement, MediaOverlayProps>(
-  function MediaOverlay(
-    { className, children, position = "bottom", ...props },
-    ref
-  ) {
+export const MediaOverlay = ({ className, children, position = "bottom", ref, ...props }: MediaOverlayProps<HTMLDivElement>) => {
     return (
-      <div
-        {...props}
-        ref={ref}
-        className={cn(
-          `rmd-media-overlay rmd-media-overlay--${position}`,
-          className
-        )}
-      >
-        {children}
-      </div>
-    );
-  }
-);
+        <div
+            {...props}
+            ref={ref}
+            className={[
+                `rmd-media-overlay rmd-media-overlay--${position}`,
+                className
+            ]}
+        >
+            {children}
+        </div>
+    )
+}
+

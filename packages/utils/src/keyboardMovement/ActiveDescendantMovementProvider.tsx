@@ -1,15 +1,15 @@
-import type { ReactElement, ReactNode } from "react";
-import { useMemo } from "react";
-import type { ActiveDescendantContext } from "./activeDescendantContext";
-import { ActiveDescendantContextProvider } from "./activeDescendantContext";
+// ;
+import { useMemo } from 'voby'
+import type { ActiveDescendantContext } from "./activeDescendantContext"
+import { ActiveDescendantContextProvider } from "./activeDescendantContext"
 
 /**
  * @internal
  * @remarks \@since 5.0.0
  */
 export interface ActiveDescendantMovementProviderProps
-  extends ActiveDescendantContext {
-  children: ReactNode;
+    extends ActiveDescendantContext {
+    children: Child
 }
 
 /**
@@ -20,7 +20,7 @@ export interface ActiveDescendantMovementProviderProps
  * @example
  * Base Example
  * ```tsx
- * function Descendant({ id, children, ...props }: HTMLAttributes<HTMLDivElement>): ReactElement {
+ * function Descendant({ id, children, ...props }: HTMLAttributes<HTMLDivElement>): Child {
  *   const { ref, active } = useActiveDescendant({ id });
  *   return (
  *     <div
@@ -36,7 +36,7 @@ export interface ActiveDescendantMovementProviderProps
  *   );
  * }
  *
- * function CustomFocus(): ReactElement {
+ * function CustomFocus(): Child {
  *   const { providerProps, focusIndex, ...containerProps } =
  *     useActiveDescendantFocus()
  *
@@ -70,21 +70,18 @@ export interface ActiveDescendantMovementProviderProps
  * @remarks \@since 5.0.0
  */
 export function ActiveDescendantMovementProvider({
-  children,
-  activeId,
-  setActiveId,
-}: ActiveDescendantMovementProviderProps): ReactElement {
-  return (
-    <ActiveDescendantContextProvider
-      value={useMemo(
-        () => ({
-          activeId,
-          setActiveId,
-        }),
-        [activeId, setActiveId]
-      )}
-    >
-      {children}
-    </ActiveDescendantContextProvider>
-  );
+    children,
+    activeId,
+    // setActiveId,
+}: ActiveDescendantMovementProviderProps) {
+    return (
+        <ActiveDescendantContextProvider
+            value={useMemo(() => ({
+                activeId,
+                // setActiveId,
+            }))}
+        >
+            {children}
+        </ActiveDescendantContextProvider>
+    )
 }

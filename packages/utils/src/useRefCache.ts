@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, $, ObservableReadonly } from 'voby'
 
 /**
  * This hook allows you to provide anything that should be "cached" and puts it
@@ -11,11 +11,11 @@ import { useEffect, useRef } from "react";
  * @param cacheable - The cacheable thing that gets updated after each render.
  * @returns a mutable ref object containing the current cache.
  */
-export function useRefCache<T>(cacheable: T): { readonly current: T } {
-  const ref = useRef(cacheable);
+export function useRefCache<T>(cacheable: T): ObservableReadonly<T> {
+  const ref = $(cacheable)
   useEffect(() => {
-    ref.current = cacheable;
-  });
+    ref(cacheable)
+  })
 
-  return ref;
+  return ref
 }

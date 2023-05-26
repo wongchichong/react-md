@@ -1,13 +1,13 @@
-import { useEffect } from "react";
+import { ObservableMaybe, useEffect, $$ } from 'voby'
 
-import type { Message } from "./MessageQueueContext";
+import type { Message } from "./MessageQueueContext"
 
 interface Options {
-  startTimer: () => void;
-  stopTimer: () => void;
-  visible: boolean;
-  message: Message | undefined;
-  disabled?: boolean;
+    startTimer: () => void
+    stopTimer: () => void
+    visible: ObservableMaybe<boolean>
+    message: Message | undefined
+    disabled?: FunctionMaybe<Nullable<boolean>>
 }
 
 /**
@@ -19,31 +19,25 @@ interface Options {
  *
  * @internal
  */
-export function useWindowBlurPause({
-  startTimer,
-  stopTimer,
-  visible,
-  message,
-  disabled = false,
-}: Options): void {
-  useEffect(() => {
-    if (disabled || !visible || !message || message.disableAutohide) {
-      return;
-    }
+export function useWindowBlurPause({ startTimer, stopTimer, visible, message, disabled = false, }: Options): void {
+    useEffect(() => {
+        if (disabled || !$$(visible) || !message || message.disableAutohide) {
+            return
+        }
 
-    const handleFocusEvent = (event: Event): void => {
-      if (event.type === "focus") {
-        startTimer();
-      } else {
-        stopTimer();
-      }
-    };
+        const handleFocusEvent = (event: Event): void => {
+            if (event.type === "focus") {
+                startTimer()
+            } else {
+                stopTimer()
+            }
+        }
 
-    window.addEventListener("blur", handleFocusEvent);
-    window.addEventListener("focus", handleFocusEvent);
-    return () => {
-      window.removeEventListener("blur", handleFocusEvent);
-      window.removeEventListener("focus", handleFocusEvent);
-    };
-  }, [disabled, startTimer, stopTimer, visible, message]);
+        window.addEventListener("blur", handleFocusEvent)
+        window.addEventListener("focus", handleFocusEvent)
+        return () => {
+            window.removeEventListener("blur", handleFocusEvent)
+            window.removeEventListener("focus", handleFocusEvent)
+        }
+    })
 }

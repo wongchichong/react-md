@@ -8,6 +8,6 @@ export interface SearchTypeProps {
   type: MetadataType;
 }
 
-export default function SearchType({ type }: SearchTypeProps): ReactElement {
+export default function SearchType({ type }: SearchTypeProps): Child {
   return <span className={styles.type}>{toTitle(type)}</span>;
 }

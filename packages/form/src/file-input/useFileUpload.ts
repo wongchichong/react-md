@@ -1,7 +1,8 @@
-import type { ChangeEvent, DragEvent } from "react";
-import { useCallback, useEffect, useReducer } from "react";
-import { nanoid } from "nanoid";
-import { omit } from "@react-md/utils";
+import { $$ } from 'voby'
+import { $, useEffect, store } from 'voby'
+import { nanoid } from "nanoid"
+import { omit } from "@react-md/utils"
+import '@react-md/react'
 
 import type {
   CompletedFileUploadStats,
@@ -13,13 +14,13 @@ import type {
   GetFileParser,
   ProcessingFileUploadStats,
   FileValidationOptions,
-} from "./utils";
+} from "./utils"
 import {
   getFileParser as defaultGetFileParser,
   FileAccessError,
   isValidFileName as defaultIsValidFileName,
   validateFiles as defaultValidateFiles,
-} from "./utils";
+} from "./utils"
 
 /**
  *
@@ -37,7 +38,7 @@ export interface FileUploadState<CustomError = never> {
    * Each key in this object is the {@link BaseFileUploadStats.key} generated
    * once the upload starts pending.
    */
-  stats: Readonly<Record<string, Readonly<FileUploadStats>>>;
+  stats: Readonly<Record<string, Readonly<FileUploadStats>>>
 
   /**
    * A list of validation errors that have occurred before starting the upload
@@ -47,7 +48,7 @@ export interface FileUploadState<CustomError = never> {
    * @see {@link TooManyFilesError}
    * @see {@link FileValidationError}
    */
-  errors: readonly FileValidationError<CustomError>[];
+  errors: readonly FileValidationError<CustomError>[]
 }
 
 /**
@@ -64,7 +65,7 @@ export interface FileUploadHookState<CustomError = never>
    *
    * Note: Once an upload has completed, the reader will be removed.
    */
-  readers: Readonly<Record<string, FileReader>>;
+  readers: Readonly<Record<string, FileReader>>
 }
 
 /**
@@ -77,7 +78,7 @@ export interface FileUploadHookState<CustomError = never>
  */
 export interface FileUploadOptions<E extends HTMLElement, CustomError = never>
   extends FileUploadHandlers<E>,
-    FileValidationOptions {
+  FileValidationOptions {
   /**
    * Setting this value to a number greater than `0` will update the browser
    * upload process to queue the uploads in chunks instead of all at once. This
@@ -86,27 +87,27 @@ export interface FileUploadOptions<E extends HTMLElement, CustomError = never>
    *
    * @defaultValue `-1`
    */
-  concurrency?: number;
+  concurrency?: FunctionMaybe<Nullable<number>>
 
   /** {@inheritDoc FilesValidator} */
-  validateFiles?: FilesValidator<CustomError>;
+  validateFiles?: FilesValidator<CustomError>
   /** {@inheritDoc GetFileParser} */
-  getFileParser?: GetFileParser;
+  getFileParser?: GetFileParser
 }
 
 /** @internal */
 type Action<E = never> =
   | {
-      type: "queue";
-      errors: readonly FileValidationError<E>[];
-      files: readonly File[];
-    }
+    type: "queue"
+    errors: readonly FileValidationError<E>[]
+    files: readonly File[]
+  }
   | { type: "reset" }
   | { type: "remove"; files: readonly string[] }
   | { type: "start"; key: string; reader: FileReader }
   | { type: "progress"; key: string; progress: number }
   | { type: "complete"; key: string; result: FileReaderResult }
-  | { type: "clearErrors" };
+  | { type: "clearErrors" }
 
 /** @remarks \@since 2.9.0 */
 export interface FileUploadActions {
@@ -114,13 +115,13 @@ export interface FileUploadActions {
    * Reset everything related to uploads ensuring that all file readers have
    * been aborted.
    */
-  reset(): void;
+  reset(): void
 
   /**
    * Removes all the errors that exist in state without cancelling any of the
    * uploads already in progress.
    */
-  clearErrors(): void;
+  clearErrors(): void
 
   /**
    * This function is used to cancel pending and uploading files or removing
@@ -129,7 +130,7 @@ export interface FileUploadActions {
    * @param keyOrKeys - A single or list of {@link BaseFileUploadStats.key} to
    * remove from state.
    */
-  remove(keyOrKeys: string | readonly string[]): void;
+  remove(keyOrKeys: string | readonly string[]): void
 }
 
 /**
@@ -144,27 +145,27 @@ export interface FileUploadHookReturnValue<
   E extends HTMLElement = HTMLElement,
   CustomError = never
 > extends FileUploadActions,
-    Required<FileUploadHandlers<E>> {
+  Required<FileUploadHandlers<E>> {
   /** {@inheritDoc FileUploadState.errors} */
-  errors: readonly FileValidationError<CustomError>[];
+  errors: readonly FileValidationError<CustomError>[]
 
   /**
    * A list of all the {@link FileUploadStats}.
    *
    * @see {@link getSplitFileUploads} for separating by status
    */
-  stats: readonly Readonly<FileUploadStats>[];
+  stats: readonly Readonly<FileUploadStats>[]
 
   /**
    * The total number of bytes for all the files that exist in the
    * {@link stats} list.
    */
-  totalBytes: number;
+  totalBytes: number
 
   /**
    * The total number of files in the {@link stats} list.
    */
-  totalFiles: number;
+  totalFiles: number
 
   /**
    * An `accept` string that can be passed to the {@link FileInput} component
@@ -182,13 +183,13 @@ export interface FileUploadHookReturnValue<
    *
    * @defaultValue `"*"`
    */
-  accept: string;
+  accept: string
 }
 
 /** @internal */
-const EMPTY_LIST = [] as const;
+const EMPTY_LIST = [] as const
 /** @internal */
-const EMPTY_OBJECT = {} as const;
+const EMPTY_OBJECT = {} as const
 
 /**
  * This hook is generally used to upload files **to the browser** in different
@@ -209,7 +210,7 @@ const EMPTY_OBJECT = {} as const;
  */
 export function useFileUpload<E extends HTMLElement, CustomError = never>({
   maxFiles = -1,
-  extensions = EMPTY_LIST,
+  extensions: ext = EMPTY_LIST,
   minFileSize = -1,
   maxFileSize = -1,
   totalFileSize = -1,
@@ -219,157 +220,129 @@ export function useFileUpload<E extends HTMLElement, CustomError = never>({
   validateFiles = defaultValidateFiles,
   getFileParser = defaultGetFileParser,
   isValidFileName = defaultIsValidFileName,
-}: FileUploadOptions<E, CustomError> = {}): Readonly<
-  FileUploadHookReturnValue<E, CustomError>
-> {
-  const [state, dispatch] = useReducer(
-    function reducer(
-      state: FileUploadHookState<CustomError>,
-      action: Action<CustomError>
-    ) {
-      switch (action.type) {
-        case "reset":
-          // need to reuse constants so that calling reset doesn't cause an
-          // infinite loop in an effect
-          return {
-            stats: EMPTY_OBJECT,
-            errors: EMPTY_LIST,
-            readers: EMPTY_OBJECT,
-          };
-        case "remove":
-          return {
-            ...state,
-            stats: omit(state.stats, action.files),
-          };
-        case "queue":
-          return {
-            ...state,
-            stats: {
-              ...state.stats,
-              ...action.files.reduce<Record<string, ProcessingFileUploadStats>>(
-                (files, file) => {
-                  const key = nanoid();
-                  files[key] = {
-                    key,
-                    file,
-                    progress: 0,
-                    status: "pending",
-                  };
+}: FileUploadOptions<E, CustomError> = {}): Readonly<FileUploadHookReturnValue<E, CustomError>> {
+  const extensions = $$(ext)
 
-                  return files;
-                },
-                {}
-              ),
-            },
-            errors: [...state.errors, ...action.errors],
-          };
-        case "start": {
-          const { key, reader } = action;
-          /* istanbul ignore next */
-          if (!state.stats[key]) {
-            throw new Error(`Missing file with key "${key}"`);
-          }
+  const state = ((state: FileUploadHookState<CustomError> = store({ stats: EMPTY_OBJECT, errors: EMPTY_LIST, readers: EMPTY_OBJECT, })) => {
+    let a: Action<CustomError>
+    const update = (s: FileUploadHookState<CustomError>) => Object.assign(state, s)
+    const reset = () =>
+      // need to reuse constants so that calling reset doesn't cause an
+      // infinite loop in an effect
+      Object.assign(state, {
+        stats: EMPTY_OBJECT,
+        errors: EMPTY_LIST,
+        readers: EMPTY_OBJECT,
+      })
+    const remove = (action: { files: readonly string[] }) => Object.assign(state, { ...state, stats: omit(state.stats, action.files), })
 
-          const fileStats: ProcessingFileUploadStats = {
-            key,
-            file: state.stats[key].file,
-            progress: 0,
-            status: "uploading",
-          };
+    const queue = (action: { errors: readonly FileValidationError<E>[], files: readonly File[], }) => Object.assign(state, {
+      stats: {
+        ...state.stats,
+        ...action.files.reduce<Record<string, ProcessingFileUploadStats>>(
+          (files, file) => {
+            const key = nanoid()
+            files[key] = {
+              key,
+              file,
+              progress: 0,
+              status: "pending",
+            }
 
-          return {
-            ...state,
-            readers: {
-              ...state.readers,
-              [key]: reader,
-            },
-            stats: {
-              ...state.stats,
-              [key]: fileStats,
-            },
-          };
-        }
-        case "progress": {
-          const { key, progress } = action;
-          /* istanbul ignore next */
-          if (!state.stats[key]) {
-            throw new Error(`Missing file with key "${key}"`);
-          }
-
-          return {
-            ...state,
-            stats: {
-              ...state.stats,
-              [key]: {
-                ...state.stats[key],
-                progress,
-              },
-            },
-          };
-        }
-        case "complete": {
-          const { key, result } = action;
-          /* istanbul ignore next */
-          if (!state.stats[key]) {
-            throw new Error(`Missing file with key "${key}"`);
-          }
-
-          const file: CompletedFileUploadStats = {
-            key,
-            file: state.stats[key].file,
-            status: "complete",
-            result,
-            progress: 100,
-          };
-          const { [key]: _reader, ...readers } = state.readers;
-
-          return {
-            ...state,
-            readers,
-            stats: {
-              ...state.stats,
-              [key]: file,
-            },
-          };
-        }
-        case "clearErrors":
-          return { ...state, errors: [] };
-        default:
-          /* istanbul ignore next */
-          return state;
+            return files
+          },
+          {}
+        ),
+      },
+      errors: [...state.errors, ...action.errors],
+    })
+    const start = (action: { key: string; reader: FileReader }) => {
+      const { key, reader } = action
+      /* istanbul ignore next */
+      if (!state.stats[key]) {
+        throw new Error(`Missing file with key "${key}"`)
       }
-    },
-    {
-      stats: EMPTY_OBJECT,
-      errors: EMPTY_LIST,
-      readers: EMPTY_OBJECT,
-    }
-  );
-  const { stats, errors, readers } = state;
 
-  const statsList = Object.values(stats);
-  const totalFiles = statsList.length;
+      const fileStats: ProcessingFileUploadStats = {
+        key,
+        file: state.stats[key].file,
+        progress: 0,
+        status: "uploading",
+      }
+
+      return Object.assign(state, {
+        readers: {
+          ...state.readers,
+          [key]: reader,
+        },
+        stats: {
+          ...state.stats,
+          [key]: fileStats,
+        },
+      })
+    }
+
+    const progress = (action: { key: string; progress: number }) => {
+      const { key, progress } = action
+      /* istanbul ignore next */
+      if (!state.stats[key]) {
+        throw new Error(`Missing file with key "${key}"`)
+      }
+
+      return Object.assign(state, {
+        stats: {
+          ...state.stats,
+          [key]: {
+            ...state.stats[key],
+            progress,
+          },
+        },
+      })
+    }
+    const complete = (action: { key: string; result: FileReaderResult }) => {
+      const { key, result } = action
+      /* istanbul ignore next */
+      if (!state.stats[key]) {
+        throw new Error(`Missing file with key "${key}"`)
+      }
+
+      const file: CompletedFileUploadStats = {
+        key,
+        file: state.stats[key].file,
+        status: "complete",
+        result,
+        progress: 100,
+      }
+      const { [key]: _reader, ...readers } = state.readers
+
+      return Object.assign(state, {
+        readers,
+        stats: {
+          ...state.stats,
+          [key]: file,
+        },
+      })
+    }
+    const clearErrors = () => Object.assign(state, { errors: [] })
+    //       default:
+    // /* istanbul ignore next */
+    // return state
+    return { state, update, reset, remove, queue, start, progress, complete, clearErrors }
+  })()
+
+
+  ///////
+
+  const { stats, errors, readers } = state.state
+
+  const statsList = Object.values(stats)
+  const totalFiles = statsList.length
   const totalBytes = statsList.reduce(
     (result, { file: { size } }) => result + size,
     0
-  );
-  const queueFiles = useCallback(
-    (files: readonly File[]) => {
-      const { pending, errors } = validateFiles(files, {
-        maxFiles,
-        extensions,
-        minFileSize,
-        maxFileSize,
-        totalBytes,
-        totalFiles,
-        totalFileSize,
-        isValidFileName,
-      });
-
-      dispatch({ type: "queue", errors, files: pending });
-    },
-    [
-      validateFiles,
+  )
+  const queueFiles = $((files: readonly File[]) => {
+    const { pending, errors } = validateFiles(files, {
       maxFiles,
       extensions,
       minFileSize,
@@ -378,127 +351,115 @@ export function useFileUpload<E extends HTMLElement, CustomError = never>({
       totalFiles,
       totalFileSize,
       isValidFileName,
-    ]
-  );
-  const onDrop = useCallback(
-    (event: DragEvent<E>) => {
-      propOnDrop?.(event);
-      event.preventDefault();
-      event.stopPropagation();
+    })
 
-      try {
-        const files = event.dataTransfer.files;
-        if (files) {
-          queueFiles(Array.from(files));
-        }
-      } catch (e) {
-        dispatch({
-          type: "queue",
-          files: [],
-          errors: [
-            new FileAccessError(e instanceof Error ? e.message : undefined),
-          ],
-        });
+    //@ts-ignore
+    state.queue({ errors, files: pending })
+  })
+  const onDrop = $((event: DragEvent/* <E> */) => {
+    //@ts-ignore
+    propOnDrop?.(event)
+    event.preventDefault()
+    event.stopPropagation()
+
+    try {
+      const files = event.dataTransfer.files
+      if (files) {
+        queueFiles(Array.from(files) as any)
       }
-    },
-    [queueFiles, propOnDrop]
-  );
-  const onChange = useCallback(
-    (event: ChangeEvent<HTMLInputElement>) => {
-      propOnChange?.(event);
-      try {
-        const files = event.currentTarget.files;
-        if (files) {
-          queueFiles(Array.from(files));
-        } else {
-          throw new Error();
-        }
-      } catch (e) {
-        dispatch({
-          type: "queue",
-          files: [],
-          errors: [
-            new FileAccessError(e instanceof Error ? e.message : undefined),
-          ],
-        });
+    } catch (e) {
+      state.queue({
+        files: [],
+        errors: [
+          new FileAccessError(e instanceof Error ? e.message : undefined),
+        ],
+      })
+    }
+  })
+  //@ts-ignore
+  const onChange = $((event: ChangeEvent<HTMLInputElement>) => {
+    propOnChange?.(event)
+    try {
+      const files = event.currentTarget.files
+      if (files) {
+        queueFiles(Array.from(files) as any)
+      } else {
+        throw new Error()
       }
-    },
-    [queueFiles, propOnChange]
-  );
+    } catch (e) {
+      state.queue({
+        files: [],
+        errors: [
+          new FileAccessError(e instanceof Error ? e.message : undefined),
+        ],
+      })
+    }
+  })
 
-  const remove = useCallback(
-    (keyOrKeys: string | readonly string[]) => {
-      const files = typeof keyOrKeys === "string" ? [keyOrKeys] : keyOrKeys;
-      files.forEach((fileKey) => {
-        readers[fileKey]?.abort();
-      });
+  const remove = (keyOrKeys: string | readonly string[]) => {
+    const files = typeof keyOrKeys === "string" ? [keyOrKeys] : keyOrKeys
+    files.forEach((fileKey) => {
+      readers[fileKey]?.abort()
+    })
 
-      dispatch({ type: "remove", files });
-    },
-    [readers]
-  );
-  const reset = useCallback(() => {
+    state.remove({ files })
+  }
+  const reset = () => {
     Object.values(readers).forEach((reader) => {
-      reader.abort();
-    });
+      reader.abort()
+    })
 
-    dispatch({ type: "reset" });
-  }, [readers]);
-  const clearErrors = useCallback(() => {
-    dispatch({ type: "clearErrors" });
-  }, []);
-  const start = useCallback((key: string, reader: FileReader) => {
-    dispatch({ type: "start", key, reader });
-  }, []);
-  const complete = useCallback(
-    (key: string, result: FileReaderResult = null) => {
-      dispatch({ type: "complete", key, result });
-    },
-    []
-  );
-  const createProgressEventHandler = useCallback(
-    (key: string) => (event: ProgressEvent) => {
-      if (event.lengthComputable) {
-        const percentage = Math.round((event.loaded * 100) / event.total);
-        dispatch({ type: "progress", key, progress: percentage });
-      }
-    },
-    []
-  );
+    state.reset()
+  }
+  const clearErrors = () => {
+    state.clearErrors()
+  }
+  const start = (key: string, reader: FileReader) => {
+    state.start({ key, reader })
+  }
+  const complete = (key: string, result: FileReaderResult = null) => {
+    state.complete({ key, result })
+  }
+  const createProgressEventHandler = (key: string) => (event: ProgressEvent) => {
+    if (event.lengthComputable) {
+      const percentage = Math.round((event.loaded * 100) / event.total)
+      state.progress({ key, progress: percentage })
+    }
+  }
 
   useEffect(() => {
-    const pending: ProcessingFileUploadStats[] = [];
-    const uploading: ProcessingFileUploadStats[] = [];
+    const pending: ProcessingFileUploadStats[] = []
+    const uploading: ProcessingFileUploadStats[] = []
     Object.values(stats).forEach((file) => {
       if (file.status === "pending") {
-        pending.push(file);
+        pending.push(file)
       } else if (file.status === "uploading") {
-        uploading.push(file);
+        uploading.push(file)
       }
-    });
+    })
 
     const lastIndex =
       concurrency === -1
         ? pending.length
-        : Math.max(0, concurrency - uploading.length);
-    const queue = pending.slice(0, lastIndex);
+        : Math.max(0, $$(concurrency) - uploading.length)
+    const queue = pending.slice(0, lastIndex)
     if (!queue.length) {
-      return;
+      return
     }
 
     queue.forEach((stats) => {
-      const { key, file } = stats;
-      const reader = new FileReader();
+      const { key, file } = stats
+      const reader = new FileReader()
 
       // using `addEventListener` instead of directly setting to
       // `reader.progress`/`reader.load` so it's easier to test
-      reader.addEventListener("progress", createProgressEventHandler(key));
+      reader.addEventListener("progress", createProgressEventHandler(key))
       reader.addEventListener("load", () => {
-        complete(key, reader.result);
-      });
+        complete(key, reader.result)
+      })
 
-      start(key, reader);
-      const parser = getFileParser(file);
+      start(key, reader)
+      const parser = getFileParser(file)
       /* istanbul ignore next */
       if (
         process.env.NODE_ENV !== "production" &&
@@ -509,23 +470,16 @@ export function useFileUpload<E extends HTMLElement, CustomError = never>({
           "readAsBinaryString",
         ].includes(parser)
       ) {
-        throw new Error("Invalid file reader parser");
+        throw new Error("Invalid file reader parser")
       }
 
-      reader[parser](file);
-    });
-  }, [
-    concurrency,
-    stats,
-    getFileParser,
-    createProgressEventHandler,
-    start,
-    complete,
-  ]);
+      reader[parser](file)
+    })
+  })
 
-  let accept = "";
+  let accept = ""
   if (extensions.length) {
-    accept = extensions.reduce((s, ext) => `${s ? `${s},` : ""}.${ext}`, "");
+    accept = extensions.reduce((s, ext) => `${s ? `${s},` : ""}.${ext}`, "")
   }
 
   return {
@@ -539,5 +493,5 @@ export function useFileUpload<E extends HTMLElement, CustomError = never>({
     reset,
     remove,
     clearErrors,
-  };
+  }
 }

@@ -5,7 +5,7 @@ import {
   RadioButtonCheckedSVGIcon,
 } from "@react-md/material-icons";
 
-export default function CheckboxAndRadioExamples(): ReactElement {
+export default function CheckboxAndRadioExamples(): Child {
   return (
     <>
       <Checkbox

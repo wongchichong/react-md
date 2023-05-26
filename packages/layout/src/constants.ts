@@ -1,9 +1,8 @@
 import type { CSSTransitionClassNames } from "@react-md/transition";
-import type {
-  SupportedPhoneLayout,
-  SupportedTabletLayout,
-  SupportedWideLayout,
-} from "./types";
+import type { 
+SupportedPhoneLayout, 
+SupportedTabletLayout, 
+SupportedWideLayout,  } from "./types";
 
 export const DEFAULT_PHONE_LAYOUT: SupportedPhoneLayout = "temporary";
 export const DEFAULT_TABLET_LAYOUT: SupportedTabletLayout = "toggleable";

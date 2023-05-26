@@ -32,7 +32,7 @@ const demos: DemoConfig[] = [
   },
 ];
 
-export default function FileInputs(): ReactElement {
+export default function FileInputs(): Child {
   return (
     <IconProvider>
       <DemoPage demos={demos} packageName="form" fonts={["Material Icons"]} />

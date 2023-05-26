@@ -1,14 +1,15 @@
-import { defaults } from "../defaults";
-import type { SearchOptions } from "./utils";
-import { DEFAULT_SEARCH_OPTIONS, getSearchString } from "./utils";
+import { $$ } from "voby"
+import { defaults } from "../defaults"
+import type { SearchOptions } from "./utils"
+import { DEFAULT_SEARCH_OPTIONS, getSearchString } from "./utils"
 
 export interface CaseInsensitiveOptions<T = unknown> extends SearchOptions<T> {
-  /**
-   * Boolean if the filter should also exclude all items that do not start with
-   * the query string. The default behavior is to return all matches that
-   * contain the query string anywhere.
-   */
-  startsWith?: boolean;
+    /**
+     * Boolean if the filter should also exclude all items that do not start with
+     * the query string. The default behavior is to return all matches that
+     * contain the query string anywhere.
+     */
+    startsWith?: FunctionMaybe<Nullable<boolean>>
 }
 
 /**
@@ -22,35 +23,37 @@ export interface CaseInsensitiveOptions<T = unknown> extends SearchOptions<T> {
  * string.
  */
 export function caseInsensitiveFilter<T = unknown>(
-  query: string,
-  searchable: readonly T[],
-  options: CaseInsensitiveOptions<T> = {}
+    query: string,
+    searchable: readonly T[],
+    options: CaseInsensitiveOptions<T> = {}
 ): readonly T[] {
-  const {
-    getItemValue,
-    valueKey,
-    trim,
-    ignoreWhitespace,
-    startsWith = false,
-  } = defaults(options, DEFAULT_SEARCH_OPTIONS);
+    const {
+        getItemValue,
+        valueKey: vk,
+        trim: tr,
+        ignoreWhitespace: iw,
+        startsWith = false,
+    } = defaults(options, DEFAULT_SEARCH_OPTIONS)
 
-  query = getSearchString(query, true, trim, ignoreWhitespace);
-  if (!query || !searchable.length) {
-    return searchable;
-  }
+    const trim = $$(tr), valueKey = $$(vk), ignoreWhitespace = $$(iw)
 
-  return searchable.filter((item) => {
-    const value = getSearchString(
-      getItemValue(item, valueKey),
-      true,
-      trim,
-      ignoreWhitespace
-    );
-
-    if (startsWith) {
-      return value.indexOf(query) === 0;
+    query = getSearchString(query, true, trim, ignoreWhitespace)
+    if (!query || !searchable.length) {
+        return searchable
     }
 
-    return value.indexOf(query) !== -1;
-  });
+    return searchable.filter((item) => {
+        const value = getSearchString(
+            getItemValue(item, valueKey),
+            true,
+            trim,
+            ignoreWhitespace
+        )
+
+        if (startsWith) {
+            return value.indexOf(query) === 0
+        }
+
+        return value.indexOf(query) !== -1
+    })
 }

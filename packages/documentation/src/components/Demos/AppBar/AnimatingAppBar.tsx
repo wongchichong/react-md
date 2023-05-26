@@ -31,7 +31,7 @@ const HEIGHT = 96;
 // and just looked "decent"
 const SCROLL_MULTIPLIER = 0.314;
 
-export default function AnimatingAppBar(): ReactElement {
+export default function AnimatingAppBar(): Child {
   const [height, setHeight] = useState(`${HEIGHT}px`);
   const style: CSSProperties = {
     "--offset": height,

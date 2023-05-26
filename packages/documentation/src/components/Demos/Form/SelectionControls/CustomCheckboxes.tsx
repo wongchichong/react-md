@@ -13,7 +13,7 @@ function CustomCheckbox({
   defaultChecked = false,
   onChange: propOnChange,
   ...props
-}: InputToggleProps): ReactElement {
+}: InputToggleProps): Child {
   const [checked, onChange] = useChecked(defaultChecked, propOnChange);
 
   return (
@@ -27,7 +27,7 @@ function CustomCheckbox({
   );
 }
 
-export default function CustomCheckboxes(): ReactElement {
+export default function CustomCheckboxes(): Child {
   return (
     <Form>
       <CustomCheckbox

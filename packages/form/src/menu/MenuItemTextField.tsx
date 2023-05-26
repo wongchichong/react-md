@@ -1,11 +1,11 @@
-import type { HTMLAttributes } from "react";
-import { forwardRef } from "react";
-import cn from "classnames";
-import type { PropsWithRef } from "@react-md/utils";
-import { useKeyboardFocusableElement } from "@react-md/utils";
 
-import type { TextFieldProps } from "../text-field/TextField";
-import { TextField } from "../text-field/TextField";
+
+
+import type { PropsWithRef } from "@react-md/utils"
+import { useKeyboardFocusableElement } from "@react-md/utils"
+
+import type { TextFieldProps } from "../text-field/TextField"
+import { TextField } from "../text-field/TextField"
 
 /**
  * @remarks \@since 5.0.0
@@ -16,7 +16,7 @@ export interface MenuItemTextFieldProps extends TextFieldProps {
    */
   liProps?: Readonly<
     PropsWithRef<HTMLAttributes<HTMLLIElement>, HTMLLIElement>
-  >;
+  >
 }
 
 /**
@@ -29,43 +29,38 @@ export interface MenuItemTextFieldProps extends TextFieldProps {
  *
  * @remarks \@since 5.0.0
  */
-export const MenuItemTextField = forwardRef<
-  HTMLInputElement,
-  MenuItemTextFieldProps
->(function MenuItemTextField(
-  { liProps, onKeyDown, stretch = true, ...props },
-  nodeRef
-) {
-  const refCallback = useKeyboardFocusableElement(nodeRef);
+export const MenuItemTextField = ({ liProps, onKeyDown, stretch = true, ref: nodeRef, ...props }: MenuItemTextFieldProps) => {
+  //@ts-ignore
+  const refCallback = useKeyboardFocusableElement(nodeRef)
   return (
     <li
       role="none"
       {...liProps}
       onClick={(event) => {
-        liProps?.onClick?.(event);
-        event.stopPropagation();
+        liProps?.onClick?.(event)
+        event.stopPropagation()
       }}
-      className={cn("rmd-list-item rmd-menu-item", liProps?.className)}
+      className={["rmd-list-item rmd-menu-item", liProps?.className]}
     >
       <TextField
         {...props}
         ref={refCallback}
         stretch={stretch}
         onKeyDown={(event) => {
-          onKeyDown?.(event);
+          onKeyDown?.(event)
           switch (event.key) {
             case "Tab":
             case "Escape":
             case " ":
               // do default behavior
-              break;
+              break
             default:
               if (event.key.length === 1 || event.currentTarget.value) {
-                event.stopPropagation();
+                event.stopPropagation()
               }
           }
         }}
       />
     </li>
-  );
-});
+  )
+}

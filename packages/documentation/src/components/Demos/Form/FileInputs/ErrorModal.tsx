@@ -20,7 +20,7 @@ export interface ErrorModalProps {
 export default function ErrorModal({
   errors,
   clearErrors,
-}: ErrorModalProps): ReactElement {
+}: ErrorModalProps): Child {
   // Having the visibility being derived on the `errors.length > 0` would make
   // it so the errors are cleared during the exit animation. To fix this, keep a
   // separate `visible` state and set it to `true` whenever a new error is

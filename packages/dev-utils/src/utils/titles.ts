@@ -1,4 +1,4 @@
-import { upperFirst } from "lodash";
+import { upperFirst } from "lodash"
 
 /**
  * A simple utility that converts some string into a page/section title. This
@@ -13,41 +13,41 @@ import { upperFirst } from "lodash";
  * @returns A title-ized string.
  */
 export function toTitle(s: string, joinWith = " ", capitals = false): string {
-  if (/autocomplete/i.test(s)) {
-    return "AutoComplete";
-  }
+    if (/autocomplete/i.test(s)) {
+        return "AutoComplete"
+    }
 
-  if (/^api$/i.test(s)) {
-    return "API";
-  }
+    if (/^api$/i.test(s)) {
+        return "API"
+    }
 
-  if (/sassdoc/i.test(s)) {
-    return "SassDoc";
-  }
+    if (/sassdoc/i.test(s)) {
+        return "SassDoc"
+    }
 
-  if (s === "[id]") {
-    // TODO: Fix to use query params instead
-    return "Layout";
-  }
+    if (s === "[id]") {
+        // TODO: Fix to use query params instead
+        return "Layout"
+    }
 
-  return s
-    .split(capitals ? /(?=[A-Z])/ : "-")
-    .map((part) => {
-      if (/^((v\d+)|(to))$/.test(part)) {
-        return part;
-      }
+    return s
+        .split(capitals ? /(?=[A-Z])/ : "-")
+        .map((part) => {
+            if (/^((v\d+)|(to))$/.test(part)) {
+                return part
+            }
 
-      if (/^api$/i.test(part)) {
-        return "API";
-      }
+            if (/^api$/i.test(part)) {
+                return "API"
+            }
 
-      if (/^cdn$/i.test(part)) {
-        return "CDN";
-      }
+            if (/^cdn$/i.test(part)) {
+                return "CDN"
+            }
 
-      return upperFirst(part);
-    })
-    .join(joinWith);
+            return upperFirst(part)
+        })
+        .join(joinWith)
 }
 
 /**
@@ -60,27 +60,27 @@ export function toTitle(s: string, joinWith = " ", capitals = false): string {
  * @returns a string to display in the documentation site's breadcrumbs.
  */
 export function toBreadcrumbPageTitle(
-  pathname: string,
-  statusCode?: number
+    pathname: string,
+    statusCode?: FunctionMaybe<Nullable<number>>
 ): string {
-  let title = "";
-  if (statusCode) {
-    switch (statusCode) {
-      case 404:
-        title = "Not Found";
-        break;
-      default:
-        title = "Server error";
+    let title = ""
+    if (statusCode) {
+        switch (statusCode) {
+            case 404:
+                title = "Not Found"
+                break
+            default:
+                title = "Server error"
+        }
+    } else if (/v\d+-to-v\d+$/.test(pathname)) {
+        const [migration] = pathname.split("/").reverse()
+        title = `Migration Guides - ${migration.replace(/-/g, " ")}`
+    } else {
+        const parts = pathname.split("/").filter((p) => !!p && !/packages/.test(p))
+        title = parts.map((p) => toTitle(p)).join(" - ")
     }
-  } else if (/v\d+-to-v\d+$/.test(pathname)) {
-    const [migration] = pathname.split("/").reverse();
-    title = `Migration Guides - ${migration.replace(/-/g, " ")}`;
-  } else {
-    const parts = pathname.split("/").filter((p) => !!p && !/packages/.test(p));
-    title = parts.map((p) => toTitle(p)).join(" - ");
-  }
 
-  return `react-md${title ? ` - ${title}` : ""}`;
+    return `react-md${title ? ` - ${title}` : ""}`
 }
 
 /**
@@ -94,14 +94,14 @@ export function toBreadcrumbPageTitle(
  * @returns an id based on the title
  */
 export function toId(title: string): string {
-  return title
-    .replace(/\/|\\|\[|]|-/g, "")
-    .replace(/SCSS/g, "scss ")
-    .replace(/CSS/g, "css ")
-    .replace(/API/g, "api")
-    .replace(/\s+/g, " ")
-    .trim()
-    .split(/\s|(?=[A-Z])/)
-    .join("-")
-    .toLowerCase();
+    return title
+        .replace(/\/|\\|\[|]|-/g, "")
+        .replace(/SCSS/g, "scss ")
+        .replace(/CSS/g, "css ")
+        .replace(/API/g, "api")
+        .replace(/\s+/g, " ")
+        .trim()
+        .split(/\s|(?=[A-Z])/)
+        .join("-")
+        .toLowerCase()
 }

@@ -1,62 +1,62 @@
-import type { ReactNode } from "react";
-import cn from "classnames";
-import type { Maybe } from "@react-md/utils";
+// import type { Child } from 'voby';
 
-import type { MergableRippleHandlers, RipplesOptions } from "./ripples/types";
-import { useRipples } from "./ripples/useRipples";
-import type { StatesConfigContextType } from "./StatesConfig";
-import { useStatesConfigContext } from "./StatesConfig";
-import { useKeyboardClickPolyfill } from "./useKeyboardClickPolyfill";
-import { usePressedStates } from "./usePressedStates";
+import type { Maybe } from "@react-md/utils"
+
+import type { MergableRippleHandlers, RipplesOptions } from "./ripples/types"
+import { useRipples } from "./ripples/useRipples"
+import type { StatesConfigContextType } from "./StatesConfig"
+import { useStatesConfigContext } from "./StatesConfig"
+import { useKeyboardClickPolyfill } from "./useKeyboardClickPolyfill"
+import { usePressedStates } from "./usePressedStates"
 
 export interface InteractionStatesOptions<E extends HTMLElement = HTMLElement>
-  extends Partial<StatesConfigContextType>,
+    extends Partial<StatesConfigContextType>,
     RipplesOptions<E> {
-  /**
-   * An optional className to merge with the different interaction states.
-   */
-  className?: string;
+    /**
+     * An optional className to merge with the different interaction states.
+     */
+    className?: Class
 
-  /**
-   * Boolean if the enter keyboard click polyfill should be completely disabled.
-   * This is generally used if the keyboard functionality is already built-in to
-   * the element like buttons or labels.
-   */
-  disableEnterClick?: boolean;
+    /**
+     * Boolean if the enter keyboard click polyfill should be completely disabled.
+     * This is generally used if the keyboard functionality is already built-in to
+     * the element like buttons or labels.
+     */
+    disableEnterClick?: FunctionMaybe<Nullable<boolean>>
 
-  /**
-   * Boolean if the spacebar should not trigger a click event when using the
-   * user pressed spacebar on a focusable element. You _normally_ want the
-   * spacebar to also trigger a click event , but there are a few cases where it
-   * should not (like custom links).
-   *
-   * When this is disabled, it will also make sure that the ripple and pressed
-   * effects are not triggered from a spacebar click.
-   *
-   * @defaultValue `false`
-   */
-  disableSpacebarClick?: boolean;
+    /**
+     * Boolean if the spacebar should not trigger a click event when using the
+     * user pressed spacebar on a focusable element. You _normally_ want the
+     * spacebar to also trigger a click event , but there are a few cases where it
+     * should not (like custom links).
+     *
+     * When this is disabled, it will also make sure that the ripple and pressed
+     * effects are not triggered from a spacebar click.
+     *
+     * @defaultValue `false`
+     */
+    disableSpacebarClick?: FunctionMaybe<Nullable<boolean>>
 
-  /**
-   * Boolean if the component should fallback to using the custom pressed class
-   * names when ripples are disabled.
-   *
-   * @defaultValue `false`
-   */
-  disablePressedFallback?: boolean;
+    /**
+     * Boolean if the component should fallback to using the custom pressed class
+     * names when ripples are disabled.
+     *
+     * @defaultValue `false`
+     */
+    disablePressedFallback?: FunctionMaybe<Nullable<boolean>>
 
-  /**
-   * Boolean if the element should be able to gain both the ripple effect and
-   * the pressed states changes. This will only be enabled if both the
-   * `disableRipple` and `disabledPressedFallback` are still `false`
-   */
-  enablePressedAndRipple?: boolean;
+    /**
+     * Boolean if the element should be able to gain both the ripple effect and
+     * the pressed states changes. This will only be enabled if both the
+     * `disableRipple` and `disabledPressedFallback` are still `false`
+     */
+    enablePressedAndRipple?: FunctionMaybe<Nullable<boolean>>
 }
 
 interface ReturnValue<E extends HTMLElement> {
-  ripples: ReactNode;
-  className: string | undefined;
-  handlers: MergableRippleHandlers<E>;
+    ripples: Child
+    className: Class
+    handlers: MergableRippleHandlers<E>
 }
 
 /**
@@ -92,83 +92,84 @@ interface ReturnValue<E extends HTMLElement> {
  * really just used to "better type" the event handlers.
  */
 export function useInteractionStates<E extends HTMLElement = HTMLElement>(
-  options: InteractionStatesOptions<E> = {}
+    options: InteractionStatesOptions<E> = {}
 ): ReturnValue<E> {
-  const {
-    disabled,
-    rippleClassName,
-    rippleContainerClassName,
-    disableSpacebarClick = false,
-    disablePressedFallback = false,
-    enablePressedAndRipple = false,
-    disableEnterClick = false,
-  } = options;
+    const {
+        disabled,
+        rippleClassName,
+        rippleContainerClassName,
+        disableSpacebarClick = false,
+        disablePressedFallback = false,
+        enablePressedAndRipple = false,
+        disableEnterClick = false,
+    } = options
 
-  let {
-    className,
-    disableRipple,
-    disableProgrammaticRipple,
-    rippleTimeout,
-    rippleClassNames,
-  } = options;
+    let {
+        className,
+        disableRipple,
+        disableProgrammaticRipple,
+        rippleTimeout,
+        rippleClassNames,
+    } = options
 
-  // populate undefined props from their context values
-  const context = useStatesConfigContext();
-  if (typeof disableRipple === "undefined") {
-    ({ disableRipple } = context);
-  }
+    // populate undefined props from their context values
+    const context = useStatesConfigContext()
+    if (typeof disableRipple === "undefined") {
+        ({ disableRipple } = context)
+    }
 
-  if (typeof disableProgrammaticRipple === "undefined") {
-    ({ disableProgrammaticRipple } = context);
-  }
+    if (typeof disableProgrammaticRipple === "undefined") {
+        ({ disableProgrammaticRipple } = context)
+    }
 
-  if (typeof rippleTimeout === "undefined") {
-    ({ rippleTimeout } = context);
-  }
+    if (typeof rippleTimeout === "undefined") {
+        ({ rippleTimeout } = context)
+    }
 
-  if (typeof rippleClassNames === "undefined") {
-    ({ rippleClassNames } = context);
-  }
+    if (typeof rippleClassNames === "undefined") {
+        ({ rippleClassNames } = context)
+    }
 
-  let handlers: Maybe<MergableRippleHandlers<E>> = null;
-  let ripples: ReactNode = null;
-  const ripplesResult = useRipples({
-    ...options,
-    disableSpacebarClick,
-    disableRipple,
-    disableProgrammaticRipple,
-    rippleTimeout,
-    rippleClassName,
-    rippleContainerClassName,
-  });
+    let handlers: Maybe<MergableRippleHandlers<E>> = null
+    //@ts-ignore
+    let ripples: Child = null
+    const ripplesResult = useRipples({
+        ...options,
+        disableSpacebarClick,
+        disableRipple,
+        disableProgrammaticRipple,
+        rippleTimeout,
+        rippleClassName,
+        rippleContainerClassName,
+    })
 
-  if (!disableRipple) {
-    ({ ripples, handlers } = ripplesResult);
-  }
+    if (!disableRipple) {
+        ({ ripples, handlers } = ripplesResult)
+    }
 
-  const pressedResult = usePressedStates({
-    ...options,
-    handlers: handlers || options.handlers,
-    disableSpacebarClick,
-  });
+    const pressedResult = usePressedStates({
+        ...options,
+        handlers: handlers || options.handlers,
+        disableSpacebarClick,
+    })
 
-  if (enablePressedAndRipple || (disableRipple && !disablePressedFallback)) {
-    ({ handlers } = pressedResult);
-    className = cn(className, { "rmd-states--pressed": pressedResult.pressed });
-  }
+    if (enablePressedAndRipple || (disableRipple && !disablePressedFallback)) {
+        ({ handlers } = pressedResult)
+        className = [className, { "rmd-states--pressed": pressedResult.pressed }]
+    }
 
-  handlers = handlers || options.handlers || ({} as MergableRippleHandlers<E>);
+    handlers = handlers || options.handlers || ({} as MergableRippleHandlers<E>)
 
-  handlers.onKeyDown = useKeyboardClickPolyfill({
-    disabled,
-    disableEnterClick,
-    disableSpacebarClick,
-    onKeyDown: handlers.onKeyDown,
-  });
+    handlers.onKeyDown = useKeyboardClickPolyfill({
+        disabled,
+        disableEnterClick,
+        disableSpacebarClick,
+        onKeyDown: handlers.onKeyDown,
+    })
 
-  return {
-    ripples,
-    className,
-    handlers,
-  };
+    return {
+        ripples,
+        className,
+        handlers,
+    }
 }

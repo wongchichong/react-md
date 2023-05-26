@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "release": "git add . && git commit -m \"Bump version\" && git push && npm version patch",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",

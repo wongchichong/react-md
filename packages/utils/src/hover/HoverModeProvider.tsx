@@ -1,43 +1,43 @@
-import type { ReactElement, ReactNode } from "react";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+//
+import { $, useEffect, useMemo, $$ } from 'voby'
 
-import { useOnUnmount } from "../useOnUnmount";
+import { useOnUnmount } from "../useOnUnmount"
 import {
-  DEFAULT_HOVER_MODE_DEACTIVATION_TIME,
-  DEFAULT_HOVER_MODE_VISIBLE_IN_TIME,
-} from "./constants";
-import type { HoverModeContext } from "./useHoverModeContext";
-import { HoverModeContextProvider } from "./useHoverModeContext";
+    DEFAULT_HOVER_MODE_DEACTIVATION_TIME,
+    DEFAULT_HOVER_MODE_VISIBLE_IN_TIME,
+} from "./constants"
+import type { HoverModeContext } from "./useHoverModeContext"
+import { HoverModeContextProvider } from "./useHoverModeContext"
 
 /** @remarks \@since 2.8.0 */
 export interface HoverModeConfiguration {
-  /**
-   * Boolean if the hover mode functionality should be disabled.
-   *
-   * @defaultValue `false`
-   */
-  disabled?: boolean;
+    /**
+     * Boolean if the hover mode functionality should be disabled.
+     *
+     * @defaultValue `false`
+     */
+    disabled?: FunctionMaybe<Nullable<boolean>>
 
-  /**
-   * The amount of time (in ms) the user must hover an element before the hover
-   * mode is enabled and the visibility is set to `true`.
-   *
-   * @defaultValue {@link DEFAULT_HOVER_MODE_VISIBLE_IN_TIME}
-   */
-  defaultVisibleInTime?: number;
+    /**
+     * The amount of time (in ms) the user must hover an element before the hover
+     * mode is enabled and the visibility is set to `true`.
+     *
+     * @defaultValue {@link DEFAULT_HOVER_MODE_VISIBLE_IN_TIME}
+     */
+    defaultVisibleInTime?: FunctionMaybe<Nullable<number>>
 
-  /**
-   * The amount of time (in ms) the user must not hover any element connected to
-   * the hover mode.
-   *
-   * @defaultValue {@link DEFAULT_HOVER_MODE_DEACTIVATION_TIME}
-   */
-  deactivateTime?: number;
+    /**
+     * The amount of time (in ms) the user must not hover any element connected to
+     * the hover mode.
+     *
+     * @defaultValue {@link DEFAULT_HOVER_MODE_DEACTIVATION_TIME}
+     */
+    deactivateTime?: FunctionMaybe<Nullable<number>>
 }
 
 /** @remarks \@since 2.8.0 */
 export interface HoverModeProviderProps extends HoverModeConfiguration {
-  children: ReactNode;
+    children: Children
 }
 
 /**
@@ -49,7 +49,7 @@ export interface HoverModeProviderProps extends HoverModeConfiguration {
  * @example
  * Separating Hover Mode
  * ```tsx
- * export default function Example(): ReactElement {
+ * export default function Example(): Child {
  *   return (
  *     <>
  *       <HoverModeProvider>
@@ -66,57 +66,54 @@ export interface HoverModeProviderProps extends HoverModeConfiguration {
  * @remarks \@since 2.8.0
  */
 export function HoverModeProvider({
-  children,
-  disabled = false,
-  defaultVisibleInTime = DEFAULT_HOVER_MODE_VISIBLE_IN_TIME,
-  deactivateTime = DEFAULT_HOVER_MODE_DEACTIVATION_TIME,
-}: HoverModeProviderProps): ReactElement {
-  const [visibleInTime, setVisibleInTime] = useState(defaultVisibleInTime);
-  const timeoutRef = useRef<number>();
-  const enableHoverMode = useCallback(() => {
-    if (disabled) {
-      return;
+    children,
+    disabled = false,
+    defaultVisibleInTime = DEFAULT_HOVER_MODE_VISIBLE_IN_TIME,
+    deactivateTime = DEFAULT_HOVER_MODE_DEACTIVATION_TIME,
+}: HoverModeProviderProps): Child {
+    const visibleInTime = $(defaultVisibleInTime)
+    const timeoutRef = $<number>()
+    const enableHoverMode = $(() => {
+        if (disabled) {
+            return
+        }
+
+        window.clearTimeout(timeoutRef())
+        visibleInTime(0)
+    })
+    const disableHoverMode = $(() => {
+        window.clearTimeout(timeoutRef())
+        visibleInTime(defaultVisibleInTime)
+    })
+
+    const startDisableTimer = () => {
+        window.clearTimeout(timeoutRef())
+        timeoutRef(window.setTimeout(() => {
+            visibleInTime(defaultVisibleInTime)
+        }, $$(deactivateTime)))
     }
 
-    window.clearTimeout(timeoutRef.current);
-    setVisibleInTime(0);
-  }, [disabled]);
-  const disableHoverMode = useCallback(() => {
-    window.clearTimeout(timeoutRef.current);
-    setVisibleInTime(defaultVisibleInTime);
-  }, [defaultVisibleInTime]);
+    useEffect(() => {
+        if (disabled) {
+            window.clearTimeout(timeoutRef())
+            visibleInTime(defaultVisibleInTime)
+        }
+    })
 
-  const startDisableTimer = useCallback(() => {
-    window.clearTimeout(timeoutRef.current);
-    timeoutRef.current = window.setTimeout(() => {
-      setVisibleInTime(defaultVisibleInTime);
-    }, deactivateTime);
-  }, [defaultVisibleInTime, deactivateTime]);
+    useOnUnmount(() => {
+        window.clearTimeout(timeoutRef())
+    })
 
-  useEffect(() => {
-    if (disabled) {
-      window.clearTimeout(timeoutRef.current);
-      setVisibleInTime(defaultVisibleInTime);
-    }
-  }, [disabled, defaultVisibleInTime]);
+    const context = useMemo<HoverModeContext>(() => ({
+        visibleInTime: visibleInTime(),
+        enableHoverMode,
+        disableHoverMode,
+        startDisableTimer,
+    }))
 
-  useOnUnmount(() => {
-    window.clearTimeout(timeoutRef.current);
-  });
-
-  const context = useMemo<HoverModeContext>(
-    () => ({
-      visibleInTime,
-      enableHoverMode,
-      disableHoverMode,
-      startDisableTimer,
-    }),
-    [disableHoverMode, enableHoverMode, startDisableTimer, visibleInTime]
-  );
-
-  return (
-    <HoverModeContextProvider value={context}>
-      {children}
-    </HoverModeContextProvider>
-  );
+    return (
+        <HoverModeContextProvider value={context}>
+            {children}
+        </HoverModeContextProvider>
+    )
 }

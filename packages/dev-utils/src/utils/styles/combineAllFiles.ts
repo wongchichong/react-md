@@ -114,7 +114,7 @@ export function combineAllFiles(): void {
       } else {
         fileName = `_${fileName}`;
       }
-      const filePath = join(packageRoot, `${fileName}.scss`);
+      const filePath = join(packageRoot, `${fileName}.scss`).replace(/\\/igm, '/'); //convert Windows path to unix path
 
       imported[filePath] = true;
       if (!existsSync(filePath)) {
@@ -142,6 +142,8 @@ export function combineAllFiles(): void {
 
       if (imports) {
         imports.forEach((imp) => {
+          imp = imp.replace(/\\/igm, '/'); //convert Windows path to unix path
+
           let importName = imp.replace(IMPORT_STATEMENT_REGEXP, "$2.scss");
           if (importName.startsWith("./")) {
             importName = join(packageRoot, importName);
@@ -151,11 +153,13 @@ export function combineAllFiles(): void {
           }
 
           importName = importName
+            .replace(/\\/igm, '/') //convert Windows path to unix path
             .replace(/\/([a-z0-9-]+\.scss)/, "/_$1")
             .replace(
               /~@react-md\/([a-z-]+)\/dist/,
               join(packagesRoot, "$1", src)
-            );
+            )
+            .replace(/\\/igm, '/'); //convert Windows path to unix path
 
           if (!imported[importName]) {
             log.error(`imp: "${imp}"`);

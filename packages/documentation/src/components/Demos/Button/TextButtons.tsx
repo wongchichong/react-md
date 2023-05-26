@@ -3,7 +3,7 @@ import { Button } from "@react-md/button";
 
 import Container from "./Container";
 
-export default function TextButtons(): ReactElement {
+export default function TextButtons(): Child {
   return (
     <Container>
       <Button id="text-button-1" theme="primary">

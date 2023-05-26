@@ -6,7 +6,7 @@ import styles from "./SimpleExamples.module.scss";
 
 const themes: BadgeTheme[] = ["primary", "secondary", "default", "clear"];
 
-export default function ThemedBadges(): ReactElement {
+export default function ThemedBadges(): Child {
   return (
     <>
       {themes.map((theme) => (

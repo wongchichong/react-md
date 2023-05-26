@@ -1,11 +1,11 @@
-import type { Dispatch, MouseEvent, SetStateAction } from "react";
-import { useState } from "react";
-import type { InitialCoords } from "@react-md/utils";
-import { BELOW_INNER_LEFT_ANCHOR, containsElement } from "@react-md/utils";
+import type { ObservableMaybe } from 'voby'
+import { $ } from 'voby'
+import type { InitialCoords } from "@react-md/utils"
+import { BELOW_INNER_LEFT_ANCHOR, containsElement } from "@react-md/utils"
 
-import type { BaseMenuHookOptions, BaseMenuHookReturnValue } from "./types";
-import { useMenu } from "./useMenu";
-import { noop } from "./utils";
+import type { BaseMenuHookOptions, BaseMenuHookReturnValue } from "./types"
+import { useMenu } from "./useMenu"
+import { noop } from "./utils"
 
 /** @remarks \@since 5.0.0 */
 export interface ContextMenuHookOptions
@@ -19,7 +19,7 @@ export interface ContextMenuHookOptions
    * @defaultValue `"context-menu"`
    * @see {@link BaseMenuHookOptions.baseId}
    */
-  baseId?: string;
+  baseId?: FunctionMaybe<Nullable<string>>
 
   /**
    * The label _should_ be required for a context menu since there is no valid
@@ -29,14 +29,14 @@ export interface ContextMenuHookOptions
    * @defaultValue `"Context Menu"`
    * @see {@link BaseMenuHookOptions.menuLabel}
    */
-  menuLabel?: string;
+  menuLabel?: FunctionMaybe<Nullable<string>>
 
   /**
    * An optional custom contextmenu event handler that will be merged with the
    * menu visibility behavior. If this function calls `event.stopPropagation()`,
    * the default context menu behavior will not occur.
    */
-  onContextMenu?<E extends HTMLElement>(event: MouseEvent<E>): void;
+  onContextMenu?<E extends HTMLElement>(event: JSX.TargetedMouseEvent<E>): void
 
   /**
    * Unlike other menus, context menus will default to no longer allowing the
@@ -45,7 +45,7 @@ export interface ContextMenuHookOptions
    * @see {@link BaseMenuHookOptions.preventScroll}
    * @defaultValue `true`.
    */
-  preventScroll?: boolean;
+  preventScroll?: FunctionMaybe<Nullable<boolean>>
 }
 
 /** @remarks \@since 5.0.0 */
@@ -54,25 +54,25 @@ export interface ContextMenuHookReturnValue extends BaseMenuHookReturnValue {
    * An event handler that should passed to an element that causes a `Menu` to
    * appear instead of the default browser context menu.
    */
-  onContextMenu<E extends HTMLElement>(event: MouseEvent<E>): void;
+  onContextMenu<E extends HTMLElement>(event: JSX.TargetedMouseEvent<E>): void
 
   /**
    * Boolean if the context menu is currently visible,
    */
-  visible: boolean;
+  visible: ObservableMaybe<boolean>
 
   /**
    * A function that can be used to manually set the visibility of the context
    * menu when the default behavior does not match your use case.
    */
-  setVisible: Dispatch<SetStateAction<boolean>>;
+  // setVisible: Dispatch<SetStateAction<boolean>>
 
   /**
    * This function can be used to manually move the context menu to new
    * coordinates if the default behavior did not work. You probably won't ever
    * need to use this.
    */
-  setCoords: Dispatch<SetStateAction<InitialCoords>>;
+  coords: ObservableMaybe<InitialCoords>
 }
 
 /**
@@ -84,7 +84,7 @@ export interface ContextMenuHookReturnValue extends BaseMenuHookReturnValue {
  * import type { ReactElement } from "react";
  * import [ Menu, MenuItem, useContextMenu ] from "@react-md/menu":
  *
- * function Example(): ReactElement {
+ * function Example(): Element {
  *   const { menuProps, onContextMenu } = useContextMenu();
  *
  *   return (
@@ -115,50 +115,52 @@ export function useContextMenu({
   preventScroll = true,
   ...options
 }: ContextMenuHookOptions = {}): ContextMenuHookReturnValue {
-  const [visible, setVisible] = useState(false);
-  const [coords, setCoords] = useState<InitialCoords>({});
+  const visible = $(false)
+  const coords = $<InitialCoords>({})
   const { menuRef, menuProps, menuNodeRef } = useMenu<HTMLElement>({
     ...options,
     anchor,
     baseId,
     menuLabel,
     visible,
-    setVisible,
+    // setVisible,
     fixedPositionOptions: {
       ...fixedPositionOptions,
       ...coords,
     },
     preventScroll,
-  });
+  })
 
   return {
     menuRef,
     menuProps,
     menuNodeRef,
+    // visible(),
     visible,
-    setVisible,
-    setCoords,
+    coords,
     onContextMenu(event) {
-      onContextMenu(event);
+      onContextMenu(event)
       if (
+        //@ts-ignore
         event.isPropagationStopped() ||
         // make it so that if you right click the custom context menu, the
         // browser's default context menu can appear (mostly for being able to
         // inspect your custom context menu)
         /* istanbul ignore next */
         (event.target instanceof HTMLElement &&
-          containsElement(menuNodeRef.current, event.target))
+          //@ts-ignore
+          containsElement(menuNodeRef, event.target))
       ) {
-        return;
+        return
       }
 
-      event.preventDefault();
-      event.stopPropagation();
-      setCoords({
+      event.preventDefault()
+      event.stopPropagation()
+      coords({
         initialX: event.clientX,
         initialY: event.clientY,
-      });
-      setVisible(true);
+      })
+      visible(true)
     },
-  };
+  }
 }

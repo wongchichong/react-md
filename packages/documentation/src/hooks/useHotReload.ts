@@ -1,7 +1,8 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { useEffect, useState } from "react";
+import { useEffect, useState } from "react"
+import '@react-md/react'
 
-type Refresh<T> = (key: string) => Promise<T>;
+type Refresh<T> = (key: string) => Promise<T>
 
 /**
  * This is a hacky way to hot-reload page props since `getInitialProps` isn't
@@ -19,27 +20,27 @@ export function useHotReload<T>(
   refresh: Refresh<T>
 ): T {
   if (process.env.NODE_ENV === "production") {
-    return initial;
+    return initial
   }
 
-  const [state, setState] = useState(initial);
+  const [state, setState] = useState(initial)
   useEffect(() => {
     let cancelled = false;
 
     (async function load(): Promise<void> {
-      const props = await refresh(key);
+      const props = await refresh(key)
       if (cancelled) {
-        return;
+        return
       }
 
-      setState(props);
-    })();
+      setState(props)
+    })()
 
     return () => {
-      cancelled = true;
-    };
+      cancelled = true
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [key]);
+  }, [key])
 
-  return state;
+  return state
 }

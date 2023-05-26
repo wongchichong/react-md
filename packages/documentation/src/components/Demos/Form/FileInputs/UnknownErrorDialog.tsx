@@ -20,7 +20,7 @@ export interface UnknownErrorDialogProps {
 export default function UnknownErrorDialog({
   visible,
   reset,
-}: UnknownErrorDialogProps): ReactElement {
+}: UnknownErrorDialogProps): Child {
   return (
     <Dialog
       id="unknown-error-dialog"

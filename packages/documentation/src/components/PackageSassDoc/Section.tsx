@@ -1,6 +1,7 @@
 import type { ReactElement } from "react";
 
-import type { FormattedSassDocItem } from "utils/sassdoc";
+import type { FormattedSassDocItem } from "@react-md/dev-utils/src/utils/";
+import "@react-md/dev-utils/@types/sassdoc";
 
 import SassDocItem from "./SassDocItem";
 import SectionTitle from "./SectionTitle";

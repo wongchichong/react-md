@@ -1,30 +1,27 @@
-import type { Ref, RefCallback } from "react";
-import { useCallback, useRef } from "react";
+import type { Observable } from 'voby'
+import { $ } from 'voby'
 
-import { applyRef } from "../applyRef";
-import { useKeyboardFocusContext } from "./movementContext";
+import { applyRef } from "../applyRef"
+import { useKeyboardFocusContext } from "./movementContext"
 
 /**
  * @internal
  * @remarks \@since 5.0.0
  */
-export function useKeyboardFocusableElement<E extends HTMLElement>(
-  ref?: Ref<E>
-): RefCallback<E> {
-  const { attach, detach } = useKeyboardFocusContext();
-  const nodeRef = useRef<E | null>(null);
+export function useKeyboardFocusableElement<E extends HTMLElement>(ref?: Observable<E>): Observable<(i: E) => void> {
+  const { attach, detach } = useKeyboardFocusContext()
+  const nodeRef = $<E | null>(null)
 
-  return useCallback(
+  return $(
     (instance: E | null) => {
-      applyRef(instance, ref);
+      applyRef(instance, ref)
       if (instance) {
-        attach(instance);
-      } else if (nodeRef.current) {
-        detach(nodeRef.current);
+        attach(instance)
+      } else if (nodeRef()) {
+        detach(nodeRef())
       }
 
-      nodeRef.current = instance;
+      nodeRef(instance)
     },
-    [attach, detach, ref]
-  );
+  )
 }

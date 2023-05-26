@@ -19,7 +19,7 @@ const options = {
   vhMargin: margin,
 };
 
-export default function ActionMenu(): ReactElement {
+export default function ActionMenu(): Child {
   return (
     <DropdownMenu
       id="main-app-actions"

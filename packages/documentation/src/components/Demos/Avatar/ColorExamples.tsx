@@ -16,7 +16,7 @@ const transformedPeople = people.map((name, i) => ({
   color: COLORS[i % COLORS.length],
 }));
 
-export default function ColorExamples(): ReactElement {
+export default function ColorExamples(): Child {
   return (
     <>
       <Container>

@@ -1,54 +1,46 @@
-import type { ReactElement } from "react";
-import {
-  Children,
-  cloneElement,
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+// import type { Element } from 'voby'
+import { Children } from '@react-md/react'
+import { cloneElement, createContext, $, useContext, useEffect, useMemo, $$ } from 'voby'
 
 /**
  * Note: unlike the `dir` DOM attribute, the `"auto"` value is not supported
  *
  * @remarks \@since 2.3.0
  */
-export type WritingDirection = "ltr" | "rtl";
+export type WritingDirection = "ltr" | "rtl"
 
 /**
  * @remarks \@since 2.3.0
  */
 export interface WritingDirectionContext {
-  /**
-   * The current writing direction that is being inherited.
-   */
-  dir: WritingDirection;
+    /**
+     * The current writing direction that is being inherited.
+     */
+    dir: WritingDirection
 
-  /**
-   * Toggles the current writing direction for the first parent `Dir` component.
-   */
-  toggleDir(): void;
+    /**
+     * Toggles the current writing direction for the first parent `Dir` component.
+     */
+    toggleDir(): void
 }
 
 /**
  * @internal
  */
 interface InheritableContext extends WritingDirectionContext {
-  root: boolean;
+    root: boolean
 }
 
 const context = createContext<InheritableContext>({
-  root: true,
-  dir: "ltr",
-  toggleDir: () => {
-    throw new Error(
-      "Tried to toggle the current writing direction without initializing the `Dir` component."
-    );
-  },
-});
-const { Provider } = context;
+    root: true,
+    dir: "ltr",
+    toggleDir: () => {
+        throw new Error(
+            "Tried to toggle the current writing direction without initializing the `Dir` component."
+        )
+    },
+})
+const { Provider } = context
 
 /**
  * Gets the writing direction context which provides access to the current `dir`
@@ -57,40 +49,40 @@ const { Provider } = context;
  * @remarks \@since 2.3.0
  */
 export function useDir(): WritingDirectionContext {
-  const { root: _root, ...current } = useContext(context);
-  return current;
+    const { root: _root, ...current } = useContext(context)
+    return current
 }
 
 /**
  * @remarks \@since 2.3.0
  */
 export interface DirProps {
-  /**
-   * A single ReactElement child. If the `Dir` has a parent `Dir`, the child
-   * will have the `dir` prop cloned into this element.
-   */
-  children: ReactElement;
+    /**
+     * A single ReactElement child. If the `Dir` has a parent `Dir`, the child
+     * will have the `dir` prop cloned into this element.
+     */
+    children: JSX.Child
 
-  /**
-   * The default writing direction for your app or a subtree. To change the
-   * current writing direction, use the `useDir` hook to get access to the
-   * current `dir` and the `toggleDir` function.
-   */
-  defaultDir?: WritingDirection | (() => WritingDirection);
+    /**
+     * The default writing direction for your app or a subtree. To change the
+     * current writing direction, use the `useDir` hook to get access to the
+     * current `dir` and the `toggleDir` function.
+     */
+    defaultDir?: FunctionMaybe<WritingDirection> //| (() => WritingDirection)
 }
 
 /**
  * @remarks \@since 2.3.0
  */
 export const DEFAULT_DIR = (): WritingDirection => {
-  let dir: WritingDirection = "ltr";
-  if (typeof document !== "undefined") {
-    const rootDir = document.documentElement.getAttribute("dir");
-    dir = rootDir === "rtl" ? "rtl" : "ltr";
-  }
+    let dir: WritingDirection = "ltr"
+    if (typeof document !== "undefined") {
+        const rootDir = document.documentElement.getAttribute("dir")
+        dir = rootDir === "rtl" ? "rtl" : "ltr"
+    }
 
-  return dir;
-};
+    return dir
+}
 
 /**
  * The `Dir` component is used to handle the current writing direction within
@@ -130,36 +122,30 @@ export const DEFAULT_DIR = (): WritingDirection => {
  *
  * @remarks \@since 2.3.0
  */
-export function Dir({
-  children,
-  defaultDir = DEFAULT_DIR,
-}: DirProps): ReactElement {
-  const { root } = useContext(context);
-  const [dir, setDir] = useState(defaultDir);
-  useEffect(() => {
-    if (!root || typeof document === "undefined") {
-      return;
+export function Dir({ children, defaultDir = DEFAULT_DIR, }: DirProps): Element {
+    const { root } = useContext(context)
+    const dir = $<WritingDirection>($$(defaultDir))
+    useEffect(() => {
+        if (!root || typeof document === "undefined") {
+            return
+        }
+
+        document.documentElement.setAttribute("dir", dir())
+
+        return () => {
+            document.documentElement.removeAttribute("dir")
+        }
+    })
+
+    const toggleDir = $(() => {
+        dir((prevDir) => (prevDir === "ltr" ? "rtl" : "ltr"))
+    })
+
+    const value = useMemo<InheritableContext>(() => ({ root: false, dir: dir(), toggleDir }))
+    let child = Children.only(children)
+    if (!root) {
+        child = cloneElement(child, { dic: dir() })
     }
 
-    document.documentElement.setAttribute("dir", dir);
-
-    return () => {
-      document.documentElement.removeAttribute("dir");
-    };
-  }, [dir, root]);
-
-  const toggleDir = useCallback(() => {
-    setDir((prevDir) => (prevDir === "ltr" ? "rtl" : "ltr"));
-  }, []);
-
-  const value = useMemo<InheritableContext>(
-    () => ({ root: false, dir, toggleDir }),
-    [dir, toggleDir]
-  );
-  let child = Children.only(children);
-  if (!root) {
-    child = cloneElement(child, { dir });
-  }
-
-  return <Provider value={value}>{child}</Provider>;
+    return <Provider value={value}>{child}</Provider>
 }

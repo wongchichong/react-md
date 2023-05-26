@@ -7,7 +7,7 @@ import { useFixedAppBarContext } from "components/Layout/fixedAppBarContext";
 import Logo from "./Logo";
 import styles from "./Banner.module.scss";
 
-export default function Banner(): ReactElement {
+export default function Banner(): Child {
   const ref = useRef<HTMLDivElement | null>(null);
   const setElevation = useFixedAppBarContext();
   useEffect(() => {

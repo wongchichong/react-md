@@ -1,23 +1,23 @@
-import { useState } from "react";
+import { $, $$ } from 'voby'
 
-import type { ActiveDescendantContext } from "./activeDescendantContext";
+import type { ActiveDescendantContext } from "./activeDescendantContext"
 import type {
-  KeyboardFocusCallbacks,
-  KeyboardFocusHookReturnValue,
-} from "./useKeyboardFocus";
-import { useKeyboardFocus } from "./useKeyboardFocus";
+    KeyboardFocusCallbacks,
+    KeyboardFocusHookReturnValue,
+} from "./useKeyboardFocus"
+import { useKeyboardFocus } from "./useKeyboardFocus"
 
 /**
  * @internal
  * @remarks \@since 5.0.0
  */
 export interface ActiveDescendantFocusHookOptions<E extends HTMLElement>
-  extends KeyboardFocusCallbacks<E> {
-  /**
-   * An optional DOM id for one of the children that should be focused by
-   * default.
-   */
-  defaultActiveId?: string;
+    extends KeyboardFocusCallbacks<E> {
+    /**
+     * An optional DOM id for one of the children that should be focused by
+     * default.
+     */
+    defaultActiveId?: FunctionMaybe<Nullable<string>>
 }
 
 /**
@@ -25,17 +25,17 @@ export interface ActiveDescendantFocusHookOptions<E extends HTMLElement>
  * @remarks \@since 5.0.0
  */
 export interface ActiveDescendantFocusHookReturnValue<E extends HTMLElement>
-  extends KeyboardFocusHookReturnValue<E> {
-  /**
-   * The current DOM id of a child that has keyboard focus.
-   */
-  "aria-activedescendant": string;
+    extends KeyboardFocusHookReturnValue<E> {
+    /**
+     * The current DOM id of a child that has keyboard focus.
+     */
+    "aria-activedescendant": string
 
-  /**
-   * An object of props that should be passed to the
-   * {@link ActiveDescendantMovementProvider}.
-   */
-  providerProps: Readonly<ActiveDescendantContext>;
+    /**
+     * An object of props that should be passed to the
+     * {@link ActiveDescendantMovementProvider}.
+     */
+    providerProps: Readonly<ActiveDescendantContext>
 }
 
 /**
@@ -44,28 +44,29 @@ export interface ActiveDescendantFocusHookReturnValue<E extends HTMLElement>
  * @remarks \@since 5.0.0
  */
 export function useActiveDescendantFocus<E extends HTMLElement>({
-  defaultActiveId = "",
-  ...options
+    defaultActiveId = "",
+    ...options
 }: ActiveDescendantFocusHookOptions<E> = {}): ActiveDescendantFocusHookReturnValue<E> {
-  const [activeId, setActiveId] = useState(defaultActiveId);
-  return {
-    ...useKeyboardFocus({
-      ...options,
-      onFocusChange(element) {
-        setActiveId(element.id);
-      },
-      getDefaultFocusIndex(elements) {
-        if (!activeId) {
-          return -1;
-        }
+    const activeId = $($$(defaultActiveId))
+    return {
+        ...useKeyboardFocus({
+            ...options,
+            onFocusChange(element) {
+                activeId(element.id)
+            },
+            getDefaultFocusIndex(elements) {
+                if (!activeId()) {
+                    return -1
+                }
 
-        return elements.findIndex(({ id }) => id === activeId);
-      },
-    }),
-    "aria-activedescendant": activeId,
-    providerProps: {
-      activeId,
-      setActiveId,
-    },
-  };
+                return elements.findIndex(({ id }) => id === activeId())
+            },
+        }),
+        //@ts-ignore
+        "aria-activedescendant": activeId(),
+        providerProps: {
+            // activeId(),
+            activeId,
+        }
+    }
 }

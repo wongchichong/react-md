@@ -6,7 +6,7 @@ import Customization from "./Customization";
 
 import styles from "./JumpStart.module.scss";
 
-export default function JumpStart(): ReactElement {
+export default function JumpStart(): Child {
   return (
     <div className={styles.container}>
       <GettingStarted />

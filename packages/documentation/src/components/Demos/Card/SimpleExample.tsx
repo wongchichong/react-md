@@ -11,7 +11,7 @@ import { Typography } from "@react-md/typography";
 
 import Container from "./Container";
 
-export default function SimpleExample(): ReactElement {
+export default function SimpleExample(): Child {
   return (
     <Container>
       <Card>

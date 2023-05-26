@@ -1,10 +1,10 @@
-import { useEffect } from "react";
+import { useEffect } from 'voby'
 
 /**
  * This is used with the `useScrollLock` effect to determine if the styles were
  * applied by scroll locking or not in the cleanup stage.
  */
-export const DATA_RMD_NOSCROLL = "data-rmd-noscroll";
+export const DATA_RMD_NOSCROLL = "data-rmd-noscroll"
 
 /**
  * This will enable scroll locking for the provided element. Scroll locking
@@ -17,8 +17,8 @@ export const DATA_RMD_NOSCROLL = "data-rmd-noscroll";
  * @remarks \@since 5.0.0 Renamed from `enable` to `enableScrollLock`.
  */
 export function enableScrollLock(element: HTMLElement): void {
-  element.style.overflow = "hidden";
-  element.setAttribute(DATA_RMD_NOSCROLL, "");
+  element.style.overflow = "hidden"
+  element.setAttribute(DATA_RMD_NOSCROLL, "")
 }
 
 /**
@@ -37,11 +37,11 @@ export function enableScrollLock(element: HTMLElement): void {
  */
 export function disableScrollLock(element: HTMLElement): void {
   if (element.getAttribute(DATA_RMD_NOSCROLL) === null) {
-    return;
+    return
   }
 
-  element.style.overflow = "";
-  element.removeAttribute(DATA_RMD_NOSCROLL);
+  element.style.overflow = ""
+  element.removeAttribute(DATA_RMD_NOSCROLL)
 }
 
 /**
@@ -55,31 +55,31 @@ export function disableScrollLock(element: HTMLElement): void {
  */
 export function useScrollLock(
   enabled: boolean,
-  selectorOrElement?: string | HTMLElement | (() => HTMLElement) | null
+  selectorOrElement?: FunctionMaybe<Nullable<string>> | HTMLElement | (() => HTMLElement) | null
 ): void {
   useEffect(() => {
     if (!enabled || typeof document === "undefined") {
-      return;
+      return
     }
 
-    let element: HTMLElement | null = null;
+    let element: HTMLElement | null = null
     if (typeof selectorOrElement === "string") {
-      element = document.querySelector<HTMLElement>(selectorOrElement);
+      element = document.querySelector<HTMLElement>(selectorOrElement)
     } else if (typeof selectorOrElement === "function") {
-      element = selectorOrElement();
+      element = selectorOrElement() as HTMLElement
     } else if (selectorOrElement) {
-      element = selectorOrElement;
+      element = selectorOrElement
     } else {
-      element = document.body;
+      element = document.body
     }
 
     if (!element || element.getAttribute(DATA_RMD_NOSCROLL) !== null) {
-      return;
+      return
     }
 
-    enableScrollLock(element);
+    enableScrollLock(element)
     return () => {
-      disableScrollLock(element as HTMLElement);
-    };
-  }, [enabled, selectorOrElement]);
+      disableScrollLock(element as HTMLElement)
+    }
+  })
 }

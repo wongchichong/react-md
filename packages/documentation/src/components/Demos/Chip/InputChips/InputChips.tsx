@@ -9,7 +9,7 @@ import styles from "./InputChips.module.scss";
 
 import To from "./To";
 
-export default function InputChips(): ReactElement {
+export default function InputChips(): Child {
   const isTouch = useIsUserInteractionMode("touch");
   return (
     <FormThemeProvider theme="none">

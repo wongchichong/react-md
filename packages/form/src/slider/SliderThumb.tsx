@@ -1,43 +1,44 @@
-import type { HTMLAttributes } from "react";
-import { forwardRef } from "react";
-import cn from "classnames";
-import type { LabelRequiredForA11y } from "@react-md/utils";
-import { bem } from "@react-md/utils";
+
+
+
+import type { LabelA11y, LabelRequiredForA11y } from "@react-md/utils"
+import { bem } from "@react-md/utils"
 
 import {
   DEFAULT_SLIDER_ANIMATION_TIME,
   DEFAULT_SLIDER_GET_VALUE_TEXT,
   DEFAULT_SLIDER_MAX,
   DEFAULT_SLIDER_MIN,
-} from "./constants";
-import { SliderValue } from "./SliderValue";
-import type { SliderThumbOptions, ThumbIndex } from "./types";
-import { useDiscreteValueVisibility } from "./useDiscreteValueVisibility";
+} from "./constants"
+import { SliderValue } from "./SliderValue"
+import type { SliderThumbOptions, ThumbIndex } from "./types"
+import { useDiscreteValueVisibility } from "./useDiscreteValueVisibility"
+import { $$ } from "voby"
 
-const styles = bem("rmd-slider-thumb");
+const styles = bem("rmd-slider-thumb")
 
 /**
  * @remarks \@since 2.5.0
  */
 export interface BaseThumbProps
-  extends HTMLAttributes<HTMLSpanElement>,
-    SliderThumbOptions {
+  extends Omit<HTMLAttributes<HTMLSpanElement>, 'max' | 'min'>,
+  SliderThumbOptions {
   /**
    * The index of the thumb which is used for some additional styling
    * behavior.
    */
-  index: ThumbIndex;
+  index: FunctionMaybe<ThumbIndex>
 
   /**
    * The current value for the slider.
    */
-  value: number;
+  value: FunctionMaybe<number>
 
   /**
    * An optional name to apply to the hidden input field representing the value
    * of the slider.
    */
-  name?: string;
+  name?: FunctionMaybe<Nullable<string>>
 
   /**
    * The prefix to use for the id of the thumb. When the `id` prop is omitted,
@@ -45,13 +46,13 @@ export interface BaseThumbProps
    *
    * Either the `id` or `baseId` props are required for a11y.
    */
-  baseId?: string;
+  baseId?: FunctionMaybe<Nullable<string>>
 
   /**
    * Boolean if the thumb is currently in an active state which will add a
    * "bubble" around the thumb.
    */
-  active?: boolean;
+  active?: FunctionMaybe<Nullable<boolean>>
 
   /**
    * Boolean if the thumb should animate between positions when the `value`
@@ -59,13 +60,13 @@ export interface BaseThumbProps
    * since it'll make it look like the thumb is lagging behind the mouse cursor
    * or user's finger.
    */
-  animate?: boolean;
+  animate?: FunctionMaybe<Nullable<boolean>>
 }
 
 /**
  * @remarks \@since 2.5.0
  */
-export type SliderThumbProps = LabelRequiredForA11y<BaseThumbProps>;
+export type SliderThumbProps = LabelRequiredForA11y<BaseThumbProps & LabelA11y>
 
 /**
  * The slider thumb implements the `role="slider"` for the `Slider` and
@@ -73,107 +74,107 @@ export type SliderThumbProps = LabelRequiredForA11y<BaseThumbProps>;
  *
  * @remarks \@since 2.5.0
  */
-export const SliderThumb = forwardRef<HTMLSpanElement, SliderThumbProps>(
-  function SliderThumb(
-    {
-      id: propId,
-      baseId,
-      className,
-      min = DEFAULT_SLIDER_MIN,
-      max = DEFAULT_SLIDER_MAX,
-      animationDuration = DEFAULT_SLIDER_ANIMATION_TIME,
-      getValueText = DEFAULT_SLIDER_GET_VALUE_TEXT,
-      name,
-      value,
-      index,
-      active = false,
-      animate = false,
-      discrete = false,
-      disabled = false,
-      vertical = false,
-      tabIndex = disabled ? -1 : 0,
-      onBlur: propOnBlur,
-      onFocus: propOnFocus,
-      ...props
-    },
-    ref
-  ) {
-    const id = propId || `${baseId}-thumb-${index + 1}`;
-    const isFirst = index === 0;
-    const { onBlur, onFocus, animateValue, visible } =
-      useDiscreteValueVisibility({
-        active,
-        animate,
-        discrete,
-        disabled,
-        onBlur: propOnBlur,
-        onFocus: propOnFocus,
-        animationDuration,
-      });
+export const SliderThumb = (
+  {
+    id: propId,
+    baseId,
+    className,
+    min = DEFAULT_SLIDER_MIN,
+    max = DEFAULT_SLIDER_MAX,
+    animationDuration = DEFAULT_SLIDER_ANIMATION_TIME,
+    getValueText = DEFAULT_SLIDER_GET_VALUE_TEXT,
+    name,
+    value: val,
+    index: idx,
+    active = false,
+    animate = false,
+    discrete = false,
+    disabled = false,
+    vertical = false,
+    tabIndex = disabled ? -1 : 0,
+    onBlur: propOnBlur,
+    onFocus: propOnFocus,
+    ref,
+    ...props
+  }: SliderThumbProps
+) => {
+  const index = $$(idx), value = $$(val)
 
-    const styleOptions = {
-      h: !vertical,
-      h1: !vertical && isFirst,
-      h2: !vertical && !isFirst,
-      v: vertical,
-      v1: vertical && isFirst,
-      v2: vertical && !isFirst,
+  const id = propId || `${baseId}-thumb-${index + 1}`
+  const isFirst = index === 0
+  const { onBlur, onFocus, animateValue, visible } =
+    useDiscreteValueVisibility({
       active,
       animate,
+      discrete,
       disabled,
-    };
+      onBlur: propOnBlur,
+      onFocus: propOnFocus,
+      animationDuration,
+    })
 
-    return (
-      <>
-        {/* this mask adds the spacing on the track when disabled */}
-        {disabled && (
-          <span
-            className={cn(
-              styles({
-                ...styleOptions,
-                mask: true,
-                "mask-h": !vertical,
-                "mask-v": vertical,
-              }),
-              className
-            )}
-          />
-        )}
+  const styleOptions = {
+    h: !vertical,
+    h1: !vertical && isFirst,
+    h2: !vertical && !isFirst,
+    v: vertical,
+    v1: vertical && isFirst,
+    v2: vertical && !isFirst,
+    active,
+    animate,
+    disabled,
+  }
+
+  return (
+    <>
+      {/* this mask adds the spacing on the track when disabled */}
+      {disabled && (
         <span
-          {...props}
-          id={id}
-          ref={ref}
-          role="slider"
-          aria-valuemin={min}
-          aria-valuemax={max}
-          aria-valuenow={value}
-          aria-valuetext={getValueText(value) || undefined}
-          aria-disabled={disabled || undefined}
-          aria-orientation={(vertical && "vertical") || undefined}
-          tabIndex={tabIndex}
-          onBlur={onBlur}
-          onFocus={onFocus}
-          className={cn(
+          className={[
             styles({
               ...styleOptions,
-              "disabled-h": disabled && !vertical,
-              "disabled-v": disabled && vertical,
+              mask: true,
+              "mask-h": !vertical,
+              "mask-v": vertical,
             }),
             className
-          )}
+          ]}
         />
-        <input id={`${id}-value`} type="hidden" name={name} value={value} />
-        <SliderValue
-          id={`${id}-value`}
-          visible={visible}
-          index={index}
-          animate={animateValue}
-          discrete={discrete}
-          vertical={vertical}
-        >
-          {value}
-        </SliderValue>
-      </>
-    );
-  }
-);
+      )}
+      <span
+        {...props}
+        id={id}
+        ref={ref}
+        role="slider"
+        aria-valuemin={min}
+        aria-valuemax={max}
+        aria-valuenow={value}
+        aria-valuetext={getValueText(value) || undefined}
+        aria-disabled={disabled || undefined}
+        aria-orientation={(vertical && "vertical") || undefined}
+        tabIndex={tabIndex}
+        onBlur={onBlur}
+        onFocus={onFocus}
+        className={[
+          styles({
+            ...styleOptions,
+            "disabled-h": disabled && !vertical,
+            "disabled-v": disabled && vertical,
+          }),
+          className
+        ]}
+      />
+      <input id={`${id}-value`} type="hidden" name={name} value={value} />
+      <SliderValue
+        id={`${id}-value`}
+        visible={visible}
+        index={idx}
+        animate={animateValue}
+        discrete={discrete}
+        vertical={vertical}
+      >
+        {value}
+      </SliderValue>
+    </>
+  )
+}

@@ -1,6 +1,4 @@
-import type { ReactNode } from "react";
-
-import type { UnknownTreeItem } from "./types";
+import type { UnknownTreeItem } from "./types"
 
 /**
  * A "reasonable" default implementation for rendering a label for a tree item.
@@ -8,17 +6,17 @@ import type { UnknownTreeItem } from "./types";
  * @internal
  */
 export function defaultGetItemLabel(
-  item: UnknownTreeItem,
-  labelKey: string
-): ReactNode {
-  let result: ReactNode = item[labelKey] as ReactNode;
-  if (typeof result === "undefined") {
-    result = item.children;
-  }
+    item: UnknownTreeItem,
+    labelKey: string
+): Child {
+    let result: Child = item[labelKey] as Child
+    if (typeof result === "undefined") {
+        result = item.children
+    }
 
-  if (typeof result === "undefined") {
-    result = null;
-  }
+    if (typeof result === "undefined") {
+        result = null
+    }
 
-  return result;
+    return result
 }

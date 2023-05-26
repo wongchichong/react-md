@@ -1,14 +1,7 @@
 // This is a generated file from running the "createIcons" script. This file should not be updated manually.
-import { forwardRef } from "react";
 
 import { FontIcon, FontIconProps } from "@react-md/icon";
 
-export const GroupAddFontIcon = forwardRef<HTMLElement, FontIconProps>(
-  function GroupAddFontIcon(props, ref) {
-    return (
-      <FontIcon {...props} ref={ref}>
-        group_add
-      </FontIcon>
-    );
-  }
-);
+export const GroupAddFontIcon = ({ref, ...props}: FontIconProps<HTMLElement>) => {
+    return <FontIcon {...props} ref={ref}>group_add</FontIcon>;
+}

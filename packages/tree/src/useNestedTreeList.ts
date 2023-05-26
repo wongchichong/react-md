@@ -1,18 +1,18 @@
-import { useMemo } from "react";
+import { $$, useMemo } from 'voby'
 
 import type {
-  BaseTreeItem,
-  TreeData,
-  TreeItemId,
-  TreeItemSorter,
-} from "./types";
+    BaseTreeItem,
+    TreeData,
+    TreeItemId,
+    TreeItemSorter,
+} from "./types"
 
 /**
  * @internal
  */
 export type NestedTreeItem<T extends BaseTreeItem> = T & {
-  childItems?: readonly NestedTreeItem<T>[];
-};
+    childItems?: readonly NestedTreeItem<T>[]
+}
 
 /**
  * This util performantly builds a nested list of tree items from a giant flat
@@ -27,36 +27,36 @@ export type NestedTreeItem<T extends BaseTreeItem> = T & {
  * @internal
  */
 export function buildTree<T extends BaseTreeItem>(
-  parentId: null | TreeItemId,
-  items: T[],
-  sort?: TreeItemSorter<T>
+    parentId: null | TreeItemId,
+    items: T[],
+    sort?: TreeItemSorter<T>
 ): readonly NestedTreeItem<T>[] | undefined {
-  const childItems: NestedTreeItem<T>[] = [];
+    const childItems: NestedTreeItem<T>[] = []
 
-  // doing a "reverse" order filter/move so that the items array shrinks while
-  // looping. This makes it so that the entire items array doesn't need to
-  // continually be looped through as more items are added to the tree, only the
-  // remaining items will have to be looped
-  let i = items.length;
-  while (i > 0) {
-    i -= 1;
-    if (items[i] && items[i].parentId === parentId) {
-      const [item] = items.splice(i, 1);
-      // shallow cloning so childItems doesn't get applied to the original data
-      // set
-      childItems.unshift({ ...item });
+    // doing a "reverse" order filter/move so that the items array shrinks while
+    // looping. This makes it so that the entire items array doesn't need to
+    // continually be looped through as more items are added to the tree, only the
+    // remaining items will have to be looped
+    let i = items.length
+    while (i > 0) {
+        i -= 1
+        if (items[i] && items[i].parentId === parentId) {
+            const [item] = items.splice(i, 1)
+            // shallow cloning so childItems doesn't get applied to the original data
+            // set
+            childItems.unshift({ ...item })
+        }
     }
-  }
 
-  if (!childItems.length) {
-    return undefined;
-  }
+    if (!childItems.length) {
+        return undefined
+    }
 
-  childItems.forEach((childItem) => {
-    childItem.childItems = buildTree(childItem.itemId, items, sort);
-  });
+    childItems.forEach((childItem) => {
+        childItem.childItems = buildTree(childItem.itemId, items, sort)
+    })
 
-  return sort ? sort(childItems) : childItems;
+    return sort ? sort(childItems) : childItems
 }
 
 /**
@@ -72,12 +72,9 @@ export function buildTree<T extends BaseTreeItem>(
  * used instead.
  */
 export function useNestedTreeList<T extends BaseTreeItem>(
-  tree: TreeData<T>,
-  sort?: TreeItemSorter<T>,
-  rootId: null | TreeItemId = null
+    tree: FunctionMaybe<TreeData<T>>,
+    sort?: TreeItemSorter<T>,
+    rootId: FunctionMaybe<null | TreeItemId> = null
 ): readonly NestedTreeItem<T>[] {
-  return useMemo(
-    () => buildTree(rootId, Object.values(tree), sort) || [],
-    [rootId, sort, tree]
-  );
+    return useMemo(() => buildTree($$(rootId), Object.values($$(tree)) as any, sort) || [] as NestedTreeItem<T>[]) as any as readonly NestedTreeItem<T>[]
 }

@@ -1,27 +1,27 @@
-import type {
-  CSSProperties,
-  FocusEvent,
-  HTMLAttributes,
-  KeyboardEvent,
-  MouseEvent,
-  ReactNode,
-} from "react";
-import { createRef, forwardRef, useCallback, useMemo, useState } from "react";
-
-import { loop } from "../../loop";
-import type { LabelA11y, LabelRequiredForA11y } from "../../types";
-import { tryToSubmitRelatedForm } from "../tryToSubmitRelatedForm";
-import { RadioWidget } from "./RadioWidget";
-import type {
-  RadioWidgetAttributes,
-  RadioItemStyleObject,
-  RadioItem,
-} from "./types";
 import {
-  defaultGetRadioClassName,
-  defaultGetRadioStyle,
-  getRadioItemValue,
-} from "./utils";
+     $$,
+    // JSX.TargetedFocusEvent,
+    // HTMLAttributes,
+    // JSX.TargetedKeyboardEvent,
+    // JSX.TargetedMouseEvent,
+    // Child,
+} from 'voby'
+import { $, useMemo } from 'voby'
+
+import { loop } from "../../loop"
+import type { LabelA11y, LabelRequiredForA11y } from "../../types"
+import { tryToSubmitRelatedForm } from "../tryToSubmitRelatedForm"
+import { RadioWidget } from "./RadioWidget"
+import type {
+    RadioWidgetAttributes,
+    RadioItemStyleObject,
+    RadioItem,
+} from "./types"
+import {
+    defaultGetRadioClassName,
+    defaultGetRadioStyle,
+    getRadioItemValue,
+} from "./utils"
 
 /**
  * This is a controlled component to render a group of radio buttons when the
@@ -30,45 +30,45 @@ import {
  * @remarks \@since 2.7.0
  */
 export interface BaseRadioGroupProps
-  extends Omit<HTMLAttributes<HTMLSpanElement>, "onChange"> {
-  /**
-   */
-  id: string;
+    extends Omit<HTMLAttributes<HTMLSpanElement>, "onChange"> {
+    /**
+     */
+    id: FunctionMaybe<string>
 
-  /**
-   * The current value for the radio group. This should be the empty string
-   * (`""`) if no values are selected. Otherwise it should match one of the
-   * `values`' value.
-   */
-  value: string;
+    /**
+     * The current value for the radio group. This should be the empty string
+     * (`""`) if no values are selected. Otherwise it should match one of the
+     * `values`' value.
+     */
+    value: FunctionMaybe<string>
 
-  /**
-   * A list of values/radio props that should be used to render the radio items.
-   */
-  items: readonly RadioItem[];
+    /**
+     * A list of values/radio props that should be used to render the radio items.
+     */
+    items: FunctionMaybe<readonly RadioItem[]>
 
-  /**
-   * A function that changes the current selection within the radio group.
-   */
-  onChange(nextValue: string): void;
+    /**
+     * A function that changes the current selection within the radio group.
+     */
+    onChange(nextValue: FunctionMaybe<string>): void
 
-  /**
-   * An optional function to get a `style` object for each rendered radio.
-   */
-  getRadioStyle?(item: RadioItemStyleObject): CSSProperties | undefined;
+    /**
+     * An optional function to get a `style` object for each rendered radio.
+     */
+    getRadioStyle?(item: RadioItemStyleObject): FunctionMaybe<string | StyleProperties>
 
-  /**
-   * An optional function to get a `className` for each rendered radio.
-   */
-  getRadioClassName?(item: RadioItemStyleObject): string | undefined;
+    /**
+     * An optional function to get a `className` for each rendered radio.
+     */
+    getRadioClassName?(item: RadioItemStyleObject): Class
 }
 
 /**
  * @remarks \@since 2.7.0
  */
 export type RadioGroupProps = LabelRequiredForA11y<
-  BaseRadioGroupProps & LabelA11y
->;
+    BaseRadioGroupProps & LabelA11y
+>
 
 /**
  * The `RadioGroup` is a low-level component that does not provide any styles
@@ -77,173 +77,158 @@ export type RadioGroupProps = LabelRequiredForA11y<
  *
  * @remarks \@since 2.7.0
  */
-export const RadioGroup = forwardRef<HTMLSpanElement, RadioGroupProps>(
-  function RadioGroup(
-    {
-      id,
-      getRadioStyle = defaultGetRadioStyle,
-      getRadioClassName = defaultGetRadioClassName,
-      items,
-      value: currentValue,
-      onBlur,
-      onFocus,
-      onClick,
-      onChange,
-      onKeyDown,
-      ...props
-    },
-    ref
-  ) {
-    const refs = items.map(() => createRef<HTMLSpanElement>());
-    const [focused, setFocused] = useState(false);
-    const handleBlur = useCallback(
-      (event: FocusEvent<HTMLSpanElement>) => {
-        onBlur?.(event);
-        setFocused(false);
-      },
-      [onBlur]
-    );
-    const handleFocus = useCallback(
-      (event: FocusEvent<HTMLSpanElement>) => {
-        onFocus?.(event);
-        setFocused(true);
-      },
-      [onFocus]
-    );
-    const handleClick = useCallback(
-      (event: MouseEvent<HTMLSpanElement>) => {
-        onClick?.(event);
+export const RadioGroup = ({
+    id,
+    getRadioStyle = defaultGetRadioStyle,
+    getRadioClassName = defaultGetRadioClassName,
+    items: is,
+    value: currentValue,
+    onBlur,
+    onFocus,
+    onClick,
+    onChange,
+    onKeyDown,
+    ref,
+    ...props
+}: RadioGroupProps,
+) => {
+    const items = $$(is)
+
+    const refs = items.map(() => $<HTMLSpanElement>())
+    const focused = $(false)
+    const handleBlur = (event: JSX.TargetedFocusEvent<HTMLSpanElement>) => {
+        onBlur?.(event)
+        focused(false)
+    }
+    const handleFocus = (event: JSX.TargetedFocusEvent<HTMLSpanElement>) => {
+        onFocus?.(event)
+        focused(true)
+    }
+    const handleClick = (event: JSX.TargetedMouseEvent<HTMLSpanElement>) => {
+        //@ts-ignore
+        onClick?.(event)
 
         /* istanbul ignore next: can't really happen */
         const radio = (event.target as HTMLElement)?.closest<HTMLSpanElement>(
-          '[role="radio"]'
-        );
+            '[role="radio"]'
+        )
         const index = radio
-          ? refs.findIndex(({ current }) => radio === current)
-          : -1;
+            ? refs.findIndex(r => radio === r())
+            : -1
         if (index !== -1) {
-          onChange(getRadioItemValue(items[index]));
-          /* istanbul ignore next: can't really happen */
-          refs[index].current?.focus();
+            onChange(getRadioItemValue(items[index]))
+            /* istanbul ignore next: can't really happen */
+            refs[index]().focus()
         }
-      },
-      [onChange, onClick, refs, items]
-    );
+    }
 
-    const handleKeyDown = useCallback(
-      (event: KeyboardEvent<HTMLSpanElement>) => {
-        onKeyDown?.(event);
+    const handleKeyDown = $((event: JSX.TargetedKeyboardEvent<HTMLSpanElement>) => {
+        //@ts-ignore
+        onKeyDown?.(event)
 
         if (tryToSubmitRelatedForm(event)) {
-          return;
+            return
         }
 
-        if (
-          ![" ", "ArrowLeft", "ArrowUp", "ArrowRight", "ArrowDown"].includes(
-            event.key
-          )
-        ) {
-          return;
+        if (![" ", "ArrowLeft", "ArrowUp", "ArrowRight", "ArrowDown"].includes(event.key)) {
+            return
         }
 
         /* istanbul ignore next: can't really happen */
         const radio = (event.target as HTMLElement)?.closest<HTMLSpanElement>(
-          '[role="radio"]'
-        );
+            '[role="radio"]'
+        ) as HTMLSpanElement
+
         if (!radio) {
-          return;
+            return
         }
 
-        event.preventDefault();
-        event.stopPropagation();
+        event.preventDefault()
+        event.stopPropagation()
         if (event.key === " ") {
-          radio.click();
-          return;
+            radio.click()
+            return
         }
 
         const increment =
-          event.key === "ArrowRight" || event.key === "ArrowDown";
-        const index = refs.findIndex(({ current }) => current === radio);
+            event.key === "ArrowRight" || event.key === "ArrowDown"
+        const index = refs.findIndex(r => r() === radio)
         /* istanbul ignore next: can't really happen */
         if (index !== -1) {
-          const nextIndex = loop({
-            value: index,
-            max: items.length - 1,
-            increment,
-          });
-          refs[nextIndex].current?.focus();
-          onChange(getRadioItemValue(items[nextIndex]));
+            const nextIndex = loop({
+                value: index,
+                max: items.length - 1,
+                increment,
+            })
+            refs[nextIndex]().focus()
+            onChange(getRadioItemValue(items[nextIndex]))
         }
-      },
-      [onChange, onKeyDown, refs, items]
-    );
+    })
 
-    const focusable = useMemo(
-      () => items.some((value) => getRadioItemValue(value) === currentValue),
-      [currentValue, items]
-    );
+    const focusable = useMemo(() => items.some((value) => getRadioItemValue(value) === currentValue))
 
     return (
-      <span
-        {...props}
-        id={id}
-        ref={ref}
-        role="radiogroup"
-        onBlur={handleBlur}
-        onFocus={handleFocus}
-        onClick={handleClick}
-        onKeyDown={handleKeyDown}
-        tabIndex={-1}
-      >
-        {items.map((item, i) => {
-          let props: RadioWidgetAttributes | undefined;
-          let value: string;
-          let checked = false;
-          let children: ReactNode;
-          let itemStyle: CSSProperties | undefined;
-          let itemClassName: string | undefined;
-          if (typeof item === "string") {
-            value = item;
-            checked = currentValue === value;
-            children = value;
-            itemStyle = getRadioStyle({ index: i, checked, value: item });
-            itemClassName = getRadioClassName({
-              index: i,
-              checked,
-              value: item,
-            });
-          } else {
-            ({ value, children, ...props } = item);
-            checked = currentValue === value;
-            itemStyle = getRadioStyle({ index: i, checked, ...item });
-            itemClassName =
-              getRadioClassName({
-                index: i,
-                checked,
-                ...item,
-              }) || undefined;
+        <span
+            {...props}
+            id={id}
+            ref={ref}
+            role="radiogroup"
+            onBlur={handleBlur}
+            onFocus={handleFocus}
+            onClick={handleClick}
+            onKeyDown={handleKeyDown}
+            tabIndex={-1}
+        >
+            {items.map((item, i) => {
+                let props: RadioWidgetAttributes | undefined
+                let value: FunctionMaybe<string>
+                let checked = false
+                let children: JSX.Children
+                let itemStyle: FunctionMaybe<string | StyleProperties> //CSSProperties | undefined
+                let itemClassName: Class //string | undefined
+                if (typeof item === "string") {
+                    value = item
+                    checked = currentValue === value
+                    children = value
+                    itemStyle = getRadioStyle({ index: i, checked, value: item })
+                    itemClassName = getRadioClassName({
+                        index: i,
+                        checked,
+                        value: item,
+                    })
+                } else {
+                    ({ value, children, ...props } = item)
+                    checked = currentValue === value
+                    //@ts-ignore
+                    itemStyle = getRadioStyle({ index: i, checked, ...item })
+                    itemClassName =
+                        getRadioClassName({
+                            index: i,
+                            //@ts-ignore
+                            checked,
+                            ...item,
+                        }) || undefined
 
-            if (typeof children === "undefined") {
-              children = value;
-            }
-          }
+                    if (typeof children === "undefined") {
+                        children = value
+                    }
+                }
 
-          return (
-            <RadioWidget
-              {...props}
-              key={value}
-              id={`${id}-${i + 1}`}
-              ref={refs[i]}
-              style={itemStyle}
-              className={itemClassName}
-              checked={checked}
-              tabIndex={checked || (!focused && !focusable) ? 0 : -1}
-            >
-              {children}
-            </RadioWidget>
-          );
-        })}
-      </span>
-    );
-  }
-);
+                return (
+                    <RadioWidget
+                        {...props}
+                        id={value}
+                        // id={`${id}-${i + 1}`}
+                        ref={refs[i]}
+                        style={itemStyle}
+                        className={itemClassName}
+                        checked={checked}
+                        tabIndex={checked || (!focused && !focusable) ? 0 : -1}
+                    >
+                        {children}
+                    </RadioWidget>
+                )
+            })}
+        </span>
+    )
+}

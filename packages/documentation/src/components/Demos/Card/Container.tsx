@@ -1,21 +1,21 @@
-import type { ReactElement, ReactNode } from "react";
-import cn from "classnames";
+import type { ReactElement, ReactNode } from "react"
 
-import styles from "./Container.module.scss";
+
+import styles from "./Container.module.scss"
 
 interface Props {
-  centered?: boolean;
-  children: ReactNode;
+    centered?: FunctionMaybe<Nullable<boolean>>
+    children: ReactNode
 }
 
-export default function Container({ children, centered }: Props): ReactElement {
-  return (
-    <div
-      className={cn(styles.container, {
-        [styles.centered]: centered,
-      })}
-    >
-      {children}
-    </div>
-  );
+export default function Container({ children, centered }: Props): Child {
+    return (
+        <div
+            className={cn(styles.container, {
+                [styles.centered]: centered,
+            })}
+        >
+            {children}
+        </div>
+    )
 }

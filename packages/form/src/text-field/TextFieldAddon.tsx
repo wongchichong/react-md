@@ -1,39 +1,35 @@
-import type { HTMLAttributes } from "react";
-import { forwardRef } from "react";
-import cn from "classnames";
-import { bem } from "@react-md/utils";
+
+
+
+import { bem } from "@react-md/utils"
 
 export interface TextFieldAddonProps extends HTMLAttributes<HTMLSpanElement> {
   /**
    * Boolean if the addon should be presentational only and prevent pointer
    * events.
    */
-  presentational?: boolean;
+  presentational?: FunctionMaybe<Nullable<boolean>>
 }
 
-const block = bem("rmd-text-field-addon");
+const block = bem("rmd-text-field-addon")
 
 /**
  * This component is used to add an an icon before or after the text field with
  * correct styling.
  */
-export const TextFieldAddon = forwardRef<HTMLSpanElement, TextFieldAddonProps>(
-  function TextFieldAddon(
-    { children, className, presentational = true, ...props },
-    ref
-  ) {
-    if (!children) {
-      return null;
-    }
-
-    return (
-      <span
-        {...props}
-        ref={ref}
-        className={cn(block({ presentational }), className)}
-      >
-        {children}
-      </span>
-    );
+export const TextFieldAddon = ({ children, className, presentational = true, ref, ...props }: TextFieldAddonProps
+) => {
+  if (!children) {
+    return null
   }
-);
+
+  return (
+    <span
+      {...props}
+      ref={ref}
+      className={[block({ presentational }), className]}
+    >
+      {children}
+    </span>
+  )
+}

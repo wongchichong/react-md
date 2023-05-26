@@ -1,14 +1,15 @@
-import type { Dispatch, SetStateAction } from "react";
-import { useCallback, useState } from "react";
+import type { Observable } from 'voby'
+import { $ } from 'voby'
 
-type InputElement = HTMLInputElement | HTMLSelectElement;
-type ChangeEventHandler<E extends InputElement> = React.ChangeEventHandler<E>;
+type InputElement = HTMLInputElement | HTMLSelectElement
+//@ts-ignore
+type ChangeEventHandler<E extends InputElement> = ChangeEventHandler<E>
 type DefaultValue =
   | string
   | number
   | readonly string[]
-  | (() => string | number | readonly string[]);
-type SetValue<T extends DefaultValue> = Dispatch<SetStateAction<T>>;
+  | (() => string | number | readonly string[])
+// type SetValue<T extends DefaultValue> = Dispatch<SetStateAction<T>>
 
 /**
  * This hook can be used to control the state of a radio group or a select
@@ -26,19 +27,20 @@ export function useChoice<
   E extends InputElement = InputElement
 >(
   defaultValue: T,
+  //@ts-ignore
   onChange?: ChangeEventHandler<E>
-): readonly [T, ChangeEventHandler<E>, SetValue<T>] {
-  const [value, setValue] = useState<T>(defaultValue);
-  const handleChange = useCallback<ChangeEventHandler<E>>(
-    (event) => {
-      if (onChange) {
-        onChange(event);
-      }
+): readonly [Observable<T>,
+  //@ts-ignore
+  ChangeEventHandler<E>/* , SetValue<T> */] {
+  const value = $<T>(defaultValue)
+  //@ts-ignore
+  const handleChange = $<ChangeEventHandler<E>>((event) => {
+    if (onChange) {
+      onChange(event)
+    }
 
-      setValue(event.currentTarget.value as T);
-    },
-    [onChange]
-  );
+    value(event.currentTarget.value() as T)
+  })
 
-  return [value, handleChange, setValue];
+  return [value, handleChange/* , setValue */]
 }

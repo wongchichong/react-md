@@ -26,7 +26,7 @@ const themes: ButtonTheme[] = [
 ];
 const themeTypes: ButtonThemeType[] = ["flat", "outline", "contained"];
 
-export default function SimpleFileInputs(): ReactElement {
+export default function SimpleFileInputs(): Child {
   const [file, setFile] = useState("");
   const onChange = useCallback<React.ChangeEventHandler<HTMLInputElement>>(
     (event) => {

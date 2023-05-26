@@ -12,7 +12,7 @@ export * from "./TableCellContent";
 export * from "./Caption";
 export * from "./TableCheckbox";
 
-export {
+export type {
   TableCellConfiguration,
   TableCellHorizontalAlignment,
   TableCellVerticalAlignment,

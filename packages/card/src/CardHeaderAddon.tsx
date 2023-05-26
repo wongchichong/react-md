@@ -1,8 +1,6 @@
-import type { HTMLAttributes, ReactElement } from "react";
-import cn from "classnames";
-import { bem } from "@react-md/utils";
+import { bem } from "@react-md/utils"
 
-const block = bem("rmd-card");
+const block = bem("rmd-card")
 
 /**
  * This component is used to dynamically add addons to the `CardHeader`
@@ -11,17 +9,17 @@ const block = bem("rmd-card");
  * @internal
  */
 export function CardHeaderAddon({
-  className,
-  children,
-  ...props
-}: HTMLAttributes<HTMLSpanElement>): ReactElement | null {
-  if (!children) {
-    return null;
-  }
+    className,
+    children,
+    ...props
+}: HTMLAttributes<HTMLSpanElement>): Element | null {
+    if (!children) {
+        return null
+    }
 
-  return (
-    <span {...props} className={cn(block("header-addon"), className)}>
-      {children}
-    </span>
-  );
+    return (
+        <span {...props} className={[block("header-addon"), className]}>
+            {children}
+        </span>
+    )
 }

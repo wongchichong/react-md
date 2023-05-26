@@ -1,19 +1,21 @@
+import { $$ } from "voby"
+
 export interface XCoordConfig {
-  xMargin: number;
-  elWidth: number;
-  initialX?: number;
-  containerRect: DOMRect;
+    xMargin: FunctionMaybe<number>
+    elWidth: FunctionMaybe<number>
+    initialX?: FunctionMaybe<Nullable<number>>
+    containerRect: FunctionMaybe<DOMRect>
 }
 
 export interface YCoordConfig {
-  yMargin: number;
-  elHeight: number;
-  initialY?: number;
-  containerRect: DOMRect;
+    yMargin: FunctionMaybe<number>
+    elHeight: FunctionMaybe<number>
+    initialY?: FunctionMaybe<Nullable<number>>
+    containerRect: FunctionMaybe<DOMRect>
 }
 
-type Left = number;
-type Top = number;
+type Left = number
+type Top = number
 
 /**
  * Creates the `left` style value for an element that should be fixed to the
@@ -23,12 +25,13 @@ type Top = number;
  * @internal
  */
 export function getLeftCoord({
-  xMargin,
-  elWidth,
-  initialX,
-  containerRect,
+    xMargin: xm,
+    elWidth: ew,
+    initialX: ix,
+    containerRect: cr
 }: XCoordConfig): Left {
-  return (initialX ?? containerRect.left) - elWidth - xMargin;
+    const xMargin = $$(xm), elWidth = $$(ew), initialX = $$(ix), containerRect = $$(cr)
+    return (initialX ?? containerRect.left) - elWidth - xMargin
 }
 
 /**
@@ -38,11 +41,12 @@ export function getLeftCoord({
  * @internal
  */
 export function getInnerLeftCoord({
-  xMargin,
-  initialX,
-  containerRect,
+    xMargin: xm,
+    initialX: ix,
+    containerRect: cr,
 }: XCoordConfig): Left {
-  return (initialX ?? containerRect.left) + xMargin;
+    const xMargin = $$(xm), initialX = $$(ix), containerRect = $$(cr)
+    return (initialX ?? containerRect.left) + xMargin
 }
 
 /**
@@ -55,13 +59,15 @@ export function getInnerLeftCoord({
  * @internal
  */
 export function getCenterXCoord({
-  elWidth,
-  initialX,
-  containerRect,
+    elWidth: ew,
+    initialX: ix,
+    containerRect: cr,
 }: XCoordConfig): Left {
-  const containerCenter = containerRect.width / 2;
-  const elementCenter = elWidth / 2;
-  return (initialX ?? containerRect.left + containerCenter) - elementCenter;
+    const elWidth = $$(ew), initialX = $$(ix), containerRect = $$(cr)
+
+    const containerCenter = containerRect.width / 2
+    const elementCenter = elWidth / 2
+    return (initialX ?? containerRect.left + containerCenter) - elementCenter
 }
 
 /**
@@ -71,14 +77,15 @@ export function getCenterXCoord({
  * @internal
  */
 export function getInnerRightCoord({
-  xMargin,
-  elWidth,
-  initialX,
-  containerRect,
+    xMargin: xm,
+    elWidth: ew,
+    initialX: ix,
+    containerRect: cr,
 }: XCoordConfig): Left {
-  return (
-    (initialX ?? containerRect.left + containerRect.width) - elWidth - xMargin
-  );
+    const xMargin = $$(xm), elWidth = $$(ew), initialX = $$(ix), containerRect = $$(cr)
+    return (
+        (initialX ?? containerRect.left + containerRect.width) - elWidth - xMargin
+    )
 }
 
 /**
@@ -89,11 +96,12 @@ export function getInnerRightCoord({
  * @internal
  */
 export function getRightCoord({
-  xMargin,
-  initialX,
-  containerRect,
+    xMargin: xm,
+    initialX: ix,
+    containerRect: cr,
 }: XCoordConfig): Left {
-  return (initialX ?? containerRect.left + containerRect.width) + xMargin;
+    const xMargin = $$(xm), initialX = $$(ix), containerRect = $$(cr)
+    return (initialX ?? containerRect.left + containerRect.width) + xMargin
 }
 
 /**
@@ -103,12 +111,14 @@ export function getRightCoord({
  * @internal
  */
 export function getAboveCoord({
-  yMargin,
-  initialY,
-  elHeight,
-  containerRect,
+    yMargin: ym,
+    initialY: iy,
+    elHeight: eh,
+    containerRect: cr,
 }: YCoordConfig): Top {
-  return (initialY ?? containerRect.top) - elHeight - yMargin;
+    const yMargin = $$(ym), elHeight = $$(eh), initialY = $$(iy), containerRect = $$(cr)
+
+    return (initialY ?? containerRect.top) - elHeight - yMargin
 }
 
 /**
@@ -118,11 +128,12 @@ export function getAboveCoord({
  * @internal
  */
 export function getTopCoord({
-  yMargin,
-  initialY,
-  containerRect,
+    yMargin: ym,
+    initialY: iy,
+    containerRect: cr,
 }: YCoordConfig): Top {
-  return (initialY ?? containerRect.top) + yMargin;
+    const yMargin = $$(ym), initialY = $$(iy), containerRect = $$(cr)
+    return (initialY ?? containerRect.top) + yMargin
 }
 
 /**
@@ -135,13 +146,15 @@ export function getTopCoord({
  * does not use the yMargin.
  */
 export function getCenterYCoord({
-  elHeight,
-  initialY,
-  containerRect,
+    elHeight: eh,
+    initialY: iy,
+    containerRect: cr,
 }: YCoordConfig): Top {
-  const containerCenter = containerRect.height / 2;
-  const elementCenter = elHeight / 2;
-  return (initialY ?? containerRect.top + containerCenter) - elementCenter;
+    const elHeight = $$(eh), initialY = $$(iy), containerRect = $$(cr)
+
+    const containerCenter = containerRect.height / 2
+    const elementCenter = elHeight / 2
+    return (initialY ?? containerRect.top + containerCenter) - elementCenter
 }
 
 /**
@@ -152,14 +165,16 @@ export function getCenterYCoord({
  * @internal
  */
 export function getBottomCoord({
-  yMargin,
-  initialY,
-  elHeight,
-  containerRect,
+    yMargin: ym,
+    initialY: iy,
+    elHeight: eh,
+    containerRect: cr,
 }: YCoordConfig): Top {
-  return (
-    (initialY ?? containerRect.top + containerRect.height) - elHeight - yMargin
-  );
+    const yMargin = $$(ym), elHeight = $$(eh), initialY = $$(iy), containerRect = $$(cr)
+
+    return (
+        (initialY ?? containerRect.top + containerRect.height) - elHeight - yMargin
+    )
 }
 
 /**
@@ -169,9 +184,11 @@ export function getBottomCoord({
  * @internal
  */
 export function getBelowCoord({
-  yMargin,
-  initialY,
-  containerRect,
+    yMargin: ym,
+    initialY: iy,
+    containerRect: cr,
 }: YCoordConfig): Top {
-  return (initialY ?? containerRect.top + containerRect.height) + yMargin;
+    const yMargin = $$(ym), initialY = $$(iy), containerRect = $$(cr)
+
+    return (initialY ?? containerRect.top + containerRect.height) + yMargin
 }

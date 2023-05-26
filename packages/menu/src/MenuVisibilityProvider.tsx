@@ -1,30 +1,29 @@
-import type { ReactElement, ReactNode } from "react";
-import { createContext, useContext, useMemo } from "react";
-import type { HoverModeHookReturnValue } from "@react-md/utils";
+
+import { createContext, useContext, useMemo } from 'voby'
+import type { HoverModeHookReturnValue } from "@react-md/utils"
 
 /** @remarks \@since 5.0.0 */
-export type MenuVisibilityContext = Pick<
-  HoverModeHookReturnValue,
-  "visible" | "setVisible"
->;
+export type MenuVisibilityContext = Pick<HoverModeHookReturnValue, "visible">
 
 /**
  * @internal
  * @remarks \@since 5.0.0
  */
 const context = createContext<MenuVisibilityContext>({
+  //@ts-ignore
   visible: false,
-  setVisible() {
-    throw new Error('"MenuVisibilityProvider" must be a parent component');
-  },
-});
-context.displayName = "MenuVisibility";
+  // setVisible() {
+  //   throw new Error('"MenuVisibilityProvider" must be a parent component')
+  // },
+})
+//@ts-ignore
+context.displayName = "MenuVisibility"
 
 /**
  * @internal
  * @remarks \@since 5.0.0
  */
-const { Provider } = context;
+const { Provider } = context
 
 /**
  * This hook allows you control the visibility of a parent menu. The main
@@ -33,7 +32,7 @@ const { Provider } = context;
  * @example
  * Simple Example
  * ```tsx
- * function SheetFooter(): ReactElement {
+ * function SheetFooter(): Element {
  *   const { setVisible } = useMenuVisibility();
  *
  *   return (
@@ -48,7 +47,7 @@ const { Provider } = context;
  * @remarks \@since 5.0.0
  */
 export function useMenuVisibility(): Readonly<MenuVisibilityContext> {
-  return useContext(context);
+  return useContext(context)
 }
 
 /**
@@ -56,25 +55,15 @@ export function useMenuVisibility(): Readonly<MenuVisibilityContext> {
  * @remarks \@since 5.0.0
  */
 export interface MenuVisibilityProviderProps extends MenuVisibilityContext {
-  children: ReactNode;
+  children: Children
 }
 
 /**
  * @internal
  * @remarks \@since 5.0.0
  */
-export function MenuVisibilityProvider({
-  visible,
-  setVisible,
-  children,
-}: MenuVisibilityProviderProps): ReactElement {
-  const value = useMemo<MenuVisibilityContext>(
-    () => ({
-      visible,
-      setVisible,
-    }),
-    [visible, setVisible]
-  );
+export function MenuVisibilityProvider({ visible, children, }: MenuVisibilityProviderProps): Element {
+  const value = useMemo<MenuVisibilityContext>(() => ({ visible, }))
 
-  return <Provider value={value}>{children}</Provider>;
+  return <Provider value={value}>{children}</Provider>
 }

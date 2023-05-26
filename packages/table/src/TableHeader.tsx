@@ -1,30 +1,30 @@
-import type { HTMLAttributes } from "react";
-import { forwardRef, useMemo } from "react";
-import cn from "classnames";
-import { bem } from "@react-md/utils";
 
-import type { TableCellConfig } from "./config";
-import { TableConfigProvider, useTableConfig } from "./config";
-import { StickyTableProvider } from "./sticky";
+import {  useMemo } from 'voby'
 
-export interface TableHeaderProps
-  extends HTMLAttributes<HTMLTableSectionElement>,
+import { bem } from "@react-md/utils"
+
+import type { TableCellConfig } from "./config"
+import { TableConfigProvider, useTableConfig } from "./config"
+import { StickyTableProvider } from "./sticky"
+
+export interface TableHeaderProps<T extends EventTarget = HTMLTableSectionElement>
+    extends HTMLAttributes<T>,
     Pick<TableCellConfig, "lineWrap"> {
-  /**
-   * This is a rename of the `disableHover` of the `TableConfig` since table
-   * headers are not hoverable by default. This prop can be enabled to add the
-   * row hover color within table headers, but it is not really recommended.
-   */
-  hoverable?: boolean;
+    /**
+     * This is a rename of the `disableHover` of the `TableConfig` since table
+     * headers are not hoverable by default. This prop can be enabled to add the
+     * row hover color within table headers, but it is not really recommended.
+     */
+    hoverable?: FunctionMaybe<Nullable<boolean>>
 
-  /**
-   * Boolean if the header should be rendered as a sticky header that will cover
-   * the table contents as the page or `TableContainer` is scrolled.
-   */
-  sticky?: boolean;
+    /**
+     * Boolean if the header should be rendered as a sticky header that will cover
+     * the table contents as the page or `TableContainer` is scrolled.
+     */
+    sticky?: FunctionMaybe<Nullable<boolean>>
 }
 
-const block = bem("rmd-thead");
+const block = bem("rmd-thead")
 
 /**
  * Creates a `<thead>` element with some basic styles. This component will also
@@ -34,44 +34,38 @@ const block = bem("rmd-thead");
  * line-wrapping can be re-enabled if desired through the `hoverable` and
  * `disableNoWrap` props.
  */
-export const TableHeader = forwardRef<
-  HTMLTableSectionElement,
-  TableHeaderProps
->(function TableHeader(
-  {
-    className,
-    hoverable = false,
-    lineWrap: propLineWrap,
-    children,
-    sticky = false,
-    ...props
-  },
-  ref
-) {
-  // update the table configuration with the custom overrides for the `<thead>`
-  const { hAlign, vAlign, lineWrap, disableHover, disableBorders } =
-    useTableConfig({
-      lineWrap: propLineWrap,
-      disableHover: !hoverable,
-    });
+export const TableHeader =(
+    {
+        className,
+        hoverable = false,
+        lineWrap: propLineWrap,
+        children,
+        sticky = false,
+        ref,
+        ...props
+    }: TableHeaderProps<HTMLTableSectionElement>
+) =>{
+    // update the table configuration with the custom overrides for the `<thead>`
+    const { hAlign, vAlign, lineWrap, disableHover, disableBorders } =
+        useTableConfig({
+            lineWrap: propLineWrap,
+            disableHover: !hoverable,
+        })
 
-  const configuration = useMemo(
-    () => ({
-      header: true,
-      hAlign,
-      vAlign,
-      lineWrap,
-      disableBorders,
-      disableHover,
-    }),
-    [hAlign, vAlign, lineWrap, disableBorders, disableHover]
-  );
+    const configuration = useMemo(() => ({
+        header: true,
+        hAlign,
+        vAlign,
+        lineWrap,
+        disableBorders,
+        disableHover,
+    }))
 
-  return (
-    <TableConfigProvider value={configuration}>
-      <thead {...props} ref={ref} className={cn(block(), className)}>
-        <StickyTableProvider value={sticky}>{children}</StickyTableProvider>
-      </thead>
-    </TableConfigProvider>
-  );
-});
+    return (
+        <TableConfigProvider value={configuration}>
+            <thead {...props} ref={ref} className={[block(), className]}>
+                <StickyTableProvider value={sticky}>{children}</StickyTableProvider>
+            </thead>
+        </TableConfigProvider>
+    )
+}

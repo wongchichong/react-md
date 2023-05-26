@@ -1,12 +1,12 @@
-import { useEffect } from "react";
+import { useEffect } from 'voby'
 
-import { useRefCache } from "./useRefCache";
-import { useToggle } from "./useToggle";
+import { useRefCache } from "./useRefCache"
+import { useToggle } from "./useToggle"
 
-type Running = boolean;
-type StartInterval = () => void;
-type StopInterval = () => void;
-type ReturnValue = [Running, StartInterval, StopInterval];
+type Running = boolean
+type StartInterval = () => void
+type StopInterval = () => void
+type ReturnValue = [Running, StartInterval, StopInterval]
 
 /**
  * Simple hook to use an interval with auto setup and teardown. The provided
@@ -24,24 +24,24 @@ export function useInterval(
   delay: number,
   defaultRunning = false
 ): ReturnValue {
-  const ref = useRefCache(callback);
+  const ref = useRefCache(callback)
 
-  const [running, start, stop] = useToggle(defaultRunning);
+  const [running, start, stop] = useToggle(defaultRunning)
 
   useEffect(() => {
     if (!running) {
-      return;
+      return
     }
 
     const interval = window.setInterval(() => {
-      ref.current(stop);
-    }, delay);
+      ref()(stop)
+    }, delay)
     return () => {
-      window.clearInterval(interval);
-    };
+      window.clearInterval(interval)
+    }
     // disabled since useRefCache for the callback
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [delay, running, stop]);
+  })
 
-  return [running, start, stop];
+  return [running(), start, stop]
 }

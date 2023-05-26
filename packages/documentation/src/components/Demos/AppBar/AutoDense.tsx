@@ -7,7 +7,7 @@ import AppBarTitle from "components/AppBarTitle";
 import Container from "./Container";
 import styles from "./AutoDense.module.scss";
 
-export default function AutoDense(): ReactElement {
+export default function AutoDense(): Child {
   return (
     <Container className={styles.container}>
       <AppBar id="auto-dense-app-bar">

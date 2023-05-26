@@ -4,7 +4,7 @@ able to only use the React context API to queue up these alerts named
 display to the user in a `Snackbar` that has built in accessibility so that new
 messages will be read out to screen readers.
 
-To use this functionality, you'll normally want to mount the `MessageQueue`
+To use this functionality, you'll normally want to mount the `MessageQueuepnm`
 component near the root of your app and then use the `addMessage` function
 provided by the `useAddMessage` hook. Whenever the `addMessage` is called, a
 message will be pushed onto the queue and automatically shown to the user for 5

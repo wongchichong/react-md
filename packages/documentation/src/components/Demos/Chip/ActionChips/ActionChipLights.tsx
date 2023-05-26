@@ -13,7 +13,7 @@ import ActionChip from "./ActionChip";
 const id = "action-chip-lights";
 const progressId = `${id}-progress`;
 
-export default function ActionChipLights(): ReactElement {
+export default function ActionChipLights(): Child {
   const [enabled, setEnabled] = useState(false);
   const [loading, setLoading] = useState(false);
 

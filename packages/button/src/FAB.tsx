@@ -1,7 +1,5 @@
-import type { HTMLAttributes } from "react";
-import { forwardRef } from "react";
-import cn from "classnames";
-import { bem } from "@react-md/utils";
+
+import { bem } from "@react-md/utils"
 
 /**
  * The position within the viewport for the floating action button.
@@ -11,17 +9,17 @@ export type FABPosition =
   | "bottom-left"
   | "bottom-right"
   | "top-left"
-  | "top-right";
+  | "top-right"
 
 export interface FABProps extends HTMLAttributes<HTMLSpanElement> {
   /**
    * The position within the viewport to display the button as a floating action
    * button.
    */
-  position?: FABPosition;
+  position?: FunctionMaybe<Nullable<FABPosition>>
 }
 
-const styles = bem("rmd-fab");
+const styles = bem("rmd-fab")
 
 /**
  * This is a simple wrapper for the `Button` component that will conditionally
@@ -33,19 +31,18 @@ const styles = bem("rmd-fab");
  * `position: relative` to work while changing into a floating action button
  * makes it `position: fixed`.
  */
-export const FAB = forwardRef<HTMLSpanElement, FABProps>(function FAB(
-  { position = null, children, className, ...props },
-  ref
-) {
+export const FAB = /* HTMLSpanElement  */(
+  { position = null, children, className, ref, ...props }: FABProps
+) => {
   if (!position) {
-    return <>{children}</>;
+    return <>{children}</>
   }
 
   return (
     <span
       {...props}
       ref={ref}
-      className={cn(
+      className={[
         styles({
           tl: position === "top-left",
           tr: position === "top-right",
@@ -53,9 +50,9 @@ export const FAB = forwardRef<HTMLSpanElement, FABProps>(function FAB(
           br: position === "bottom-right",
         }),
         className
-      )}
+      ]}
     >
       {children}
     </span>
-  );
-});
+  )
+}

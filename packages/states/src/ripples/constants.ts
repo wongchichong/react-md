@@ -1,7 +1,6 @@
-import type {
-  CSSTransitionClassNames,
-  TransitionTimeout,
-} from "@react-md/transition";
+import type { 
+CSSTransitionClassNames, 
+TransitionTimeout,  } from "@react-md/transition";
 
 export const DEFAULT_RIPPLE_CLASSNAMES: Readonly<CSSTransitionClassNames> = {
   enter: "rmd-ripple--animating",

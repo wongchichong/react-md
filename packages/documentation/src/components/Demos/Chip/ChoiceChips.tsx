@@ -13,7 +13,7 @@ const sizes = Array.from({ length: 8 }, (_, i) => {
   return `${size < 10 ? "0" : ""}${size}`;
 });
 
-export default function ChoiceChips(): ReactElement {
+export default function ChoiceChips(): Child {
   const [selectedSize, setSelectedSize] = useState<string>("02");
   return (
     <Card className={styles.container}>

@@ -11,7 +11,7 @@ export interface NavigationActionsProps {
 export default function NavigationActions({
   from,
   onRequestClose,
-}: NavigationActionsProps): ReactElement {
+}: NavigationActionsProps): Child {
   const router = useRouter();
   const isJs = useJs();
   const language = isJs ? "js" : "ts";

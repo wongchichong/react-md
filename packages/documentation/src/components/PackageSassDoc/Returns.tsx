@@ -3,7 +3,9 @@ import { Typography } from "@react-md/typography";
 
 import Code from "components/Code";
 import { M_DASH } from "constants/unicode";
-import type { ItemReturn, SupportedItemDataType } from "utils/sassdoc";
+import type { SupportedItemDataType } from "@react-md/dev-utils/src/utils/";
+//@ts-ignore
+import type { ItemReturn } from "@react-md/dev-utils/@types/sassdoc";
 
 import styles from "./Parameters.module.scss";
 

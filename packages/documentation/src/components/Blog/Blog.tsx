@@ -9,7 +9,7 @@ export interface BlogProps {
   children: string;
 }
 
-export default function Blog({ children }: BlogProps): ReactElement {
+export default function Blog({ children }: BlogProps): Child {
   const posts = children
     .split(/\r?\n---\r?\n/)
     .reduce<BlogPost[]>((posts, postMarkdown) => {

@@ -1,8 +1,8 @@
-import type { HTMLAttributes } from "react";
-import { forwardRef } from "react";
-import cn from "classnames";
 
-export type TableContainerProps = HTMLAttributes<HTMLDivElement>;
+
+
+
+export type TableContainerProps<T extends EventTarget= HTMLDivElement> = HTMLAttributes<T>
 
 /**
  * An extremely "useful" component that should be used with the `Table`
@@ -10,16 +10,11 @@ export type TableContainerProps = HTMLAttributes<HTMLDivElement>;
  * don't want to use this component, you can just apply `overflow: auto` to a
  * parent element of the table.
  */
-export const TableContainer = forwardRef<HTMLDivElement, TableContainerProps>(
-  function TableContainer({ className, children, ...props }, ref) {
-    return (
-      <div
+export const TableContainer = ({ className, children, ref, ...props }: TableContainerProps<HTMLDivElement>) =>
+    <div
         {...props}
         ref={ref}
-        className={cn("rmd-table-container", className)}
-      >
+        className={["rmd-table-container", className]}
+    >
         {children}
-      </div>
-    );
-  }
-);
+    </div>

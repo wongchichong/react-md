@@ -8,7 +8,7 @@ import { usePhoneContext } from "./context";
 export default function OptionsAction({
   children,
   ...props
-}: AppBarActionProps): ReactElement {
+}: AppBarActionProps): Child {
   const { id } = usePhoneContext();
   return (
     <AppBarAction {...props} id={`${id}-options`}>

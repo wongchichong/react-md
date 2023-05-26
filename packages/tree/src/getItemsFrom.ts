@@ -1,9 +1,8 @@
-import type {
-  BaseTreeItem,
-  TreeData,
-  TreeItemId,
-  UnknownTreeItem,
-} from "./types";
+import type { 
+BaseTreeItem, 
+TreeData, 
+TreeItemId, 
+UnknownTreeItem,  } from "./types";
 
 /**
  * This will get all the items from the provided itemId up to the root of the

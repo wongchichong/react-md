@@ -1,14 +1,7 @@
 // This is a generated file from running the "createIcons" script. This file should not be updated manually.
-import { forwardRef } from "react";
 
 import { FontIcon, FontIconProps } from "@react-md/icon";
 
-export const NfcFontIcon = forwardRef<HTMLElement, FontIconProps>(
-  function NfcFontIcon(props, ref) {
-    return (
-      <FontIcon {...props} ref={ref}>
-        nfc
-      </FontIcon>
-    );
-  }
-);
+export const NfcFontIcon = ({ref, ...props}: FontIconProps<HTMLElement>) => {
+    return <FontIcon {...props} ref={ref}>nfc</FontIcon>;
+}

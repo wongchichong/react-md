@@ -1,14 +1,14 @@
-import type { ReactElement, ReactNode } from "react";
-import { createContext, useContext, useMemo } from "react";
+// ;
+import { createContext, useContext, useMemo } from 'voby'
 import type {
   CSSTransitionClassNames,
   TransitionTimeout,
-} from "@react-md/transition";
+} from "@react-md/transition"
 
 import {
   DEFAULT_RIPPLE_CLASSNAMES,
   DEFAULT_RIPPLE_TIMEOUT,
-} from "./ripples/constants";
+} from "./ripples/constants"
 
 /**
  * Contains all the values in the `StatesConfig` component.
@@ -19,26 +19,26 @@ export interface StatesConfigContextType {
    * don't want to change this value unless you updated the duration in scss or
    * changed the different class names for the ripple animation.
    */
-  rippleTimeout: TransitionTimeout;
+  rippleTimeout: FunctionMaybe<TransitionTimeout>
 
   /**
    * The class names to apply during the different stages for the ripple
    * animation.  You probably don't want to use this.
    */
-  rippleClassNames: CSSTransitionClassNames;
+  rippleClassNames: FunctionMaybe<CSSTransitionClassNames>
 
   /**
    * Boolean if the ripple effect should be disabled for all child components
    * that use the Ripple states.
    */
-  disableRipple: boolean;
+  disableRipple: FunctionMaybe<boolean>
 
   /**
    * Boolean if the ripple component should not be triggered after a
    * "programmatic" ripple effect. This would be if  the `.click()` function is
    * called on an element through javascript or some other means.
    */
-  disableProgrammaticRipple: boolean;
+  disableProgrammaticRipple: FunctionMaybe<boolean>
 }
 
 export const StatesConfigContext = createContext<StatesConfigContextType>({
@@ -46,7 +46,7 @@ export const StatesConfigContext = createContext<StatesConfigContextType>({
   rippleClassNames: DEFAULT_RIPPLE_CLASSNAMES,
   disableRipple: false,
   disableProgrammaticRipple: false,
-});
+})
 
 /**
  * A simple hook that can be used to get the Ripple context. This is used behind
@@ -55,11 +55,11 @@ export const StatesConfigContext = createContext<StatesConfigContextType>({
  * classNames are undefined.
  */
 export function useStatesConfigContext(): StatesConfigContextType {
-  return useContext(StatesConfigContext);
+  return useContext(StatesConfigContext)
 }
 
 export interface StatesConfigProps extends Partial<StatesConfigContextType> {
-  children?: ReactNode;
+  children?: Children
 }
 
 /**
@@ -77,20 +77,16 @@ export function StatesConfig({
   disableRipple = false,
   disableProgrammaticRipple = false,
   children,
-}: StatesConfigProps): ReactElement {
-  const value = useMemo(
-    () => ({
-      rippleTimeout,
-      rippleClassNames,
-      disableRipple,
-      disableProgrammaticRipple,
-    }),
-    [rippleTimeout, rippleClassNames, disableRipple, disableProgrammaticRipple]
-  );
+}: StatesConfigProps): Element {
+  const value = useMemo(() => ({
+    rippleTimeout,
+    rippleClassNames,
+    disableRipple,
+    disableProgrammaticRipple,
+  }))
 
-  return (
-    <StatesConfigContext.Provider value={value}>
-      {children}
-    </StatesConfigContext.Provider>
-  );
+  //@ts-ignore
+  return <StatesConfigContext.Provider value={value}>
+    {children}
+  </StatesConfigContext.Provider>
 }

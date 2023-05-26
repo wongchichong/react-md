@@ -1,15 +1,14 @@
-import { forwardRef } from "react";
-import cn from "classnames";
-import type { ButtonProps } from "@react-md/button";
-import { Button } from "@react-md/button";
-import { bem } from "@react-md/utils";
+import type { ButtonProps } from "@react-md/button"
+import { Button } from "@react-md/button"
+import { bem } from "@react-md/utils"
 
-import type { AppBarColorInherit } from "./useInheritContext";
-import { useInheritContext } from "./useInheritContext";
+import type { AppBarColorInherit } from "./useInheritContext"
+import { useInheritContext } from "./useInheritContext"
+import { $$ } from "voby"
 
-export interface AppBarNavProps extends ButtonProps, AppBarColorInherit {}
+export interface AppBarNavProps extends ButtonProps, AppBarColorInherit { }
 
-const block = bem("rmd-app-bar");
+const block = bem("rmd-app-bar")
 
 /**
  * This component is really just a simple wrapper for the `Button` component
@@ -22,35 +21,22 @@ const block = bem("rmd-app-bar");
  * This component is generally really only used when you want to have a
  * temporary navigation element like a hamburger menu.
  */
-export const AppBarNav = forwardRef<HTMLButtonElement, AppBarNavProps>(
-  function AppBarNav(
-    {
-      className,
-      children,
-      inheritColor,
-      floating,
-      theme = floating ? "secondary" : "clear",
-      buttonType = "icon",
-      ...props
-    },
-    ref
-  ) {
+export const AppBarNav = ({ className, children, inheritColor, floating, theme = floating ? "secondary" : "clear", buttonType = "icon", ref, ...props }: AppBarNavProps) => {
     return (
-      <Button
-        {...props}
-        theme={theme}
-        floating={floating}
-        buttonType={buttonType}
-        ref={ref}
-        className={cn(
-          block("nav", {
-            inherit: useInheritContext(inheritColor),
-          }),
-          className
-        )}
-      >
-        {children}
-      </Button>
-    );
-  }
-);
+        <Button
+            {...props}
+            theme={theme}
+            floating={floating}
+            buttonType={buttonType}
+            ref={ref}
+            className={[
+                block("nav", {
+                    inherit: useInheritContext($$(inheritColor)),
+                }),
+                className
+            ]}
+        >
+            {children}
+        </Button>
+    )
+}

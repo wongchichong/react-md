@@ -1,10 +1,11 @@
-import { createContext, useContext } from "react";
+import { createContext, useContext } from 'voby'
+import '@react-md/react'
 
 /**
  * Boolean if the child components should inherit the color of the app bar.
  * @internal
  */
-export const InheritContext = createContext(false);
+export const InheritContext = createContext(false)
 
 export interface AppBarColorInherit {
   /**
@@ -12,7 +13,7 @@ export interface AppBarColorInherit {
    * `AppBar`.  When this value is omitted, this will be enabled when the theme
    * is not `"clear"` and not `"default"`
    */
-  inheritColor?: boolean;
+  inheritColor?: FunctionMaybe<Nullable<boolean>>
 }
 
 /**
@@ -26,8 +27,8 @@ export interface AppBarColorInherit {
  * @internal
  */
 export function useInheritContext(inheritColor: boolean | undefined): boolean {
-  const inheritContext = useContext(InheritContext);
-  return typeof inheritColor === "boolean" ? inheritColor : inheritContext;
+  const inheritContext = useContext(InheritContext)
+  return typeof inheritColor === "boolean" ? inheritColor : inheritContext
 }
 
 /**
@@ -38,17 +39,19 @@ export function useInheritContext(inheritColor: boolean | undefined): boolean {
  *
  * @internal
  */
-export const ParentContext = createContext(false);
+export const ParentContext = createContext(false)
 
 /**
  *
  * @internal
  */
 export function useParentContext(): boolean {
-  return useContext(ParentContext);
+  return useContext(ParentContext)
 }
 
 if (process.env.NODE_ENV !== "production") {
-  InheritContext.displayName = "InheritColorContext";
-  ParentContext.displayName = "ParentContext";
+  //@ts-ignore
+  InheritContext.displayName = "InheritColorContext"
+  //@ts-ignore
+  ParentContext.displayName = "ParentContext"
 }

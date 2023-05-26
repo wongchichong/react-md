@@ -6,7 +6,7 @@ export interface LineNumbersProps {
   code: string;
 }
 
-export default function LineNumbers({ code }: LineNumbersProps): ReactElement {
+export default function LineNumbers({ code }: LineNumbersProps): Child {
   const lineCount = code.match(/\r?\n/g)?.length;
   const lines = typeof lineCount === "number" ? lineCount + 1 : 1;
 

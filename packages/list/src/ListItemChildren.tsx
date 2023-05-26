@@ -1,8 +1,6 @@
-import type { ReactElement, ReactNode } from "react";
-
-import type { ListItemAddonPosition, ListItemAddonType } from "./ListItemAddon";
-import { ListItemAddon } from "./ListItemAddon";
-import { ListItemText } from "./ListItemText";
+import type { ListItemAddonPosition, ListItemAddonType } from "./ListItemAddon"
+import { ListItemAddon } from "./ListItemAddon"
+import { ListItemText } from "./ListItemText"
 
 export interface ListItemChildrenProps {
   /**
@@ -10,19 +8,19 @@ export interface ListItemChildrenProps {
    * there is child content, it will be treated as primary text and update the
    * styles automatically.
    */
-  children?: ReactNode;
+  children?: Children
 
   /**
    * An optional className to apply to the `<span>` that surrounds the
    * `primaryText` and optionally `secondaryText` within the list item.
    */
-  textClassName?: string;
+  textClassName?: Class
 
   /**
    * An optional className to apply to the `<span>` that surrounds the
    * `secondaryText` within the list item.
    */
-  secondaryTextClassName?: string;
+  secondaryTextClassName?: Class
 
   /**
    * Boolean if the children should be treated as the `primaryText` prop. This
@@ -35,7 +33,7 @@ export interface ListItemChildrenProps {
    * NOTE: If the `secondaryText` prop is provided, this will always be
    * considered `true`.
    */
-  textChildren?: boolean;
+  textChildren?: FunctionMaybe<Nullable<boolean>>
 
   /**
    * An optional element that should be rendered as the `primaryText` within the
@@ -45,59 +43,59 @@ export interface ListItemChildrenProps {
    * applied. By default, this will only allow one line of text and add ellipsis
    * for any text overflow.
    */
-  primaryText?: ReactNode;
+  primaryText?: Child
 
   /**
    * An optional element that should be rendered as the `secondaryText` within
    * the list item. By default, this will only span one line and add ellipsis
    * for overflow.
    */
-  secondaryText?: ReactNode;
+  secondaryText?: Child
 
   /**
    * An optional addon to display to the left of the `primaryText` or
    * `children` and should be used with the `leftAddonType` prop to adjust
    * spacing.
    */
-  leftAddon?: ReactNode;
+  leftAddon?: Child
 
   /**
    * The type of the addon that appears to the left of the `primaryText` or
    * `children`.
    */
-  leftAddonType?: ListItemAddonType;
+  leftAddonType?: FunctionMaybe<Nullable<ListItemAddonType>>
 
   /**
    * The vertical position the left icon, avatar, media, or large media
    * should be placed.
    */
-  leftAddonPosition?: ListItemAddonPosition;
+  leftAddonPosition?: FunctionMaybe<Nullable<ListItemAddonPosition>>
 
   /**
    * An optional addon to display to the right of the `primaryText` or
    * `children` and should be used with the `rightAddonType` prop to adjust
    * spacing.
    */
-  rightAddon?: ReactNode;
+  rightAddon?: Child
 
   /**
    * The type of the addon that appears to the right of the `primaryText` or
    * `children`.
    */
-  rightAddonType?: ListItemAddonType;
+  rightAddonType?: FunctionMaybe<Nullable<ListItemAddonType>>
 
   /**
    * The vertical position the right icon, avatar, media, or large media
    * should be placed.
    */
-  rightAddonPosition?: ListItemAddonPosition;
+  rightAddonPosition?: FunctionMaybe<Nullable<ListItemAddonPosition>>
 
   /**
    * Boolean if the left and/or right addons should be "forcefully" wrapped in a
    * `<span>` with the spacing class names applied instead of attempting to
    * clone it into the provided icon element.
    */
-  forceAddonWrap?: boolean;
+  forceAddonWrap?: FunctionMaybe<Nullable<boolean>>
 }
 
 /**
@@ -125,11 +123,11 @@ export function ListItemChildren({
   rightAddonPosition = "middle",
   forceAddonWrap,
   children: propChildren,
-}: ListItemChildrenProps): ReactElement {
+}: ListItemChildrenProps): Element {
   const stringifiedChildren =
-    typeof propChildren === "number" ? `${propChildren}` : propChildren;
+    typeof propChildren === "number" ? `${propChildren}` : propChildren
 
-  let children = stringifiedChildren;
+  let children = stringifiedChildren
   if (primaryText || secondaryText || textChildren) {
     children = (
       <ListItemText
@@ -139,7 +137,7 @@ export function ListItemChildren({
       >
         {(textChildren && children) || primaryText}
       </ListItemText>
-    );
+    )
   }
 
   children = (
@@ -151,7 +149,7 @@ export function ListItemChildren({
     >
       {children}
     </ListItemAddon>
-  );
+  )
   children = (
     <ListItemAddon
       addon={rightAddon}
@@ -162,12 +160,12 @@ export function ListItemChildren({
     >
       {children}
     </ListItemAddon>
-  );
+  )
 
   return (
     <>
       {children}
       {(primaryText && stringifiedChildren) || null}
     </>
-  );
+  )
 }

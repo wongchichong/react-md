@@ -15,7 +15,7 @@ export interface ExpandableCodeProps {
 export default function ExpandableCode({
   code,
   sourceCode,
-}: ExpandableCodeProps): ReactElement {
+}: ExpandableCodeProps): Child {
   const [collapsed, setCollapsed] = useState(true);
   const [currentCode, setCurrentCode] = useState(code);
 

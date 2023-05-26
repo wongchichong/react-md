@@ -1,4 +1,4 @@
-import type { InputHTMLAttributes } from "react";
+// import type { InputHTMLAttributes } from 'voby';
 
 /**
  * @remarks \@since 2.5.0
@@ -6,7 +6,7 @@ import type { InputHTMLAttributes } from "react";
 export type TextConstraints = Pick<
   InputHTMLAttributes<HTMLInputElement>,
   "pattern" | "required" | "minLength" | "maxLength"
->;
+>
 
 /**
  * Since the default validation messages can be verbose, this type is used to
@@ -32,7 +32,7 @@ export type ChangeValidationBehavior =
   | "recommended"
   | "number-recommended"
   | keyof ValidityState
-  | readonly (keyof ValidityState)[];
+  | readonly (keyof ValidityState)[]
 
 /**
  * @remarks \@since 2.5.0
@@ -41,28 +41,28 @@ export interface ErrorMessageOptions extends TextConstraints {
   /**
    * The current input or textarea's validity state.
    */
-  validity: ValidityState;
+  validity: ValidityState
 
   /**
    * The browser defined validation message based on the validity state. This
    * will be the empty string when there are no errors.
    */
-  validationMessage: string;
+  validationMessage: string
 
   /**
    * The current `TextField` or `TextArea` value.
    */
-  value: string;
+  value: string
 
   /**
    * Boolean if this is triggered from a blur event instead of a change event.
    */
-  isBlurEvent: boolean;
+  isBlurEvent: boolean
 
   /**
    * The change event validation behavior that is specified in the hook.
    */
-  validateOnChange: ChangeValidationBehavior;
+  validateOnChange: ChangeValidationBehavior
 }
 
 /**
@@ -75,7 +75,7 @@ export interface ErrorMessageOptions extends TextConstraints {
  * @returns An error message to display or an empty string.
  * @remarks \@since 2.5.0
  */
-export type GetErrorMessage = (options: ErrorMessageOptions) => string;
+export type GetErrorMessage = (options: ErrorMessageOptions) => string
 
 /**
  * @internal
@@ -92,7 +92,7 @@ const VALIDITY_STATE_KEYS: readonly (keyof ValidityState)[] = [
   "tooShort",
   "typeMismatch",
   "valueMissing",
-];
+]
 
 /**
  * @internal
@@ -102,7 +102,7 @@ export const RECOMMENDED_STATE_KEYS: readonly (keyof ValidityState)[] = [
   "badInput",
   "tooLong",
   "valueMissing",
-];
+]
 
 /**
  * @internal
@@ -114,7 +114,7 @@ export const RECOMMENDED_NUMBER_STATE_KEYS: readonly (keyof ValidityState)[] = [
   "rangeUnderflow",
   "tooShort",
   "typeMismatch",
-];
+]
 
 /**
  * The validation message is actually kind of weird since it's possible for a
@@ -129,13 +129,13 @@ export const RECOMMENDED_NUMBER_STATE_KEYS: readonly (keyof ValidityState)[] = [
 const isRecommended = (validity: ValidityState, isNumber: boolean): boolean => {
   const errorable = isNumber
     ? RECOMMENDED_NUMBER_STATE_KEYS
-    : RECOMMENDED_STATE_KEYS;
+    : RECOMMENDED_STATE_KEYS
 
   return VALIDITY_STATE_KEYS.every((key) => {
-    const errored = validity[key];
-    return !errored || errorable.includes(key);
-  });
-};
+    const errored = validity[key]
+    return !errored || errorable.includes(key)
+  })
+}
 
 /**
  * The default implementation for getting an error message for the `TextField`
@@ -151,11 +151,11 @@ export const defaultGetErrorMessage: GetErrorMessage = ({
   validateOnChange,
 }) => {
   if (isBlurEvent || !validationMessage || validateOnChange === true) {
-    return validationMessage;
+    return validationMessage
   }
 
   if (!validateOnChange) {
-    return "";
+    return ""
   }
 
   if (
@@ -164,16 +164,16 @@ export const defaultGetErrorMessage: GetErrorMessage = ({
   ) {
     return isRecommended(validity, validateOnChange === "number-recommended")
       ? validationMessage
-      : "";
+      : ""
   }
 
   const keys =
     typeof validateOnChange === "string"
       ? [validateOnChange]
-      : validateOnChange;
+      : validateOnChange
 
   return keys.length &&
     VALIDITY_STATE_KEYS.some((key) => validity[key] && keys.includes(key))
     ? validationMessage
-    : "";
-};
+    : ""
+}

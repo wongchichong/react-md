@@ -1,20 +1,20 @@
-import { useEffect, useState } from "react";
+import { useEffect, $, $$ } from 'voby'
 
 import type {
-  BaseKeyboardMovementOptions,
-  KeyboardMovementProviders,
-} from "./useKeyboardMovement";
-import { useKeyboardMovement } from "./useKeyboardMovement";
+    BaseKeyboardMovementOptions,
+    KeyboardMovementProviders,
+} from "./useKeyboardMovement"
+import { useKeyboardMovement } from "./useKeyboardMovement"
 
 interface KeyboardFocusOptions<
-  D = unknown,
-  CE extends HTMLElement = HTMLElement,
-  IE extends HTMLElement = HTMLElement
+    D = unknown,
+    CE extends HTMLElement = HTMLElement,
+    IE extends HTMLElement = HTMLElement
 > extends BaseKeyboardMovementOptions<D, CE, IE> {
-  /**
-   * The index that should be focused by default.
-   */
-  defaultFocusedIndex?: number;
+    /**
+     * The index that should be focused by default.
+     */
+    defaultFocusedIndex?: FunctionMaybe<Nullable<number>>
 }
 
 /**
@@ -36,51 +36,53 @@ interface KeyboardFocusOptions<
  * element that can be focusable.
  */
 export function useFocusMovement<
-  D = unknown,
-  CE extends HTMLElement = HTMLElement,
-  IE extends HTMLElement = HTMLElement
+    D = unknown,
+    CE extends HTMLElement = HTMLElement,
+    IE extends HTMLElement = HTMLElement
 >({
-  defaultFocusedIndex = -1,
-  onChange,
-  ...options
+    defaultFocusedIndex: dfi = -1,
+    onChange,
+    ...options
 }: KeyboardFocusOptions<D, CE, IE>): KeyboardMovementProviders<CE, IE> {
-  const [focusedIndex, setFocusedIndex] = useState(defaultFocusedIndex);
-  const [itemRefs, handleKeyDown] = useKeyboardMovement<D, CE, IE>({
-    ...options,
-    focusedIndex,
-    onChange(data, itemRefs) {
-      if (onChange) {
-        onChange(data, itemRefs);
-      }
 
-      const { index } = data;
-      if (index === -1) {
-        return;
-      }
+    const defaultFocusedIndex = $$(dfi)
+    const focusedIndex = $($$(defaultFocusedIndex))
+    const [itemRefs, handleKeyDown] = useKeyboardMovement<D, CE, IE>({
+        ...options,
+        focusedIndex: focusedIndex(),
+        onChange(data, itemRefs) {
+            if (onChange) {
+                onChange(data, itemRefs)
+            }
 
-      const item = itemRefs[index] && itemRefs[index].current;
-      if (item) {
-        item.focus();
-      }
+            const { index } = data
+            if (index === -1) {
+                return
+            }
 
-      setFocusedIndex(index);
-    },
-  });
+            const item = itemRefs[index] && itemRefs[index]()
+            if (item) {
+                item.focus()
+            }
 
-  useEffect(() => {
-    if (defaultFocusedIndex === -1) {
-      return;
-    }
+            focusedIndex(index)
+        },
+    })
 
-    const item =
-      itemRefs[defaultFocusedIndex] && itemRefs[defaultFocusedIndex].current;
-    if (item) {
-      item.focus();
-    }
+    useEffect(() => {
+        if (defaultFocusedIndex === -1) {
+            return
+        }
 
-    // only want to trigger on mount
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+        const item =
+            itemRefs[defaultFocusedIndex] && itemRefs[defaultFocusedIndex]()
+        if (item) {
+            item.focus()
+        }
 
-  return [itemRefs, handleKeyDown];
+        // only want to trigger on mount
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    })
+
+    return [itemRefs, handleKeyDown]
 }

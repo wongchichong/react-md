@@ -1,17 +1,16 @@
-import type { ElementType, ReactElement, ReactNode } from "react";
-
-import { TreeItem } from "./TreeItem";
+import { $$ } from "voby"
+import { TreeItem } from "./TreeItem"
 import type {
-  BaseTreeItem,
-  ProvidedTreeItemProps,
-  ProvidedTreeProps,
-  UnknownTreeItem,
-} from "./types";
+    BaseTreeItem,
+    ProvidedTreeItemProps,
+    ProvidedTreeProps,
+    UnknownTreeItem,
+} from "./types"
 
 function isElementType(
-  contentComponent: unknown
-): contentComponent is ElementType {
-  return typeof contentComponent !== "undefined";
+    contentComponent: unknown
+): contentComponent is Component {
+    return typeof contentComponent !== "undefined"
 }
 
 /**
@@ -30,7 +29,7 @@ function isElementType(
  *   const { key } = itemProps;
  *   const { isCustom } = item;
  *   if (isCustom) {
- *     return <MyFancyNonTreeItem item={item} key={key} />
+ *     return <MyFancyNonTreeItem item={item} id={key} />
  *   }
  *
  *   return defaultTreeItemRenderer(itemProps, item, treeProps);
@@ -48,100 +47,103 @@ function isElementType(
  * @returns a `TreeItem` or a custom `ReactElement`
  */
 export function defaultTreeItemRenderer(
-  itemProps: ProvidedTreeItemProps,
-  item: BaseTreeItem & { visibleIndex: number },
-  treeProps: ProvidedTreeProps
-): ReactElement {
-  const treeItem = item as UnknownTreeItem & { visibleIndex: number };
-  const { focused, selected, expanded } = itemProps;
-  const {
-    expanderLeft,
-    expanderIcon,
-    labelKey,
-    getItemLabel,
-    getItemProps,
-    linkComponent,
-  } = treeProps;
-  const {
-    leftAddon,
-    leftAddonType,
-    leftAddonPosition,
-    rightAddon,
-    rightAddonType,
-    rightAddonPosition,
-    as,
-    to,
-    href,
-  } = treeItem;
-  let isLink: boolean | undefined;
-  let readOnly: boolean | undefined;
-  let disabled: boolean | undefined;
-  let className: string | undefined;
-  let liClassName: string | undefined;
-  if (typeof treeItem.isLink === "boolean") {
-    ({ isLink } = treeItem);
-  }
+    itemProps: ProvidedTreeItemProps,
+    item: BaseTreeItem & { visibleIndex: number },
+    treeProps: ProvidedTreeProps
+): Element {
+    const treeItem = item as UnknownTreeItem & { visibleIndex: number }
+    const { focused, selected, expanded } = itemProps
+    const {
+        expanderLeft,
+        expanderIcon,
+        labelKey,
+        getItemLabel,
+        getItemProps,
+        linkComponent,
+    } = treeProps
+    const {
+        leftAddon,
+        leftAddonType,
+        leftAddonPosition,
+        rightAddon,
+        rightAddonType,
+        rightAddonPosition,
+        as,
+        to,
+        href,
+    } = treeItem
+    let isLink: boolean | undefined
+    let readOnly: boolean | undefined
+    let disabled: boolean | undefined
+    let className: string | undefined
+    let liClassName: string | undefined
+    if (typeof treeItem.isLink === "boolean") {
+        ({ isLink } = treeItem)
+    }
 
-  if (typeof treeItem.readOnly === "boolean") {
-    ({ readOnly } = treeItem);
-  }
+    if (typeof treeItem.readOnly === "boolean") {
+        ({ readOnly } = treeItem)
+    }
 
-  if (typeof treeItem.disabled === "boolean") {
-    ({ disabled } = treeItem);
-  }
+    if (typeof treeItem.disabled === "boolean") {
+        ({ disabled } = treeItem)
+    }
 
-  if (typeof treeItem.className === "string") {
-    ({ className } = treeItem);
-  }
+    if (typeof treeItem.className === "string") {
+        ({ className } = treeItem)
+    }
 
-  if (typeof treeItem.liClassName === "string") {
-    ({ liClassName } = treeItem);
-  }
+    if (typeof treeItem.liClassName === "string") {
+        ({ liClassName } = treeItem)
+    }
 
-  const overrides = getItemProps({
-    ...treeItem,
-    focused,
-    selected,
-    expanded,
-  });
+    const overrides = getItemProps({
+        ...treeItem,
+        focused,
+        selected,
+        expanded,
+    })
 
-  let children: ReactNode = (overrides && overrides.children) || undefined;
-  if (typeof children === "undefined") {
-    children = getItemLabel(treeItem, labelKey);
-  }
+    let children: Child = (overrides && overrides.children) || undefined
+    if (typeof children === "undefined") {
+        children = getItemLabel(treeItem, $$(labelKey))
+    }
 
-  let contentComponent: ElementType | undefined;
-  if (isElementType(treeItem.contentComponent)) {
-    ({ contentComponent } = treeItem);
-  }
+    let contentComponent: Child | undefined
+    if (isElementType(treeItem.contentComponent)) {
+        //@ts-ignore
+        ({ contentComponent } = treeItem)
+    }
 
-  if (isLink !== false && (to || href || isLink)) {
-    contentComponent = contentComponent || linkComponent;
-  }
+    if (isLink !== false && (to || href || isLink)) {
+        contentComponent = contentComponent || linkComponent
+    }
 
-  return (
-    <TreeItem
-      {...itemProps}
-      as={as}
-      to={to}
-      href={href}
-      isLink={isLink}
-      contentComponent={contentComponent}
-      readOnly={readOnly}
-      disabled={disabled}
-      leftAddon={leftAddon}
-      leftAddonType={leftAddonType}
-      leftAddonPosition={leftAddonPosition}
-      rightAddon={rightAddon}
-      rightAddonType={rightAddonType}
-      rightAddonPosition={rightAddonPosition}
-      expanderLeft={expanderLeft}
-      expanderIcon={expanderIcon}
-      className={className}
-      liClassName={liClassName}
-      {...overrides}
-    >
-      {children}
-    </TreeItem>
-  );
+    return (
+        <TreeItem
+            {...itemProps}
+            //@ts-ignore
+            as={as}
+            to={to}
+            //@ts-ignore
+            href={href}
+            isLink={isLink}
+            contentComponent={contentComponent}
+            readOnly={readOnly}
+            disabled={disabled}
+            leftAddon={leftAddon}
+            leftAddonType={leftAddonType}
+            leftAddonPosition={leftAddonPosition}
+            rightAddon={rightAddon}
+            rightAddonType={rightAddonType}
+            rightAddonPosition={rightAddonPosition}
+            expanderLeft={expanderLeft}
+            expanderIcon={expanderIcon}
+            className={className}
+            liClassName={liClassName}
+            {...overrides}
+        >
+            {children}
+        </TreeItem>
+    )
 }

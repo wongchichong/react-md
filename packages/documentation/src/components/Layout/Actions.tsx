@@ -9,7 +9,7 @@ import ActionMenu from "./ActionMenu";
 import GithubLink from "./GithubLink";
 import Search from "./Search";
 
-export default function Actions(): ReactElement {
+export default function Actions(): Child {
   const { isPhone } = useAppSize();
   if (isPhone) {
     return (

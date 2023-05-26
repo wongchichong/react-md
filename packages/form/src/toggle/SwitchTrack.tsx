@@ -1,10 +1,10 @@
-import type { CSSProperties, HTMLAttributes, InputHTMLAttributes } from "react";
-import { forwardRef } from "react";
-import cn from "classnames";
-import type { PropsWithRef } from "@react-md/utils";
-import { bem } from "@react-md/utils";
+import type { CSSProperties, } from 'voby'
 
-const styles = bem("rmd-switch");
+
+import type { PropsWithRef } from "@react-md/utils"
+import { bem } from "@react-md/utils"
+
+const styles = bem("rmd-switch")
 
 /** @remarks \@since 2.8.0 */
 export interface SwitchTrackProps
@@ -17,17 +17,17 @@ export interface SwitchTrackProps
    * Basically only omit the `id` if this is used in another accessible widget
    * like `menuitemcheckbox`.
    */
-  id?: string;
+  id?: FunctionMaybe<Nullable<string>>
 
   /**
    * An optional style object to provide to the ball.
    */
-  ballStyle?: CSSProperties;
+  ballStyle?: FunctionMaybe<Nullable<string | StyleProperties>>
 
   /**
    * An optional class name to provide to the ball.
    */
-  ballClassName?: string;
+  ballClassName?: Class
 
   /**
    * Any additional props and optional ref to provide to the track itself since
@@ -36,7 +36,7 @@ export interface SwitchTrackProps
   containerProps?: PropsWithRef<
     HTMLAttributes<HTMLSpanElement>,
     HTMLSpanElement
-  >;
+  >
 }
 
 /**
@@ -45,53 +45,56 @@ export interface SwitchTrackProps
  *
  * @remarks \@since 2.8.0
  */
-export const SwitchTrack = forwardRef<HTMLInputElement, SwitchTrackProps>(
-  function SwitchTrack(
-    {
-      id,
-      disabled = false,
-      className,
-      ballStyle,
-      ballClassName,
-      containerProps,
-      children,
-      ...props
-    },
-    ref
-  ) {
-    const { checked = false } = props;
-    return (
-      <span
-        {...containerProps}
-        className={cn(styles(), className, containerProps?.className)}
-      >
-        {id && (
-          <>
-            <input
-              {...props}
-              id={id}
-              ref={ref}
-              type="checkbox"
-              className={cn(styles("input"))}
-              disabled={disabled}
-            />
-            <label
-              htmlFor={id}
-              aria-hidden
-              style={ballStyle}
-              className={cn(styles("ball"), ballClassName)}
-            >
-              {children}
-            </label>
-          </>
-        )}
-        {!id && (
-          <span
-            style={ballStyle}
-            className={cn(styles("ball", { checked }), ballClassName)}
+export const SwitchTrack = (
+  {
+    id,
+    disabled = false,
+    className,
+    ballStyle,
+    ballClassName,
+    containerProps,
+    //@ts-ignore
+    children,
+    ref,
+    ...props
+  }: SwitchTrackProps
+) => {
+  const { checked = false } = props
+  return (
+    <span
+      {...containerProps}
+      className={[styles(), className, containerProps?.className]}
+    >
+      {id && (
+        <>
+          <input
+            {...props}
+            id={id}
+            ref={ref}
+            type="checkbox"
+            className={[styles("input")]}
+            disabled={disabled}
           />
-        )}
-      </span>
-    );
-  }
-);
+          {/** @ts-ignore */}
+          <label
+            htmlFor={id}
+            aria-hidden
+            //@ts-ignore
+            style={ballStyle}
+            className={[styles("ball"), ballClassName]}
+          >
+            {children}
+          </label>
+        </>
+      )}
+      {!id && (
+        <span
+          //@ts-ignore
+          style={ballStyle}
+          className={[styles("ball", { checked }), ballClassName]}
+        />
+      )}
+    </span>
+  )
+}
+

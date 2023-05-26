@@ -1,34 +1,34 @@
-import type { ReactElement } from "react";
+import type { ReactElement } from "react"
 
-import DemoPage from "../DemoPage";
+import DemoPage from "../DemoPage"
 
-import HorizontalDividers from "./HorizontalDividers";
-import horizontalDividers from "./HorizontalDividers.md";
+import HorizontalDividers from "./HorizontalDividers"
+import horizontalDividers from "./HorizontalDividers.md"
 
-import WithinLists from "./WithinLists";
-import withinLists from "./WithinLists.md";
+import WithinLists from "./WithinLists"
+import withinLists from "./WithinLists.md"
 
-import VerticalDividers from "./VerticalDividers";
-import verticalDividers from "./VerticalDividers.md";
+import VerticalDividers from "./VerticalDividers"
+import verticalDividers from "./VerticalDividers.md"
 
 const demos = [
-  {
-    name: "Horizontal Dividers",
-    description: horizontalDividers,
-    children: <HorizontalDividers />,
-  },
-  {
-    name: "Within Lists",
-    description: withinLists,
-    children: <WithinLists />,
-  },
-  {
-    name: "Vertical Dividers",
-    description: verticalDividers,
-    children: <VerticalDividers />,
-  },
-];
+    {
+        name: "Horizontal Dividers",
+        description: horizontalDividers,
+        children: <HorizontalDividers />,
+    },
+    {
+        name: "Within Lists",
+        description: withinLists,
+        children: <WithinLists />,
+    },
+    {
+        name: "Vertical Dividers",
+        description: verticalDividers,
+        children: <VerticalDividers />,
+    },
+]
 
-export default function Divider(): ReactElement {
-  return <DemoPage demos={demos} packageName="divider" />;
+export default function Divider(): Child {
+    return <DemoPage demos={demos} packageName="divider" />
 }

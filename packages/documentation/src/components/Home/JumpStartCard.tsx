@@ -1,14 +1,14 @@
-import type { ReactElement, ReactNode } from "react";
-import { Card } from "@react-md/card";
+import type { ReactElement, ReactNode } from "react"
+import { Card } from "@react-md/card"
 
-import styles from "./JumpStartCard.module.scss";
+import styles from "./JumpStartCard.module.scss"
 
 export interface JumpStartCardProps {
-  children: ReactNode;
+    children: Children
 }
 
 export default function JumpStartCard({
-  children,
-}: JumpStartCardProps): ReactElement {
-  return <Card className={styles.card}>{children}</Card>;
+    children,
+}: JumpStartCardProps): Child {
+    return <Card className={styles.card}>{children}</Card>
 }

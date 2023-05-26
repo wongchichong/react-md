@@ -1,14 +1,14 @@
-import type { HTMLAttributes, ReactElement } from "react";
-import { forwardRef } from "react";
-import cn from "classnames";
-import type { PropsWithRef } from "@react-md/utils";
+import type { } from 'voby'
 
-import type { FormMessageProps } from "./FormMessage";
-import { FormMessage } from "./FormMessage";
 
-type DivAttributes = HTMLAttributes<HTMLDivElement>;
-type MessageProps = PropsWithRef<FormMessageProps, HTMLDivElement>;
-type MessageContainerProps = PropsWithRef<DivAttributes, HTMLDivElement>;
+import type { PropsWithRef } from "@react-md/utils"
+
+import type { FormMessageProps } from "./FormMessage"
+import { FormMessage } from "./FormMessage"
+
+type DivAttributes = HTMLAttributes<HTMLDivElement>
+type MessageProps = PropsWithRef<FormMessageProps, HTMLDivElement>
+type MessageContainerProps = PropsWithRef<DivAttributes, HTMLDivElement>
 
 /**
  * This is a utility type that allows for a component to "extend" the
@@ -23,7 +23,7 @@ export type FieldMessageContainerExtension<P> = P & {
    * component, these props are optional. It kind of eliminates the whole
    * purpose of this component though.
    */
-  messageProps?: MessageProps;
+  messageProps?: MessageProps
 
   /**
    * Any props (and an optional ref) to provide to the `<div>` surrounding the
@@ -32,8 +32,8 @@ export type FieldMessageContainerExtension<P> = P & {
    * Note: This will not be used if the `messageProps` are not provided since
    * only the `children` will be returned without the container.
    */
-  messageContainerProps?: MessageContainerProps;
-};
+  messageContainerProps?: MessageContainerProps
+}
 
 /**
  * @remarks \@since 2.5.0
@@ -44,7 +44,7 @@ export interface FormMessageContainerProps extends DivAttributes {
    * component, these props are optional. It kind of eliminates the whole
    * purpose of this component though.
    */
-  messageProps?: MessageProps;
+  messageProps?: MessageProps
 }
 
 /**
@@ -53,25 +53,19 @@ export interface FormMessageContainerProps extends DivAttributes {
  *
  * @remarks \@since 2.5.0
  */
-export const FormMessageContainer = forwardRef<
-  HTMLDivElement,
-  FormMessageContainerProps
->(function FormMessageContainer(
-  { className, children, messageProps, ...props },
-  ref
-): ReactElement {
+export const FormMessageContainer = ({ className, children, messageProps, ref, ...props }: FormMessageContainerProps): Element => {
   if (!messageProps) {
-    return <>{children}</>;
+    return <>{children}</>
   }
 
   return (
     <div
       {...props}
       ref={ref}
-      className={cn("rmd-field-message-container", className)}
+      className={["rmd-field-message-container", className]}
     >
       {children}
       <FormMessage {...messageProps} />
     </div>
-  );
-});
+  )
+}

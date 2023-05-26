@@ -1,10 +1,10 @@
-import { forwardRef } from "react";
-import { IconRotator, useIcon } from "@react-md/icon";
+;
+import { IconRotator, useIcon } from "@react-md/icon"
 
-import { useMenuBarContext } from "./MenuBarProvider";
-import { useMenuBarWidgetFocusId } from "./MenuBarWidget";
-import { MenuItem } from "./MenuItem";
-import type { BaseMenuItemButtonProps } from "./types";
+import { useMenuBarContext } from "./MenuBarProvider"
+import { useMenuBarWidgetFocusId } from "./MenuBarWidget"
+import { MenuItem } from "./MenuItem"
+import type { BaseMenuItemButtonProps } from "./types"
 
 /**
  * @internal
@@ -16,7 +16,7 @@ export interface MenuItemButtonProps extends BaseMenuItemButtonProps {
    * icon when the {@link BaseDropdownMenuItemProps.disableDropdownIcon} is not
    * `true`.
    */
-  visible: boolean;
+  visible: ObservableMaybe<boolean>
 }
 
 /**
@@ -26,43 +26,39 @@ export interface MenuItemButtonProps extends BaseMenuItemButtonProps {
  * @internal
  * @remarks \@since 5.0.0
  */
-export const MenuItemButton = forwardRef<HTMLLIElement, MenuItemButtonProps>(
-  function MenuItemButton(
-    {
-      id,
-      children,
-      rightAddon: propRightAddon,
-      disableDropdownIcon = typeof propRightAddon !== "undefined",
-      visible,
-      tabIndex,
-      iconRotatorProps,
-      ...props
-    },
-    ref
-  ) {
-    const { root } = useMenuBarContext();
-    const focusId = useMenuBarWidgetFocusId();
-    const dropdownIcon = useIcon(root ? "dropdown" : "forward");
+export const MenuItemButton = (
+  {
+    id,
+    children,
+    rightAddon: propRightAddon,
+    disableDropdownIcon = typeof propRightAddon !== "undefined",
+    visible,
+    tabIndex,
+    iconRotatorProps,
+    ref,
+    ...props
+  }: MenuItemButtonProps
+) => {
+  const { root } = useMenuBarContext()
+  const focusId = useMenuBarWidgetFocusId()
+  const dropdownIcon = useIcon(root ? "dropdown" : "forward")
 
-    let rightAddon = propRightAddon;
-    if (!disableDropdownIcon) {
-      rightAddon = (
-        <IconRotator {...iconRotatorProps} rotated={visible}>
-          {dropdownIcon}
-        </IconRotator>
-      );
-    }
-
-    return (
-      <MenuItem
-        {...props}
-        id={id}
-        ref={ref}
-        rightAddon={rightAddon}
-        tabIndex={tabIndex ?? (root && id === focusId ? 0 : -1)}
-      >
-        {children}
-      </MenuItem>
-    );
+  let rightAddon = propRightAddon
+  if (!disableDropdownIcon) {
+    rightAddon = (
+      <IconRotator {...iconRotatorProps} rotated={visible}>
+        {dropdownIcon}
+      </IconRotator>
+    )
   }
-);
+
+  return <MenuItem
+    {...props}
+    id={id}
+    ref={ref}
+    rightAddon={rightAddon}
+    tabIndex={tabIndex ?? (root && id === focusId ? 0 : -1)}
+  >
+    {children}
+  </MenuItem>
+}

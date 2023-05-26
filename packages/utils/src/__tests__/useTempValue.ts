@@ -1,4 +1,5 @@
-import { act, renderHook } from "@testing-library/react-hooks";
+import { describe, expect, test, it, jest, beforeEach } from 'vitest'
+// import { act, renderHook } from "@testing-library/react-hooks";
 
 import { useTempValue } from "../useTempValue";
 
@@ -11,7 +12,7 @@ describe("useTempValue", () => {
   });
 
   it("should trigger a timeout when the setter function is called", () => {
-    const { result } = renderHook(() => useTempValue("", 500));
+    const { result } =  useTempValue("", 500)
 
     let [value] = result.current;
     const [, setValue] = result.current;

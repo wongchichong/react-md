@@ -1,7 +1,3 @@
 {
-  "editor.tabSize": 2,
-  // "editor.insertSpaces": true,
-  // "editor.detectIndentation": false,
-  // "editor.wordWrap": "on"
-  "typescript.format.semicolons": "insert"
+  "editor.tabSize": 4
 }

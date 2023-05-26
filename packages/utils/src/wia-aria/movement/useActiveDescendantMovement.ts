@@ -1,17 +1,17 @@
-import type { Dispatch, SetStateAction } from "react";
-import { useState } from "react";
+// import type { Dispatch, SetStateAction } from 'voby'
+import { $, Observable, $$ } from 'voby'
 
-import { scrollIntoView } from "../../scrollIntoView";
-import { DEFAULT_GET_ITEM_VALUE, DEFAULT_VALUE_KEY } from "../../search/utils";
+import { scrollIntoView } from "../../scrollIntoView"
+import { DEFAULT_GET_ITEM_VALUE, DEFAULT_VALUE_KEY } from "../../search/utils"
 import type {
-  BaseKeyboardMovementOptions,
-  ItemRefList,
-  MovementHandler,
-} from "./useKeyboardMovement";
-import { useKeyboardMovement } from "./useKeyboardMovement";
-import { getItemId } from "./utils";
+    BaseKeyboardMovementOptions,
+    ItemRefList,
+    MovementHandler,
+} from "./useKeyboardMovement"
+import { useKeyboardMovement } from "./useKeyboardMovement"
+import { getItemId } from "./utils"
 
-export type ActiveDescendantId = string;
+export type ActiveDescendantId = string
 
 /**
  *
@@ -21,59 +21,59 @@ export type ActiveDescendantId = string;
  * element that can be focusable.
  */
 export interface ActiveDescendantMovementProviders<
-  CE extends HTMLElement,
-  IE extends HTMLElement
+    CE extends HTMLElement,
+    IE extends HTMLElement
 > {
-  itemRefs: ItemRefList<IE>;
-  onKeyDown: MovementHandler<CE>;
-  activeId: ActiveDescendantId;
-  focusedIndex: number;
-  setFocusedIndex: Dispatch<SetStateAction<number>>;
+    itemRefs: ItemRefList<IE>
+    onKeyDown: MovementHandler<CE>
+    activeId: FunctionMaybe<ActiveDescendantId>
+    focusedIndex: Observable<number> //number
+    // setFocusedIndex: ObservableMaybe<number>
 }
 
 type KeyHandler<IE extends HTMLElement = HTMLElement> = (
-  focusedIndex: number,
-  itemRef: IE | null
-) => void;
+    focusedIndex: number,
+    itemRef: IE | null
+) => void
 
 interface ActiveDescendantOptions<
-  D = unknown,
-  CE extends HTMLElement = HTMLElement,
-  IE extends HTMLElement = HTMLElement
+    D = unknown,
+    CE extends HTMLElement = HTMLElement,
+    IE extends HTMLElement = HTMLElement
 > extends BaseKeyboardMovementOptions<D, CE, IE> {
-  /**
-   * The base id that should be used to generate the `aria-activedescendant`
-   * value id. This will be passed into the `getId` option.
-   */
-  baseId: string;
+    /**
+     * The base id that should be used to generate the `aria-activedescendant`
+     * value id. This will be passed into the `getId` option.
+     */
+    baseId: FunctionMaybe<string>
 
-  /**
-   * The function that should generate an id based on the provided `id` and
-   * `index` of the item.
-   */
-  getId?(id: string, index: number): string;
+    /**
+     * The function that should generate an id based on the provided `id` and
+     * `index` of the item.
+     */
+    getId?(id: string, index: number): string
 
-  /**
-   * The default index that should be "focused" when the component mounts. This
-   * is set to `-1` by default so that it only gains a new "focused" index when
-   * the container element is focused.
-   */
-  defaultFocusedIndex?: (() => number) | number;
+    /**
+     * The default index that should be "focused" when the component mounts. This
+     * is set to `-1` by default so that it only gains a new "focused" index when
+     * the container element is focused.
+     */
+    defaultFocusedIndex?: (() => number) | number
 
-  /**
-   * An optional function to call when the enter key has been pressed while the
-   * container element has keyboard focus. This is normally used for triggering
-   * click events for that specific item.
-   */
-  onEnter?: KeyHandler<IE>;
+    /**
+     * An optional function to call when the enter key has been pressed while the
+     * container element has keyboard focus. This is normally used for triggering
+     * click events for that specific item.
+     */
+    onEnter?: KeyHandler<IE>
 
-  /**
-   * An optional function to call when the space key has been pressed while the
-   * container element has keyboard focus. This is normally used for triggering
-   * click events for that specific item and will always call
-   * `event.preventDefault()` to prevent the page scrolling behavior.
-   */
-  onSpace?: KeyHandler<IE>;
+    /**
+     * An optional function to call when the space key has been pressed while the
+     * container element has keyboard focus. This is normally used for triggering
+     * click events for that specific item and will always call
+     * `event.preventDefault()` to prevent the page scrolling behavior.
+     */
+    onSpace?: KeyHandler<IE>
 }
 
 /**
@@ -103,69 +103,65 @@ interface ActiveDescendantOptions<
  * @typeParam IE - The HTMLElement type of each item within the container
  * element that can be focusable.
  */
-export function useActiveDescendantMovement<
-  D = unknown,
-  CE extends HTMLElement = HTMLElement,
-  IE extends HTMLElement = HTMLElement
->({
-  baseId,
-  getId = getItemId,
-  defaultFocusedIndex = -1,
-  items,
-  onChange,
-  getItemValue = DEFAULT_GET_ITEM_VALUE,
-  valueKey = DEFAULT_VALUE_KEY,
-  onKeyDown,
-  onEnter,
-  onSpace,
-  ...options
-}: ActiveDescendantOptions<D, CE, IE>): ActiveDescendantMovementProviders<
-  CE,
-  IE
-> {
-  const [focusedIndex, setFocusedIndex] = useState(defaultFocusedIndex);
-  const activeId = focusedIndex !== -1 ? getId(baseId, focusedIndex) : "";
-
-  const [itemRefs, handleKeyDown] = useKeyboardMovement<D, CE, IE>({
-    ...options,
-    valueKey,
-    getItemValue,
-    focusedIndex,
+export function useActiveDescendantMovement<D = unknown, CE extends HTMLElement = HTMLElement, IE extends HTMLElement = HTMLElement>({
+    baseId: bi,
+    getId = getItemId,
+    defaultFocusedIndex = -1,
     items,
-    onChange(data, itemRefs) {
-      if (onChange) {
-        onChange(data, itemRefs);
-      }
+    onChange,
+    getItemValue = DEFAULT_GET_ITEM_VALUE,
+    valueKey = DEFAULT_VALUE_KEY,
+    onKeyDown,
+    onEnter,
+    onSpace,
+    ...options
+}: ActiveDescendantOptions<D, CE, IE>): ActiveDescendantMovementProviders<CE, IE> {
 
-      const { index, target } = data;
-      const item = itemRefs[index] && itemRefs[index].current;
-      if (item && target && target.scrollHeight > target.offsetHeight) {
-        scrollIntoView(target, item);
-      }
+    const baseId = $$(bi)
 
-      setFocusedIndex(index);
-    },
-    onKeyDown(event) {
-      if (onKeyDown) {
-        onKeyDown(event);
-      }
+    const focusedIndex = $(typeof defaultFocusedIndex === 'function' ? defaultFocusedIndex() : defaultFocusedIndex)
+    const activeId = focusedIndex() !== -1 ? getId(baseId, focusedIndex()) : ""
 
-      const ref =
-        (itemRefs[focusedIndex] && itemRefs[focusedIndex].current) || null;
-      if (onEnter && event.key === "Enter") {
-        onEnter(focusedIndex, ref);
-      } else if (onSpace && event.key === " ") {
-        event.preventDefault();
-        onSpace(focusedIndex, ref);
-      }
-    },
-  });
+    const [itemRefs, handleKeyDown] = useKeyboardMovement<D, CE, IE>({
+        ...options,
+        valueKey,
+        getItemValue,
+        focusedIndex: focusedIndex(),
+        items,
+        onChange(data, itemRefs) {
+            if (onChange) {
+                onChange(data, itemRefs)
+            }
 
-  return {
-    activeId,
-    itemRefs,
-    onKeyDown: handleKeyDown,
-    focusedIndex,
-    setFocusedIndex,
-  };
+            const { index, target } = data
+            const item = itemRefs[index] && itemRefs[index]()
+            if (item && target && target.scrollHeight > target.offsetHeight) {
+                scrollIntoView(target, item)
+            }
+
+            focusedIndex(index)
+        },
+        onKeyDown(event) {
+            if (onKeyDown) {
+                //@ts-ignore
+                onKeyDown(event)
+            }
+
+            const ref =
+                (itemRefs[focusedIndex()] && itemRefs[focusedIndex()]()) || null
+            if (onEnter && event.key === "Enter") {
+                onEnter(focusedIndex(), ref)
+            } else if (onSpace && event.key === " ") {
+                event.preventDefault()
+                onSpace(focusedIndex(), ref)
+            }
+        },
+    })
+
+    return {
+        activeId,
+        itemRefs,
+        onKeyDown: handleKeyDown,
+        focusedIndex,
+    }
 }

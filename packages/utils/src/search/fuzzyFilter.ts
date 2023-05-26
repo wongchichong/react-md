@@ -1,7 +1,8 @@
-import { defaults } from "../defaults";
-import { getFuzzyRegExp } from "./getFuzzyRegExp";
-import type { SearchOptions } from "./utils";
-import { DEFAULT_SEARCH_OPTIONS, getSearchString } from "./utils";
+import { $$ } from "voby"
+import { defaults } from "../defaults"
+import { getFuzzyRegExp } from "./getFuzzyRegExp"
+import type { SearchOptions } from "./utils"
+import { DEFAULT_SEARCH_OPTIONS, getSearchString } from "./utils"
 
 /**
  * Filters a list by using a fuzzy search "algorithm" (huge double quotes on
@@ -16,29 +17,31 @@ import { DEFAULT_SEARCH_OPTIONS, getSearchString } from "./utils";
  * string.
  */
 export function fuzzyFilter<T = unknown>(
-  query: string,
-  searchable: readonly T[],
-  options: SearchOptions<T> = {}
+    query: string,
+    searchable: readonly T[],
+    options: SearchOptions<T> = {}
 ): readonly T[] {
-  const { getItemValue, valueKey, trim, ignoreWhitespace } = defaults(
-    options,
-    DEFAULT_SEARCH_OPTIONS
-  );
+    const { getItemValue, valueKey: vk, trim: tr, ignoreWhitespace: iw } = defaults(
+        options,
+        DEFAULT_SEARCH_OPTIONS
+    )
 
-  query = getSearchString(query, false, trim, ignoreWhitespace);
-  if (!searchable.length || !query) {
-    return searchable;
-  }
+    const trim = $$(tr), ignoreWhitespace = $$(iw), valueKey = $$(vk)
 
-  const queryRegExp = getFuzzyRegExp(query);
-  return searchable.filter((item) => {
-    const value = getSearchString(
-      getItemValue(item, valueKey),
-      false,
-      trim,
-      ignoreWhitespace
-    );
+    query = getSearchString(query, false, trim, ignoreWhitespace)
+    if (!searchable.length || !query) {
+        return searchable
+    }
 
-    return value.length && value.match(queryRegExp);
-  });
+    const queryRegExp = getFuzzyRegExp(query)
+    return searchable.filter((item) => {
+        const value = getSearchString(
+            getItemValue(item, valueKey),
+            false,
+            trim,
+            ignoreWhitespace
+        )
+
+        return value.length && value.match(queryRegExp)
+    })
 }

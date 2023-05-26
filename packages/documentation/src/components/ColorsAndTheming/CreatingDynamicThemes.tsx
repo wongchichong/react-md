@@ -4,6 +4,6 @@ import { MarkdownPage } from "components/Markdown";
 
 import readme from "./CreatingDynamicThemes.md";
 
-export default function CreatingDynamicThemes(): ReactElement {
+export default function CreatingDynamicThemes(): Child {
   return <MarkdownPage>{readme}</MarkdownPage>;
 }

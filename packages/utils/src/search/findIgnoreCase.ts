@@ -1,6 +1,7 @@
-import { defaults } from "../defaults";
-import type { SearchOptions } from "./utils";
-import { DEFAULT_SEARCH_OPTIONS, getSearchString } from "./utils";
+import { $$ } from "voby"
+import { defaults } from "../defaults"
+import type { SearchOptions } from "./utils"
+import { DEFAULT_SEARCH_OPTIONS, getSearchString } from "./utils"
 
 /**
  * This is a simple `array.find` implementation that will work for any
@@ -13,30 +14,32 @@ import { DEFAULT_SEARCH_OPTIONS, getSearchString } from "./utils";
  * @returns the found item in the searchable list or null
  */
 export function findIgnoreCase<T = unknown>(
-  query: string,
-  searchable: readonly T[],
-  options: SearchOptions<T> = {}
+    query: string,
+    searchable: readonly T[],
+    options: SearchOptions<T> = {}
 ): T | null {
-  const { getItemValue, valueKey, trim, ignoreWhitespace } = defaults(
-    options,
-    DEFAULT_SEARCH_OPTIONS
-  );
+    const { getItemValue, valueKey: vk, trim: tr, ignoreWhitespace: iw } = defaults(
+        options,
+        DEFAULT_SEARCH_OPTIONS
+    )
 
-  query = getSearchString(query, true, trim, ignoreWhitespace);
-  if (!query.length || !searchable.length) {
-    return null;
-  }
+    const trim = $$(tr), ignoreWhitespace = $$(iw), valueKey = $$(vk)
 
-  const found = searchable.find((item) => {
-    const value = getSearchString(
-      getItemValue(item, valueKey),
-      true,
-      trim,
-      ignoreWhitespace
-    );
+    query = getSearchString(query, true, trim, ignoreWhitespace)
+    if (!query.length || !searchable.length) {
+        return null
+    }
 
-    return value.indexOf(query) === 0;
-  });
+    const found = searchable.find((item) => {
+        const value = getSearchString(
+            getItemValue(item, valueKey),
+            true,
+            trim,
+            ignoreWhitespace
+        )
 
-  return typeof found === "number" ? found : found || null;
+        return value.indexOf(query) === 0
+    })
+
+    return typeof found === "number" ? found : found || null
 }

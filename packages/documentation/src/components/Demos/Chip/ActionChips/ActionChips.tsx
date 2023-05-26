@@ -20,7 +20,7 @@ import styles from "./ActionChips.module.scss";
 const width = 240;
 const height = width * 0.75;
 
-export default function ActionChips(): ReactElement {
+export default function ActionChips(): Child {
   const [blinds, setBlinds] = useState(false);
   return (
     <Card id="action-chips-card" className={styles.container}>

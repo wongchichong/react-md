@@ -10,7 +10,7 @@ export interface ActionChipBlindsProps {
 export default function ActionChipBlinds({
   onClick,
   visible,
-}: ActionChipBlindsProps): ReactElement {
+}: ActionChipBlindsProps): Child {
   return (
     <ActionChip
       selected={visible}

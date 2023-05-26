@@ -27,7 +27,7 @@ const types: SupportedInputTypes[] = [
 ];
 const themes: FormTheme[] = ["underline", "filled", "outline"];
 
-export default function TextFieldTypes(): ReactElement {
+export default function TextFieldTypes(): Child {
   const [currentTheme, handleThemeChange] = useChoice<FormTheme>("outline");
 
   return (

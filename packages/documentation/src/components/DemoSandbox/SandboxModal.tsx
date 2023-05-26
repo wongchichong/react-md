@@ -39,7 +39,7 @@ export default function SandboxModal({
   loading,
   onFileChange,
   onRequestClose,
-}: SandboxModalProps): ReactElement {
+}: SandboxModalProps): Child {
   const pkgName = toTitle(pkg, " ", true);
   const title = `react-md - ${pkgName} - ${name} Sandbox`;
 

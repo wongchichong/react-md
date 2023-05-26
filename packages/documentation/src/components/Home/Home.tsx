@@ -7,7 +7,7 @@ import Goals from "./Goals";
 import JumpStart from "./JumpStart";
 import LibraryInfo from "./LibraryInfo";
 
-export default function Home(): ReactElement {
+export default function Home(): Child {
   return (
     <>
       <PageMeta />

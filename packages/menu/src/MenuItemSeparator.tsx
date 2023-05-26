@@ -1,19 +1,19 @@
-import type { HTMLAttributes } from "react";
-import { forwardRef } from "react";
-import cn from "classnames";
-import type { DividerProps, VerticalDividerProps } from "@react-md/divider";
-import { useVerticalDividerHeight } from "@react-md/divider";
-import { bem } from "@react-md/utils";
 
-import { useMenuConfiguration } from "./MenuConfigurationProvider";
 
-const styles = bem("rmd-divider");
+
+import type { DividerProps, VerticalDividerProps } from "@react-md/divider"
+import { useVerticalDividerHeight } from "@react-md/divider"
+import { bem } from "@react-md/utils"
+
+import { useMenuConfiguration } from "./MenuConfigurationProvider"
+
+const styles = bem("rmd-divider")
 
 /** @remarks \@since 5.0.0 */
 export interface MenuItemSeparatorProps
   extends HTMLAttributes<HTMLLIElement>,
-    Pick<DividerProps, "inset" | "vertical">,
-    Pick<VerticalDividerProps, "maxHeight"> {}
+  Pick<DividerProps, "inset" | "vertical">,
+  Pick<VerticalDividerProps, "maxHeight"> { }
 
 /**
  * This component renders a `<li role="separator">` with the divider styles. It
@@ -22,10 +22,7 @@ export interface MenuItemSeparatorProps
  *
  * @remarks \@since 5.0.0 Renders as an `<li>` instead of a `<div>` or `<hr />`.
  */
-export const MenuItemSeparator = forwardRef<
-  HTMLLIElement,
-  MenuItemSeparatorProps
->(function MenuItemSeparator(
+export const MenuItemSeparator = (
   {
     style,
     className,
@@ -33,27 +30,26 @@ export const MenuItemSeparator = forwardRef<
     inset,
     vertical: propVertical,
     children,
+    ref,
     ...props
-  },
-  ref
-) {
-  const horizontal = useMenuConfiguration().horizontal;
-  const vertical = propVertical ?? horizontal;
+  }: MenuItemSeparatorProps
+) => {
+  const horizontal = useMenuConfiguration().horizontal
+  const vertical = propVertical ?? horizontal
   const heightProps = useVerticalDividerHeight({
     ref,
     style,
     maxHeight: vertical ? maxHeight ?? 1 : 0,
-  });
+  })
 
-  return (
-    <li
-      {...props}
-      {...heightProps}
-      aria-orientation={vertical ? "vertical" : undefined}
-      role="separator"
-      className={cn(styles({ inset: inset && !vertical, vertical }), className)}
-    >
-      {children}
-    </li>
-  );
-});
+  //@ts-ignore
+  return <li
+    {...props}
+    {...heightProps}
+    aria-orientation={vertical ? "vertical" : undefined}
+    role="separator"
+    className={[styles({ inset: inset && !vertical, vertical }), className]}
+  >
+    {children}
+  </li>
+}

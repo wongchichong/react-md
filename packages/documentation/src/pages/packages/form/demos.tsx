@@ -1,10 +1,10 @@
-import type { ReactElement } from "react";
-import { MarkdownPage } from "components/Markdown";
+import type { ReactElement } from "react"
+import { MarkdownPage } from "components/Markdown"
 
-export default function Demos(): ReactElement {
-  return (
-    <MarkdownPage>
-      {`
+export default function Demos(): Child {
+    return (
+        <MarkdownPage>
+            {`
 The demos for the \`@react-md/form\` package have been split into separate
 pages since there are a lot of components within this package. Navigate to
 one of the following pages:
@@ -16,6 +16,6 @@ one of the following pages:
 - [Slider Demos](./slider-demos)
 - [Validation Demos](./validation-demos)
 `}
-    </MarkdownPage>
-  );
+        </MarkdownPage>
+    )
 }

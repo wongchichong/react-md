@@ -1,7 +1,8 @@
-import type { ReactElement, ReactNode } from "react";
+// ;
 
-import type { PortalInto } from "./getContainer";
-import { Portal } from "./Portal";
+import type { PortalInto } from "./getContainer"
+import { Portal } from "./Portal"
+import type { Element } from 'voby'
 
 /**
  * If any of these props are defined on a component, the component will render
@@ -11,26 +12,26 @@ export interface RenderConditionalPortalProps {
   /**
    * Boolean if the portal should be used.
    */
-  portal?: boolean;
+  portal?: FunctionMaybe<Nullable<boolean>>
 
   /**
    * @see {@link PortalProps.into}
    */
-  portalInto?: PortalInto;
+  portalInto?: FunctionMaybe<Nullable<PortalInto>>
 
   /**
    * @see {@link PortalProps.intoId}
    */
-  portalIntoId?: string;
+  portalIntoId?: FunctionMaybe<Nullable<string>>
 }
 
 export interface ConditionalPortalProps extends RenderConditionalPortalProps {
   /**
    * This children to render.
    *
-   * @remarks \@since 4.0.0 Allows `ReactNode` instead of `ReactElement | null`
+   * @remarks \@since 4.0.0 Allows `Child` instead of `ReactElement | null`
    */
-  children: ReactNode;
+  children: Children
 }
 
 /**
@@ -38,19 +39,14 @@ export interface ConditionalPortalProps extends RenderConditionalPortalProps {
  * to conditionally render the children within a portal or not based on general
  * portal config props.
  */
-export function ConditionalPortal({
-  portal,
-  portalInto,
-  portalIntoId,
-  children,
-}: ConditionalPortalProps): ReactElement {
+export function ConditionalPortal({ portal, portalInto, portalIntoId, children, }: ConditionalPortalProps): Element {
   if (!portal && !portalInto && !portalIntoId) {
-    return <>{children}</>;
+    return (<>{children}</>) as any
   }
 
-  return (
-    <Portal into={portalInto} intoId={portalIntoId}>
-      {children}
-    </Portal>
-  );
+  //@ts-ignore
+  return <Portal into={portalInto} intoId={portalIntoId}>
+    {children}
+  </Portal>
+
 }

@@ -1,15 +1,11 @@
-import type { ReactNode } from "react";
-import { forwardRef } from "react";
-import type { ListElement, ListProps } from "@react-md/list";
-import { List } from "@react-md/list";
-import type { LabelRequiredForA11y } from "@react-md/utils";
+import type { ListElement, ListProps } from "@react-md/list"
+import { List } from "@react-md/list"
+import type { LabelA11y, LabelRequiredForA11y } from "@react-md/utils"
 
 /** @remarks \@since 5.0.0 */
-export type MenuItemGroupProps = LabelRequiredForA11y<
-  Omit<ListProps, "role">
-> & {
-  children: ReactNode;
-};
+export type MenuItemGroupProps = LabelRequiredForA11y<Omit<ListProps, "role"> & LabelA11y> & {
+  children: Children
+}
 
 /**
  * If a menu or menubar contains more than one group of menuitemradio elements,
@@ -27,7 +23,7 @@ export type MenuItemGroupProps = LabelRequiredForA11y<
  * import { DropdownMenu, MenuItemGroup, MenuItemSeparator } from "@react-md/menu";
  * import { MenuItemRadio, MenuItemSwitch } from "@react-md/form";
  *
- * function Example(): ReactElement {
+ * function Example(): Element {
  *   const [value, setValue] = useState("value1");
  *   const [checked, setChecked] = useState(false);
  *
@@ -71,12 +67,9 @@ export type MenuItemGroupProps = LabelRequiredForA11y<
  *
  * @remarks \@since 5.0.0
  */
-export const MenuItemGroup = forwardRef<ListElement, MenuItemGroupProps>(
-  function MenuItemGroup({ children, ...props }, ref) {
-    return (
-      <List {...props} ref={ref} role="group">
-        {children}
-      </List>
-    );
-  }
-);
+export const MenuItemGroup = ({ children, ref, ...props }: MenuItemGroupProps) => {
+  return <List {...props} ref={ref} role="group">
+    {children}
+  </List>
+
+}

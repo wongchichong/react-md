@@ -1,12 +1,12 @@
-import { forwardRef } from "react";
-import cn from "classnames";
-import type { LabelRequiredForA11y } from "@react-md/utils";
-import { bem, useKeyboardFocus } from "@react-md/utils";
 
-import { MenuBarProvider } from "./MenuBarProvider";
-import type { MenuWidgetProps } from "./types";
 
-const styles = bem("rmd-menu");
+import type { LabelA11y, LabelRequiredForA11y } from "@react-md/utils"
+import { bem, useKeyboardFocus } from "@react-md/utils"
+
+import { MenuBarProvider } from "./MenuBarProvider"
+import type { MenuWidgetProps } from "./types"
+
+const styles = bem("rmd-menu")
 
 /**
  * This component implements the custom keyboard movement for a
@@ -20,10 +20,7 @@ const styles = bem("rmd-menu");
  * @internal
  * @remarks \@since 5.0.0
  */
-export const MenuWidget = forwardRef<
-  HTMLDivElement,
-  LabelRequiredForA11y<MenuWidgetProps>
->(function MenuWidget(
+export const MenuWidget = (
   {
     children,
     onFocus: propOnFocus,
@@ -38,10 +35,10 @@ export const MenuWidget = forwardRef<
     onJumpToLast,
     onJumpToFirst,
     disableElevation = false,
+    ref,
     ...props
-  },
-  ref
-) {
+  }: LabelRequiredForA11y<MenuWidgetProps & LabelA11y>
+) => {
   const { onFocus, onKeyDown } = useKeyboardFocus({
     onFocus: propOnFocus,
     onKeyDown: propOnKeyDown,
@@ -51,7 +48,7 @@ export const MenuWidget = forwardRef<
     onDecrement,
     onJumpToLast,
     onJumpToFirst,
-  });
+  })
 
   return (
     <MenuBarProvider root={false} defaultActiveId={props.id}>
@@ -63,13 +60,10 @@ export const MenuWidget = forwardRef<
         onFocus={onFocus}
         onKeyDown={onKeyDown}
         tabIndex={tabIndex}
-        className={cn(
-          styles({ horizontal, elevated: !disableElevation }),
-          className
-        )}
+        className={[styles({ horizontal, elevated: !disableElevation }), className]}
       >
         {children}
       </div>
     </MenuBarProvider>
-  );
-});
+  )
+}

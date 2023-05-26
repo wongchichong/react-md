@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, $ } from 'voby'
 
 /**
  * A simple hook that only triggers the callback when a component is unmounted.
@@ -24,10 +24,13 @@ import { useEffect, useRef } from "react";
  * @param callback - the function to call when the component unmounts.
  */
 export function useOnUnmount(callback: () => void): void {
-  const ref = useRef(callback);
+  const ref = $(callback)
   useEffect(() => {
-    ref.current = callback;
-  });
+    ref(callback)
+  })
 
-  return useEffect(() => () => ref.current(), []);
+  // return useEffect(() => () => ref.current());
+
+  //@ts-ignore
+  return useEffect(() => (() => ref()()))
 }

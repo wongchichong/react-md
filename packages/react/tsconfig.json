@@ -1,0 +1,27 @@
+{
+  // "extends": "../../tsconfig.base.json", //can't use with tsc
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "skipLibCheck": true,
+    "declarationDir": "./dist/types",
+    "tsBuildInfoFile": "./dist/tsconfig.tsbuildinfo",
+    "composite": true
+    // "lib": [
+    //   "dom"
+    // ],
+    // "preserveSymlinks": true,
+    // "types": [
+    //   "voby/dist/jsx/types"
+    // ]
+  },
+  "exclude": [
+    "vite.config.ts",
+    "vite.config.umd.ts",
+    "**/src ori/**",
+    "**/dist/**",
+    "**/lib/**",
+    "**/types/**",
+    "**/__tests_1_/**"
+  ]
+}

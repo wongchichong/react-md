@@ -1,32 +1,27 @@
-import type {
-  CSSProperties,
-  MouseEvent,
-  MouseEventHandler,
-  ReactNode,
-} from "react";
-import { forwardRef, isValidElement, useCallback, useState } from "react";
-import cn from "classnames";
-import { Button } from "@react-md/button";
-import { useIcon } from "@react-md/icon";
-import { bem } from "@react-md/utils";
+import type { CSSProperties, } from 'voby'
+import { $ } from 'voby'
 
-import type { TextFieldProps } from "./TextField";
-import { TextField } from "./TextField";
+import { Button } from "@react-md/button"
+import { useIcon } from "@react-md/icon"
+import { bem } from "@react-md/utils"
+
+import type { TextFieldProps } from "./TextField"
+import { TextField } from "./TextField"
 
 export interface ConfigurableVisibilityIcon {
   /**
    * The icon to display while the password is currently visible as plain text.
    */
-  visible: ReactNode;
+  visible: Child
 
   /**
    * The icon to display while the password is currently invisible as the
    * password input.
    */
-  invisible: ReactNode;
+  invisible: Child
 }
 
-export type GetVisibilityIcon = (type: "text" | "password") => ReactNode;
+export type GetVisibilityIcon = (type: "text" | "password") => Child
 
 export interface PasswordProps extends Omit<TextFieldProps, "type"> {
   /**
@@ -34,17 +29,17 @@ export interface PasswordProps extends Omit<TextFieldProps, "type"> {
    * input type to text temporarily. This can either be a renderable React node
    * or an object for the `visible` and `invisible` states.
    */
-  visibilityIcon?: ReactNode | ConfigurableVisibilityIcon;
+  visibilityIcon?: Child | ConfigurableVisibilityIcon
 
   /**
    * An optional style to apply to the visibility toggle button.
    */
-  visibilityStyle?: CSSProperties;
+  visibilityStyle?: FunctionMaybe<Nullable<string | StyleProperties>>
 
   /**
    * An optional classname to apply to the visibility toggle button.
    */
-  visibilityClassName?: string;
+  visibilityClassName?: Class
 
   /**
    * An optional `aria-label` to apply to the visibility toggle button.
@@ -54,12 +49,12 @@ export interface PasswordProps extends Omit<TextFieldProps, "type"> {
    * that the label **should not change** based on the visibility state and
    * should not include the word "toggle" since it will be redundant.
    */
-  visibilityLabel?: string;
+  visibilityLabel?: FunctionMaybe<Nullable<string>>
 
   /**
    * Boolean if the visibility toggle feature should be disabled.
    */
-  disableVisibility?: boolean;
+  disableVisibility?: FunctionMaybe<Nullable<boolean>>
 
   /**
    * An optional function to return the current icon to display within the
@@ -68,7 +63,7 @@ export interface PasswordProps extends Omit<TextFieldProps, "type"> {
    * Depending on the customization needs, it will probably be easier to just
    * implement your own `Password` component using the native `TextField`.
    */
-  getVisibilityIcon?: GetVisibilityIcon;
+  getVisibilityIcon?: GetVisibilityIcon
 
   /**
    * An optional function to call when the visibility button has been clicked.
@@ -77,15 +72,13 @@ export interface PasswordProps extends Omit<TextFieldProps, "type"> {
    * Depending on the customization needs, it will probably be easier to just
    * implement your own `Password` component using the native `TextField`.
    */
-  onVisibilityClick?: MouseEventHandler<HTMLButtonElement>;
+  onVisibilityClick?: MouseEventHandler<HTMLButtonElement>
 }
 
-const block = bem("rmd-password");
+const block = bem("rmd-password")
 
-function isConfigurableIcon(
-  icon: ReactNode | ConfigurableVisibilityIcon
-): icon is ConfigurableVisibilityIcon {
-  return !!icon && !isValidElement(icon);
+function isConfigurableIcon(icon: Child | ConfigurableVisibilityIcon): icon is ConfigurableVisibilityIcon {
+  return !!icon //&& !isValidElement(icon)
 }
 
 /**
@@ -93,77 +86,78 @@ function isConfigurableIcon(
  * rendered for password inputs. There is built-in functionality to be able to
  * temporarily show the password's value by swapping the `type` to `"text"`.
  */
-export const Password = forwardRef<HTMLInputElement, PasswordProps>(
-  function Password(
-    {
-      className,
-      inputClassName,
-      visibilityIcon: propVisibilityIcon,
-      visibilityStyle,
-      visibilityClassName,
-      visibilityLabel = "Show password",
-      onVisibilityClick,
-      getVisibilityIcon,
-      disableVisibility = false,
-      rightChildren: propRightChildren,
-      isRightAddon = disableVisibility,
-      ...props
-    },
-    ref
-  ) {
-    const { id } = props;
-    const [type, setType] = useState<"password" | "text">("password");
-    const toggle = useCallback(
-      (event: MouseEvent<HTMLButtonElement>) => {
-        if (onVisibilityClick) {
-          onVisibilityClick(event);
-        }
-
-        setType((prevType) => (prevType === "password" ? "text" : "password"));
-      },
-      [onVisibilityClick]
-    );
-
-    const visible = type === "text";
-    let visibilityIcon = useIcon("password", propVisibilityIcon as any);
-    if (isConfigurableIcon(propVisibilityIcon)) {
-      visibilityIcon = visible
-        ? propVisibilityIcon.visible
-        : propVisibilityIcon.invisible;
+export const Password = (
+  {
+    className,
+    inputClassName,
+    visibilityIcon: propVisibilityIcon,
+    visibilityStyle,
+    visibilityClassName,
+    visibilityLabel = "Show password",
+    onVisibilityClick,
+    getVisibilityIcon,
+    disableVisibility = false,
+    rightChildren: propRightChildren,
+    isRightAddon = disableVisibility,
+    ref,
+    ...props
+  }: PasswordProps
+) => {
+  const { id } = props
+  const type = $<"password" | "text">("password")
+  const toggle = $((event: JSX.TargetedMouseEvent<HTMLButtonElement>) => {
+    if (onVisibilityClick) {
+      //@ts-ignore
+      onVisibilityClick(event)
     }
 
-    let rightChildren: ReactNode = propRightChildren;
-    if (!disableVisibility) {
-      rightChildren = (
-        <Button
-          id={`${id}-password-toggle`}
-          aria-label={visibilityLabel}
-          aria-pressed={visible}
-          buttonType="icon"
-          onClick={toggle}
-          style={visibilityStyle}
-          className={cn(block("toggle"), visibilityClassName)}
-        >
-          {typeof getVisibilityIcon === "function"
-            ? getVisibilityIcon(type)
-            : visibilityIcon}
-        </Button>
-      );
-    }
+    type((prevType) => (prevType === "password" ? "text" : "password"))
+  })
 
-    return (
-      <TextField
-        {...props}
-        className={cn(block({ offset: !disableVisibility }), className)}
-        inputClassName={cn(
-          block("input", { offset: !disableVisibility }),
-          inputClassName
-        )}
-        ref={ref}
-        type={type}
-        isRightAddon={isRightAddon}
-        rightChildren={rightChildren}
-      />
-    );
+  const visible = type() === "text"
+  let visibilityIcon = useIcon("password", propVisibilityIcon as any)
+  if (isConfigurableIcon(propVisibilityIcon)) {
+    visibilityIcon = visible
+      ? propVisibilityIcon.visible
+      : propVisibilityIcon.invisible
   }
-);
+
+  let rightChildren: Child = propRightChildren
+  if (!disableVisibility) {
+    rightChildren = (
+      //@ts-ignore
+      <Button
+        id={`${id}-password-toggle`}
+        aria-label={visibilityLabel}
+        aria-pressed={visible}
+        buttonType="icon"
+        onClick={toggle}
+        //@ts-ignore
+        style={visibilityStyle}
+        className={[block("toggle"), visibilityClassName]}
+      >
+        {typeof getVisibilityIcon === "function"
+          //@ts-ignore
+          ? getVisibilityIcon(type)
+          : visibilityIcon}
+      </Button>
+    )
+  }
+
+  return (
+    <TextField
+      {...props}
+      className={[block({ offset: !disableVisibility }), className]}
+      inputClassName={[
+        block("input", { offset: !disableVisibility }),
+        inputClassName
+      ]}
+      ref={ref}
+      //@ts-ignore
+      type={type}
+      isRightAddon={isRightAddon}
+      rightChildren={rightChildren}
+    />
+  )
+}
+

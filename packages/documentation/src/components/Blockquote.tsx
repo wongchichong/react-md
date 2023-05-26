@@ -1,16 +1,16 @@
-import type { HTMLAttributes, ReactElement } from "react";
-import cn from "classnames";
+import type { HTMLAttributes, ReactElement } from "react"
 
-import styles from "./Blockquote.module.scss";
+
+import styles from "./Blockquote.module.scss"
 
 export default function Blockquote({
-  className,
-  children,
-  ...props
-}: HTMLAttributes<HTMLQuoteElement>): ReactElement {
-  return (
-    <blockquote {...props} className={cn(styles.blockquote, className)}>
-      {children}
-    </blockquote>
-  );
+    className,
+    children,
+    ...props
+}: HTMLAttributes<HTMLQuoteElement>): Child {
+    return (
+        <blockquote {...props} className={cn(styles.blockquote, className)}>
+            {children}
+        </blockquote>
+    )
 }

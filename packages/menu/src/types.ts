@@ -1,42 +1,17 @@
-import type { ButtonProps } from "@react-md/button";
-import type { IconRotatorProps, TextIconSpacingProps } from "@react-md/icon";
-import type { ListElement, ListItemProps, ListProps } from "@react-md/list";
-import type { RenderConditionalPortalProps } from "@react-md/portal";
-import type {
-  SheetPosition,
-  SheetProps,
-  SheetVerticalSize,
-} from "@react-md/sheet";
-import type {
-  FixedPositioningTransitionCallbacks,
-  ScaleTransitionHookOptions,
-  TransitionScrollCallback,
-} from "@react-md/transition";
-import type {
-  CalculateFixedPositionOptions,
-  KeyboardFocusHookOptions,
-  LabelA11y,
-  PositionAnchor,
-  PropsWithRef,
-  RequireAtLeastOne,
-} from "@react-md/utils";
-import type {
-  CSSProperties,
-  Dispatch,
-  HTMLAttributes,
-  KeyboardEventHandler,
-  MouseEventHandler,
-  ReactNode,
-  Ref,
-  RefObject,
-  SetStateAction,
-} from "react";
+import type { ButtonProps } from "@react-md/button"
+import type { IconRotatorProps, TextIconSpacingProps } from "@react-md/icon"
+import type { ListElement, ListItemProps, ListProps } from "@react-md/list"
+import type { RenderConditionalPortalProps } from "@react-md/portal"
+import type { SheetPosition, SheetProps, SheetVerticalSize, } from "@react-md/sheet"
+import type { FixedPositioningTransitionCallbacks, ScaleTransitionHookOptions, TransitionScrollCallback, } from "@react-md/transition"
+import type { CalculateFixedPositionOptions, KeyboardFocusHookOptions, LabelA11y, PositionAnchor, PropsWithRef, RequireAtLeastOne, } from "@react-md/utils"
+import type { CSSProperties, ObservableMaybe, Observable } from 'voby'
 
 /** @remarks \@since 5.0.0 */
 export type MenuTransitionProps = Omit<
   ScaleTransitionHookOptions<HTMLDivElement>,
   "transitionIn" | "vertical" | "nodeRef"
->;
+>
 
 /** @remarks \@since 5.0.0 */
 export interface MenuOrientationProps {
@@ -46,7 +21,7 @@ export interface MenuOrientationProps {
    *
    * @defaultValue `false`
    */
-  horizontal?: boolean;
+  horizontal?: FunctionMaybe<Nullable<boolean>>
 }
 
 /**
@@ -61,24 +36,24 @@ export interface MenuOrientationProps {
  * @defaultValue `false`
  * @remarks \@since 5.0.0
  */
-export type RenderMenuAsSheet = boolean | "phone";
+export type RenderMenuAsSheet = boolean | "phone"
 
 /** @remarks \@since 5.0.0 */
 export interface MenuConfiguration extends MenuOrientationProps {
   /** {@inheritDoc RenderMenuAsSheet} */
-  renderAsSheet?: RenderMenuAsSheet;
+  renderAsSheet?: FunctionMaybe<Nullable<RenderMenuAsSheet>>
 
   /**
    * @see {@link SheetPosition}
    * @defaultValue `"bottom"`
    */
-  sheetPosition?: SheetPosition;
+  sheetPosition?: FunctionMaybe<Nullable<SheetPosition>>
 
   /**
    * @see {@link SheetVerticalSize}
    * @defaultValue `"touch"`
    */
-  sheetVerticalSize?: SheetVerticalSize;
+  sheetVerticalSize?: FunctionMaybe<Nullable<SheetVerticalSize>>
 
   /**
    * Any children to render above the sheet's menu implementation. This would
@@ -86,7 +61,7 @@ export interface MenuConfiguration extends MenuOrientationProps {
    *
    * @defaultValue `null`
    */
-  sheetHeader?: ReactNode;
+  sheetHeader?: Child
 
   /**
    * Any children to render below the sheet's menu implementation. This would
@@ -94,18 +69,18 @@ export interface MenuConfiguration extends MenuOrientationProps {
    *
    * @defaultValue `null`
    */
-  sheetFooter?: ReactNode;
+  sheetFooter?: Child
 }
 
 /** @remarks \@since 5.0.0 */
-export type MenuConfigurationContext = Required<MenuConfiguration>;
+export type MenuConfigurationContext = Required<MenuConfiguration>
 
 /** @remarks \@since 5.0.0 */
 export type MenuWidgetProps = {
   /**
    * An id required for a11y.
    */
-  id: string;
+  id: FunctionMaybe<string>
 
   /**
    * Boolean if the menu should not gain the elevation styles and should only be
@@ -113,21 +88,15 @@ export type MenuWidgetProps = {
    *
    * @defaultValue `false`
    */
-  disableElevation?: boolean;
-} & HTMLAttributes<HTMLDivElement> &
-  KeyboardFocusHookOptions<HTMLDivElement> &
-  MenuOrientationProps;
+  disableElevation?: FunctionMaybe<Nullable<boolean>>
+} & HTMLAttributes<HTMLDivElement> & KeyboardFocusHookOptions<HTMLDivElement> & MenuOrientationProps
 
 /** @remarks \@since 5.0.0 */
-export interface MenuProps
-  extends RenderConditionalPortalProps,
-    MenuTransitionProps,
-    MenuWidgetProps,
-    MenuListProps {
+export interface MenuProps extends RenderConditionalPortalProps, MenuTransitionProps, MenuWidgetProps, MenuListProps {
   /**
-   * Boolean if the menu is currently visible.
-   */
-  visible: boolean;
+  * Boolean if the menu is currently visible.
+  */
+  visible: FunctionMaybe<boolean>
 }
 
 /** @remarks \@since 5.0.0 */
@@ -137,7 +106,7 @@ export interface DropdownMenuConfigurationProps {
    * this is `undefined`, an `aria-labelledby` will be provided to the `Menu`
    * instead linking to the {@link id} of the `Button`.
    */
-  menuLabel?: string;
+  menuLabel?: FunctionMaybe<Nullable<string>>
 
   /**
    * The {@link PositionAnchor} to use for the menu. Here's the default value
@@ -147,16 +116,16 @@ export interface DropdownMenuConfigurationProps {
    * - a submenu - `TOP_RIGHT_ANCHOR`
    * - default - `TOP_INNER_RIGHT_ANCHOR`
    */
-  anchor?: PositionAnchor;
+  anchor?: FunctionMaybe<Nullable<PositionAnchor>>
 
   /** {@inheritDoc CalculateFixedPositionOptions} */
-  fixedPositionOptions?: Readonly<CalculateFixedPositionOptions>;
+  fixedPositionOptions?: FunctionMaybe<Nullable<Readonly<CalculateFixedPositionOptions>>>
 
   /**
    * A function that can be used to get the
    * {@link CalculateFixedPositionOptions} dynamically.
    */
-  getFixedPositionOptions?(): Readonly<CalculateFixedPositionOptions>;
+  getFixedPositionOptions?(): Readonly<CalculateFixedPositionOptions>
 
   /**
    * Boolean if the menu should close if the page is scrolled. The default
@@ -165,7 +134,7 @@ export interface DropdownMenuConfigurationProps {
    *
    * @defaultValue `false`
    */
-  closeOnScroll?: boolean;
+  closeOnScroll?: FunctionMaybe<Nullable<boolean>>
 
   /**
    * Boolean if the page should no longer be scrollable while the menu is
@@ -173,7 +142,7 @@ export interface DropdownMenuConfigurationProps {
    *
    * @defaultValue `false`
    */
-  preventScroll?: boolean;
+  preventScroll?: FunctionMaybe<Nullable<boolean>>
 
   /**
    * Boolean if the menu should close instead of repositioning itself if the
@@ -181,7 +150,7 @@ export interface DropdownMenuConfigurationProps {
    *
    * @defaultValue `false`
    */
-  closeOnResize?: boolean;
+  closeOnResize?: FunctionMaybe<Nullable<boolean>>
 
   /**
    * Boolean if the menu component should not gain focus once it has mounted.
@@ -190,7 +159,7 @@ export interface DropdownMenuConfigurationProps {
    *
    * @defaultValue `timeout === 0`
    */
-  disableFocusOnMount?: boolean;
+  disableFocusOnMount?: FunctionMaybe<Nullable<boolean>>
 
   /**
    * Boolean if the toggle element should no longer gain focus when the menu
@@ -207,7 +176,7 @@ export interface DropdownMenuConfigurationProps {
    *
    * @defaultValue `timeout === 0`
    */
-  disableFocusOnUnmount?: boolean;
+  disableFocusOnUnmount?: FunctionMaybe<Nullable<boolean>>
 }
 
 /**
@@ -217,11 +186,9 @@ export interface DropdownMenuConfigurationProps {
  *
  * @remarks \@since 5.0.0
  */
-export type ProvidedMenuProps = Required<
-  Pick<MenuProps, "id" | "style" | "visible" | "onClick" | "onKeyDown">
-> &
+export type ProvidedMenuProps = Required<Pick<MenuProps, "id" | "style" | "visible" | "onClick" | "onKeyDown">> &
   Required<FixedPositioningTransitionCallbacks> &
-  RequireAtLeastOne<LabelA11y>;
+  RequireAtLeastOne<LabelA11y>
 
 /**
  * Props that should be passed to a `Button` or `MenuItem` component to toggle
@@ -233,12 +200,14 @@ export interface ProvidedMenuToggleProps<E extends HTMLElement> {
   /**
    * This will always be set to `"menu"`.
    */
-  "aria-haspopup": HTMLAttributes<E>["aria-haspopup"];
+  //@ts-ignore
+  "aria-haspopup": HTMLAttributes<E>["aria-haspopup"]
 
   /**
    * This will be set to `true` only while the menu is `visible`.
    */
-  "aria-expanded": HTMLAttributes<E>["aria-expanded"];
+  //@ts-ignore
+  "aria-expanded": HTMLAttributes<E>["aria-expanded"]
 
   /**
    * This will be set to `${baseId}-toggle` and is used for providing an
@@ -247,14 +216,14 @@ export interface ProvidedMenuToggleProps<E extends HTMLElement> {
    *
    * @see {@link BaseMenuHookOptions.baseId}
    */
-  id: string;
+  id: FunctionMaybe<string>
 
   /**
    * A click handler that will toggle the visibility of the menu.
    *
    * @see {@link HoverModeHookReturnValue.onClick}
    */
-  onClick: MouseEventHandler<E>;
+  onClick: MouseEventHandler<E>
 
   /**
    * The event handler will allow the menu to become visible by with `ArrowUp`
@@ -262,18 +231,18 @@ export interface ProvidedMenuToggleProps<E extends HTMLElement> {
    * vertical menus. This will also allow the focus to move between menus within
    * a `MenuBar` with the `ArrowLeft` and `ArrowRight` keys.
    */
-  onKeyDown: KeyboardEventHandler<E>;
+  onKeyDown: KeyboardEventHandler<E>
 
   /**
    * The event handler will allow a `Menu` within a `MenuBar` to gain
    * visibility.
    */
-  onMouseEnter: MouseEventHandler<E>;
+  onMouseEnter: MouseEventHandler<E>
 
   /**
    * This handler just cancels the `hoverTimeout` from the `MenuBar`.
    */
-  onMouseLeave: MouseEventHandler<E>;
+  onMouseLeave: MouseEventHandler<E>
 }
 
 /**
@@ -283,16 +252,13 @@ export interface ProvidedMenuToggleProps<E extends HTMLElement> {
  *
  * @remarks \@since 5.0.0
  */
-export interface BaseMenuHookOptions
-  extends DropdownMenuConfigurationProps,
-    MenuOrientationProps,
-    FixedPositioningTransitionCallbacks {
+export interface BaseMenuHookOptions extends DropdownMenuConfigurationProps, MenuOrientationProps, FixedPositioningTransitionCallbacks {
   /**
    * This is the `id` for the toggle element for a `DropdownMenu` that is
    * required for a11y. This is used to also create the `Menu` component's `id`
    * as `${baseId}-menu`.
    */
-  baseId: string;
+  baseId: FunctionMaybe<string>
 
   /**
    * An optional style object to merge with the `Menu`'s fixed positioning
@@ -301,12 +267,12 @@ export interface BaseMenuHookOptions
    * @see {@link useFixedPositioning}
    * @see {@link FixedPositionStyle}
    */
-  style?: CSSProperties;
+  style?: FunctionMaybe<Nullable<string | StyleProperties>>
 
   /**
    * Boolean if the menu is currently visible.
    */
-  visible: boolean;
+  visible: Observable<boolean>
 
   /**
    * This should be the second argument for the `useState` hook.
@@ -318,7 +284,7 @@ export interface BaseMenuHookOptions
    * This is used to update the visibility of the menu based on click and
    * keyboard events.
    */
-  setVisible: Dispatch<SetStateAction<boolean>>;
+  // setVisible: Dispatch<SetStateAction<boolean>>;
 
   /**
    * Boolean if the menu is being rendered as a menuitem instead of a button.
@@ -327,15 +293,15 @@ export interface BaseMenuHookOptions
    *
    * @defaultValue `false`
    */
-  menuitem?: boolean;
+  menuitem?: FunctionMaybe<Nullable<boolean>>
 
   /** {@inheritDoc TransitionScrollCallback} */
-  onFixedPositionScroll?: TransitionScrollCallback<HTMLElement, HTMLDivElement>;
+  onFixedPositionScroll?: TransitionScrollCallback<HTMLElement, HTMLDivElement>
 
   /**
    * An optional function to call if the page resizes while the menu is visible.
    */
-  onFixedPositionResize?: EventListener;
+  onFixedPositionResize?: EventListener
 }
 
 /** @remarks \@since 5.0.0 */
@@ -343,67 +309,55 @@ export interface BaseMenuHookReturnValue {
   /**
    * Maybe don't need to provide.
    */
-  menuRef: Ref<HTMLDivElement>;
+  menuRef: ObservableMaybe<HTMLDivElement>
 
   /**
    * An object of props that should be provided to the {@link Menu} component.
    */
-  menuProps: ProvidedMenuProps;
+  menuProps: FunctionMaybe<ProvidedMenuProps>
 
   /**
    * A ref containing the menu DivHTMLElement if you need access to it for your
    * use case.
    */
-  menuNodeRef: RefObject<HTMLDivElement>;
+  menuNodeRef: Ref<HTMLDivElement>
 }
 
 /** @remarks \@since 5.0.0 */
-export type MenuButtonTextIconSpacingProps = Pick<
-  TextIconSpacingProps,
-  "icon" | "iconAfter"
->;
+export type MenuButtonTextIconSpacingProps = Pick<TextIconSpacingProps, "icon" | "iconAfter">
 
 /** @remarks \@since 5.0.0 */
-export type MenuButtonIconRotatorProps = Omit<
-  IconRotatorProps,
-  "children" | "rotated"
->;
+export type MenuButtonIconRotatorProps = Omit<IconRotatorProps, "children" | "rotated">
 
 /** @remarks \@since 5.0.0 */
-export interface BaseMenuButtonProps
-  extends ButtonProps,
-    MenuButtonTextIconSpacingProps {
+//@ts-ignore
+export interface BaseMenuButtonProps extends ButtonProps, MenuButtonTextIconSpacingProps {
   /**
    * An id required for accessibility and will be passed to the `<Button>`
    * component.
    *
    * @see {@link BaseMenuHookOptions.baseId}
    */
-  id: string;
+  id: FunctionMaybe<string>
 
   /**
    * Boolean if the dropdown icon should be included with the button children.
    *
    * @defaultValue `buttonType === "icon"`
    */
-  disableDropdownIcon?: boolean;
+  disableDropdownIcon?: FunctionMaybe<Nullable<boolean>>
 
   /**
    * Any additional props to pass to the {@link IconRotator} component that
    * surrounds the {@link buttonChildren}
    */
-  iconRotatorProps?: Readonly<MenuButtonIconRotatorProps>;
+  iconRotatorProps?: FunctionMaybe<Nullable<Readonly<MenuButtonIconRotatorProps>>>
 
   /**
    * Any additional props to pass to the {@link TextIconSpacing} component that
    * surrounds the optional dropdown icon.
    */
-  textIconSpacingProps?: Readonly<
-    Omit<
-      TextIconSpacingProps,
-      "children" | keyof MenuButtonTextIconSpacingProps
-    >
-  >;
+  textIconSpacingProps?: FunctionMaybe<Nullable<Readonly<Omit<TextIconSpacingProps, "children" | keyof MenuButtonTextIconSpacingProps>>>>
 }
 
 /** @remarks \@since 5.1.0 */
@@ -412,45 +366,41 @@ export interface MenuListProps {
    * An optional style to provide to the `List` component that surrounds the
    * `MenuItem` within a `Menu`.
    */
-  listStyle?: CSSProperties;
+  listStyle?: FunctionMaybe<Nullable<string | StyleProperties>>
 
   /**
    * An optional className to provide to the `List` component that surrounds the
    * `MenuItem` within a `Menu`.
    */
-  listClassName?: string;
+  listClassName?: Class
 
   /**
    * Any additional props to pass to the `List` component that surrounds the
    * `Menu`'s `MenuItem`s.
    */
-  listProps?: Readonly<
-    PropsWithRef<Omit<ListProps, "horizontal">, ListElement>
-  >;
+  listProps?: Readonly<PropsWithRef<Omit<ListProps, "horizontal">, ListElement>>
 }
 
 /** @remarks \@since 5.0.0 */
-export interface BaseMenuRendererProps
-  extends RenderConditionalPortalProps,
-    MenuConfiguration {
+export interface BaseMenuRendererProps extends RenderConditionalPortalProps, MenuConfiguration {
   /**
    * Any additional props that should be passed to the {@link Menu} component.
    *
    * Note: use the {@link menuStyle} and {@link menuClassName} props instead of
    * including `style` or `className` here.
    */
-  menuProps?: Readonly<Omit<MenuWidgetProps, "id" | "children">>;
+  menuProps?: Readonly<Omit<MenuWidgetProps, "id" | "children">>
 
   /**
    * An optional style object that should be merged with the menu's fixed
    * positioning styles.
    */
-  menuStyle?: CSSProperties;
+  menuStyle?: FunctionMaybe<Nullable<string | StyleProperties>>
 
   /**
    * An optional className that should be passed to the menu component.
    */
-  menuClassName?: string;
+  menuClassName?: Class
 
   /**
    * Any additional props that should be passed to the {@link Sheet} component.
@@ -458,39 +408,31 @@ export interface BaseMenuRendererProps
    * Note: use the {@link sheetStyle} and {@link sheetClassName} props instead
    * of including `style` or `className` here.
    */
-  sheetProps?: Readonly<
-    Omit<SheetProps, "id" | "visible" | "onRequestClose" | "children">
-  >;
+  sheetProps?: FunctionMaybe<Readonly<Omit<SheetProps, "id" | "visible" | "onRequestClose" | "children">>>
 
   /**
    * An optional style object that should be passed to the sheet.
    */
-  sheetStyle?: CSSProperties;
+  sheetStyle?: FunctionMaybe<Nullable<string | StyleProperties>>
 
   /**
    * An optional className that should be passed to the sheet component.
    */
-  sheetClassName?: string;
+  sheetClassName?: Class
 
   /**
    * Any additional props that should be added to the sheet's menu
    * implementation. You probably won't ever need to use this.
    */
-  sheetMenuProps?: HTMLAttributes<HTMLDivElement>;
+  sheetMenuProps?: HTMLAttributes<HTMLDivElement>
 }
 
 /** @remarks \@since 5.0.0 */
-export interface BaseDropdownMenuProps
-  extends DropdownMenuConfigurationProps,
-    BaseMenuRendererProps,
-    MenuTransitionProps {}
+export interface BaseDropdownMenuProps extends DropdownMenuConfigurationProps, BaseMenuRendererProps, MenuTransitionProps { }
 
 /** @remarks \@since 5.0.0 */
-export interface DropdownMenuButtonProps
-  extends BaseMenuButtonProps,
-    BaseDropdownMenuProps,
-    MenuButtonTextIconSpacingProps,
-    MenuListProps {
+//@ts-ignore
+export interface DropdownMenuButtonProps extends BaseMenuButtonProps, BaseDropdownMenuProps, MenuButtonTextIconSpacingProps, MenuListProps {
   /**
    * The children to display in the button. This should normally be text or an
    * icon.
@@ -498,7 +440,7 @@ export interface DropdownMenuButtonProps
    * Note: If this is an icon, set the {@link buttonType} to `"icon"` to get the
    * correct styling and remove the dropdown icon.
    */
-  buttonChildren: ReactNode;
+  buttonChildren: Child
 }
 
 /**
@@ -509,7 +451,7 @@ export interface MenuItemProps extends Omit<ListItemProps, "role"> {
    * An optional id for the menu item. This is generally recommended, but it can
    * be ignored.
    */
-  id?: string;
+  id?: FunctionMaybe<Nullable<string>>
 
   /**
    * The current role for the menu item. This will eventually be updated for
@@ -517,12 +459,12 @@ export interface MenuItemProps extends Omit<ListItemProps, "role"> {
    *
    * @defaultValue `"menuitem"`
    */
-  role?: "menuitem";
+  role?: FunctionMaybe<Nullable<"menuitem">>
 
   /**
    * The tab index for the menu item. This should always stay at `-1`.
    */
-  tabIndex?: number;
+  tabIndex?: FunctionMaybe<Nullable<number>>
 }
 
 /** @remarks \@since 5.0.0 */
@@ -533,7 +475,7 @@ export interface BaseMenuItemButtonProps extends MenuItemProps {
    *
    * @see {@link BaseMenuHookOptions.baseId}
    */
-  id: string;
+  id: FunctionMaybe<string>
 
   /**
    * Boolean if the dropdown icon should be set to the
@@ -541,24 +483,24 @@ export interface BaseMenuItemButtonProps extends MenuItemProps {
    *
    * @defaultValue `typeof rightAddon !== "undefined"`
    */
-  disableDropdownIcon?: boolean;
+  disableDropdownIcon?: FunctionMaybe<Nullable<boolean>>
 
   /**
    * Any additional props to pass to the {@link IconRotator} component that
    * surrounds the {@link buttonChildren}
    */
-  iconRotatorProps?: Readonly<MenuButtonIconRotatorProps>;
+  iconRotatorProps?: FunctionMaybe<Nullable<Readonly<MenuButtonIconRotatorProps>>>
 }
 
 /** @remarks \@since 5.0.0 */
 export interface DropdownMenuItemProps
   extends BaseDropdownMenuProps,
-    BaseMenuItemButtonProps,
-    MenuListProps {
+  BaseMenuItemButtonProps,
+  MenuListProps {
   /**
    * The children to display in the menuitem acting as a button.
    */
-  buttonChildren: ReactNode;
+  buttonChildren: Child
 }
 
 /**
@@ -572,4 +514,4 @@ export interface DropdownMenuItemProps
  *
  * @remarks \@since 5.0.0
  */
-export type DropdownMenuProps = DropdownMenuButtonProps | DropdownMenuItemProps;
+export type DropdownMenuProps = DropdownMenuButtonProps | DropdownMenuItemProps

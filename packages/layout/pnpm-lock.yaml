@@ -1,0 +1,85 @@
+lockfileVersion: 5.4
+
+specifiers:
+  '@react-md/app-bar': workspace:../app-bar
+  '@react-md/button': workspace:../button
+  '@react-md/dialog': workspace:../dialog
+  '@react-md/divider': workspace:../divider
+  '@react-md/form': workspace:../form
+  '@react-md/icon': workspace:../icon
+  '@react-md/link': workspace:../link
+  '@react-md/list': workspace:../list
+  '@react-md/menu': workspace:../menu
+  '@react-md/react': workspace:../react
+  '@react-md/sheet': workspace:../sheet
+  '@react-md/states': workspace:../states
+  '@react-md/theme': workspace:../theme
+  '@react-md/tooltip': workspace:../tooltip
+  '@react-md/transition': workspace:../transition
+  '@react-md/tree': workspace:../tree
+  '@react-md/typography': workspace:../typography
+  '@react-md/utils': workspace:../utils
+  pnpm: ^8.3.1
+  react2voby: workspace:../../../react2voby
+  vite-plugin-sass-dts: ^1.3.4
+  voby: workspace:../../../woby
+
+dependencies:
+  '@react-md/app-bar': link:../app-bar
+  '@react-md/button': link:../button
+  '@react-md/dialog': link:../dialog
+  '@react-md/divider': link:../divider
+  '@react-md/form': link:../form
+  '@react-md/icon': link:../icon
+  '@react-md/link': link:../link
+  '@react-md/list': link:../list
+  '@react-md/menu': link:../menu
+  '@react-md/react': link:../react
+  '@react-md/sheet': link:../sheet
+  '@react-md/states': link:../states
+  '@react-md/theme': link:../theme
+  '@react-md/tooltip': link:../tooltip
+  '@react-md/transition': link:../transition
+  '@react-md/tree': link:../tree
+  '@react-md/typography': link:../typography
+  '@react-md/utils': link:../utils
+  pnpm: 8.3.1
+  react2voby: link:../../../react2voby
+  voby: link:../../../woby
+
+devDependencies:
+  vite-plugin-sass-dts: 1.3.4
+
+packages:
+
+  /camelcase-css/2.0.1:
+    resolution: {integrity: sha512-QOSvevhslijgYwRx6Rv7zKdMF8lbRmx+uQGx2+vDc+KI/eBnsy9kit5aj23AgGu3pa4t9AgwbnXWqS+iOY+2aA==}
+    engines: {node: '>= 6'}
+    dev: true
+
+  /pnpm/8.3.1:
+    resolution: {integrity: sha512-0mT2ZAv08J3nz8xUdWhRW88GE89IWgPo/xZhb6acQXK2+aCikl7kT7Bg31ZcnJqOrwYXSed68xjLd/ZoSnBR8w==}
+    engines: {node: '>=16.14'}
+    hasBin: true
+    dev: false
+
+  /postcss-js/4.0.1:
+    resolution: {integrity: sha512-dDLF8pEO191hJMtlHFPRa8xsizHaM82MLfNkUHdUtVEV3tgTp5oj+8qbEqYM57SLfc74KSbw//4SeJma2LRVIw==}
+    engines: {node: ^12 || ^14 || >= 16}
+    peerDependencies:
+      postcss: ^8.4.21
+    dependencies:
+      camelcase-css: 2.0.1
+    dev: true
+
+  /vite-plugin-sass-dts/1.3.4:
+    resolution: {integrity: sha512-wwyI6mRahYEX71CXOOo3f1dRcb70qUmcppvrhJ3elSypxHcmU4qbN9RTZIwCrA6155Pz4Beh/t1yuPt6M0yr/g==}
+    engines: {node: ^14.18.0 || >=16.0.0}
+    peerDependencies:
+      postcss: ^8
+      prettier: ^2.7
+      sass: '*'
+      vite: ^3 || ^4
+    dependencies:
+      postcss-js: 4.0.1
+    dev: true

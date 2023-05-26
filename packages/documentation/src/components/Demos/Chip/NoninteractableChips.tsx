@@ -2,7 +2,7 @@ import type { ReactElement } from "react";
 import { Chip } from "@react-md/chip";
 import { Grid } from "@react-md/utils";
 
-export default function NoninteractableChips(): ReactElement {
+export default function NoninteractableChips(): Child {
   return (
     <Grid phoneColumns={1} columns={2} wrapOnly>
       <Chip noninteractable theme="solid">

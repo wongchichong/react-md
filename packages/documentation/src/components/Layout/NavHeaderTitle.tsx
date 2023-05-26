@@ -10,7 +10,7 @@ import { RMD_MAJOR_VERSION } from "constants/rmdVersion";
 import styles from "./NavHeaderTitle.module.scss";
 import PreviousDocsMenuItems from "./PreviousDocsMenuItems";
 
-export default function NavHeaderTitle(): ReactElement {
+export default function NavHeaderTitle(): Child {
   const { layout } = useLayoutConfig();
   return (
     <>

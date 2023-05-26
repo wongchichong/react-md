@@ -1,0 +1,23 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "declarationDir": "./dist/types"
+  },
+  "exclude": ["vite.config.ts", "vite.config.umd.ts", "types"],
+  "references": [
+    {
+      "path": "../theme"
+    },
+    {
+      "path": "../transition"
+    },
+    {
+      "path": "../react"
+    },
+    {
+      "path": "../utils"
+    }
+  ]
+}

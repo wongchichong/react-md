@@ -5,7 +5,7 @@ import type { SVGIconProps } from "@react-md/icon";
 import { AddCircleSVGIcon, ImageSVGIcon } from "@react-md/material-icons";
 import { Grid } from "@react-md/utils";
 
-function XCircleIcon(props: SVGIconProps): ReactElement {
+function XCircleIcon(props: SVGIconProps): Child {
   return (
     <AddCircleSVGIcon
       {...props}
@@ -17,7 +17,7 @@ function XCircleIcon(props: SVGIconProps): ReactElement {
   );
 }
 
-export default function SimpleChips(): ReactElement {
+export default function SimpleChips(): Child {
   return (
     <Grid phoneColumns={1} columns={2} wrapOnly>
       <Chip>Chip</Chip>

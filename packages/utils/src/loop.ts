@@ -1,35 +1,37 @@
+import { $$ } from "voby"
+
 /**
  * @remarks \@since 2.7.0
  */
 export interface LoopOptions {
-  /**
-   * The current value that should be modified.
-   */
-  value: number;
+    /**
+     * The current value that should be modified.
+     */
+    value: number
 
-  /**
-   * An optional `min` value that can be used before looping to the `max` value.
-   *
-   * @defaultValue `0`
-   */
-  min?: number;
+    /**
+     * An optional `min` value that can be used before looping to the `max` value.
+     *
+     * @defaultValue `0`
+     */
+    min?: FunctionMaybe<Nullable<number>>
 
-  /**
-   * The max number that can be used before looping to the `min` value.
-   */
-  max: number;
+    /**
+     * The max number that can be used before looping to the `min` value.
+     */
+    max: number
 
-  /**
-   * Boolean if the `value` should be incremented or decremented by `1`.
-   */
-  increment: boolean;
+    /**
+     * Boolean if the `value` should be incremented or decremented by `1`.
+     */
+    increment: boolean
 
-  /**
-   * Boolean if the looping should be ignored and only the `min`/`max` options
-   * should be respected. In other words, the looping  behavior will be disabled
-   * and the `value` must be: `min >= value <= max`
-   */
-  minmax?: boolean;
+    /**
+     * Boolean if the looping should be ignored and only the `min`/`max` options
+     * should be respected. In other words, the looping  behavior will be disabled
+     * and the `value` must be: `min >= value <= max`
+     */
+    minmax?: FunctionMaybe<Nullable<boolean>>
 }
 
 /**
@@ -44,20 +46,22 @@ export interface LoopOptions {
  * object
  */
 export function loop({
-  value,
-  min = 0,
-  max,
-  increment,
-  minmax = false,
+    value,
+    min: mn = 0,
+    max: mx,
+    increment,
+    minmax = false,
 }: LoopOptions): number {
-  let next = value + (increment ? 1 : -1);
-  if (minmax) {
-    next = Math.min(max, Math.max(min, next));
-  } else if (next > max) {
-    next = min;
-  } else if (next < min) {
-    next = max;
-  }
+    const min = $$(mn), max = $$(mx)
 
-  return next;
+    let next = value + (increment ? 1 : -1)
+    if (minmax) {
+        next = Math.min(max, Math.max(min, next))
+    } else if (next > max) {
+        next = min
+    } else if (next < min) {
+        next = max
+    }
+
+    return next
 }

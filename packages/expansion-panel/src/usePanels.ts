@@ -1,117 +1,114 @@
-import type {
-  Dispatch,
-  KeyboardEventHandler,
-  RefObject,
-  SetStateAction,
-} from "react";
-import { createRef, useCallback, useMemo, useState } from "react";
-import { loop } from "@react-md/utils";
+import {
+    $$, $, Observable
+} from 'voby'
+import { loop } from "@react-md/utils"
+import '@react-md/react'
 
 export interface UsePanelsOptions {
-  /**
-   * The prefix to use for all of the panel ids. This is used to generate the id
-   * for each panel as well as determine if a panel is expanded.
-   */
-  idPrefix: string;
+    /**
+     * The prefix to use for all of the panel ids. This is used to generate the id
+     * for each panel as well as determine if a panel is expanded.
+     */
+    idPrefix: string
 
-  /**
-   * The number of panels that will be used by this expansion logic and
-   * generates the number of panel props to be used in the return value. This
-   * should be a number greater than 0 and will throw a `RangeError` if it is
-   * not in development.
-   */
-  count: number;
+    /**
+     * The number of panels that will be used by this expansion logic and
+     * generates the number of panel props to be used in the return value. This
+     * should be a number greater than 0 and will throw a `RangeError` if it is
+     * not in development.
+     */
+    count: number
 
-  /**
-   * Boolean if multiple panels can be expanded at a time. The default behavior
-   * is to only allow one panel to be expanded and will close the previous panel
-   * when a new one is expanded.
-   */
-  multiple?: boolean;
+    /**
+     * Boolean if multiple panels can be expanded at a time. The default behavior
+     * is to only allow one panel to be expanded and will close the previous panel
+     * when a new one is expanded.
+     */
+    multiple?: FunctionMaybe<Nullable<boolean>>
 
-  /**
-   * Boolean if the expansion logic should prevent all the panels from being
-   * closed.
-   */
-  preventAllClosed?: boolean;
+    /**
+     * Boolean if the expansion logic should prevent all the panels from being
+     * closed.
+     */
+    preventAllClosed?: FunctionMaybe<Nullable<boolean>>
 
-  /**
-   * Either the index that should be expanded by default, a list of indexes that
-   * should be expanded by default, or `-1` which will expand all panels by
-   * default.
-   *
-   * When this is omitted and `undefined`, no panels will be expanded by
-   * default.
-   */
-  defaultExpandedIndex?: number | readonly number[];
+    /**
+     * Either the index that should be expanded by default, a list of indexes that
+     * should be expanded by default, or `-1` which will expand all panels by
+     * default.
+     *
+     * When this is omitted and `undefined`, no panels will be expanded by
+     * default.
+     */
+    defaultExpandedIndex?: FunctionMaybe<Nullable<number>> | readonly number[]
 }
 
 /**
  * An object of props that gets generated for each panel within the hook.
  */
 export interface ProvidedPanelProps {
-  /**
-   * The DOM id for the panel which is really just `${idPrefix}-${index + 1}`.
-   */
-  id: string;
+    /**
+     * The DOM id for the panel which is really just `${idPrefix}-${index + 1}`.
+     */
+    id: FunctionMaybe<string>
 
-  /**
-   * A ref object for the panel. This is required so that the parent keyboard
-   * event handler can focus the next/previous/first/last panel when the correct
-   * arrow key or home/end key is pressed. If there is only one panel and the
-   * keydown event handler isn't being used, this prop is not required to be
-   * passed to the expansion panel.
-   */
-  headerRef: RefObject<HTMLButtonElement>;
+    /**
+     * A ref object for the panel. This is required so that the parent keyboard
+     * event handler can focus the next/previous/first/last panel when the correct
+     * arrow key or home/end key is pressed. If there is only one panel and the
+     * keydown event handler isn't being used, this prop is not required to be
+     * passed to the expansion panel.
+     */
+    headerRef: Observable<HTMLButtonElement>
 
-  /**
-   * This will be `true` when the panel is expanded or the previous panel was
-   * expanded and the panel is not the first panel in the list.
-   */
-  marginTop: boolean;
+    /**
+     * This will be `true` when the panel is expanded or the previous panel was
+     * expanded and the panel is not the first panel in the list.
+     */
+    marginTop: FunctionMaybe<boolean>
 
-  /**
-   * Boolean if the panel's expansion state should be disabled. This will only
-   * be true when the `preventAllClosed` option has been enabled and the panel
-   * is the last remaining expanded panel.
-   */
-  disabled: boolean;
+    /**
+     * Boolean if the panel's expansion state should be disabled. This will only
+     * be true when the `preventAllClosed` option has been enabled and the panel
+     * is the last remaining expanded panel.
+     */
+    disabled: FunctionMaybe<boolean>
 
-  /**
-   * Boolean if the panel is currently expanded.
-   */
-  expanded: boolean;
+    /**
+     * Boolean if the panel is currently expanded.
+     */
+    expanded: FunctionMaybe<boolean>
 
-  /**
-   * A function that will toggle the expansion of this panel in the list.
-   */
-  onExpandClick(): void;
+    /**
+     * A function that will toggle the expansion of this panel in the list.
+     */
+    onExpandClick(): void
 }
 
-type ExpandedIds = readonly string[];
-type CreateExpandById = (panelId: string) => () => void;
-type ExpansionDispatcher = Dispatch<SetStateAction<ExpandedIds>>;
-type ExpansionPanelKeyDownHandler = KeyboardEventHandler<HTMLDivElement>;
+type ExpandedIds = readonly string[]
+type CreateExpandById = (panelId: string) => () => void
+type ExpansionDispatcher = Observable<ExpandedIds>
+type ExpansionPanelKeyDownHandler = KeyboardEventHandler<HTMLDivElement>
 
 type ReturnValue = [
-  readonly ProvidedPanelProps[],
-  ExpansionPanelKeyDownHandler,
-  ExpandedIds,
-  ExpansionDispatcher,
-  CreateExpandById
-];
+    readonly ProvidedPanelProps[],
+    ExpansionPanelKeyDownHandler,
+    ExpandedIds,
+    ExpansionDispatcher,
+    CreateExpandById
+]
 
-type PanelMemo = Pick<ProvidedPanelProps, "id" | "headerRef">;
+type PanelMemo = Pick<ProvidedPanelProps, "id" | "headerRef">
 
 /**
  * @internal
  */
 const attemptFocus = (index: number, panels: readonly PanelMemo[]): void => {
-  const panel = panels[index]?.headerRef.current;
-  if (panel) {
-    panel.focus();
-  }
-};
+    const panel = panels[index]?.headerRef()
+    if (panel) {
+        panel.focus()
+    }
+}
 
 /**
  * This hook is used to control the expansion of a list of panels along with
@@ -171,167 +168,163 @@ const attemptFocus = (index: number, panels: readonly PanelMemo[]): void => {
  * ```
  */
 export function usePanels({
-  idPrefix,
-  count,
-  multiple = false,
-  preventAllClosed = false,
-  defaultExpandedIndex,
+    idPrefix,
+    count,
+    multiple = false,
+    preventAllClosed: pac = false,
+    defaultExpandedIndex: dei,
 }: UsePanelsOptions): ReturnValue {
-  if (process.env.NODE_ENV !== "production") {
-    if (count < 1) {
-      throw new RangeError("The `count` must be greater than `0`");
-    }
+    const defaultExpandedIndex = $$(dei), preventAllClosed = $$(pac)
 
-    if (
-      typeof defaultExpandedIndex === "number" &&
-      defaultExpandedIndex >= count
-    ) {
-      throw new RangeError(
-        "The `defaultExpandedIndex` must be less than or equal to the `count`"
-      );
-    }
-
-    if (typeof defaultExpandedIndex === "number" && defaultExpandedIndex < -1) {
-      throw new RangeError(
-        "The `defaultExpandedIndex` must be greater than or equal to `-1`"
-      );
-    }
-
-    if (Array.isArray(defaultExpandedIndex)) {
-      const greater = defaultExpandedIndex.filter((i) => i > count);
-      if (greater.length) {
-        throw new RangeError(
-          "The `defaultExpandedIndex` array must contain numbers less than the `count`"
-        );
-      }
-
-      const lessThan = defaultExpandedIndex.filter((i) => i < 0);
-      if (lessThan.length) {
-        throw new RangeError(
-          "The `defaultExpandedIndex` array must contain numbers greater than or equal to `0`"
-        );
-      }
-    }
-  }
-
-  const panels = useMemo<readonly PanelMemo[]>(
-    () =>
-      Array.from({ length: count }, (_, i) => ({
-        id: `${idPrefix}-${i + 1}`,
-        headerRef: createRef<HTMLButtonElement>(),
-      })),
-    [idPrefix, count]
-  );
-
-  const [expandedIds, setExpandedIds] = useState<ExpandedIds>(() => {
-    if (typeof defaultExpandedIndex === "undefined") {
-      return preventAllClosed ? [panels[0].id] : [];
-    }
-
-    if (typeof defaultExpandedIndex === "number") {
-      return defaultExpandedIndex === -1
-        ? panels.map(({ id }) => id)
-        : [panels[Math.min(defaultExpandedIndex, panels.length)].id];
-    }
-
-    return panels
-      .filter((_, i) => defaultExpandedIndex.includes(i))
-      .map(({ id }) => id);
-  });
-
-  const createExpandClick: CreateExpandById = (panelId) => () => {
-    setExpandedIds((prevIds) => {
-      const i = prevIds.indexOf(panelId);
-      if (!multiple) {
-        if (prevIds[0] === panelId && prevIds.length === 1) {
-          return preventAllClosed ? prevIds : [];
+    if (process.env.NODE_ENV !== "production") {
+        if (count < 1) {
+            throw new RangeError("The `count` must be greater than `0`")
         }
 
-        return [panelId];
-      }
+        if (
+            typeof defaultExpandedIndex === "number" &&
+            defaultExpandedIndex >= count
+        ) {
+            throw new RangeError(
+                "The `defaultExpandedIndex` must be less than or equal to the `count`"
+            )
+        }
 
-      const nextSelectedIds = prevIds.slice();
-      if (i === -1) {
-        nextSelectedIds.push(panelId);
-      } else {
-        nextSelectedIds.splice(i, 1);
-      }
+        if (typeof defaultExpandedIndex === "number" && defaultExpandedIndex < -1) {
+            throw new RangeError(
+                "The `defaultExpandedIndex` must be greater than or equal to `-1`"
+            )
+        }
 
-      if (preventAllClosed && nextSelectedIds.length === 0) {
-        return [panelId];
-      }
+        if (Array.isArray(defaultExpandedIndex)) {
+            const greater = defaultExpandedIndex.filter((i) => i > count)
+            if (greater.length) {
+                throw new RangeError(
+                    "The `defaultExpandedIndex` array must contain numbers less than the `count`"
+                )
+            }
 
-      return nextSelectedIds;
-    });
-  };
+            const lessThan = defaultExpandedIndex.filter((i) => i < 0)
+            if (lessThan.length) {
+                throw new RangeError(
+                    "The `defaultExpandedIndex` array must contain numbers greater than or equal to `0`"
+                )
+            }
+        }
+    }
 
-  let previousExpanded = false;
-  const panelPropList = panels.map(({ id, headerRef }, i) => {
-    const expanded = expandedIds.includes(id);
-    const marginTop = i > 0 && (expanded || previousExpanded);
-    previousExpanded = expanded;
+    const panels = $$<PanelMemo[]>(() =>
+        Array.from({ length: count }, (_, i) => ({
+            id: `${idPrefix}-${i + 1}`,
+            headerRef: $<HTMLButtonElement>(),
+        })))
 
-    return {
-      id,
-      disabled: expanded && preventAllClosed && expandedIds.length === 1,
-      expanded,
-      headerRef,
-      marginTop,
-      onExpandClick: createExpandClick(id),
-    };
-  });
+    const expandedIds = $<ExpandedIds>($$(() => {
+        if (typeof defaultExpandedIndex === "undefined") {
+            return (preventAllClosed ? [panels[0].id] : []) as ExpandedIds
+        }
 
-  const onKeyDown = useCallback(
-    (event: React.KeyboardEvent<HTMLDivElement>) => {
-      if (event.shiftKey || event.ctrlKey || event.metaKey || event.altKey) {
-        return;
-      }
+        if (typeof defaultExpandedIndex === "number") {
+            return defaultExpandedIndex === -1
+                ? panels.map(({ id }) => id) as ExpandedIds
+                : [panels[Math.min(defaultExpandedIndex, panels.length)].id] as ExpandedIds
+        }
 
-      const { key } = event;
-      const increment = key === "ArrowDown";
-      const decrement = key === "ArrowUp";
-      const jumpToFirst = key === "Home";
-      const jumpToLast = key === "End";
-      if (!increment && !decrement && !jumpToFirst && !jumpToLast) {
-        return;
-      }
+        return panels
+            .filter((_, i) => defaultExpandedIndex.includes(i))
+            .map(({ id }) => id) as ExpandedIds
+    }))
 
-      const currentIndex = panels.findIndex(
-        ({ headerRef }) => event.target === headerRef.current
-      );
-      if (currentIndex === -1) {
-        return;
-      }
+    const createExpandClick: CreateExpandById = (panelId) => () => {
+        expandedIds((prevIds) => {
+            const i = prevIds.indexOf(panelId)
+            if (!multiple) {
+                if (prevIds[0] === panelId && prevIds.length === 1) {
+                    return preventAllClosed ? prevIds : []
+                }
 
-      // don't want page scroll behavior
-      event.preventDefault();
-      if (jumpToFirst) {
-        attemptFocus(0, panels);
-        return;
-      }
+                return [panelId]
+            }
 
-      if (jumpToLast) {
-        attemptFocus(panels.length - 1, panels);
-        return;
-      }
+            const nextSelectedIds = prevIds.slice()
+            if (i === -1) {
+                nextSelectedIds.push(panelId)
+            } else {
+                nextSelectedIds.splice(i, 1)
+            }
 
-      attemptFocus(
-        loop({
-          value: currentIndex,
-          max: panels.length - 1,
-          increment,
-        }),
-        panels
-      );
-    },
-    [panels]
-  );
+            if (preventAllClosed && nextSelectedIds.length === 0) {
+                return [panelId]
+            }
 
-  return [
-    panelPropList,
-    onKeyDown,
-    expandedIds,
-    setExpandedIds,
-    createExpandClick,
-  ];
+            return nextSelectedIds
+        })
+    }
+
+    let previousExpanded = false
+    const panelPropList = panels.map(({ id, headerRef }, i) => {
+        const expanded = expandedIds().includes($$(id))
+        const marginTop = i > 0 && (expanded || previousExpanded)
+        previousExpanded = expanded
+
+        return {
+            id,
+            disabled: expanded && preventAllClosed && expandedIds().length === 1,
+            expanded,
+            headerRef,
+            marginTop,
+            onExpandClick: createExpandClick($$(id)),
+        }
+    })
+
+    const onKeyDown = $((event: JSX.TargetedKeyboardEvent<HTMLDivElement>) => {
+        if (event.shiftKey || event.ctrlKey || event.metaKey || event.altKey) {
+            return
+        }
+
+        const { key } = event
+        const increment = key === "ArrowDown"
+        const decrement = key === "ArrowUp"
+        const jumpToFirst = key === "Home"
+        const jumpToLast = key === "End"
+        if (!increment && !decrement && !jumpToFirst && !jumpToLast) {
+            return
+        }
+
+        const currentIndex = panels.findIndex(
+            ({ headerRef }) => event.target === headerRef()
+        )
+        if (currentIndex === -1) {
+            return
+        }
+
+        // don't want page scroll behavior
+        event.preventDefault()
+        if (jumpToFirst) {
+            attemptFocus(0, panels)
+            return
+        }
+
+        if (jumpToLast) {
+            attemptFocus(panels.length - 1, panels)
+            return
+        }
+
+        attemptFocus(
+            loop({
+                value: currentIndex,
+                max: panels.length - 1,
+                increment,
+            }),
+            panels
+        )
+    })
+
+    return [
+        panelPropList,
+        onKeyDown,
+        expandedIds(),
+        expandedIds,
+        createExpandClick,
+    ]
 }

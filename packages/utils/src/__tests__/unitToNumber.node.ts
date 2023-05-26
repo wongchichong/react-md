@@ -2,6 +2,7 @@
  * @jest-environment node
  */
 
+import { describe, expect, test, it, jest } from 'vitest';
 import { unitToNumber } from "../unitToNumber";
 
 describe("unitToNumber", () => {

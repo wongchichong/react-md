@@ -1,5 +1,40 @@
 {
   "extends": "../../tsconfig.base.json",
-  "compilerOptions": { "noEmit": true, "composite": false },
-  "include": ["src"]
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "declarationDir": "./dist/types"
+  },
+  "exclude": [
+    "vite.config.ts",
+    "vite.config.umd.ts",
+    "./src ori",
+    "**/dist/**",
+    "**/lib/**",
+    "**/types/**",
+    "**/__tests__/**"
+  ],
+  "references": [
+    {
+      "path": "../button"
+    },
+    {
+      "path": "../elevation"
+    },
+    {
+      "path": "../icon"
+    },
+    {
+      "path": "../theme"
+    },
+    {
+      "path": "../typography"
+    },
+    {
+      "path": "../react"
+    },
+    {
+      "path": "../utils"
+    }
+  ]
 }

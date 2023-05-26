@@ -52,7 +52,7 @@ export default function Post({
   summary,
   bullets,
   isLast,
-}: PostProps): ReactElement {
+}: PostProps): Child {
   const href = resolveReadMore(readMore);
 
   return (

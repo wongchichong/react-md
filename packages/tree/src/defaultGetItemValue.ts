@@ -1,6 +1,7 @@
-import type { UnknownTreeItem } from "./types";
+import type { UnknownTreeItem } from "./types"
+import '@react-md/react'
 
-let warnedOnce = false;
+let warnedOnce = false
 
 /**
  * A "reasonable" default implementation for the getItemValue prop on a tree
@@ -10,26 +11,26 @@ let warnedOnce = false;
  * @internal
  */
 export function defaultGetItemValue(
-  item: UnknownTreeItem,
-  valueKey: string
+    item: UnknownTreeItem,
+    valueKey: string
 ): string {
-  const result = item[valueKey];
-  if (process.env.NODE_ENV !== "production") {
-    const type = typeof result;
-    if (!warnedOnce && type !== "string" && type !== "number") {
-      warnedOnce = true;
-      /* eslint-disable no-console */
-      console.warn(
-        "Unable to extract a string or number from an item within the tree for the item:"
-      );
-      console.warn(item);
-      console.warn("");
-      console.warn(
-        "This will make the item unable to be searched by typing within the tree and should be fixed before pushing to production."
-      );
-      console.warn(new Error().stack);
+    const result = item[valueKey]
+    if (process.env.NODE_ENV !== "production") {
+        const type = typeof result
+        if (!warnedOnce && type !== "string" && type !== "number") {
+            warnedOnce = true
+            /* eslint-disable no-console */
+            console.warn(
+                "Unable to extract a string or number from an item within the tree for the item:"
+            )
+            console.warn(item)
+            console.warn("")
+            console.warn(
+                "This will make the item unable to be searched by typing within the tree and should be fixed before pushing to production."
+            )
+            console.warn(new Error().stack)
+        }
     }
-  }
 
-  return `${result}`;
+    return `${result}`
 }

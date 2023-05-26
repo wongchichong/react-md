@@ -1,22 +1,125 @@
 {
+  // "extends": "./tsconfig.base.json", //don't it will recursive
   "compilerOptions": {
     "target": "es5",
     "module": "esnext",
     "sourceMap": true,
+    "tsBuildInfoFile": "./dist/tsconfig.tsbuildinfo",
     "composite": true,
-    "jsx": "react-jsx",
+    "jsx": "preserve",
+    "jsxImportSource": "voby",
     "skipLibCheck": true,
     "strict": true,
     "esModuleInterop": true,
-    "moduleResolution": "node",
+    "moduleResolution": "nodenext",
     "resolveJsonModule": true,
-    "downlevelIteration": true,
+    // "downlevelIteration": true,
     "noFallthroughCasesInSwitch": true,
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "preserveSymlinks": true,
     "noImplicitAny": false,
     "strictNullChecks": false,
-    "lib": ["dom", "dom.iterable", "esnext"]
-  }
+    "declaration": true,
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "types": ["voby/dist/jsx/jsx", "jest"]
+  },
+  "references": [
+    {
+      "path": "./packages/alert"
+    },
+    {
+      "path": "./packages/app-bar"
+    },
+    {
+      "path": "./packages/autocomplete"
+    },
+    {
+      "path": "./packages/avatar"
+    },
+    {
+      "path": "./packages/badge"
+    },
+    {
+      "path": "./packages/button"
+    },
+    {
+      "path": "./packages/card"
+    },
+    {
+      "path": "./packages/chip"
+    },
+    {
+      "path": "./packages/dialog"
+    },
+    {
+      "path": "./packages/divider"
+    },
+    {
+      "path": "./packages/expansion-panel"
+    },
+    {
+      "path": "./packages/form"
+    },
+    {
+      "path": "./packages/icon"
+    },
+    {
+      "path": "./packages/layout"
+    },
+    {
+      "path": "./packages/link"
+    },
+    {
+      "path": "./packages/list"
+    },
+    {
+      "path": "./packages/material-icons"
+    },
+    {
+      "path": "./packages/media"
+    },
+    {
+      "path": "./packages/menu"
+    },
+    {
+      "path": "./packages/overlay"
+    },
+    {
+      "path": "./packages/portal"
+    },
+    {
+      "path": "./packages/progress"
+    },
+    {
+      "path": "./packages/react-md"
+    },
+    {
+      "path": "./packages/sheet"
+    },
+    {
+      "path": "./packages/states"
+    },
+    {
+      "path": "./packages/table"
+    },
+    {
+      "path": "./packages/tabs"
+    },
+    {
+      "path": "./packages/tooltip"
+    },
+    {
+      "path": "./packages/transition"
+    },
+    {
+      "path": "./packages/tree"
+    },
+    {
+      "path": "./packages/typography"
+    },
+    {
+      "path": "./packages/utils"
+    }
+  ]
 }

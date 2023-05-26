@@ -1,25 +1,25 @@
-import type { ReactElement, Ref } from "react";
+import type { Observable } from 'voby'
 
-export type Maybe<T, NotFound = null> = T | NotFound;
+export type Maybe<T, NotFound = null> = T | NotFound
 
 /**
  * A helper type that allows an optional `ref` to also be applied with a props
  * object even though a `ref` isn't a real prop.
  */
 export type PropsWithRef<P extends {}, E extends HTMLElement> = P & {
-  /**
-   * An optional ref that can be applied.
-   */
-  ref?: Ref<E>;
-};
+    /**
+     * An optional ref that can be applied.
+     */
+    ref?: Observable<E>
+}
 
 /**
  * A simple type that can be used for different components that clone a
  * `className` into a child component.
  */
-export type ClassNameCloneableChild<T = {}> = ReactElement<
-  T & { className?: string }
->;
+export type ClassNameCloneableChild<T = {}> = //ReactElement<
+    T & { className?: Class }
+// >
 
 /**
  * This type allows you to require at least one of the provided keys. This is
@@ -28,17 +28,14 @@ export type ClassNameCloneableChild<T = {}> = ReactElement<
  *
  * @see https://stackoverflow.com/questions/40510611/typescript-interface-require-one-of-two-properties-to-exist/49725198#49725198
  */
-export type RequireAtLeastOne<T, Keys extends keyof T = keyof T> = Pick<
-  T,
-  Exclude<keyof T, Keys>
-> &
-  {
-    [K in Keys]-?: Required<Pick<T, K>> & Partial<Pick<T, Exclude<Keys, K>>>;
-  }[Keys];
+export type RequireAtLeastOne<T, Keys extends keyof T = keyof T> = Pick<T, Exclude<keyof T, Keys>> &
+    {
+        [K in Keys]-?: Required<Pick<T, K>> & Partial<Pick<T, Exclude<Keys, K>>>
+    }[Keys]
 
 export interface LabelA11y {
-  "aria-label"?: string;
-  "aria-labelledby"?: string;
+    "aria-label"?: FunctionMaybe<Nullable<string>>
+    "aria-labelledby"?: FunctionMaybe<Nullable<string>>
 }
 
 /**
@@ -46,14 +43,14 @@ export interface LabelA11y {
  * `aria-labelledby` have been provided to a component.
  */
 export type LabelRequiredForA11y<Props extends LabelA11y> = RequireAtLeastOne<
-  Props,
-  keyof LabelA11y
->;
+    Props,
+    keyof LabelA11y
+>
 
 /**
  * @remarks \@since 5.0.0
  * @internal
  */
-export interface NonNullRef<T> {
-  readonly current: T;
-}
+// export interface NonNullRef<T> {
+//   readonly current: T;
+// }

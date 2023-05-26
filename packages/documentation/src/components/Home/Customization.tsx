@@ -16,7 +16,7 @@ import LinkButton from "components/LinkButton";
 import customization from "./customization.svg";
 import JumpStartCard from "./JumpStartCard";
 
-export default function GettingStarted(): ReactElement {
+export default function GettingStarted(): Child {
   return (
     <JumpStartCard>
       <CardHeader>

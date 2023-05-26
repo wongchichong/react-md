@@ -21,7 +21,7 @@ const demos = [
   },
 ];
 
-export default function Avatar(): ReactElement {
+export default function Avatar(): Child {
   return (
     <DemoPage demos={demos} packageName="avatar" fonts={["Material Icons"]} />
   );

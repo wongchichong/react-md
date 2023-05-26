@@ -1,11 +1,11 @@
-import type { MutableRefObject } from "react";
-import { useCallback, useRef } from "react";
+import type { ObservableMaybe } from 'voby'
+import { $ } from 'voby'
 
-type CurrentValueRef<T> = MutableRefObject<T>;
-type SetValue<T> = (nextValue: T) => void;
-type ResetValue = () => void;
+type CurrentValueRef<T> = ObservableMaybe<T>
+type SetValue<T> = (nextValue: T) => void
+type ResetValue = () => void
 
-type ReturnValue<T> = [CurrentValueRef<T>, SetValue<T>, ResetValue];
+type ReturnValue<T> = [CurrentValueRef<T>, SetValue<T>, ResetValue]
 
 /**
  * Creates a temporary value that gets reset every `x`ms back to the provided
@@ -22,24 +22,21 @@ type ReturnValue<T> = [CurrentValueRef<T>, SetValue<T>, ResetValue];
  * default value
  */
 export function useTempValue<T>(
-  defaultValue: T,
-  resetTime = 500
+    defaultValue: T,
+    resetTime = 500
 ): ReturnValue<T> {
-  const value = useRef(defaultValue);
-  const timeout = useRef<number>();
-  const resetValue = useCallback(() => {
-    window.clearTimeout(timeout.current);
-    value.current = defaultValue;
-  }, [defaultValue]);
+    const value = $(defaultValue)
+    const timeout = $<number>()
+    const resetValue = $(() => {
+        window.clearTimeout(timeout())
+        value(defaultValue)
+    })
 
-  const setValue = useCallback(
-    (nextValue: T) => {
-      value.current = nextValue;
-      window.clearTimeout(timeout.current);
-      timeout.current = window.setTimeout(resetValue, resetTime);
-    },
-    [resetTime, resetValue]
-  );
+    const setValue = $((nextValue: T) => {
+        value(nextValue)
+        window.clearTimeout(timeout())
+        timeout(window.setTimeout(resetValue, resetTime))
+    })
 
-  return [value, setValue, resetValue];
+    return [value, setValue, resetValue]
 }

@@ -12,7 +12,7 @@ export interface SectionTitleProps {
 export default function SectionTitle({
   packageName,
   type,
-}: SectionTitleProps): ReactElement {
+}: SectionTitleProps): Child {
   return (
     <Heading
       id={`${packageName}-${type.toLowerCase()}`}

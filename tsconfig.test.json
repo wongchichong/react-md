@@ -1,8 +1,8 @@
 {
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
-    "target": "es5",
-    "module": "commonjs",
+    "target": "ESNext",
+    "module": "ESNext",
     "composite": false,
     "baseUrl": ".",
     "paths": {
@@ -12,12 +12,13 @@
       "icons/*": ["packages/documentation/src/icons/*"],
       "pages/*": ["packages/documentation/src/pages/*"],
       "utils/*": ["packages/documentation/src/utils/*"]
-    }
+    },
+    "types": ["voby/dist/jsx/jsx", "node", "jest"]
   },
   "files": [
     "packages/documentation/src/types/next.d.ts",
     "packages/documentation/src/types/custom.d.ts"
   ],
-  "include": ["packages/*/src"],
+  "include": ["packages/*/src", "./testSetup/init.ts"],
   "exclude": ["packages/dev-utils"]
 }

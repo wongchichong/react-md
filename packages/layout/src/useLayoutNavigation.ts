@@ -1,43 +1,42 @@
-import type { ElementType } from "react";
-import { useEffect } from "react";
-import { Link } from "@react-md/link";
+import { useEffect } from 'voby'
+import { Link } from "@react-md/link"
 import type {
-  BaseTreeItem,
-  TreeData,
-  TreeItemExpansion,
-  TreeItemId,
-  TreeItemSelection,
-} from "@react-md/tree";
-import { getItemsFrom, useTreeItemExpansion } from "@react-md/tree";
+    BaseTreeItem,
+    TreeData,
+    TreeItemExpansion,
+    TreeItemId,
+    TreeItemSelection,
+} from "@react-md/tree"
+import { getItemsFrom, useTreeItemExpansion } from "@react-md/tree"
 
-import type { LayoutNavigationItem, LayoutNavigationTree } from "./types";
+import type { LayoutNavigationItem, LayoutNavigationTree } from "./types"
 
 export interface LayoutNavigationState<
-  T extends BaseTreeItem = LayoutNavigationItem
+    T extends BaseTreeItem = LayoutNavigationItem
 > extends TreeItemSelection,
     TreeItemExpansion {
-  /**
-   * The navigation items to use that will be passed to the `Tree` component
-   * from `@react-md/tree`
-   */
-  navItems: LayoutNavigationTree<T>;
+    /**
+     * The navigation items to use that will be passed to the `Tree` component
+     * from `@react-md/tree`
+     */
+    navItems: LayoutNavigationTree<T>
 
-  /**
-   * The link component to use when a nav item is clicked. This defaults to the
-   * `Link` component from `@react-md/link`, but can also be a `Link` from
-   * `react-router` or another routing library.
-   */
-  linkComponent: ElementType;
+    /**
+     * The link component to use when a nav item is clicked. This defaults to the
+     * `Link` component from `@react-md/link`, but can also be a `Link` from
+     * `react-router` or another routing library.
+     */
+    linkComponent: Component
 }
 
 /**
  * @internal
  */
 const getParentIds = (
-  itemId: TreeItemId,
-  navItems: TreeData<BaseTreeItem>
+    itemId: TreeItemId,
+    navItems: TreeData<BaseTreeItem>
 ): readonly TreeItemId[] =>
-  getItemsFrom(navItems, itemId).map(({ itemId }) => itemId);
+    getItemsFrom(navItems, itemId).map(({ itemId }) => itemId)
 
 /**
  * This is used to disable the item select and multi item select functionality
@@ -47,8 +46,8 @@ const getParentIds = (
  * @internal
  */
 const noop = (): void => {
-  // do nothing
-};
+    // do nothing
+}
 
 /**
  * This used to just be `pathname.replace(/\?.*$/, "")` but that can apparently
@@ -58,13 +57,13 @@ const noop = (): void => {
  * @remarks \@since 2.9.0
  */
 const removeQueryParams = (pathname: string): string => {
-  const i = pathname.indexOf("?");
-  if (i === -1) {
-    return pathname;
-  }
+    const i = pathname.indexOf("?")
+    if (i === -1) {
+        return pathname
+    }
 
-  return pathname.substring(0, i);
-};
+    return pathname.substring(0, i)
+}
 
 /**
  * This is a pretty reasonable default implementation for having a navigation
@@ -90,43 +89,43 @@ const removeQueryParams = (pathname: string): string => {
  * should be passed to the `Layout` component.
  */
 export function useLayoutNavigation<
-  T extends BaseTreeItem = LayoutNavigationItem
+    T extends BaseTreeItem = LayoutNavigationItem
 >(
-  navItems: LayoutNavigationTree<T>,
-  pathname: string,
-  linkComponent: ElementType = Link
+    navItems: LayoutNavigationTree<T>,
+    pathname: string,
+    linkComponent: Component = Link
 ): LayoutNavigationState<T> {
-  const itemId = removeQueryParams(pathname);
-  const { expandedIds, onItemExpansion, onMultiItemExpansion } =
-    useTreeItemExpansion(() => getParentIds(itemId, navItems));
+    const itemId = removeQueryParams(pathname)
+    const { expandedIds, onItemExpansion, onMultiItemExpansion } =
+        useTreeItemExpansion(() => getParentIds(itemId, navItems))
 
-  useEffect(() => {
-    onMultiItemExpansion((prevExpandedIds) => {
-      const nextExpandedIds = [
-        ...new Set([...prevExpandedIds, ...getParentIds(itemId, navItems)]),
-      ];
-      if (nextExpandedIds.length !== prevExpandedIds.length) {
-        return nextExpandedIds;
-      }
+    useEffect(() => {
+        onMultiItemExpansion((prevExpandedIds) => {
+            const nextExpandedIds = [
+                ...new Set([...prevExpandedIds, ...getParentIds(itemId, navItems)]),
+            ]
+            if (nextExpandedIds.length !== prevExpandedIds.length) {
+                return nextExpandedIds
+            }
 
-      const prevSorted = prevExpandedIds.slice().sort();
-      const nextSorted = nextExpandedIds.slice().sort();
+            const prevSorted = prevExpandedIds.slice().sort()
+            const nextSorted = nextExpandedIds.slice().sort()
 
-      return nextSorted.some((itemId, index) => itemId !== prevSorted[index])
-        ? nextSorted
-        : prevSorted;
-    });
-  }, [itemId, navItems, onMultiItemExpansion]);
+            return nextSorted.some((itemId, index) => itemId !== prevSorted[index])
+                ? nextSorted
+                : prevSorted
+        })
+    })
 
-  return {
-    navItems,
-    multiSelect: false,
-    selectedIds: [itemId],
-    onItemSelect: noop,
-    onMultiItemSelect: noop,
-    expandedIds,
-    onItemExpansion,
-    onMultiItemExpansion,
-    linkComponent,
-  };
+    return {
+        navItems,
+        multiSelect: false,
+        selectedIds: [itemId],
+        onItemSelect: noop,
+        onMultiItemSelect: noop,
+        expandedIds,
+        onItemExpansion,
+        onMultiItemExpansion,
+        linkComponent,
+    }
 }

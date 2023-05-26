@@ -1,5 +1,3 @@
-import type { ReactNode } from "react";
-
 /**
  * A function that can be used to dynamically get an error icon based on the
  * current visible error.
@@ -12,11 +10,7 @@ import type { ReactNode } from "react";
  * @returns An icon to render or falsey to render nothing.
  * @remarks \@since 2.5.0
  */
-export type GetErrorIcon = (
-  errorMessage: string,
-  error: boolean,
-  errorIcon: ReactNode
-) => ReactNode;
+export type GetErrorIcon = (errorMessage: string, error: boolean, errorIcon: Child) => Child
 
 /**
  * The default implementation for showing an error icon in `TextField` and
@@ -24,5 +18,4 @@ export type GetErrorIcon = (
  *
  * @remarks \@since 2.5.0
  */
-export const defaultGetErrorIcon: GetErrorIcon = (_message, error, errorIcon) =>
-  error && errorIcon;
+export const defaultGetErrorIcon: GetErrorIcon = (_message, error, errorIcon) => error && errorIcon

@@ -1,48 +1,44 @@
-import type { XCoordConfig } from "./getCoord";
+import { $$ } from "voby"
+import type { XCoordConfig } from "./getCoord"
 import {
-  getCenterXCoord,
-  getInnerLeftCoord,
-  getInnerRightCoord,
-  getLeftCoord,
-  getRightCoord,
-} from "./getCoord";
-import type { FixedPositionOptions, HorizontalPosition } from "./types";
+    getCenterXCoord,
+    getInnerLeftCoord,
+    getInnerRightCoord,
+    getLeftCoord,
+    getRightCoord,
+} from "./getCoord"
+import type { FixedPositionOptions, HorizontalPosition } from "./types"
 
 /**
  * @internal
  */
 interface XPosition {
-  left: number;
-  right?: number;
-  width?: number;
-  minWidth?: number;
-  actualX: HorizontalPosition;
+    left?: FunctionMaybe<Nullable<number>>
+    right?: FunctionMaybe<Nullable<number>>
+    width?: FunctionMaybe<Nullable<number>>
+    minWidth?: FunctionMaybe<Nullable<number>>
+    actualX: FunctionMaybe<HorizontalPosition>
 }
 
 /**
  * @internal
  */
 export interface FixConfig extends XCoordConfig {
-  vwMargin: number;
-  screenRight: number;
-  disableSwapping: boolean;
+    vwMargin: FunctionMaybe<number>
+    screenRight: FunctionMaybe<number>
+    disableSwapping: FunctionMaybe<boolean>
 }
 
 /**
  * @internal
  */
 interface Options
-  extends Required<
-    Pick<
-      FixedPositionOptions,
-      "vwMargin" | "xMargin" | "width" | "disableSwapping"
-    >
-  > {
-  x: HorizontalPosition;
-  vw: number;
-  elWidth: number;
-  initialX?: number;
-  containerRect: DOMRect;
+    extends Required<Pick<FixedPositionOptions, "vwMargin" | "xMargin" | "width" | "disableSwapping">> {
+    x: FunctionMaybe<HorizontalPosition>
+    vw: FunctionMaybe<number>
+    elWidth: FunctionMaybe<number>
+    initialX?: FunctionMaybe<Nullable<number>>
+    containerRect: FunctionMaybe<DOMRect>
 }
 
 /**
@@ -56,23 +52,24 @@ interface Options
  * @internal
  */
 export function createAnchoredLeft(config: FixConfig): XPosition {
-  const { vwMargin, screenRight, elWidth, disableSwapping } = config;
+    const { vwMargin: vm, screenRight: sr, elWidth: ew, disableSwapping: ds } = config
+    const vwMargin = $$(vm), screenRight = $$(sr), elWidth = $$(ew), disableSwapping = $$(ds)
 
-  let left = getLeftCoord(config);
-  let actualX: HorizontalPosition = "left";
-  if (left >= vwMargin) {
-    return { actualX, left };
-  }
+    let left = getLeftCoord(config)
+    let actualX: HorizontalPosition = "left"
+    if (left >= vwMargin) {
+        return { actualX, left }
+    }
 
-  const swappedLeft = getRightCoord(config);
-  if (disableSwapping || swappedLeft + elWidth > screenRight) {
-    left = vwMargin;
-  } else {
-    left = swappedLeft;
-    actualX = "right";
-  }
+    const swappedLeft = getRightCoord(config)
+    if (disableSwapping || swappedLeft + elWidth > screenRight) {
+        left = vwMargin
+    } else {
+        left = swappedLeft
+        actualX = "right"
+    }
 
-  return { actualX, left };
+    return { actualX, left }
 }
 
 /**
@@ -86,36 +83,37 @@ export function createAnchoredLeft(config: FixConfig): XPosition {
  * @internal
  */
 export function createAnchoredInnerLeft(config: FixConfig): XPosition {
-  const { vwMargin, screenRight, elWidth, disableSwapping } = config;
+    const { vwMargin: vm, screenRight: sr, elWidth: ew, disableSwapping: ds } = config
+    const vwMargin = $$(vm), screenRight = $$(sr), elWidth = $$(ew), disableSwapping = $$(ds)
 
-  let left = getInnerLeftCoord(config);
-  let actualX: HorizontalPosition = "inner-left";
-  if (left + elWidth <= screenRight && left >= vwMargin) {
-    return { actualX, left };
-  }
-
-  if (disableSwapping) {
-    if (left + elWidth > screenRight) {
-      left = screenRight - elWidth;
-    } else {
-      left = vwMargin;
+    let left = getInnerLeftCoord(config)
+    let actualX: HorizontalPosition = "inner-left"
+    if (left + elWidth <= screenRight && left >= vwMargin) {
+        return { actualX, left }
     }
 
-    return { actualX, left };
-  }
+    if (disableSwapping) {
+        if (left + elWidth > screenRight) {
+            left = screenRight - elWidth
+        } else {
+            left = vwMargin
+        }
 
-  const swappedLeft = getInnerRightCoord(config);
-  if (swappedLeft < vwMargin) {
-    left = vwMargin;
-  } else if (swappedLeft + elWidth > screenRight) {
-    left = screenRight - elWidth;
-    actualX = "inner-right";
-  } else {
-    left = swappedLeft;
-    actualX = "inner-right";
-  }
+        return { actualX, left }
+    }
 
-  return { actualX, left };
+    const swappedLeft = getInnerRightCoord(config)
+    if (swappedLeft < vwMargin) {
+        left = vwMargin
+    } else if (swappedLeft + elWidth > screenRight) {
+        left = screenRight - elWidth
+        actualX = "inner-right"
+    } else {
+        left = swappedLeft
+        actualX = "inner-right"
+    }
+
+    return { actualX, left }
 }
 
 /**
@@ -128,15 +126,17 @@ export function createAnchoredInnerLeft(config: FixConfig): XPosition {
  * @internal
  */
 export function createAnchoredCenter(config: FixConfig): XPosition {
-  const { vwMargin, screenRight, elWidth } = config;
-  let left = getCenterXCoord(config);
-  if (left < vwMargin) {
-    left = vwMargin;
-  } else if (left + elWidth > screenRight || left < vwMargin) {
-    left = screenRight - elWidth;
-  }
+    const { vwMargin: vm, screenRight: sr, elWidth: ew } = config
+    const vwMargin = $$(vm), screenRight = $$(sr), elWidth = $$(ew)
 
-  return { actualX: "center", left };
+    let left = getCenterXCoord(config)
+    if (left < vwMargin) {
+        left = vwMargin
+    } else if (left + elWidth > screenRight || left < vwMargin) {
+        left = screenRight - elWidth
+    }
+
+    return { actualX: "center", left }
 }
 
 /**
@@ -150,23 +150,24 @@ export function createAnchoredCenter(config: FixConfig): XPosition {
  * @internal
  */
 export function createAnchoredInnerRight(config: FixConfig): XPosition {
-  const { screenRight, vwMargin, elWidth, disableSwapping } = config;
+    const { vwMargin: vm, screenRight: sr, elWidth: ew, disableSwapping: ds } = config
+    const vwMargin = $$(vm), screenRight = $$(sr), elWidth = $$(ew), disableSwapping = $$(ds)
 
-  let left = getInnerRightCoord(config);
-  let actualX: HorizontalPosition = "inner-right";
-  if (left >= vwMargin) {
-    return { actualX, left: Math.min(left, screenRight - elWidth) };
-  }
+    let left = getInnerRightCoord(config)
+    let actualX: HorizontalPosition = "inner-right"
+    if (left >= vwMargin) {
+        return { actualX, left: Math.min(left, screenRight - elWidth) }
+    }
 
-  const swappedLeft = getInnerLeftCoord(config);
-  if (disableSwapping || swappedLeft + elWidth > screenRight) {
-    left = vwMargin;
-  } else {
-    left = Math.max(swappedLeft, vwMargin);
-    actualX = "inner-left";
-  }
+    const swappedLeft = getInnerLeftCoord(config)
+    if (disableSwapping || swappedLeft + elWidth > screenRight) {
+        left = vwMargin
+    } else {
+        left = Math.max(swappedLeft, vwMargin)
+        actualX = "inner-left"
+    }
 
-  return { actualX, left };
+    return { actualX, left }
 }
 
 /**
@@ -180,74 +181,78 @@ export function createAnchoredInnerRight(config: FixConfig): XPosition {
  * @internal
  */
 export function createAnchoredRight(config: FixConfig): XPosition {
-  const { screenRight, vwMargin, elWidth, disableSwapping } = config;
+    const { vwMargin: vm, screenRight: sr, elWidth: ew, disableSwapping: ds } = config
+    const vwMargin = $$(vm), screenRight = $$(sr), elWidth = $$(ew), disableSwapping = $$(ds)
 
-  let left = getRightCoord(config);
-  let actualX: HorizontalPosition = "right";
-  if (left + elWidth <= screenRight) {
-    return { actualX, left };
-  }
+    let left = getRightCoord(config)
+    let actualX: HorizontalPosition = "right"
+    if (left + elWidth <= screenRight) {
+        return { actualX, left }
+    }
 
-  const swappedLeft = getLeftCoord(config);
-  if (disableSwapping || swappedLeft < vwMargin) {
-    left = screenRight - elWidth;
-  } else {
-    left = swappedLeft;
-    actualX = "left";
-  }
+    const swappedLeft = getLeftCoord(config)
+    if (disableSwapping || swappedLeft < vwMargin) {
+        left = screenRight - elWidth
+    } else {
+        left = swappedLeft
+        actualX = "left"
+    }
 
-  return { actualX, left };
+    return { actualX, left }
 }
 
 interface EqualWidthOptions
-  extends Pick<
-    Options,
-    | "x"
-    | "vw"
-    | "elWidth"
-    | "xMargin"
-    | "vwMargin"
-    | "containerRect"
-    | "initialX"
-  > {
-  isMinWidth: boolean;
+    extends Pick<
+        Options,
+        | "x"
+        | "vw"
+        | "elWidth"
+        | "xMargin"
+        | "vwMargin"
+        | "containerRect"
+        | "initialX"
+    > {
+    isMinWidth: FunctionMaybe<boolean>
 }
 
 /**
  * @internal
  */
 export function createEqualWidth({
-  x,
-  vw,
-  elWidth,
-  xMargin,
-  vwMargin,
-  initialX,
-  containerRect,
-  isMinWidth,
+    x,
+    vw: vw_,
+    elWidth: ew,
+    xMargin: xm,
+    vwMargin: vm,
+    initialX: ix,
+    containerRect: cr,
+    isMinWidth,
 }: EqualWidthOptions): XPosition {
-  const left = initialX ?? containerRect.left + xMargin;
+    const containerRect = $$(cr)
+    const vwMargin = $$(vm), elWidth = $$(ew), xMargin = $$(vm), vw = $$(vw_), initialX = $$(ix)
 
-  let width: number | undefined = containerRect.width - xMargin * 2;
-  let minWidth: number | undefined;
-  let right: number | undefined;
-  if (isMinWidth) {
-    minWidth = width;
-    width = undefined;
-    if (left + elWidth > vw - vwMargin) {
-      right = vwMargin;
+    const left = initialX ?? containerRect.left + xMargin
+
+    let width: number | undefined = containerRect.width - xMargin * 2
+    let minWidth: number | undefined
+    let right: number | undefined
+    if (isMinWidth) {
+        minWidth = width
+        width = undefined
+        if (left + elWidth > vw - vwMargin) {
+            right = vwMargin
+        }
     }
-  }
 
-  // going to assume that the container element is visible in the DOM and just
-  // make the fixed element have the same left and right corners
-  return {
-    left,
-    right,
-    width,
-    minWidth,
-    actualX: x,
-  };
+    // going to assume that the container element is visible in the DOM and just
+    // make the fixed element have the same left and right corners
+    return {
+        left,
+        right,
+        width,
+        minWidth,
+        actualX: x,
+    }
 }
 
 /**
@@ -256,60 +261,64 @@ export function createEqualWidth({
  * @internal
  */
 export function createHorizontalPosition({
-  x,
-  vw,
-  vwMargin,
-  xMargin,
-  width,
-  elWidth,
-  initialX,
-  containerRect,
-  disableSwapping,
-}: Options): XPosition {
-  if (width === "min" || width === "equal") {
-    return createEqualWidth({
-      x,
-      vw,
-      vwMargin,
-      xMargin,
-      elWidth,
-      initialX,
-      containerRect,
-      isMinWidth: width === "min",
-    });
-  }
-
-  if (elWidth > vw - vwMargin * 2) {
-    // if the element's width is greater than the viewport's width minus the
-    // margin on both sides, just make the element span the entire viewport with
-    // the margin
-    return {
-      left: vwMargin,
-      right: vwMargin,
-      actualX: x,
-    };
-  }
-
-  const config: FixConfig = {
-    vwMargin,
+    x,
+    vw: vw_,
+    vwMargin: vm,
     xMargin,
-    elWidth,
+    width,
+    elWidth: ew,
     initialX,
-    screenRight: vw - vwMargin,
     containerRect,
     disableSwapping,
-  };
+}: Options): XPosition {
+    const elWidth = $$(ew), vw = $$(vw_), vwMargin = $$(vm)
 
-  switch (x) {
-    case "left":
-      return createAnchoredLeft(config);
-    case "inner-left":
-      return createAnchoredInnerLeft(config);
-    case "center":
-      return createAnchoredCenter(config);
-    case "inner-right":
-      return createAnchoredInnerRight(config);
-    case "right":
-      return createAnchoredRight(config);
-  }
+    if (width === "min" || width === "equal") {
+        return createEqualWidth({
+            x,
+            vw,
+            vwMargin,
+            xMargin,
+            elWidth,
+            initialX,
+            containerRect,
+            isMinWidth: width === "min",
+        })
+    }
+
+    if (elWidth > vw - vwMargin * 2) {
+        // if the element's width is greater than the viewport's width minus the
+        // margin on both sides, just make the element span the entire viewport with
+        // the margin
+        return {
+            left: vwMargin,
+            right: vwMargin,
+            actualX: x,
+        }
+    }
+
+    const config: FixConfig = {
+        vwMargin,
+        xMargin,
+        elWidth,
+        initialX,
+        screenRight: vw - vwMargin,
+        containerRect,
+        disableSwapping,
+    }
+
+    switch (x) {
+        case "left":
+            return createAnchoredLeft(config)
+        case "inner-left":
+            return createAnchoredInnerLeft(config)
+        case "center":
+            return createAnchoredCenter(config)
+        case "inner-right":
+            return createAnchoredInnerRight(config)
+        case "right":
+            return createAnchoredRight(config)
+    }
+
+    throw new Error('Invalid x')
 }

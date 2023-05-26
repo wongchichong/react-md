@@ -3,7 +3,7 @@ import { useState } from "react";
 import { AsyncSwitch, Checkbox, useChecked } from "@react-md/form";
 import { useTimeout } from "@react-md/utils";
 
-export default function AsyncSwitchExample(): ReactElement {
+export default function AsyncSwitchExample(): Child {
   const [loading, setLoading] = useState(false);
   const [checked, setChecked] = useState(false);
   const [fail, handleFailChange] = useChecked(false);

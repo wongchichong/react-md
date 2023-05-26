@@ -1,10 +1,10 @@
-import { forwardRef } from "react";
 
-import type { BaseMenuItemInputToggleProps } from "./MenuItemInputToggle";
-import { MenuItemInputToggle } from "./MenuItemInputToggle";
+
+import type { BaseMenuItemInputToggleProps } from "./MenuItemInputToggle"
+import { MenuItemInputToggle } from "./MenuItemInputToggle"
 
 /** @remarks \@since 2.8.0 */
-export type MenuItemSwitchProps = Omit<BaseMenuItemInputToggleProps, "icon">;
+export type MenuItemSwitchProps = Omit<BaseMenuItemInputToggleProps, "icon">
 
 /**
  * This is a simple wrapper for the {@link MenuItemInputToggle} component to
@@ -17,7 +17,7 @@ export type MenuItemSwitchProps = Omit<BaseMenuItemInputToggleProps, "icon">;
  * import { DropdownMenu } from "@react-md/menu";
  * import { MenuItemSwitch } from "@react-md/form";
  *
- * function Example(): ReactElement {
+ * function Example(): Child {
  *   const [checked, setChecked] = useState(false);
  *
  *   return (
@@ -36,8 +36,6 @@ export type MenuItemSwitchProps = Omit<BaseMenuItemInputToggleProps, "icon">;
  *
  * @remarks \@since 2.8.0
  */
-export const MenuItemSwitch = forwardRef<HTMLLIElement, MenuItemSwitchProps>(
-  function MenuItemSwitch(props, ref) {
-    return <MenuItemInputToggle {...props} ref={ref} type="switch" />;
-  }
-);
+export const MenuItemSwitch = ({ ref, ...props }: MenuItemSwitchProps) => <MenuItemInputToggle {...props} ref={ref} type="switch" />
+
+

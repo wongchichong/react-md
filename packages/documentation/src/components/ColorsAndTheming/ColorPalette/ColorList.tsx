@@ -13,7 +13,7 @@ interface ColorListProps {
 export default function ColorList({
   baseColor,
   colors,
-}: ColorListProps): ReactElement {
+}: ColorListProps): Child {
   const baseName = `rmd-${baseColor}-500`;
   const baseValue = (colors.find((c) => c.name === baseName) || colors[6])
     .value;

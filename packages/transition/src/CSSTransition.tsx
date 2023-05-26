@@ -1,12 +1,11 @@
-import type { ReactElement } from "react";
-import { Children, cloneElement } from "react";
-import cn from "classnames";
+import { cloneElement } from 'voby'
+import { Children } from '@react-md/react'
 
 import type {
   CSSTransitionComponentImplementation,
   CSSTransitionHookOptions,
-} from "./types";
-import { useCSSTransition } from "./useCSSTransition";
+} from "./types"
+import { useCSSTransition } from "./useCSSTransition"
 
 /**
  * @typeParam E - An HTMLElement type used for the ref required for the
@@ -15,7 +14,7 @@ import { useCSSTransition } from "./useCSSTransition";
  */
 export interface CSSTransitionProps<E extends HTMLElement>
   extends CSSTransitionHookOptions<E>,
-    CSSTransitionComponentImplementation<E> {}
+  CSSTransitionComponentImplementation<E> { }
 
 /**
  * This is a component implementation of the {@link useCSSTransition} hook that
@@ -50,7 +49,7 @@ export interface CSSTransitionProps<E extends HTMLElement>
  * //   transition: opacity .3s;
  * // }
  *
- * function Example(): ReactElement {
+ * function Example(): Element {
  *   const [transitionIn, setTransitionIn] = useState(false);
  *
  *   return (
@@ -81,16 +80,17 @@ export function CSSTransition<E extends HTMLElement>({
   children,
   className,
   ...options
-}: CSSTransitionProps<E>): ReactElement | null {
-  const child = Children.only(children);
+}: CSSTransitionProps<E>): Element {
+  const child = Children.only(children)
   const { elementProps, rendered } = useCSSTransition({
     ...options,
-    className: cn(child.props.className, className),
-  });
+    //@ts-ignore
+    className: [child.className, className],
+  })
 
   if (!rendered) {
-    return null;
+    return null
   }
 
-  return cloneElement(children, elementProps);
+  return cloneElement(children, elementProps) as any as Element
 }

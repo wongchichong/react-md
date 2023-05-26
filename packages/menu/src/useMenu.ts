@@ -1,35 +1,34 @@
 import type {
-  KeyboardEventHandler,
-  MouseEventHandler,
-  MutableRefObject,
-} from "react";
-import { useEffect, useRef } from "react";
-import type { FABPosition } from "@react-md/button";
-import { useFixedPositioning } from "@react-md/transition";
+  // KeyboardEventHandler,
+  // MouseEventHandler,
+  ObservableMaybe,
+} from 'voby'
+import { useEffect, $, $$ } from 'voby'
+import type { FABPosition } from "@react-md/button"
+import { useFixedPositioning } from "@react-md/transition"
 import {
   containsElement,
   useIsUserInteractionMode,
   useScrollLock,
-} from "@react-md/utils";
+} from "@react-md/utils"
 
-import { useMenuBarContext } from "./MenuBarProvider";
+import { useMenuBarContext } from "./MenuBarProvider"
 import type {
   BaseMenuHookOptions,
   BaseMenuHookReturnValue,
   ProvidedMenuToggleProps,
-} from "./types";
-import { getDefaultAnchor, noop } from "./utils";
+} from "./types"
+import { getDefaultAnchor, noop } from "./utils"
 
 /** @remarks \@since 5.0.0 */
-export interface MenuHookOptions<ToggleEl extends HTMLElement>
-  extends BaseMenuHookOptions {
+export interface MenuHookOptions<ToggleEl extends HTMLElement> extends BaseMenuHookOptions {
   /**
    * Boolean if the toggle component is currently disabled which will prevent
    * the arrow keys from opening a menuitem's menu.
    *
    * @defaultValue `false`
    */
-  disabled?: boolean;
+  disabled?: FunctionMaybe<Nullable<boolean>>
 
   /**
    * This is just used to update the default anchor behavior.
@@ -37,13 +36,13 @@ export interface MenuHookOptions<ToggleEl extends HTMLElement>
    * @see {@link FABPosition}
    * @defaultValue `null`
    */
-  floating?: FABPosition;
+  floating?: FunctionMaybe<Nullable<FABPosition>>
 
   /**
    * An optional click handler to merge with the
    * {@link MenuHookReturnValue.onClick} behavior.
    */
-  onMenuClick?: MouseEventHandler<HTMLDivElement>;
+  onMenuClick?: ObservableMaybe<MouseEventHandler<HTMLDivElement>>
 
   /**
    * An optional keydown handler to merge with the
@@ -51,32 +50,32 @@ export interface MenuHookOptions<ToggleEl extends HTMLElement>
    * `event.stopPropagation()` will prevent the default behavior of closing the
    * menu when the `"Escape"` key is pressed.
    */
-  onMenuKeyDown?: KeyboardEventHandler<HTMLDivElement>;
+  onMenuKeyDown?: ObservableMaybe<KeyboardEventHandler<HTMLDivElement>>
 
   /**
    * An optional click handler to merge with the toggle visibility behavior.
    * Calling `event.stopPropagation()` will prevent the default behavior from
    * occurring.
    */
-  onToggleClick?: MouseEventHandler<ToggleEl>;
+  onToggleClick?: ObservableMaybe<MouseEventHandler<ToggleEl>>
 
   /**
    * An optional keydown handler to merge with the
    * {@link ProvidedMenuToggleProps.onKeyDown} behavior.
    */
-  onToggleKeyDown?: KeyboardEventHandler<ToggleEl>;
+  onToggleKeyDown?: ObservableMaybe<KeyboardEventHandler<ToggleEl>>
 
   /**
    * An optional keydown handler to merge with the
    * {@link ProvidedMenuToggleProps.onMouseEnter} behavior.
    */
-  onToggleMouseEnter?: MouseEventHandler<ToggleEl>;
+  onToggleMouseEnter?: ObservableMaybe<MouseEventHandler<ToggleEl>>
 
   /**
    * An optional keydown handler to merge with the
    * {@link ProvidedMenuToggleProps.onMouseLeave} behavior.
    */
-  onToggleMouseLeave?: MouseEventHandler<ToggleEl>;
+  onToggleMouseLeave?: ObservableMaybe<MouseEventHandler<ToggleEl>>
 }
 
 /**
@@ -89,7 +88,7 @@ export interface MenuHookReturnValue<ToggleEl extends HTMLElement>
    * refocused when the menu is closed via a keyboard press. This can also be
    * used if you need access to the toggle element's DOM node for some reason.
    */
-  toggleRef: MutableRefObject<ToggleEl | null>;
+  toggleRef: ObservableMaybe<ToggleEl | null>
 
   /**
    * An object of props that must be provided to the toggle element for the
@@ -97,7 +96,7 @@ export interface MenuHookReturnValue<ToggleEl extends HTMLElement>
    *
    * @see {@link ProvidedMenuToggleProps}
    */
-  toggleProps: ProvidedMenuToggleProps<ToggleEl>;
+  toggleProps: ProvidedMenuToggleProps<ToggleEl>
 }
 
 /**
@@ -133,17 +132,17 @@ export interface MenuHookReturnValue<ToggleEl extends HTMLElement>
  * @example
  * Simple Example
  * ```tsx
- * import { ReactElement, useState } from "react";
+ * import { ReactEle): Element {from "react";
  * import { useMenu, Menu, MenuButton, MenuItem } from "@react-md/menu";
  *
  * function Example(): ReactElement {
- *   const [visible, setVisible] = useState(false);
+ *   const [visible, visible] = useState(false);
  *   const { menuRef, menuProps, toggleRef, toggleProps } = useMenu<
  *     HTMLButtonElement
  *   >({
  *     baseId: "custom-menu-button",
  *     visible,
- *     setVisible,
+ *     visible,
  *   });
  *
  *   return (
@@ -163,16 +162,14 @@ export interface MenuHookReturnValue<ToggleEl extends HTMLElement>
  *
  * @remarks \@since 5.0.0
  */
-export function useMenu<ToggleEl extends HTMLElement>(
-  options: MenuHookOptions<ToggleEl>
-): MenuHookReturnValue<ToggleEl> {
+export function useMenu<ToggleEl extends HTMLElement>(options: MenuHookOptions<ToggleEl>): MenuHookReturnValue<ToggleEl> {
   const {
-    baseId,
+    baseId: bid,
     disabled = false,
     style: propStyle,
     menuLabel,
     visible,
-    setVisible,
+    // visible,
     floating = null,
     onMenuClick = noop,
     onMenuKeyDown = noop,
@@ -196,57 +193,57 @@ export function useMenu<ToggleEl extends HTMLElement>(
     preventScroll = false,
     disableFocusOnMount = false,
     disableFocusOnUnmount = false,
-  } = options;
+  } = options
   const {
     root,
     menubar,
     activeId,
-    setActiveId,
+    // activeId,
     hoverTimeout,
-    setAnimatedOnce,
-  } = useMenuBarContext();
-  const touch = useIsUserInteractionMode("touch");
+    animatedOnce,
+  } = useMenuBarContext()
+  const touch = useIsUserInteractionMode("touch")
 
-  const timeout = useRef<number | undefined>();
+  const timeout = $<number | undefined>()
   useEffect(() => {
     return () => {
-      window.clearTimeout(timeout.current);
-    };
-  }, []);
+      window.clearTimeout(timeout())
+    }
+  })
 
   // if the menu hides because the user scrolls the page or the page is resized,
   // the focus toggle behavior should be disabled since the user is no longer
   // interacting with the menu
-  const cancelExitFocus = useRef(false);
+  const cancelExitFocus = $(false)
   const anchor =
-    propAnchor ?? getDefaultAnchor({ menubar, menuitem, floating, horizontal });
-  const menuNodeRef = useRef<HTMLDivElement>(null);
-  const toggleRef = useRef<ToggleEl | null>(null);
+    propAnchor ?? getDefaultAnchor({ menubar: $$(menubar), menuitem: $$(menuitem), floating: $$(floating), horizontal: $$(horizontal) })
+  const menuNodeRef = $<HTMLDivElement>(null)
+  const toggleRef = $<ToggleEl | null>(null)
   const {
     style,
     transitionOptions: { nodeRef, ...transitionOptions },
-  } = useFixedPositioning({
+  } = useFixedPositioning<HTMLDivElement, HTMLDivElement>({
     nodeRef: menuNodeRef,
     style: propStyle,
     fixedTo: toggleRef,
     onEnter,
     onEntering,
     onEntered(appearing) {
-      cancelExitFocus.current = false;
-      onEntered(appearing);
-      setAnimatedOnce(true);
+      cancelExitFocus(false)
+      onEntered(appearing)
+      animatedOnce(true)
       if (!disableFocusOnMount) {
-        menuNodeRef.current?.focus();
+        menuNodeRef().focus
       }
     },
     onExited() {
-      onExited();
+      onExited()
 
       // this has to be done onExited or else the toggle component will be
       // clicked if the user pressed the "Enter" key which makes it look like
       // the menu never closes.
-      if (!disableFocusOnUnmount && !cancelExitFocus.current) {
-        toggleRef.current?.focus();
+      if (!disableFocusOnUnmount && !cancelExitFocus()) {
+        toggleRef().focus
       }
     },
     anchor,
@@ -254,45 +251,49 @@ export function useMenu<ToggleEl extends HTMLElement>(
     ...fixedPositionOptions,
     getFixedPositionOptions,
     onScroll(event, data) {
-      onFixedPositionScroll(event, data);
+      onFixedPositionScroll(event, data)
       if (!data.visible || closeOnScroll) {
-        cancelExitFocus.current = true;
-        setVisible(false);
+        cancelExitFocus(true)
+        visible(false)
       }
     },
     onResize(event) {
-      onFixedPositionResize(event);
+      onFixedPositionResize(event)
       if (closeOnResize) {
-        cancelExitFocus.current = true;
-        setVisible(false);
+        cancelExitFocus(true)
+        visible(false)
       }
     },
-  });
-  useScrollLock(preventScroll && visible);
+  })
+  useScrollLock(preventScroll && visible())
 
   useEffect(() => {
-    if (!visible) {
-      return;
+    if (!visible()) {
+      return
     }
 
     const handler = ({ target }: MouseEvent): void => {
       if (
         !(target instanceof Element) ||
-        (!menuNodeRef.current?.contains(target) &&
-          !toggleRef.current?.contains(target))
+        (!menuNodeRef()?.contains(target) &&
+          !toggleRef()?.contains(target))
       ) {
-        setVisible(false);
+        visible(false)
       }
-    };
+    }
 
-    window.addEventListener("click", handler);
+    window.addEventListener("click", handler)
     return () => {
-      window.removeEventListener("click", handler);
-    };
-  }, [menuNodeRef, setVisible, toggleRef, visible]);
+      window.removeEventListener("click", handler)
+    }
+  })
+
+
   useEffect(() => {
-    if (visible) {
-      return;
+    const baseId = $$(bid)
+
+    if (visible()) {
+      return
     }
 
     // this is to fix keyboard movement behavior when navigating between
@@ -300,18 +301,19 @@ export function useMenu<ToggleEl extends HTMLElement>(
     // while menus are visible. If the exit focus behavior is not cancelled, the
     // next menu's menu will be visible, but the current menu's menuitem would
     // be the current focus which breaks everything
-    cancelExitFocus.current =
-      cancelExitFocus.current ||
-      !menuNodeRef.current?.contains(document.activeElement);
+    cancelExitFocus(cancelExitFocus() || !menuNodeRef()?.contains(document.activeElement))
 
-    setActiveId((prevActiveId) =>
+    activeId((prevActiveId) =>
       baseId === prevActiveId ? "" : prevActiveId
-    );
-  }, [baseId, root, setActiveId, visible]);
+    )
+  })
   useEffect(() => {
-    setVisible(baseId === activeId);
-  }, [activeId, baseId, root, setVisible]);
+    visible(baseId === activeId())
+  })
 
+  const baseId = $$(bid)
+
+  //@ts-ignore
   return {
     menuRef: nodeRef,
     menuProps: {
@@ -320,68 +322,73 @@ export function useMenu<ToggleEl extends HTMLElement>(
       "aria-label": menuLabel as string,
       "aria-labelledby": menuLabel ? undefined : baseId,
       id: `${baseId}-menu`,
+      //@ts-ignore
       style,
       ...transitionOptions,
-      visible,
+      visible: visible(),
       onClick(event) {
-        onMenuClick(event);
+        //@ts-ignore
+        onMenuClick(event)
+        //@ts-ignore
         if (event.isPropagationStopped()) {
-          return;
+          return
         }
 
         // this makes it so you can click on the menu/list without closing the
         // menu
         if (event.currentTarget === event.target) {
-          return;
+          return
         }
 
         // This might be a test only workaround since clicking links move focus
         // somewhere else
         if (event.target instanceof HTMLElement) {
-          cancelExitFocus.current = containsElement(
+          cancelExitFocus(containsElement(
             event.currentTarget,
             event.target.closest("a")
-          );
+          ))
         }
-        setVisible(false);
+        visible(false)
       },
       onKeyDown(event) {
-        onMenuKeyDown(event);
+        //@ts-ignore
+        onMenuKeyDown(event)
+        //@ts-ignore
         if (event.isPropagationStopped()) {
-          return;
+          return
         }
 
         switch (event.key) {
           case "Escape":
             // prevent parent components that have an "Escape" keypress event
             // from being triggered as well
-            event.stopPropagation();
-            setVisible(false);
-            break;
+            event.stopPropagation()
+            visible(false)
+            break
           case "Tab":
             // since menus are portalled, tab index is kinda broke so just close
             // the menu instead of doing default tab behavior
-            event.preventDefault();
+            event.preventDefault()
             if (!menuitem) {
               // pressing the tab key should still cascade close all menus
-              event.stopPropagation();
+              event.stopPropagation()
             }
-            setVisible(false);
-            break;
+            visible(false)
+            break
           case "ArrowUp":
             if (menuitem && horizontal) {
-              event.stopPropagation();
-              event.preventDefault();
-              setVisible(false);
+              event.stopPropagation()
+              event.preventDefault()
+              visible(false)
             }
-            break;
+            break
           case "ArrowLeft":
             if (menuitem && !horizontal) {
-              event.stopPropagation();
-              event.preventDefault();
-              setVisible(false);
+              event.stopPropagation()
+              event.preventDefault()
+              visible(false)
             }
-            break;
+            break
         }
       },
     },
@@ -389,60 +396,66 @@ export function useMenu<ToggleEl extends HTMLElement>(
     toggleRef,
     toggleProps: {
       "aria-haspopup": "menu",
-      "aria-expanded": visible || undefined,
+      "aria-expanded": visible() || undefined,
       id: baseId,
       onClick(event) {
-        onToggleClick(event);
+        //@ts-ignore
+        onToggleClick(event)
+        //@ts-ignore
         if (event.isPropagationStopped()) {
-          return;
+          return
         }
 
         if (menuitem || menubar) {
           // do not allow the default menu close behavior from
           // triggering for parent menus
-          event.stopPropagation();
+          event.stopPropagation()
         }
 
-        setVisible((prevVisible) => !prevVisible);
-        setActiveId((prevActiveId) => (baseId === prevActiveId ? "" : baseId));
+        visible((prevVisible) => !prevVisible)
+        activeId((prevActiveId) => (baseId === prevActiveId ? "" : baseId))
       },
       onKeyDown(event) {
-        onToggleKeyDown(event);
+        //@ts-ignore
+        onToggleKeyDown(event)
+        //@ts-ignore
         if (event.isPropagationStopped() || disabled) {
-          return;
+          return
         }
 
         if (menubar && !menuitem && event.key === "ArrowDown") {
-          event.preventDefault();
-          event.stopPropagation();
-          setActiveId(baseId);
-          return;
+          event.preventDefault()
+          event.stopPropagation()
+          activeId(baseId)
+          return
         }
 
         if (!menuitem) {
-          return;
+          return
         }
 
         switch (event.key) {
           case "ArrowDown":
             if (horizontal) {
-              event.stopPropagation();
-              event.preventDefault();
-              setVisible(true);
+              event.stopPropagation()
+              event.preventDefault()
+              visible(true)
             }
-            break;
+            break
           case "ArrowRight":
             if (!horizontal) {
-              event.stopPropagation();
-              event.preventDefault();
-              setVisible(true);
+              event.stopPropagation()
+              event.preventDefault()
+              visible(true)
             }
-            break;
+            break
         }
       },
       onMouseEnter(event) {
-        onToggleMouseEnter(event);
+        //@ts-ignore
+        onToggleMouseEnter(event)
         if (
+          //@ts-ignore
           event.isPropagationStopped() ||
           disabled ||
           !menubar ||
@@ -450,19 +463,20 @@ export function useMenu<ToggleEl extends HTMLElement>(
           touch
         ) {
           if (typeof hoverTimeout === "number") {
-            timeout.current = window.setTimeout(() => {
-              setActiveId(baseId);
-            }, hoverTimeout);
+            timeout(window.setTimeout(() => {
+              activeId($$(baseId))
+            }, hoverTimeout))
           }
-          return;
+          return
         }
 
-        setActiveId(baseId);
+        activeId($$(baseId))
       },
       onMouseLeave(event) {
-        onToggleMouseLeave(event);
-        window.clearTimeout(timeout.current);
+        //@ts-ignore
+        onToggleMouseLeave(event)
+        window.clearTimeout(timeout())
       },
     },
-  };
+  }
 }

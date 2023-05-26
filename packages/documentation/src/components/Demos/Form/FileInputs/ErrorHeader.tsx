@@ -12,7 +12,7 @@ interface ErrorHeaderProps {
   error: TooManyFilesError | FileSizeError | FileExtensionError;
 }
 
-export default function ErrorHeader({ error }: ErrorHeaderProps): ReactElement {
+export default function ErrorHeader({ error }: ErrorHeaderProps): Child {
   if (isFileSizeError(error)) {
     const { type } = error;
     const limit = filesize(error.limit);

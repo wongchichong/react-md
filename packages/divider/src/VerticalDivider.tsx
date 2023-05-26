@@ -1,12 +1,10 @@
-import type { HTMLAttributes } from "react";
-import { forwardRef } from "react";
-
-import { Divider } from "./Divider";
-import { useVerticalDividerHeight } from "./useVerticalDividerHeight";
+import { $$ } from "voby"
+import { Divider } from "./Divider"
+import { useVerticalDividerHeight } from "./useVerticalDividerHeight"
 
 export interface VerticalDividerProps extends HTMLAttributes<HTMLDivElement> {
-  /** {@inheritDoc VerticalDividerHookOptions.maxHeight} */
-  maxHeight?: number;
+    /** {@inheritDoc VerticalDividerHookOptions.maxHeight} */
+    maxHeight?: FunctionMaybe<Nullable<number>>
 }
 
 /**
@@ -17,14 +15,9 @@ export interface VerticalDividerProps extends HTMLAttributes<HTMLDivElement> {
  * the issue that the height would be set to `auto` (which computes to 0 most of
  * the time) when it is not set on a parent element.
  */
-export const VerticalDivider = forwardRef<HTMLDivElement, VerticalDividerProps>(
-  function VerticalDivider({ style, maxHeight = 1, ...props }, ref) {
-    const heightProps = useVerticalDividerHeight({
-      ref,
-      style,
-      maxHeight,
-    });
+export const VerticalDivider = ({ style, maxHeight = 1, ref, ...props }: VerticalDividerProps) => {
+    const heightProps = useVerticalDividerHeight({ ref, style, maxHeight: $$(maxHeight), })
 
-    return <Divider {...props} {...heightProps} vertical />;
-  }
-);
+    //@ts-ignore
+    return <Divider {...props} {...heightProps} vertical />
+}

@@ -11,7 +11,7 @@ import Container from "./Container";
 
 import styles from "./CustomButtonTheme.module.scss";
 
-export default function CustomButtonTheme(): ReactElement {
+export default function CustomButtonTheme(): Child {
   return (
     <Container className={styles.container}>
       <Button id="custom-themed-button-1" themeType="outline" theme="secondary">

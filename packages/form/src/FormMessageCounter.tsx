@@ -1,8 +1,8 @@
-import type { HTMLAttributes, ReactElement, ReactNode } from "react";
-import cn from "classnames";
-import { bem } from "@react-md/utils";
+import type { } from 'voby'
 
-const block = bem("rmd-form-message");
+import { bem } from "@react-md/utils"
+
+const block = bem("rmd-form-message")
 
 /** @remarks \@since 2.9.0 */
 export interface FormMessageCounterProps
@@ -16,7 +16,7 @@ export interface FormMessageCounterProps
    * `${min} / ${max}`
    * ```
    */
-  children: ReactNode;
+  children: Child
 }
 
 /**
@@ -47,14 +47,8 @@ export interface FormMessageCounterProps
  *
  * @remarks \@since 2.9.0
  */
-export function FormMessageCounter({
-  children,
-  className,
-  ...props
-}: FormMessageCounterProps): ReactElement {
-  return (
-    <span {...props} className={cn(block("counter"), className)}>
-      {children}
-    </span>
-  );
+export function FormMessageCounter({ children, className, ...props }: FormMessageCounterProps): Element {
+  return <span {...props} className={[block("counter"), className]}>
+    {children}
+  </span>
 }

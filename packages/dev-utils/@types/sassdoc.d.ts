@@ -650,7 +650,7 @@ declare module "sassdoc" {
     package?: string;
     theme?: string;
     autofill?: string[];
-    groups?: { [key: string]: string };
+    groups?: { [key: string]: string; };
     verbose?: boolean;
     strict?: boolean;
   }

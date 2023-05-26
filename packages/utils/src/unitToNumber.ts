@@ -1,6 +1,8 @@
+import { $$ } from "voby"
+
 export interface UnitToNumberOptions {
-  element?: Element;
-  fontSizeFallback?: number;
+    element?: Element
+    fontSizeFallback?: FunctionMaybe<Nullable<number>>
 }
 /**
  * A simple util to convert a unit that is using `px`, `em`, or `rem` to a
@@ -11,32 +13,34 @@ export interface UnitToNumberOptions {
  * @returns the unit as a number
  */
 export function unitToNumber(
-  unit: string | number,
-  options: UnitToNumberOptions = {}
+    unit: string | number,
+    options: UnitToNumberOptions = {}
 ): number {
-  const { fontSizeFallback = 16, element } = options;
-  if (typeof unit === "number") {
-    return unit;
-  }
+    const { fontSizeFallback: fsfb = 16, element } = options
+    const fontSizeFallback = $$(fsfb)
 
-  const parsed = parseFloat(unit);
-  if (/px$/.test(unit)) {
-    return parsed;
-  }
+    if (typeof unit === "number") {
+        return unit
+    }
 
-  if (typeof document === "undefined") {
-    return parsed * fontSizeFallback;
-  }
+    const parsed = parseFloat(unit)
+    if (/px$/.test(unit)) {
+        return parsed
+    }
 
-  const rem = /rem$/.test(unit);
-  let el: HTMLElement | Element = document.documentElement as HTMLElement;
-  if (!rem && element) {
-    el = element.parentElement || element;
-  }
+    if (typeof document === "undefined") {
+        return parsed * fontSizeFallback
+    }
 
-  const fontSize = parseFloat(
-    window.getComputedStyle(el).fontSize || `${fontSizeFallback}px`
-  );
+    const rem = /rem$/.test(unit)
+    let el: HTMLElement | Element = document.documentElement as HTMLElement
+    if (!rem && element) {
+        el = element.parentElement || element
+    }
 
-  return parsed * fontSize;
+    const fontSize = parseFloat(
+        window.getComputedStyle(el).fontSize || `${fontSizeFallback}px`
+    )
+
+    return parsed * fontSize
 }

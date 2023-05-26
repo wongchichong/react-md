@@ -1,5 +1,79 @@
 {
-  "extends": "../../tsconfig.base.json",
-  "compilerOptions": { "noEmit": true, "composite": false },
-  "include": ["src"]
+  //"extends": "../../tsconfig.base.json",
+  // "compilerOptions": {
+  //   "outDir": "./dist",
+  //   "rootDir": "./src",
+  //   "declarationDir": "./dist/types",
+  //   "tsBuildInfoFile": "./dist/tsconfig.tsbuildinfo",
+  //   "types": ["voby/dist/jsx/jsx", "jest"]
+  // },
+  "compilerOptions": {
+    // "outDir": "./dist",
+    "rootDir": "./src",
+    "declarationDir": "./dist/types",
+    "tsBuildInfoFile": "./dist/tsconfig.tsbuildinfo",
+    "types": [
+      "voby/dist/types/jsx/jsx",
+      "voby/dist/types/jsx/types",
+      "jest",
+      "@types/testing-library__jest-dom"
+    ],
+    "allowJs": false,
+    "allowSyntheticDefaultImports": true,
+    "allowUnreachableCode": false,
+    // "allowUnusedLabels": false,
+    "alwaysStrict": true,
+    "declaration": true,
+    "disableSizeLimit": true,
+    "esModuleInterop": false,
+    "forceConsistentCasingInFileNames": true,
+    "inlineSourceMap": false,
+    "inlineSources": false,
+    "jsx": "preserve",
+    "jsxImportSource": "voby",
+    "lib": ["dom", "esnext"],
+    "module": "es2020",
+    "moduleResolution": "node",
+    "newLine": "lf",
+    "noEmitOnError": false,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitOverride": false,
+    "noImplicitThis": true,
+    "noPropertyAccessFromIndexSignature": false,
+    // "noUnusedLocals": true,
+    // "noUnusedParameters": false,
+    "outDir": "./dist/",
+    "pretty": true,
+    "skipDefaultLibCheck": true,
+    "skipLibCheck": true,
+    "sourceMap": false,
+    "strict": true,
+    "strictBindCallApply": true,
+    "strictFunctionTypes": true,
+    "strictNullChecks": false,
+    "target": "es2020",
+    "useDefineForClassFields": false,
+    "useUnknownInCatchVariables": true,
+    "noImplicitAny": false,
+    "noUncheckedIndexedAccess": false,
+    "baseUrl": ".",
+    "composite": true
+  },
+  //   "include": ["./init.ts"],
+  "exclude": [
+    "vite.config.ts",
+    "vite.config.umd.ts",
+    "**/src ori/**",
+    "**/dist/**",
+    "**/lib/**",
+    "**/types/**",
+    "node_modules",
+    "dist",
+    "init.ts"
+  ],
+  "references": [
+    {
+      "path": "../react"
+    }
+  ]
 }

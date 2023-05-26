@@ -71,6 +71,7 @@ a link to their demo documentation page:
 - [@react-md/overlay](https://react-md.dev/packages/overlay/demos)
 - [@react-md/portal](https://react-md.dev/packages/portal/demos)
 - [@react-md/progress](https://react-md.dev/packages/progress/demos)
+- [@react-md/react](https://react-md.dev/packages/react/demos)
 - [@react-md/sheet](https://react-md.dev/packages/sheet/demos)
 - [@react-md/states](https://react-md.dev/packages/states/demos)
 - [@react-md/table](https://react-md.dev/packages/table/demos)

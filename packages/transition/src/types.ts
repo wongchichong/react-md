@@ -3,7 +3,7 @@
 // the new `nodeRef` stuff, so it made it easier to create the types and hooks
 // here.
 
-import type { ReactElement, Ref, RefCallback } from "react";
+import type { Observable } from 'voby'
 
 /**
  * @remarks \@since 4.0.0
@@ -15,7 +15,7 @@ export interface TransitionActions {
    *
    * @defaultValue `false`
    */
-  appear?: boolean;
+  appear?: FunctionMaybe<Nullable<boolean>>
 
   /**
    * Boolean if the transition should occur whenever the
@@ -24,7 +24,7 @@ export interface TransitionActions {
    *
    * @defaultValue `true`
    */
-  enter?: boolean;
+  enter?: FunctionMaybe<Nullable<boolean>>
 
   /**
    * Boolean if the transition should occur whenever the
@@ -33,7 +33,7 @@ export interface TransitionActions {
    *
    * @defaultValue `true`
    */
-  exit?: boolean;
+  exit?: FunctionMaybe<Nullable<boolean>>
 }
 
 /**
@@ -44,8 +44,8 @@ export interface TransitionActions {
  * @remarks \@since 4.0.0
  */
 export type TransitionTimeoutObject = {
-  [action in keyof TransitionActions]?: number;
-};
+  [action in keyof TransitionActions]?: FunctionMaybe<number>
+}
 
 /**
  * Either a single timeout duration in milliseconds to use for each of the
@@ -54,7 +54,7 @@ export type TransitionTimeoutObject = {
  * @see {@link TransitionTimeout}
  * @remarks \@since 4.0.0
  */
-export type TransitionTimeout = number | Readonly<TransitionTimeoutObject>;
+export type TransitionTimeout = number | Readonly<TransitionTimeoutObject>
 
 /**
  * The way the transition works is by flowing through the different stages and
@@ -70,7 +70,7 @@ export type TransitionStage =
   | "entered"
   | "exit"
   | "exiting"
-  | "exited";
+  | "exited"
 
 /**
  * This function is called at each `"enter"` {@link TransitionStage}. If a
@@ -81,7 +81,7 @@ export type TransitionStage =
  * @param appearing - Boolean if this is the initial `appear` flow.
  * @remarks \@since 4.0.0
  */
-export type TransitionEnterHandler = (appearing: boolean) => void;
+export type TransitionEnterHandler = (appearing: FunctionMaybe<boolean>) => void
 
 /**
  * THis function is called at each `"exit"` {@link TransitionStage}. If a {@link
@@ -90,7 +90,7 @@ export type TransitionEnterHandler = (appearing: boolean) => void;
  *
  * @remarks \@since 4.0.0
  */
-export type TransitionExitHandler = () => void;
+export type TransitionExitHandler = () => void
 
 /**
  * @remarks \@since 4.0.0
@@ -102,7 +102,7 @@ export interface TransitionCallbacks {
    *
    * @see {@link TransitionEnterHandler}
    */
-  onEnter?: TransitionEnterHandler;
+  onEnter?: FunctionMaybe<TransitionEnterHandler>
 
   /**
    * This function will be called once the {@link TransitionStage} has been set
@@ -110,7 +110,7 @@ export interface TransitionCallbacks {
    *
    * @see {@link TransitionEnterHandler}
    */
-  onEntering?: TransitionEnterHandler;
+  onEntering?: FunctionMaybe<TransitionEnterHandler>
 
   /**
    * This function will be called once the {@link TransitionStage} has been set
@@ -118,7 +118,7 @@ export interface TransitionCallbacks {
    *
    * @see {@link TransitionEnterHandler}
    */
-  onEntered?: TransitionEnterHandler;
+  onEntered?: FunctionMaybe<TransitionEnterHandler>
 
   /**
    * This function will be called once the {@link TransitionStage} has been set
@@ -126,7 +126,7 @@ export interface TransitionCallbacks {
    *
    * @see {@link TransitionEnterHandler}
    */
-  onExit?: TransitionExitHandler;
+  onExit?: FunctionMaybe<TransitionExitHandler>
 
   /**
    * This function will be called once the {@link TransitionStage} has been set
@@ -134,7 +134,7 @@ export interface TransitionCallbacks {
    *
    * @see {@link TransitionExitHandler}
    */
-  onExiting?: TransitionExitHandler;
+  onExiting?: FunctionMaybe<TransitionExitHandler>
 
   /**
    * This function will be called once the {@link TransitionStage} has been set
@@ -142,7 +142,7 @@ export interface TransitionCallbacks {
    *
    * @see {@link TransitionExitHandler}
    */
-  onExited?: TransitionExitHandler;
+  onExited?: FunctionMaybe<TransitionExitHandler>
 }
 
 /**
@@ -150,15 +150,12 @@ export interface TransitionCallbacks {
  * transition.
  * @remarks \@since 4.0.0
  */
-export interface PreconfiguredTransitionInDefaultedOptions<
-  E extends HTMLElement
-> extends TransitionActions,
-    TransitionCallbacks {
+export interface PreconfiguredTransitionInDefaultedOptions<E extends HTMLElement> extends TransitionActions, TransitionCallbacks {
   /**
    * An optional ref that will be merged with the
    * {@link TransitionHookReturnValue.ref}
    */
-  nodeRef?: Ref<E>;
+  nodeRef?: Observable<E>
 
   /**
    * Boolean if the element should mount and unmount based on the
@@ -166,7 +163,7 @@ export interface PreconfiguredTransitionInDefaultedOptions<
    *
    * @defaultValue `false`
    */
-  temporary?: boolean;
+  temporary?: FunctionMaybe<Nullable<boolean>>
 
   /**
    * This boolean controls the transition by activating flowing through the
@@ -174,9 +171,9 @@ export interface PreconfiguredTransitionInDefaultedOptions<
    *
    * @see {@link TransitionActions} for a description around the transitions.
    */
-  transitionIn?: boolean;
+  transitionIn?: FunctionMaybe<Nullable<boolean>>
   /** {@inheritDoc TransitionTimeout} */
-  timeout?: TransitionTimeout;
+  timeout?: FunctionMaybe<Nullable<TransitionTimeout>>
 }
 
 /**
@@ -184,10 +181,9 @@ export interface PreconfiguredTransitionInDefaultedOptions<
  * transition.
  * @remarks \@since 4.0.0
  */
-export interface PreconfiguredTransitionOptions<E extends HTMLElement>
-  extends PreconfiguredTransitionInDefaultedOptions<E> {
+export interface PreconfiguredTransitionOptions<E extends HTMLElement> extends PreconfiguredTransitionInDefaultedOptions<E> {
   /** {@inheritDoc PreconfiguredTransitionInDefaultedOptions.transitionIn} */
-  transitionIn: boolean;
+  transitionIn: FunctionMaybe<boolean>
 }
 
 /**
@@ -195,10 +191,9 @@ export interface PreconfiguredTransitionOptions<E extends HTMLElement>
  * transition.
  * @remarks \@since 4.0.0
  */
-export interface TransitionOptions<E extends HTMLElement>
-  extends PreconfiguredTransitionOptions<E> {
+export interface TransitionOptions<E extends HTMLElement> extends PreconfiguredTransitionOptions<E> {
   /** {@inheritDoc TransitionTimeout} */
-  timeout: TransitionTimeout;
+  timeout: FunctionMaybe<TransitionTimeout>
 }
 
 /**
@@ -266,7 +261,7 @@ export interface CSSTransitionClassNamesObject {
    *
    * @defaultValue `""`
    */
-  appear?: string;
+  appear?: FunctionMaybe<Nullable<string>>
 
   /**
    * The class name to apply starting at the `"entering"` {@link TransitionStage}
@@ -274,7 +269,7 @@ export interface CSSTransitionClassNamesObject {
    *
    * @defaultValue `""`
    */
-  appearActive?: string;
+  appearActive?: FunctionMaybe<Nullable<string>>
 
   /**
    * The class name to apply starting at the `"entered"` {@link TransitionStage}
@@ -282,49 +277,49 @@ export interface CSSTransitionClassNamesObject {
    *
    * @defaultValue `""`
    */
-  appearDone?: string;
+  appearDone?: FunctionMaybe<Nullable<string>>
 
   /**
    * The class name to apply starting at the `"enter"` {@link TransitionStage}
    *
    * @defaultValue `""`
    */
-  enter?: string;
+  enter?: FunctionMaybe<Nullable<string>>
 
   /**
    * The class name to apply starting at the `"entering"` {@link TransitionStage}
    *
    * @defaultValue `""`
    */
-  enterActive?: string;
+  enterActive?: FunctionMaybe<Nullable<string>>
 
   /**
    * The class name to apply starting at the `"entered"` {@link TransitionStage}
    *
    * @defaultValue `""`
    */
-  enterDone?: string;
+  enterDone?: FunctionMaybe<Nullable<string>>
 
   /**
    * The class name to apply starting at the `"exit"` {@link TransitionStage}
    *
    * @defaultValue `""`
    */
-  exit?: string;
+  exit?: FunctionMaybe<Nullable<string>>
 
   /**
    * The class name to apply starting at the `"exiting"` {@link TransitionStage}
    *
    * @defaultValue `""`
    */
-  exitActive?: string;
+  exitActive?: FunctionMaybe<Nullable<string>>
 
   /**
    * The class name to apply starting at the `"exited"` {@link TransitionStage}
    *
    * @defaultValue `""`
    */
-  exitDone?: string;
+  exitDone?: FunctionMaybe<Nullable<string>>
 }
 
 /**
@@ -332,20 +327,18 @@ export interface CSSTransitionClassNamesObject {
  */
 export type CSSTransitionClassNames =
   | string
-  | Readonly<CSSTransitionClassNamesObject>;
+  | Readonly<CSSTransitionClassNamesObject>
 
 /**
  * @typeParam E - An HTMLElement type used for the ref required for the
  * transition.
  * @remarks \@since 4.0.0
  */
-export interface PreconfiguredCSSTransitionInDefaultedOptions<
-  E extends HTMLElement
-> extends PreconfiguredTransitionInDefaultedOptions<E> {
+export interface PreconfiguredCSSTransitionInDefaultedOptions<E extends HTMLElement> extends PreconfiguredTransitionInDefaultedOptions<E> {
   /**
    * An optional className to be merged with the transition classes.
    */
-  className?: string;
+  className?: Class
 }
 
 /**
@@ -356,7 +349,7 @@ export interface PreconfiguredCSSTransitionInDefaultedOptions<
 export interface PreconfiguredCSSTransitionOptions<E extends HTMLElement>
   extends PreconfiguredCSSTransitionInDefaultedOptions<E> {
   /** {@inheritDoc PreconfiguredTransitionInDefaultedOptions.transitionIn} */
-  transitionIn: boolean;
+  transitionIn: FunctionMaybe<boolean>
 }
 
 /**
@@ -364,8 +357,7 @@ export interface PreconfiguredCSSTransitionOptions<E extends HTMLElement>
  * transition.
  * @remarks \@since 4.0.0
  */
-export interface TransitionHookOptions<E extends HTMLElement>
-  extends TransitionOptions<E> {
+export interface TransitionHookOptions<E extends HTMLElement> extends TransitionOptions<E> {
   /**
    * Boolean if the DOM should forcefully be reflow each time a transition
    * change occurs. This is generally required for any CSS transition and is
@@ -373,7 +365,7 @@ export interface TransitionHookOptions<E extends HTMLElement>
    *
    * @defaultValue `false`
    */
-  reflow?: boolean;
+  reflow?: FunctionMaybe<Nullable<boolean>>
 }
 
 /**
@@ -381,14 +373,14 @@ export interface TransitionHookOptions<E extends HTMLElement>
  */
 export interface TransitionState {
   /** {@inheritDoc TransitionStage} */
-  stage: TransitionStage;
+  stage: FunctionMaybe<TransitionStage>
 
   /**
    * Boolean if the element should be rendered or not. This will always be
    * `true` if the {@link TransitionOptions.temporary} is `false`. Otherwise, it
    * will be `true` when not the `"exited"` {@link TransitionStage}.
    */
-  rendered: boolean;
+  rendered: FunctionMaybe<boolean>
 
   /**
    * Boolean if this is the first {@link TransitionAction.appear} transition.
@@ -396,7 +388,7 @@ export interface TransitionState {
    * {@link TransitionAction.appear} was also `true`. Otherwise it will be
    * `false`.
    */
-  appearing: boolean;
+  appearing: FunctionMaybe<boolean>
 }
 
 /**
@@ -410,7 +402,7 @@ export interface TransitionHookReturnValue<E extends HTMLElement>
    * A ref that is required for the transition to occur and should be passed to
    * the element affected by the transition.
    */
-  ref: RefCallback<E>;
+  ref: Refs<E>
 
   /**
    * A function that can be used to specifically set the transition to a
@@ -425,7 +417,7 @@ export interface TransitionHookReturnValue<E extends HTMLElement>
    * import { useCSSTransition } from "@react-md/transition";
    * import { useRouter } from "react-router-dom";
    *
-   * function Example(): ReactElement {
+   * function Example(): Element {
    *   const { pathname } = useRouter();
    *   const { elementProps, transitionTo } = useCSSTransition({
    *     transitionIn: true,
@@ -449,7 +441,7 @@ export interface TransitionHookReturnValue<E extends HTMLElement>
    *
    * @param stage - The {@link TransitionStage} to set to
    */
-  transitionTo(stage: TransitionStage): void;
+  transitionTo(stage: FunctionMaybe<TransitionStage>): void
 }
 
 /**
@@ -460,9 +452,9 @@ export interface TransitionHookReturnValue<E extends HTMLElement>
 export interface CSSTransitionHookOptions<E extends HTMLElement>
   extends PreconfiguredCSSTransitionOptions<E> {
   /** {@inheritDoc TransitionTimeout} */
-  timeout: TransitionTimeout;
+  timeout: FunctionMaybe<TransitionTimeout>
   /** {@inheritDoc CSSTransitionClassNames} */
-  classNames: CSSTransitionClassNames;
+  classNames: FunctionMaybe<CSSTransitionClassNames>
 }
 
 /**
@@ -472,12 +464,12 @@ export interface CSSTransitionHookOptions<E extends HTMLElement>
  */
 export interface CSSTransitionElementProps<E extends HTMLElement> {
   /** {@inheritDoc TransitionHookReturnValue.ref} */
-  ref: RefCallback<E>;
+  ref: Refs<E>
 
   /**
    * The current transition class name or `undefined`.
    */
-  className: string | undefined;
+  className: Class
 }
 
 /**
@@ -487,7 +479,7 @@ export interface CSSTransitionElementProps<E extends HTMLElement> {
  */
 export interface CSSTransitionHookReturnValue<E extends HTMLElement>
   extends TransitionHookReturnValue<E>,
-    CSSTransitionElementProps<E> {
+  CSSTransitionElementProps<E> {
   /**
    * This can be used so that you don't need to destructure multiple props from
    * the hook return value to pass to the transitioning component.
@@ -499,8 +491,8 @@ export interface CSSTransitionHookReturnValue<E extends HTMLElement>
    * import { useCSSTransition } from "@react-md/transition";
    *
    * interface ExampleProps {
-   *   transitionIn: boolean;
-   *   children: ReactNode;
+   *   transitionIn: FunctionMaybe<boolean>;
+   *   children: Children;
    * }
    *
    * function Example({ transitionIn, children }: ExampleProps): ReactElement | null {
@@ -525,8 +517,8 @@ export interface CSSTransitionHookReturnValue<E extends HTMLElement>
    * import { useCSSTransition } from "@react-md/transition";
    *
    * interface ExampleProps {
-   *   transitionIn: boolean;
-   *   children: ReactNode;
+   *   transitionIn: FunctionMaybe<boolean>;
+   *   children: Children;
    * }
    *
    * function Example({ transitionIn, children }: ExampleProps): ReactElement | null {
@@ -544,7 +536,7 @@ export interface CSSTransitionHookReturnValue<E extends HTMLElement>
    * }
    * ```
    */
-  elementProps: CSSTransitionElementProps<E>;
+  elementProps: CSSTransitionElementProps<E>
 }
 
 /**
@@ -555,11 +547,11 @@ export interface CSSTransitionHookReturnValue<E extends HTMLElement>
  */
 export interface CSSTransitionComponentProps extends TransitionCallbacks {
   /** {@inheritDoc CSSTransitionHookOptions.temporary} */
-  temporary?: boolean;
+  temporary?: FunctionMaybe<Nullable<boolean>>
   /** {@inheritDoc TransitionTimeout} */
-  timeout?: TransitionTimeout;
+  timeout?: FunctionMaybe<Nullable<TransitionTimeout>>
   /** {@inheritDoc CSSTransitionClassNames} */
-  classNames?: CSSTransitionClassNames;
+  classNames?: FunctionMaybe<Nullable<CSSTransitionClassNames>>
 }
 
 /**
@@ -574,7 +566,7 @@ export interface CSSTransitionComponentImplementation<E extends HTMLElement> {
    * **must** use `React.forwardRef` and pass both of these to a DOM element for
    * the transition to work.
    */
-  children: ReactElement<{ ref: Ref<E>; className: string | undefined }>;
+  children: Children//ReactElement<{ ref: ObservableMaybe<E>; className: string | undefined }>
 }
 
 /**
@@ -583,7 +575,7 @@ export interface CSSTransitionComponentImplementation<E extends HTMLElement> {
 export type FixedPositioningTransitionCallbacks = Pick<
   TransitionCallbacks,
   "onEnter" | "onEntering" | "onEntered" | "onExited"
->;
+>
 
 /**
  * This options should be passed to the {@link useCSSTransition} for the styling
@@ -596,7 +588,7 @@ export type FixedPositioningTransitionCallbacks = Pick<
 export interface FixedPositioningTransitionOptions<E extends HTMLElement>
   extends FixedPositioningTransitionCallbacks {
   /** {@inheritDoc TransitionOptions.nodeRef} */
-  nodeRef?: Ref<E>;
+  nodeRef?: Observable<E>
 }
 
 /**
@@ -604,17 +596,14 @@ export interface FixedPositioningTransitionOptions<E extends HTMLElement>
  * @typeParam FixedElement - An HTMLElement type for the fixed element.
  * @remarks \@since 4.0.0
  */
-export interface FixedPositioningScrollData<
-  FixedToElement extends HTMLElement,
-  FixedElement extends HTMLElement
-> {
-  fixedElement: FixedElement;
-  fixedToElement: FixedToElement;
+export interface FixedPositioningScrollData<FixedToElement extends HTMLElement, FixedElement extends HTMLElement> {
+  fixedElement: FunctionMaybe<FixedElement>
+  fixedToElement: FunctionMaybe<FixedToElement>
 
   /**
    * Boolean if the {@link fixedToElement} is visible within the viewport.
    */
-  visible: boolean;
+  visible: FunctionMaybe<boolean>
 }
 
 /**
@@ -629,10 +618,7 @@ export interface FixedPositioningScrollData<
  * custom scroll behavior.
  * @remarks \@since 4.0.0
  */
-export type TransitionScrollCallback<
-  FixedToElement extends HTMLElement,
-  FixedElement extends HTMLElement
-> = (
+export type TransitionScrollCallback<FixedToElement extends HTMLElement, FixedElement extends HTMLElement> = (
   event: Event,
   data: Readonly<FixedPositioningScrollData<FixedToElement, FixedElement>>
-) => void;
+) => void

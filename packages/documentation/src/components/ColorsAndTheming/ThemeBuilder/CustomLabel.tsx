@@ -1,24 +1,24 @@
-import type { ReactElement, ReactNode } from "react";
+import type { ReactElement, ReactNode } from "react"
 
 export interface CustomLabelProps {
-  isDefault: boolean;
-  children: ReactNode;
+    isDefault: boolean
+    children: Children
 }
 
 export default function CustomLabel({
-  children,
-  isDefault,
-}: CustomLabelProps): ReactElement {
-  if (!isDefault) {
-    return <>{children}</>;
-  }
+    children,
+    isDefault,
+}: CustomLabelProps): Child {
+    if (!isDefault) {
+        return <>{children}</>
+    }
 
-  return (
-    <>
-      {children}{" "}
-      <small>
-        <i>(site default)</i>
-      </small>
-    </>
-  );
+    return (
+        <>
+            {children}{" "}
+            <small>
+                <i>(site default)</i>
+            </small>
+        </>
+    )
 }

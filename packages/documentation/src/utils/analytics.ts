@@ -1,8 +1,9 @@
 /* eslint-disable default-case */
-import { kebabCase } from "lodash";
-import type { CodePreference } from "components/CodePreference";
-import type { ThemeMode } from "components/Theme";
-import { GA_CODE } from "constants/github";
+import { kebabCase } from "lodash"
+import type { CodePreference } from "../components/CodePreference"
+import type { ThemeMode } from "../components/Theme"
+import { GA_CODE } from "../constants/github"
+import '@react-md/react'
 
 export enum EventName {
   CreateSandbox = "create_sandbox",
@@ -13,35 +14,35 @@ export enum EventName {
 }
 
 export interface CodeEvent {
-  name: EventName.CreateSandbox | EventName.ViewCode;
-  demoName: string;
-  packageName: string;
-  lang: CodePreference;
+  name: EventName.CreateSandbox | EventName.ViewCode
+  demoName: string
+  packageName: string
+  lang: CodePreference
 }
 
 export interface CodePreferenceEvent {
-  name: EventName.CodePreference;
-  lang: CodePreference;
+  name: EventName.CodePreference
+  lang: CodePreference
 }
 
 export interface ThemeChangeEvent {
-  name: EventName.ThemeChange;
-  mode: ThemeMode;
+  name: EventName.ThemeChange
+  mode: ThemeMode
 }
 
 export interface VersionEvent {
-  name: EventName.Version;
-  version: string;
+  name: EventName.Version
+  version: string
 }
 
 export type AnalyticsEvent =
   | CodeEvent
   | CodePreferenceEvent
   | ThemeChangeEvent
-  | VersionEvent;
+  | VersionEvent
 
 const getLanguageName = (pref: CodePreference): string =>
-  pref === "js" ? "Javascript" : "TypeScript";
+  pref === "js" ? "Javascript" : "TypeScript"
 
 const createCodeLabel = ({
   name,
@@ -49,56 +50,58 @@ const createCodeLabel = ({
   packageName,
   lang,
 }: CodeEvent): string => {
-  const isCode = name === EventName.ViewCode;
-  const prefix = isCode ? "View" : "Create";
-  const suffix = isCode ? "" : " sandbox";
-  const pkg = `@react-md/${kebabCase(packageName)}`;
-  const language = getLanguageName(lang);
+  const isCode = name === EventName.ViewCode
+  const prefix = isCode ? "View" : "Create"
+  const suffix = isCode ? "" : " sandbox"
+  const pkg = `@react-md/${kebabCase(packageName)}`
+  const language = getLanguageName(lang)
 
-  return `${prefix} "${demoName}"${suffix} from "${pkg}" using ${language}`;
-};
+  return `${prefix} "${demoName}"${suffix} from "${pkg}" using ${language}`
+}
 
-const getEventParams = (event: AnalyticsEvent): Gtag.EventParams => {
-  let label: string;
-  let category: string;
+//@ts-ignore
+const getEventParams = (event: AnalyticsEvent)/* : Gtag.EventParams */ => {
+  let label: string
+  let category: string
   switch (event.name) {
     case EventName.ViewCode:
     case EventName.CreateSandbox:
-      label = createCodeLabel(event);
-      category = "code";
-      break;
+      label = createCodeLabel(event)
+      category = "code"
+      break
     case EventName.CodePreference:
-      label = getLanguageName(event.lang);
-      category = "code";
-      break;
+      label = getLanguageName(event.lang)
+      category = "code"
+      break
     case EventName.ThemeChange:
-      label = `Changing to ${event.mode} mode`;
-      category = event.name;
-      break;
+      label = `Changing to ${event.mode} mode`
+      category = event.name
+      break
     case EventName.Version:
-      label = `To ${event.version}`;
-      category = event.name;
+      label = `To ${event.version}`
+      category = event.name
   }
 
   return {
     event_label: label,
     event_category: category,
-  };
-};
+  }
+}
 
+declare const gtag
 /**
  * Sends an analytics event using `gtag` but only in production.
  */
 export function sendAnalyticsEvent(event: AnalyticsEvent): void {
   if (process.env.NODE_ENV !== "production" && !GA_CODE) {
-    return;
+    return
   }
 
   if (typeof gtag === "undefined") {
-    return;
+    return
   }
 
-  gtag("event", event.name, getEventParams(event));
+  gtag("event", event.name, getEventParams(event))
 }
 
 /**
@@ -106,5 +109,5 @@ export function sendAnalyticsEvent(event: AnalyticsEvent): void {
  * callback function.
  */
 export function sendAnalytics(event: AnalyticsEvent): () => void {
-  return () => sendAnalyticsEvent(event);
+  return () => sendAnalyticsEvent(event)
 }

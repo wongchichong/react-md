@@ -7,7 +7,7 @@ import {
 } from "@react-md/material-icons";
 import { Button } from "@react-md/button";
 
-export default function FloatingActionButtons(): ReactElement {
+export default function FloatingActionButtons(): Child {
   return (
     <>
       <Button floating="top-left">

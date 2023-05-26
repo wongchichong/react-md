@@ -6,7 +6,7 @@ import Code from "components/Code";
 import CodeBlock from "components/CodeBlock";
 import Heading from "components/Heading";
 
-export default function About(): ReactElement {
+export default function About(): Child {
   return (
     <TextContainer>
       <Heading id="color-palette" level={2}>

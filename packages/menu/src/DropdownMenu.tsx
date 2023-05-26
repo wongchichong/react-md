@@ -1,20 +1,19 @@
-import type { ReactElement, RefObject } from "react";
-import { useState } from "react";
-import type { FABPosition } from "@react-md/button";
-import { useUserInteractionMode } from "@react-md/utils";
+import { $, $$ } from 'voby'
+import type { FABPosition } from "@react-md/button"
+import { useUserInteractionMode } from "@react-md/utils"
 
-import { useMenuBarContext } from "./MenuBarProvider";
-import { MenuButton } from "./MenuButton";
-import { useMenuConfiguration } from "./MenuConfigurationProvider";
-import { MenuItemButton } from "./MenuItemButton";
-import { MenuRenderer } from "./MenuRenderer";
-import { MenuVisibilityProvider } from "./MenuVisibilityProvider";
+import { useMenuBarContext } from "./MenuBarProvider"
+import { MenuButton } from "./MenuButton"
+import { useMenuConfiguration } from "./MenuConfigurationProvider"
+import { MenuItemButton } from "./MenuItemButton"
+import { MenuRenderer } from "./MenuRenderer"
+import { MenuVisibilityProvider } from "./MenuVisibilityProvider"
 import type {
   DropdownMenuButtonProps,
   DropdownMenuItemProps,
   DropdownMenuProps,
-} from "./types";
-import { useMenu } from "./useMenu";
+} from "./types"
+import { useMenu } from "./useMenu"
 
 /**
  * This component is a preset for creating dropdown menus using the
@@ -31,7 +30,7 @@ import { useMenu } from "./useMenu";
  * @example
  * Simple Example
  * ```tsx
- * import type { ReactElement } from "react";
+ * import type { Element } from "react";
  * import { DropdownMenu, MenuItem } from "@react-md/menu";
  *
  * function Example() {
@@ -51,7 +50,7 @@ import { useMenu } from "./useMenu";
  * @example
  * Nested Dropdown Menus
  * ```tsx
- * import type { ReactElement } from "react";
+ * import type { Element } from "react";
  * import { DropdownMenu, MenuItem } from "@react-md/menu";
  *
  * function Example() {
@@ -129,9 +128,8 @@ export function DropdownMenu({
   iconRotatorProps: propIconRotatorProps,
   disableFocusOnMount: propDisableFocusOnMount,
   disableFocusOnUnmount: propDisableFocusOnUnmount,
-  ...props
-}: DropdownMenuProps): ReactElement {
-  const { disabled } = props;
+  ...props }: DropdownMenuProps): Element {
+  const { disabled } = props
   const {
     horizontal,
     sheetHeader,
@@ -146,49 +144,47 @@ export function DropdownMenu({
     renderAsSheet: propRenderAsSheet,
     sheetPosition: propSheetPosition,
     sheetVerticalSize: propSheetVerticalSize,
-  });
+  })
 
-  const mode = useUserInteractionMode();
-  const mouse = mode === "mouse";
-  const keyboard = mode === "keyboard";
+  const mode = useUserInteractionMode()
+  const mouse = mode === "mouse"
+  const keyboard = mode === "keyboard"
   const { root, menubar, menuitem, activeId, animatedOnce } =
-    useMenuBarContext();
+    useMenuBarContext()
 
   const disableTransition =
-    animatedOnce && menubar && !!activeId && (mouse || keyboard);
-  const timeout = propTimeout ?? (disableTransition ? 0 : undefined);
+    animatedOnce && menubar && !!activeId && (mouse || keyboard)
+  const timeout = propTimeout ?? (disableTransition ? 0 : undefined)
   const disableFocusOnMount =
-    propDisableFocusOnMount ?? (mouse && timeout === 0);
+    propDisableFocusOnMount ?? (mouse && timeout === 0)
   const disableFocusOnUnmount =
-    propDisableFocusOnUnmount ?? (mouse && timeout === 0);
+    propDisableFocusOnUnmount ?? (mouse && timeout === 0)
 
-  let iconRotatorProps = propIconRotatorProps;
+  let iconRotatorProps = propIconRotatorProps
   if (disableTransition) {
     iconRotatorProps = {
       animate: false,
       ...propIconRotatorProps,
-    };
+    }
   }
 
-  let floating: FABPosition = null;
+  let floating: FunctionMaybe<FABPosition> = null
   if (!menuitem) {
-    ({ floating = null } = props as DropdownMenuButtonProps);
+    ({ floating = null } = props as DropdownMenuButtonProps)
   }
 
-  const [visible, setVisible] = useState(false);
-  const { menuRef, menuProps, toggleRef, toggleProps } = useMenu<
-    HTMLButtonElement | HTMLLIElement
-  >({
+  const visible = $(false)
+  const { menuRef, menuProps, toggleRef, toggleProps } = useMenu<HTMLButtonElement | HTMLLIElement>({
     baseId: id,
+    // visible(),
     visible,
-    setVisible,
-    disabled,
+    disabled: $$(disabled),
     menuLabel,
     horizontal,
-    onToggleClick: onClick,
-    onToggleKeyDown: onKeyDown,
-    onToggleMouseEnter: onMouseEnter,
-    onToggleMouseLeave: onMouseLeave,
+    onToggleClick: onClick as any,
+    onToggleKeyDown: onKeyDown as any,
+    onToggleMouseEnter: onMouseEnter as any,
+    onToggleMouseLeave: onMouseLeave as any,
     onMenuClick: propMenuProps?.onClick,
     onMenuKeyDown: propMenuProps?.onKeyDown,
     floating,
@@ -206,46 +202,48 @@ export function DropdownMenu({
     closeOnScroll,
     disableFocusOnMount,
     disableFocusOnUnmount,
-  });
+  })
 
-  let toggle: ReactElement;
+  let toggle: Element
   if (menuitem) {
     // see `DropdownMenuProps` about this typecast
-    const { buttonChildren, ...itemProps } = props as DropdownMenuItemProps;
+    const { buttonChildren, ...itemProps } = props as DropdownMenuItemProps
     toggle = (
       <MenuItemButton
         {...itemProps}
         iconRotatorProps={iconRotatorProps}
         {...toggleProps}
-        ref={toggleRef as RefObject<HTMLLIElement>}
+        ref={toggleRef as Ref<HTMLLIElement>}
         visible={visible}
       >
         {buttonChildren}
       </MenuItemButton>
-    );
+    )
   } else {
     // see `DropdownMenuProps` about this typecast
-    const { buttonChildren, ...buttonProps } = props as DropdownMenuButtonProps;
+    const { buttonChildren, ...buttonProps } = props as DropdownMenuButtonProps
     toggle = (
       <MenuButton
         {...buttonProps}
         iconRotatorProps={iconRotatorProps}
         {...toggleProps}
-        ref={toggleRef as RefObject<HTMLButtonElement>}
+        ref={toggleRef as Ref<HTMLButtonElement>}
         visible={visible}
       >
         {buttonChildren}
       </MenuButton>
-    );
+    )
   }
 
   return (
-    <MenuVisibilityProvider visible={visible} setVisible={setVisible}>
+    <MenuVisibilityProvider visible={visible}>
       {toggle}
+      {/* @ts-ignore */}
       <MenuRenderer
         {...menuProps}
         menuRef={menuRef}
         menuProps={propMenuProps}
+        //@ts-ignore
         menuStyle={menuProps.style}
         menuClassName={menuClassName}
         sheetProps={sheetProps}
@@ -259,7 +257,7 @@ export function DropdownMenu({
         listStyle={listStyle}
         listClassName={listClassName}
         listProps={listProps}
-        onRequestClose={() => setVisible(false)}
+        onRequestClose={() => visible(false)}
         horizontal={horizontal}
         renderAsSheet={renderAsSheet}
         temporary={temporary}
@@ -277,5 +275,5 @@ export function DropdownMenu({
         {children}
       </MenuRenderer>
     </MenuVisibilityProvider>
-  );
+  )
 }

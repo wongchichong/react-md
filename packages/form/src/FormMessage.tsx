@@ -1,69 +1,69 @@
-import type { CSSProperties, HTMLAttributes } from "react";
-import { forwardRef } from "react";
-import cn from "classnames";
-import { bem } from "@react-md/utils";
+import { $$, CSSProperties } from 'voby'
 
-import type { FormTheme } from "./FormThemeProvider";
-import { useFormTheme } from "./FormThemeProvider";
-import { FormMessageCounter } from "./FormMessageCounter";
 
-const block = bem("rmd-form-message");
+import { bem } from "@react-md/utils"
+
+import type { FormTheme } from "./FormThemeProvider"
+import { useFormTheme } from "./FormThemeProvider"
+import { FormMessageCounter } from "./FormMessageCounter"
+
+const block = bem("rmd-form-message")
 
 export interface FormMessageProps
-  extends Omit<HTMLAttributes<HTMLDivElement>, "minLength" | "maxLength"> {
-  /**
-   * The id for the message container element. This is required for
-   * accessibility.
-   */
-  id: string;
+    extends Omit<HTMLAttributes<HTMLDivElement>, "minLength" | "maxLength"> {
+    /**
+     * The id for the message container element. This is required for
+     * accessibility.
+     */
+    id: string
 
-  /**
-   * If this component is acting as a form-level error message handler, the role
-   * should be updated to be `"alert"` for additional accessibility.
-   *
-   * Note: when creating a form-level error message handler, the messages should
-   * no longer appear as the user types and instead once the user tries to
-   * submit the form. Having an alert role disrupts normal screen reader
-   * behavior by immediately reading changes in this element.
-   */
-  role?: "alert";
+    /**
+     * If this component is acting as a form-level error message handler, the role
+     * should be updated to be `"alert"` for additional accessibility.
+     *
+     * Note: when creating a form-level error message handler, the messages should
+     * no longer appear as the user types and instead once the user tries to
+     * submit the form. Having an alert role disrupts normal screen reader
+     * behavior by immediately reading changes in this element.
+     */
+    role?: "alert"
 
-  /**
-   * Boolean if the message should gain the error state which changes the text
-   * color to `red` by default.
-   */
-  error?: boolean;
+    /**
+     * Boolean if the message should gain the error state which changes the text
+     * color to `red` by default.
+     */
+    error?: FunctionMaybe<Nullable<boolean>>
 
-  /**
-   * Boolean if the children should no longer be wrapped in a `<p>` tag. This
-   * should normally only be disabled if using a custom error message wrapper or
-   * the counter behavior is not being used. To get correct alignments of the
-   * message and counter, the `children` must be wrapped in some element and
-   * cannot be plain test.
-   *
-   * Note: this will always be considered `true` if the `role` is set to
-   * `"alert"`.
-   */
-  disableWrap?: boolean;
+    /**
+     * Boolean if the children should no longer be wrapped in a `<p>` tag. This
+     * should normally only be disabled if using a custom error message wrapper or
+     * the counter behavior is not being used. To get correct alignments of the
+     * message and counter, the `children` must be wrapped in some element and
+     * cannot be plain test.
+     *
+     * Note: this will always be considered `true` if the `role` is set to
+     * `"alert"`.
+     */
+    disableWrap?: FunctionMaybe<Nullable<boolean>>
 
-  /**
-   * The current theme for the related text field. This is really only used to
-   * match the current horizontal padding of the text field.
-   */
-  theme?: FormTheme;
+    /**
+     * The current theme for the related text field. This is really only used to
+     * match the current horizontal padding of the text field.
+     */
+    theme?: FunctionMaybe<FormTheme>
 
-  /**
-   * An optional style to apply to the `<p>` tag that surrounds the `children`.
-   * This will not be used if `role="alert"` or `disableWrap={true}`.
-   */
-  messageStyle?: CSSProperties;
+    /**
+     * An optional style to apply to the `<p>` tag that surrounds the `children`.
+     * This will not be used if `role="alert"` or `disableWrap={true}`.
+     */
+    messageStyle?: FunctionMaybe<Nullable<string | StyleProperties>>
 
-  /**
-   * An optional className to apply to the `<p>` tag that surrounds the
-   * `children`. This will not be used if `role="alert"` or
-   * `disableWrap={true}`.
-   */
-  messageClassName?: string;
+    /**
+     * An optional className to apply to the `<p>` tag that surrounds the
+     * `children`. This will not be used if `role="alert"` or
+     * `disableWrap={true}`.
+     */
+    messageClassName?: Class
 }
 
 /**
@@ -90,30 +90,30 @@ export interface FormMessageProps
  * was added
  */
 export interface FormMessageInputLengthCounterProps {
-  /**
-   * The current length of the value in the related text field.
-   */
-  length: number;
+    /**
+     * The current length of the value in the related text field.
+     */
+    length: number
 
-  /**
-   * The max length allowed for the value in the related text field.
-   */
-  maxLength: number;
+    /**
+     * The max length allowed for the value in the related text field.
+     */
+    maxLength: number
 
-  /**
-   * An optional style to apply to the counter wrapper element.
-   */
-  counterStyle?: CSSProperties;
+    /**
+     * An optional style to apply to the counter wrapper element.
+     */
+    counterStyle?: FunctionMaybe<Nullable<string | StyleProperties>>
 
-  /**
-   * An optional className to apply to the counter wrapper element.
-   */
-  counterClassName?: string;
+    /**
+     * An optional className to apply to the counter wrapper element.
+     */
+    counterClassName?: Class
 }
 
 export interface FormMessageWithCounterProps
-  extends FormMessageProps,
-    FormMessageInputLengthCounterProps {}
+    extends FormMessageProps,
+    FormMessageInputLengthCounterProps { }
 
 /**
  * The `FormMessage` component is used to create additional helper messages or
@@ -124,67 +124,63 @@ export interface FormMessageWithCounterProps
  * This component can also be used to create form-level validation messages by
  * setting the `role` prop to `"alert"`.
  */
-export const FormMessage = forwardRef<
-  HTMLDivElement,
-  FormMessageProps & Partial<FormMessageInputLengthCounterProps>
->(function FormMessage(
-  {
-    id,
-    role,
-    className,
-    counterStyle,
-    counterClassName,
-    messageStyle,
-    messageClassName,
-    error = false,
-    disableWrap = false,
-    theme: propTheme,
-    children,
-    length,
-    maxLength,
-    ...props
-  },
-  ref
-) {
-  const { theme } = useFormTheme({ theme: propTheme });
-  let message = children;
-  if (!disableWrap && children) {
-    message = (
-      <p
-        id={`${id}-message`}
-        style={messageStyle}
-        className={cn(block("message"), messageClassName)}
-      >
-        {children}
-      </p>
-    );
-  }
-
-  return (
-    <div
-      {...props}
-      id={id}
-      ref={ref}
-      aria-live={role !== "alert" ? "polite" : undefined}
-      role={role}
-      className={cn(
-        block({
-          error,
-          [theme]: theme !== "none",
-        }),
-        className
-      )}
-    >
-      {message}
-      {typeof length === "number" && typeof maxLength === "number" && (
-        <FormMessageCounter
-          id={`${id}-counter`}
-          style={counterStyle}
-          className={counterClassName}
+export const FormMessage = (
+    {
+        id,
+        role,
+        className,
+        counterStyle,
+        counterClassName,
+        messageStyle,
+        messageClassName,
+        error = false,
+        disableWrap = false,
+        theme: propTheme,
+        children,
+        length,
+        maxLength,
+        ref,
+        ...props
+    }: FormMessageProps & Partial<FormMessageInputLengthCounterProps>
+) => {
+    const { theme } = useFormTheme({ theme: propTheme })
+    let message = children
+    if (!disableWrap && children) {
+        //@ts-ignore
+        message = <p
+            id={`${id}-message`}
+            style={messageStyle as any}
+            className={[block("message"), messageClassName]}
         >
-          {`${length} / ${maxLength}`}
-        </FormMessageCounter>
-      )}
-    </div>
-  );
-});
+            {children}
+        </p>
+    }
+
+    return (
+        <div
+            {...props}
+            id={id}
+            ref={ref}
+            aria-live={role !== "alert" ? "polite" : undefined}
+            role={role}
+            className={[
+                block({
+                    error,
+                    [$$(theme)]: theme !== "none",
+                }),
+                className
+            ]}
+        >
+            {message}
+            {typeof length === "number" && typeof maxLength === "number" && (
+                <FormMessageCounter
+                    id={() => `${id}-counter`}
+                    style={counterStyle}
+                    className={counterClassName}
+                >
+                    {`${length} / ${maxLength}`}
+                </FormMessageCounter>
+            )}
+        </div>
+    )
+}

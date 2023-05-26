@@ -72,7 +72,7 @@ const demos = [
   },
 ];
 
-export default function Button(): ReactElement {
+export default function Button(): Child {
   return (
     <DemoPage
       demos={demos}

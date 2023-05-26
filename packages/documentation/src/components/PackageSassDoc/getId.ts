@@ -1,4 +1,5 @@
-import type { Item } from "utils/sassdoc";
+//@ts-nocheck
+import type { Item } from "@react-md/dev-utils/@types/sassdoc";
 
 type ItemType = Item["context"]["type"];
 

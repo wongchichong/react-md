@@ -1,7 +1,7 @@
-import type { HTMLAttributes } from "react";
-import { forwardRef } from "react";
-import cn from "classnames";
-import { bem } from "@react-md/utils";
+
+
+
+import { bem } from "@react-md/utils"
 
 /**
  * An optional alignment for the content within the footer. Since the majority
@@ -16,34 +16,32 @@ export type DialogFooterAlignment =
   | "end"
   | "between"
   | "stacked-start"
-  | "stacked-end";
+  | "stacked-end"
 
 export interface DialogFooterProps extends HTMLAttributes<HTMLDivElement> {
   /** {@inheritDoc DialogFooterAlignment} */
-  align?: DialogFooterAlignment;
+  align?: FunctionMaybe<Nullable<DialogFooterAlignment>>
 }
 
-const block = bem("rmd-dialog");
+const block = bem("rmd-dialog")
 
-export const DialogFooter = forwardRef<HTMLDivElement, DialogFooterProps>(
-  function DialogFooter({ children, className, align = "end", ...props }, ref) {
-    return (
-      <footer
-        {...props}
-        ref={ref}
-        className={cn(
-          block("footer", {
-            flex: align !== "none",
-            "flex-v": align === "stacked-start" || align === "stacked-end",
-            start: align === "start" || align === "stacked-start",
-            between: align === "between",
-            end: align === "end" || align === "stacked-end",
-          }),
-          className
-        )}
-      >
-        {children}
-      </footer>
-    );
-  }
-);
+export const DialogFooter = ({ children, className, align = "end", ref, ...props }: DialogFooterProps) => {
+  return <footer
+    {...props}
+    //@ts-ignore
+    ref={ref}
+    className={[
+      block("footer", {
+        flex: align !== "none",
+        "flex-v": align === "stacked-start" || align === "stacked-end",
+        start: align === "start" || align === "stacked-start",
+        between: align === "between",
+        end: align === "end" || align === "stacked-end",
+      }),
+      className
+    ]}
+  >
+    {children}
+  </footer>
+}
+

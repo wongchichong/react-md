@@ -1,12 +1,12 @@
-import cn from "classnames";
+
 
 import type {
-  CSSTransitionHookOptions,
-  CSSTransitionHookReturnValue,
-  CSSTransitionElementProps,
-} from "./types";
-import { useTransition } from "./useTransition";
-import { getTransitionClassNames } from "./utils";
+    CSSTransitionHookOptions,
+    CSSTransitionHookReturnValue,
+    CSSTransitionElementProps,
+} from "./types"
+import { useTransition } from "./useTransition"
+import { getTransitionClassNames } from "./utils"
 
 /**
  * This hook is used to create CSS transitions for different components whenever
@@ -39,7 +39,7 @@ import { getTransitionClassNames } from "./utils";
  * //   opacity: 0.5;
  * // }
  *
- * function Example(): ReactElement {
+ * function Example(): Element {
  *   const [transitionIn, setTransitionIn] = useState(false);
  *   const { elementProps } = useCSSTransition({
  *     timeout: 150,
@@ -92,7 +92,7 @@ import { getTransitionClassNames } from "./utils";
  * //   opacity: 0;
  * // }
  *
- * function Example(): ReactElement {
+ * function Example(): Element {
  *   const [transitionIn, setTransitionIn] = useState(false);
  *   const { elementProps, rendered } = useCSSTransition({
  *     timeout: {
@@ -141,7 +141,7 @@ import { getTransitionClassNames } from "./utils";
  * // }
  * //
  *
- * function Example(): ReactElement {
+ * function Example(): Element {
  *   const { elementProps } = useCSSTransition({
  *     appear: true,
  *     transitionIn: true,
@@ -158,61 +158,60 @@ import { getTransitionClassNames } from "./utils";
  * @remarks \@since 4.0.0
  */
 export function useCSSTransition<E extends HTMLElement>({
-  className,
-  classNames,
-  appear = false,
-  enter = true,
-  exit = true,
-  timeout,
-  ...options
-}: CSSTransitionHookOptions<E>): CSSTransitionHookReturnValue<E> {
-  const { ref, stage, rendered, appearing, transitionTo } = useTransition({
-    ...options,
-    appear,
-    enter,
-    exit,
-    timeout,
-    reflow: true,
-  });
-  const isEntering = stage === "entering";
-  const isEnter = isEntering || stage === "enter";
-  const isEntered = stage === "entered";
-  const isExiting = stage === "exiting";
-  const isExit = isExiting || stage === "exit";
-  const isExited = stage === "exited";
-  const transitionClassNames = getTransitionClassNames({
-    timeout,
-    appear,
-    enter,
-    exit,
+    className,
     classNames,
-  });
+    appear = false,
+    enter = true,
+    exit = true,
+    timeout,
+    ...options
+}: CSSTransitionHookOptions<E>): CSSTransitionHookReturnValue<E> {
+    const { ref, stage, rendered, appearing, transitionTo } = useTransition({
+        ...options,
+        appear,
+        enter,
+        exit,
+        timeout,
+        reflow: true,
+    })
+    const isEntering = stage === "entering"
+    const isEnter = isEntering || stage === "enter"
+    const isEntered = stage === "entered"
+    const isExiting = stage === "exiting"
+    const isExit = isExiting || stage === "exit"
+    const isExited = stage === "exited"
+    const transitionClassNames = getTransitionClassNames({
+        timeout,
+        appear,
+        enter,
+        exit,
+        classNames,
+    })
 
-  const elementProps: CSSTransitionElementProps<E> = {
-    ref,
-    className:
-      cn(
-        // always apply the provided className first since it makes snapshot
-        // tests easier to parse if dynamic classes come afterwards
-        className,
-        appearing && isEnter && transitionClassNames.appear,
-        appearing && isEntering && transitionClassNames.appearActive,
-        appearing && isEntered && transitionClassNames.appearDone,
-        !appearing && isEnter && transitionClassNames.enter,
-        !appearing && isEntering && transitionClassNames.enterActive,
-        !appearing && isEntered && transitionClassNames.enterDone,
-        isExit && transitionClassNames.exit,
-        isExiting && transitionClassNames.exitActive,
-        isExited && transitionClassNames.exitDone
-      ) || undefined,
-  };
+    const elementProps: CSSTransitionElementProps<E> = {
+        ref,
+        className: [
+            // always apply the provided className first since it makes snapshot
+            // tests easier to parse if dynamic classes come afterwards
+            className,
+            appearing && isEnter && transitionClassNames.appear,
+            appearing && isEntering && transitionClassNames.appearActive,
+            appearing && isEntered && transitionClassNames.appearDone,
+            !appearing && isEnter && transitionClassNames.enter,
+            !appearing && isEntering && transitionClassNames.enterActive,
+            !appearing && isEntered && transitionClassNames.enterDone,
+            isExit && transitionClassNames.exit,
+            isExiting && transitionClassNames.exitActive,
+            isExited && transitionClassNames.exitDone
+        ] || undefined,
+    }
 
-  return {
-    ...elementProps,
-    stage,
-    rendered,
-    appearing,
-    elementProps,
-    transitionTo,
-  };
+    return {
+        ...elementProps,
+        stage,
+        rendered,
+        appearing,
+        elementProps,
+        transitionTo,
+    }
 }

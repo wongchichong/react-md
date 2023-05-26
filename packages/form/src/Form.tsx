@@ -1,5 +1,4 @@
-import type { FormHTMLAttributes } from "react";
-import { forwardRef, useCallback } from "react";
+import { $ } from 'voby'
 
 export interface FormProps extends FormHTMLAttributes<HTMLFormElement> {
   /**
@@ -7,7 +6,7 @@ export interface FormProps extends FormHTMLAttributes<HTMLFormElement> {
    * you enable this prop you should honestly just use a `<form>` element
    * instead
    */
-  disablePreventDefault?: boolean;
+  disablePreventDefault?: FunctionMaybe<Nullable<boolean>>
 }
 
 /**
@@ -15,26 +14,20 @@ export interface FormProps extends FormHTMLAttributes<HTMLFormElement> {
  * do much styling or logic. All this form component will do is add basic flex
  * behavior and prevent the default form submit behavior.
  */
-export const Form = forwardRef<HTMLFormElement, FormProps>(function Form(
-  { children, disablePreventDefault = false, onSubmit, ...props },
-  ref
-) {
-  const handleOnSubmit = useCallback<React.FormEventHandler<HTMLFormElement>>(
-    (event) => {
-      if (!disablePreventDefault) {
-        event.preventDefault();
-      }
+export const Form = ({ children, disablePreventDefault = false, onSubmit, ref, ...props }: FormProps) => {
+  const handleOnSubmit = (event) => {
+    if (!disablePreventDefault) {
+      event.preventDefault()
+    }
 
-      if (onSubmit) {
-        onSubmit(event);
-      }
-    },
-    [disablePreventDefault, onSubmit]
-  );
+    if (onSubmit) {
+      onSubmit(event)
+    }
+  }
 
   return (
     <form {...props} onSubmit={handleOnSubmit} ref={ref}>
       {children}
     </form>
-  );
-});
+  )
+}

@@ -3,7 +3,7 @@ import { Button } from "@react-md/button";
 
 import Container from "./Container";
 
-export default function ContainedButtons(): ReactElement {
+export default function ContainedButtons(): Child {
   return (
     <Container>
       <Button id="contained-button-1" theme="primary" themeType="contained">

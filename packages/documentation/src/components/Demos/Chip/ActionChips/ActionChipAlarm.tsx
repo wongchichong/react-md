@@ -7,7 +7,7 @@ import { Sheet } from "@react-md/sheet";
 import ActionChip from "./ActionChip";
 import styles from "./ActionChipAlarm.module.scss";
 
-export default function ActionChipAlarm(): ReactElement {
+export default function ActionChipAlarm(): Child {
   const [visible, setVisible] = useState(false);
   const hide = (): void => setVisible(false);
 

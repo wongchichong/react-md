@@ -1,22 +1,21 @@
-import type { HTMLAttributes } from "react";
-
-import type { ListItemChildrenProps } from "./ListItemChildren";
+import type { ListItemChildrenProps } from "./ListItemChildren"
+import { $$ } from 'voby'
 
 export type ListItemHeight =
   | "auto"
   | "normal"
   | "medium"
   | "large"
-  | "extra-large";
+  | "extra-large"
 
-export interface SimpleListItemProps
+export interface SimpleListItemProps<T extends EventTarget = HTMLLIElement>
   extends ListItemChildrenProps,
-    HTMLAttributes<HTMLLIElement> {
+  HTMLAttributes<T> {
   /**
    * This prop shouldn't really be used other than a pass-down value from the
    * ListItem component.
    */
-  disabled?: boolean;
+  disabled?: FunctionMaybe<Nullable<boolean>>
 
   /**
    * Boolean if the list item should apply an opacity value while disabled
@@ -28,7 +27,7 @@ export interface SimpleListItemProps
    * Note: This does nothing if the `disabled` prop is not enabled.
    * @remarks \@since 2.4.3
    */
-  disabledOpacity?: boolean;
+  disabledOpacity?: FunctionMaybe<Nullable<boolean>>
 
   /**
    * Boolean if the list item should be updated to use the clickable styles to
@@ -36,7 +35,7 @@ export interface SimpleListItemProps
    * component and shouldn't really be used unless you are implementing your own
    * clickable `ListItem` component.
    */
-  clickable?: boolean;
+  clickable?: FunctionMaybe<Nullable<boolean>>
 
   /**
    * Boolean if the list item should be considered "three-lines" in height. This
@@ -45,7 +44,7 @@ export interface SimpleListItemProps
    * compatibility of `line-clamp`. If you would still like the ellipsis to
    * show, it is recommended to use javascript to add them yourself.
    */
-  threeLines?: boolean;
+  threeLines?: FunctionMaybe<Nullable<boolean>>
 
   /**
    * The height to apply to the list item.
@@ -58,7 +57,7 @@ export interface SimpleListItemProps
    * - left/right addon is icon -&gt; "medium"
    * - no addons and no secondary text -&gt; "normal"
    */
-  height?: ListItemHeight;
+  height?: FunctionMaybe<Nullable<number | string>> //ListItemHeight
 }
 
 /**
@@ -84,33 +83,33 @@ export function getListItemHeight({
   secondaryText,
 }: SimpleListItemProps): ListItemHeight {
   if (height !== "auto") {
-    return height;
+    return $$(height) as any
   }
 
   const isIcon =
     (leftAddon && leftAddonType === "icon") ||
-    (rightAddon && rightAddonType === "icon");
+    (rightAddon && rightAddonType === "icon")
   const isAvatar =
     (leftAddon && leftAddonType === "avatar") ||
-    (rightAddon && rightAddonType === "avatar");
+    (rightAddon && rightAddonType === "avatar")
   const isGraphic =
     (leftAddon &&
       (leftAddonType === "media" || leftAddonType === "large-media")) ||
     (rightAddon &&
-      (rightAddonType === "media" || rightAddonType === "large-media"));
+      (rightAddonType === "media" || rightAddonType === "large-media"))
 
   // secondary text will always be extra large due to the default `line-height`
   if (isGraphic || secondaryText) {
-    return "extra-large";
+    return "extra-large"
   }
 
   if (isAvatar) {
-    return "large";
+    return "large"
   }
 
   if (isIcon) {
-    return "medium";
+    return "medium"
   }
 
-  return "normal";
+  return "normal"
 }

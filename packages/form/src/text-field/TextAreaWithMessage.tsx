@@ -1,16 +1,13 @@
-import type { ReactElement } from "react";
-import { forwardRef } from "react";
-
-import type { FieldMessageContainerExtension } from "../FormMessageContainer";
-import { FormMessageContainer } from "../FormMessageContainer";
-import type { TextAreaProps } from "./TextArea";
-import { TextArea } from "./TextArea";
+import type { FieldMessageContainerExtension } from "../FormMessageContainer"
+import { FormMessageContainer } from "../FormMessageContainer"
+import type { TextAreaProps } from "./TextArea"
+import { TextArea } from "./TextArea"
 
 /**
  * @remarks \@since 2.5.0
  */
 export type TextAreaWithMessageProps =
-  FieldMessageContainerExtension<TextAreaProps>;
+  FieldMessageContainerExtension<TextAreaProps>
 
 /**
  * This component is a simple wrapper for the `TextArea` and `FormMessage`
@@ -35,19 +32,7 @@ export type TextAreaWithMessageProps =
  *
  * @remarks \@since 2.5.0
  */
-export const TextAreaWithMessage = forwardRef<
-  HTMLTextAreaElement,
-  TextAreaWithMessageProps
->(function TextAreaWithMessage(
-  { messageProps, messageContainerProps, ...props },
-  ref
-): ReactElement {
-  return (
-    <FormMessageContainer
-      {...messageContainerProps}
-      messageProps={messageProps}
-    >
-      <TextArea {...props} ref={ref} />
-    </FormMessageContainer>
-  );
-});
+export const TextAreaWithMessage = ({ messageProps, messageContainerProps, ref, ...props }: TextAreaWithMessageProps): Child =>
+  <FormMessageContainer {...messageContainerProps} messageProps={messageProps}    >
+    <TextArea {...props} ref={ref} />
+  </FormMessageContainer>

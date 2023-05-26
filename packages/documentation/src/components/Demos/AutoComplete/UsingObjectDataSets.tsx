@@ -62,7 +62,7 @@ const desserts = dessertsList.map<AutoCompleteData>(
 // just slicing since `statesList` is readonly
 const states = statesList.slice();
 
-export default function UsingObjectDataSets(): ReactElement {
+export default function UsingObjectDataSets(): Child {
   return (
     <ExampleGrid>
       <AutoComplete

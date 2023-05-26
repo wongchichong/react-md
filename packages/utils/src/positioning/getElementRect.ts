@@ -1,7 +1,8 @@
-import type { Coords } from "./types";
+import { $$ } from "voby"
+import type { Coords } from "./types"
 
 function applyCoords(coord: number | undefined): string {
-  return typeof coord === "number" ? `${coord}px` : "";
+    return typeof coord === "number" ? `${coord}px` : ""
 }
 
 /**
@@ -17,37 +18,37 @@ function applyCoords(coord: number | undefined): string {
  * @internal
  */
 export function getElementRect(
-  element: HTMLElement,
-  coords: Coords = {}
+    element: HTMLElement,
+    coords: Coords = {}
 ): DOMRect {
-  const cloned = element.cloneNode(true) as HTMLElement;
-  // remove the id so there won't be two elements with the same id on the page
-  cloned.removeAttribute("id");
+    const cloned = element.cloneNode(true) as HTMLElement
+    // remove the id so there won't be two elements with the same id on the page
+    cloned.removeAttribute("id")
 
-  // remove the role just in case the role would alert screen readers once added
-  // to the dom
-  cloned.removeAttribute("role");
+    // remove the role just in case the role would alert screen readers once added
+    // to the dom
+    cloned.removeAttribute("role")
 
-  // ensure the cloned node won't shift the page or be visible
-  cloned.style.position = "fixed";
-  cloned.style.visibility = "hidden";
+    // ensure the cloned node won't shift the page or be visible
+    cloned.style.position = "fixed"
+    cloned.style.visibility = "hidden"
 
-  // reset positioning to get a "pure" calculation. otherwise this will mess up
-  // the height and width if the element is able to line wrap.
-  cloned.style.left = applyCoords(coords.left);
-  cloned.style.top = applyCoords(coords.top);
-  cloned.style.right = applyCoords(coords.right);
-  cloned.style.bottom = applyCoords(coords.bottom);
+    // reset positioning to get a "pure" calculation. otherwise this will mess up
+    // the height and width if the element is able to line wrap.
+    cloned.style.left = applyCoords($$(coords.left))
+    cloned.style.top = applyCoords($$(coords.top))
+    cloned.style.right = applyCoords($$(coords.right))
+    cloned.style.bottom = applyCoords($$(coords.bottom))
 
-  // reset transforms so that custom animations don't mess with the sizing
-  cloned.style.webkitTransform = "none";
-  cloned.style.transform = "none";
+    // reset transforms so that custom animations don't mess with the sizing
+    cloned.style.webkitTransform = "none"
+    cloned.style.transform = "none"
 
-  const parent = element.parentElement || document.body;
-  parent.appendChild(cloned);
+    const parent = element.parentElement || document.body
+    parent.appendChild(cloned)
 
-  const rect = cloned.getBoundingClientRect();
-  parent.removeChild(cloned);
+    const rect = cloned.getBoundingClientRect()
+    parent.removeChild(cloned)
 
-  return rect;
+    return rect
 }

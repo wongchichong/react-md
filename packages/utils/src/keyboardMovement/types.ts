@@ -1,4 +1,5 @@
-import type { NonNullRef } from "../types";
+import { ObservableMaybe } from "voby"
+//import type { NonNullRef } from "../types";
 
 /**
  * @remarks \@since 5.0.0
@@ -9,28 +10,28 @@ export interface KeyboardMovementConfiguration {
    *
    * @defaultValue `["ArrowDown"]`
    */
-  incrementKeys?: readonly string[];
+  incrementKeys?: FunctionMaybe<Nullable<readonly string[]>>
 
   /**
    * A list of keys that will attempt to decrement the focus index by 1.
    *
    * @defaultValue `["ArrowUp"]`
    */
-  decrementKeys?: readonly string[];
+  decrementKeys?: FunctionMaybe<Nullable<readonly string[]>>
 
   /**
    * A list of keys that will set the focus index to `0`.
    *
    * @defaultValue `["Home"]`
    */
-  jumpToFirstKeys?: readonly string[];
+  jumpToFirstKeys?: FunctionMaybe<Nullable<readonly string[]>>
 
   /**
    * A list of keys that will set the focus index to the last focusable index.
    *
    * @defaultValue `["End"]`
    */
-  jumpToLastKeys?: readonly string[];
+  jumpToLastKeys?: FunctionMaybe<Nullable<readonly string[]>>
 }
 
 /**
@@ -39,7 +40,7 @@ export interface KeyboardMovementConfiguration {
  *
  * @remarks \@since 5.0.0
  */
-export type KeyboardMovementConfig = Required<KeyboardMovementConfiguration>;
+export type KeyboardMovementConfig = Required<KeyboardMovementConfiguration>
 
 /**
  * @remarks \@since 5.0.0
@@ -51,7 +52,7 @@ export interface KeyboardMovementBehavior {
    *
    * @defaultValue `false`
    */
-  searchable?: boolean;
+  searchable?: FunctionMaybe<Nullable<boolean>>
 
   /**
    * Boolean if the {@link KeyboardMovementProvider} should allow the focus behavior
@@ -63,7 +64,7 @@ export interface KeyboardMovementBehavior {
    *
    * @defaultValue `false`
    */
-  loopable?: boolean;
+  loopable?: FunctionMaybe<Nullable<boolean>>
 
   /**
    * Boolean if elements that are `aria-disabled` or `disabled` should still be
@@ -71,7 +72,7 @@ export interface KeyboardMovementBehavior {
    *
    * @defaultValue `false`
    */
-  includeDisabled?: boolean;
+  includeDisabled?: FunctionMaybe<Nullable<boolean>>
 
   /**
    * Boolean if the keyboard movement is horizontal instead of vertical. This
@@ -81,7 +82,7 @@ export interface KeyboardMovementBehavior {
    * @remarks \@since 5.1.2
    * @defaultValue `false`
    */
-  horizontal?: boolean;
+  horizontal?: FunctionMaybe<Nullable<boolean>>
 }
 
 /**
@@ -92,14 +93,14 @@ export interface KeyboardFocusElementData {
   /**
    * The element that can be keyboard focused.
    */
-  element: HTMLElement;
+  element: HTMLElement
 
   /**
    * The text content of the element that is used for searching. This will be
    * the empty string if the {@link KeyboardMovementBehavior.searchable} is
    * false
    */
-  content: string;
+  content: FunctionMaybe<string>
 }
 
 /**
@@ -111,7 +112,7 @@ export interface KeyboardFocusElementData {
  * @remarks \@since 5.0.0
  * @internal
  */
-export type KeyboardFocusElementLookup = NonNullRef<KeyboardFocusElementData[]>;
+export type KeyboardFocusElementLookup = KeyboardFocusElementData[]
 
 /**
  * @remarks \@since 5.0.0
@@ -120,20 +121,20 @@ export type KeyboardFocusElementLookup = NonNullRef<KeyboardFocusElementData[]>;
 export interface KeyboardFocusContext
   extends Required<KeyboardMovementBehavior> {
   /** {@inheritDoc KeyboardMovementConfig} */
-  config: NonNullRef<KeyboardMovementConfig>;
+  config: ObservableMaybe<KeyboardMovementConfig>
 
   /**
    * A function that is used to add an element to the list of focusable
    * elements.
    */
-  attach<E extends HTMLElement>(element: E): void;
+  attach<E extends HTMLElement>(element: E): void
 
   /**
    * A function that is used to remove an element to the list of focusable
    * elements.
    */
-  detach<E extends HTMLElement>(element: E): void;
+  detach<E extends HTMLElement>(element: E): void
 
   /** {@inheritDoc KeyboardFocusElementLookup} */
-  watching: KeyboardFocusElementLookup;
+  watching: KeyboardFocusElementLookup
 }

@@ -1,9 +1,9 @@
-import { Divider } from "@react-md/divider";
-import { ListSubheader } from "@react-md/list";
-import type { TreeItemRenderer } from "@react-md/tree";
-import { defaultTreeItemRenderer } from "@react-md/tree";
+import { Divider } from "@react-md/divider"
+import { ListSubheader } from "@react-md/list"
+import type { TreeItemRenderer } from "@react-md/tree"
+import { defaultTreeItemRenderer } from "@react-md/tree"
 
-import type { LayoutNavigationItem } from "./types";
+import type { LayoutNavigationItem } from "./types"
 
 /**
  * This is the default navigation item renderer provided by the layout package
@@ -13,21 +13,21 @@ import type { LayoutNavigationItem } from "./types";
  * dividers and subheader elements.
  */
 export const defaultNavigationItemRenderer: TreeItemRenderer<
-  LayoutNavigationItem
+    LayoutNavigationItem
 > = (itemProps, item, treeProps) => {
-  const { key } = itemProps;
-  const { divider, subheader } = item;
-  if (divider) {
-    return <Divider key={key} />;
-  }
+    const { key } = itemProps
+    const { divider, subheader } = item
+    if (divider) {
+        return <Divider id={key} />
+    }
 
-  if (subheader) {
-    return (
-      <ListSubheader key={key} role="none">
-        {item.children}
-      </ListSubheader>
-    );
-  }
+    if (subheader) {
+        return (
+            <ListSubheader id={key} role="none">
+                {item.children}
+            </ListSubheader>
+        )
+    }
 
-  return defaultTreeItemRenderer(itemProps, item, treeProps);
-};
+    return defaultTreeItemRenderer(itemProps, item, treeProps)
+}

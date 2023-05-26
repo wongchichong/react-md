@@ -1,3 +1,4 @@
+import { describe, expect, test, it, jest } from 'vitest'
 import { throttle } from "../throttle";
 
 jest.useFakeTimers();

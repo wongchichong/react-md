@@ -1,9 +1,58 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "noEmit": true,
-    "composite": false,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "declarationDir": "./dist/types",
+    //"composite": true,
     "preserveSymlinks": true
   },
-  "include": ["src"]
+  "include": ["./src"],
+  "exclude": [
+    "vite.config.ts",
+    "vite.config.umd.ts",
+    "./src ori",
+    "**/dist/**",
+    "**/lib/**",
+    "**/types/**",
+    "**/__tests__/**"
+  ],
+  "references": [
+    {
+      "path": "../button"
+    },
+    {
+      "path": "../icon"
+    },
+    {
+      "path": "../list"
+    },
+    {
+      "path": "../menu"
+    },
+    {
+      "path": "../portal"
+    },
+    {
+      "path": "../progress"
+    },
+    {
+      "path": "../states"
+    },
+    {
+      "path": "../theme"
+    },
+    {
+      "path": "../tooltip"
+    },
+    {
+      "path": "../transition"
+    },
+    {
+      "path": "../typography"
+    },
+    {
+      "path": "../utils"
+    }
+  ]
 }

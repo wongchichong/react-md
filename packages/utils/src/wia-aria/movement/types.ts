@@ -1,19 +1,19 @@
 /**
  * The type of focus that should be triggered from a keypress.
  */
-export type FocusType = "increment" | "decrement" | "first" | "last";
+export type FocusType = "increment" | "decrement" | "first" | "last"
 
 /**
  * A key object that is used to determine what type of behavior to do from a
  * keyboard event.
  */
 export interface KeyConfig {
-  key: string;
-  type: FocusType;
-  altKey: boolean;
-  ctrlKey: boolean;
-  metaKey: boolean;
-  shiftKey: boolean;
+  key: string
+  type: FocusType
+  altKey: boolean
+  ctrlKey: boolean
+  metaKey: boolean
+  shiftKey: boolean
 }
 
 /**
@@ -62,42 +62,42 @@ export enum JumpMovementKey {
   ControlShiftEnd = "Control+Shift+End",
 }
 
-export type MovementKey = IncrementMovementKey | JumpMovementKey;
+export type MovementKey = IncrementMovementKey | JumpMovementKey
 
 export interface MovementConfig {
   /**
    * Boolean if the keyboard movement should be able to loop around once it has
    * reached the start or end of all the items.
    */
-  loopable?: boolean;
+  loopable?: FunctionMaybe<Nullable<boolean>>
 
   /**
    * Boolean if the movement should also include printable characters search
    * movement.
    */
-  searchable?: boolean;
+  searchable?: FunctionMaybe<Nullable<boolean>>
 
   /**
    * The keys that can trigger a move to the next item. If the `loopable` config
    * is enabled, this will loop to the first item if the last item is currently
    * "focused".
    */
-  incrementKeys: readonly IncrementMovementKey[];
+  incrementKeys: FunctionMaybe<readonly IncrementMovementKey[]>
 
   /**
    * The keys that can trigger a move to the previous item. If the `loopable`
    * config is enabled, this will loop to the last item if the first item is
    * currently "focused".
    */
-  decrementKeys: readonly IncrementMovementKey[];
+  decrementKeys: FunctionMaybe<readonly IncrementMovementKey[]>
 
   /**
    * The keys that can trigger a move to the first item.
    */
-  jumpToFirstKeys: readonly JumpMovementKey[];
+  jumpToFirstKeys: FunctionMaybe<readonly JumpMovementKey[]>
 
   /**
    * The keys that can trigger a move to the last item.
    */
-  jumpToLastKeys: readonly JumpMovementKey[];
+  jumpToLastKeys: FunctionMaybe<readonly JumpMovementKey[]>
 }

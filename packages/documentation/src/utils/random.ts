@@ -1,7 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 interface RandomInt {
-  min?: number;
-  max?: number;
+    min?: FunctionMaybe<Nullable<number>>
+    max?: FunctionMaybe<Nullable<number>>
 }
 
 /**
@@ -9,5 +9,5 @@ interface RandomInt {
  * to 0-10.
  */
 export function randomInt({ min = 0, max = 10 }: RandomInt = {}): number {
-  return Math.floor(Math.random() * max) + min;
+    return Math.floor(Math.random() * max) + min
 }

@@ -1,7 +1,8 @@
 import type { ReactElement } from "react";
 import { Typography } from "@react-md/typography";
 
-import type { CompiledExample } from "utils/sassdoc";
+import type { CompiledExample } from "@react-md/dev-utils/src/utils/";
+import "@react-md/dev-utils/@types/sassdoc";
 
 import Example from "./Example";
 

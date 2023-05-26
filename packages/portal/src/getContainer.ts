@@ -7,7 +7,7 @@ export type PortalInto =
   | (() => HTMLElement | null)
   | HTMLElement
   | string
-  | null;
+  | null
 
 /**
  * A utility function to get the current container for the portal.  For SSR, the
@@ -17,26 +17,23 @@ export type PortalInto =
  * @param intoId - An id for an element to portal into
  * @returns the portal container element or null
  */
-export function getContainer(
-  into?: PortalInto | undefined,
-  intoId?: string | undefined
-): HTMLElement | null {
+export function getContainer(into?: PortalInto | undefined, intoId?: string | undefined) {
   if (typeof document === "undefined") {
-    return null;
+    return null
   }
 
-  let container: HTMLElement | null = null;
+  let container: HTMLElement | PortalInto | null | Element = null
   if (typeof into === "undefined" && typeof intoId === "undefined") {
-    container = document.body;
+    container = document.body
   } else if (typeof intoId === "string") {
-    container = document.getElementById(intoId);
+    container = document.getElementById(intoId)
   } else if (typeof into === "string") {
-    container = document.querySelector(into);
+    container = document.querySelector(into)
   } else if (typeof into === "function") {
-    container = into();
+    container = into()
   } else if (into) {
-    container = into;
+    container = into
   }
 
-  return container;
+  return container
 }

@@ -56,7 +56,7 @@ export default function ThemeConfiguration({
   theme,
   primaryColor,
   secondaryColor,
-}: ThemeConfigurationProps): ReactElement {
+}: ThemeConfigurationProps): Child {
   const { setPrimary, setSecondary, setAccent, toggleTheme, reset } =
     useThemeActions();
 

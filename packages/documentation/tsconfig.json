@@ -4,12 +4,13 @@
     "allowJs": true,
     "jsx": "preserve",
     "noEmit": true,
-    "composite": false,
+    //"composite": true,
     "target": "esnext",
     "rootDir": "src",
     "baseUrl": "src",
     "isolatedModules": true,
-    "incremental": true
+    "incremental": true,
+    "typeRoots": ["@react-md/dev-utils/@types"]
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]

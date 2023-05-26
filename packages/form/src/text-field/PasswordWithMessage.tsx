@@ -1,16 +1,16 @@
-import type { ReactElement } from "react";
-import { forwardRef } from "react";
+import type { Element } from 'voby'
 
-import type { FieldMessageContainerExtension } from "../FormMessageContainer";
-import { FormMessageContainer } from "../FormMessageContainer";
-import type { PasswordProps } from "./Password";
-import { Password } from "./Password";
+
+import type { FieldMessageContainerExtension } from "../FormMessageContainer"
+import { FormMessageContainer } from "../FormMessageContainer"
+import type { PasswordProps } from "./Password"
+import { Password } from "./Password"
 
 /**
  * @remarks \@since 2.5.0
  */
 export type PasswordWithMessageProps =
-  FieldMessageContainerExtension<PasswordProps>;
+  FieldMessageContainerExtension<PasswordProps>
 
 /**
  * This component is a simple wrapper for the `Password` and `FormMessage`
@@ -41,13 +41,7 @@ export type PasswordWithMessageProps =
  *
  * @remarks \@since 2.5.0
  */
-export const PasswordWithMessage = forwardRef<
-  HTMLInputElement,
-  PasswordWithMessageProps
->(function PasswordWithMessage(
-  { messageProps, messageContainerProps, ...props },
-  ref
-): ReactElement {
+export const PasswordWithMessage = ({ messageProps, messageContainerProps, ref, ...props }: PasswordWithMessageProps): Child => {
   return (
     <FormMessageContainer
       {...messageContainerProps}
@@ -55,5 +49,5 @@ export const PasswordWithMessage = forwardRef<
     >
       <Password {...props} ref={ref} />
     </FormMessageContainer>
-  );
-});
+  )
+}

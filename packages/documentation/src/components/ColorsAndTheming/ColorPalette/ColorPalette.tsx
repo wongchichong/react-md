@@ -38,7 +38,7 @@ const colorMap = uniqueColors.reduce<ColorMap>((map, color) => {
   return map;
 }, {});
 
-export default function ColorPalette(): ReactElement {
+export default function ColorPalette(): Child {
   return (
     <>
       <About />

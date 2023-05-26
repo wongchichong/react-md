@@ -1,5 +1,5 @@
-import type { ReactElement, ReactNode } from "react";
-import { createContext, useContext, useMemo } from "react";
+
+import { createContext, useContext, useMemo } from 'voby'
 
 /**
  * The supported themes for the `TextField`, `TextArea`, and `Select`
@@ -15,32 +15,32 @@ import { createContext, useContext, useMemo } from "react";
  * - "outline" - outlines the entire text field in a border and applies the
  *   active color as box shadow when the field is focused.
  */
-export type FormTheme = "none" | "underline" | "filled" | "outline";
+export type FormTheme = "none" | "underline" | "filled" | "outline"
 
 /**
  * The direction that the underline should appear from when the theme is
  * `"underline"` or `"filled"`.
  */
-export type FormUnderlineDirection = "left" | "center" | "right";
+export type FormUnderlineDirection = "left" | "center" | "right"
 
 export interface FormThemeOptions {
-  /**
-   * The current theme type.
-   */
-  theme?: FormTheme;
+    /**
+     * The current theme type.
+     */
+    theme?: FunctionMaybe<FormTheme>
 
-  /**
-   * The current underline direction.
-   */
-  underlineDirection?: FormUnderlineDirection;
+    /**
+     * The current underline direction.
+     */
+    underlineDirection?: FunctionMaybe<FormUnderlineDirection>
 }
 
-export type FormThemeContext = Required<FormThemeOptions>;
+export type FormThemeContext = Required<FormThemeOptions>
 
 const context = createContext<FormThemeContext>({
-  theme: "outline",
-  underlineDirection: "left",
-});
+    theme: "outline",
+    underlineDirection: "left",
+})
 
 /**
  * Gets the current theme values for a form component by inheriting the current
@@ -58,21 +58,21 @@ const context = createContext<FormThemeContext>({
  * ```
  */
 export function useFormTheme(options: FormThemeOptions = {}): FormThemeContext {
-  const formTheme = useContext(context);
-  let { theme, underlineDirection } = options;
-  theme = theme ?? formTheme.theme;
-  underlineDirection = underlineDirection ?? formTheme.underlineDirection;
+    const formTheme = useContext(context)
+    let { theme, underlineDirection } = options
+    theme = theme ?? formTheme.theme
+    underlineDirection = underlineDirection ?? formTheme.underlineDirection
 
-  return {
-    theme,
-    underlineDirection,
-  };
+    return {
+        theme,
+        underlineDirection,
+    }
 }
 
-const { Provider } = context;
+const { Provider } = context
 
 export interface FormThemeProviderProps extends FormThemeOptions {
-  children: ReactNode;
+    children: Children
 }
 
 /**
@@ -81,14 +81,11 @@ export interface FormThemeProviderProps extends FormThemeOptions {
  * needing all the prop-drilling/copying.
  */
 export function FormThemeProvider({
-  theme = "outline",
-  underlineDirection = "left",
-  children,
-}: FormThemeProviderProps): ReactElement {
-  const value = useMemo(
-    () => ({ theme, underlineDirection }),
-    [theme, underlineDirection]
-  );
+    theme = "outline",
+    underlineDirection = "left",
+    children,
+}: FormThemeProviderProps): Element {
+    const value = useMemo(() => ({ theme, underlineDirection }))
 
-  return <Provider value={value}>{children}</Provider>;
+    return <Provider value={value}>{children}</Provider>
 }

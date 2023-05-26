@@ -10,7 +10,7 @@ import { useToggle, GridCell } from "@react-md/utils";
 
 import styles from "./Preview.module.scss";
 
-export default function Preview(): ReactElement {
+export default function Preview(): Child {
   const [visible, show, hide] = useToggle(false);
   const container = useRef<HTMLDivElement | null>(null);
 

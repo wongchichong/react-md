@@ -1,14 +1,7 @@
 // This is a generated file from running the "createIcons" script. This file should not be updated manually.
-import { forwardRef } from "react";
 
 import { FontIcon, FontIconProps } from "@react-md/icon";
 
-export const BatteryStdFontIcon = forwardRef<HTMLElement, FontIconProps>(
-  function BatteryStdFontIcon(props, ref) {
-    return (
-      <FontIcon {...props} ref={ref}>
-        battery_std
-      </FontIcon>
-    );
-  }
-);
+export const BatteryStdFontIcon = ({ref, ...props}: FontIconProps<HTMLElement>) => {
+    return <FontIcon {...props} ref={ref}>battery_std</FontIcon>;
+}

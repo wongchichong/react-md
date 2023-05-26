@@ -1,22 +1,21 @@
-import type { MutableRefObject } from "react";
-import type React from "react";
-import { useCallback, useMemo } from "react";
-import { loop } from "../../loop";
+import { Observable, $$ } from 'voby'
+import { $, useMemo } from 'voby'
+import { loop } from "../../loop"
 import type {
-  BaseKeyboardSearchOptions,
-  SearchData,
-} from "../../search/useKeyboardSearch";
-import { useKeyboardSearch } from "../../search/useKeyboardSearch";
-import { DEFAULT_GET_ITEM_VALUE, DEFAULT_VALUE_KEY } from "../../search/utils";
-import type { MovementConfig } from "./types";
+    BaseKeyboardSearchOptions,
+    SearchData,
+} from "../../search/useKeyboardSearch"
+import { useKeyboardSearch } from "../../search/useKeyboardSearch"
+import { DEFAULT_GET_ITEM_VALUE, DEFAULT_VALUE_KEY } from "../../search/utils"
+import type { MovementConfig } from "./types"
 import {
-  getKeyboardConfig,
-  getStringifiedKeyConfig,
-  transformKeys,
-} from "./utils";
+    getKeyboardConfig,
+    getStringifiedKeyConfig,
+    transformKeys,
+} from "./utils"
 
 export type MovementHandler<E extends HTMLElement> =
-  React.KeyboardEventHandler<E>;
+    KeyboardEventHandler<E>
 
 /**
  * A mutable ref object that must be applied to each DOM node within the
@@ -25,32 +24,32 @@ export type MovementHandler<E extends HTMLElement> =
  *
  * @typeParam E - the element type of each item within the focusable list.
  */
-export type ItemRef<E extends HTMLElement> = MutableRefObject<E | null>;
+export type ItemRef<E extends HTMLElement> = Observable<E | null>
 
 export type ItemRefList<E extends HTMLElement = HTMLElement> =
-  readonly ItemRef<E>[];
+    readonly ItemRef<E>[]
 
 export interface BaseKeyboardMovementOptions<
-  D = unknown,
-  CE extends HTMLElement = HTMLElement,
-  IE extends HTMLElement = HTMLElement
+    D = unknown,
+    CE extends HTMLElement = HTMLElement,
+    IE extends HTMLElement = HTMLElement
 > extends Omit<BaseKeyboardSearchOptions<D, CE>, "onChange">,
     MovementConfig {
-  /**
-   * Boolean if the event should trigger `event.stopPropagation()` when the
-   * custom keyboard movement is triggered. This should generally be kept as
-   * `false` or `undefined` by default, but enabled when creating more complex
-   * 2-dimensional movement cases such as grids.
-   */
-  stopPropagation?: boolean;
+    /**
+     * Boolean if the event should trigger `event.stopPropagation()` when the
+     * custom keyboard movement is triggered. This should generally be kept as
+     * `false` or `undefined` by default, but enabled when creating more complex
+     * 2-dimensional movement cases such as grids.
+     */
+    stopPropagation?: FunctionMaybe<Nullable<boolean>>
 
-  /**
-   * A required change event handler that will be called whenever a user types a
-   * letter and it causes a new item to be "found". This should normally be
-   * something that either updates the `aria-activedescendant` id to the new
-   * found item's id or manually focus the item's DOM node.
-   */
-  onChange?: (data: SearchData<D, CE>, itemRefs: ItemRefList<IE>) => void;
+    /**
+     * A required change event handler that will be called whenever a user types a
+     * letter and it causes a new item to be "found". This should normally be
+     * something that either updates the `aria-activedescendant` id to the new
+     * found item's id or manually focus the item's DOM node.
+     */
+    onChange?: (data: SearchData<D, CE>, itemRefs: ItemRefList<IE>) => void
 }
 
 /**
@@ -61,24 +60,24 @@ export interface BaseKeyboardMovementOptions<
  * @typeParam IE - the type of the DOM element for the keyboard event handler.
  */
 export interface KeyboardMovementOptions<
-  D = unknown,
-  CE extends HTMLElement = HTMLElement,
-  IE extends HTMLElement = HTMLElement
+    D = unknown,
+    CE extends HTMLElement = HTMLElement,
+    IE extends HTMLElement = HTMLElement
 > extends BaseKeyboardMovementOptions<D, CE, IE> {
-  /**
-   * The currently focused index within the item list. This will need to be
-   * updated due to the `onChange` callback being called for this hook to work
-   * as it is fully "controlled" by a parent hook/component.
-   */
-  focusedIndex: number;
+    /**
+     * The currently focused index within the item list. This will need to be
+     * updated due to the `onChange` callback being called for this hook to work
+     * as it is fully "controlled" by a parent hook/component.
+     */
+    focusedIndex: FunctionMaybe<number>
 
-  /**
-   * A required change event handler that will be called whenever a user types a
-   * letter and it causes a new item to be "found". This should normally be
-   * something that either updates the `aria-activedescendant` id to the new
-   * found item's id or manually focus the item's DOM node.
-   */
-  onChange: (data: SearchData<D, CE>, itemRefs: ItemRefList<IE>) => void;
+    /**
+     * A required change event handler that will be called whenever a user types a
+     * letter and it causes a new item to be "found". This should normally be
+     * something that either updates the `aria-activedescendant` id to the new
+     * found item's id or manually focus the item's DOM node.
+     */
+    onChange: (data: SearchData<D, CE>, itemRefs: ItemRefList<IE>) => void
 }
 
 /**
@@ -93,22 +92,22 @@ export interface KeyboardMovementOptions<
  * element that can be focusable.
  */
 export type KeyboardMovementProviders<
-  CE extends HTMLElement,
-  IE extends HTMLElement
+    CE extends HTMLElement,
+    IE extends HTMLElement
 > = [
-  /**
-   * A list of mutable ref objects that must be applied to each focusable item
-   * within the list. This list will automatically be generated based on the
-   * number of items provided to the `useKeyboardMovement` hook
-   */
-  ItemRefList<IE>,
+        /**
+         * A list of mutable ref objects that must be applied to each focusable item
+         * within the list. This list will automatically be generated based on the
+         * number of items provided to the `useKeyboardMovement` hook
+         */
+        ItemRefList<IE>,
 
-  /**
-   * The keydown event handler to apply to a "container" element that has custom
-   * keyboard focus.
-   */
-  MovementHandler<CE>
-];
+        /**
+         * The keydown event handler to apply to a "container" element that has custom
+         * keyboard focus.
+         */
+        MovementHandler<CE>
+    ]
 
 /**
  * This is a low-level hook for providing custom keyboard movement based on key
@@ -140,122 +139,104 @@ export type KeyboardMovementProviders<
  * element that can be focusable.
  */
 export function useKeyboardMovement<
-  D = unknown,
-  CE extends HTMLElement = HTMLElement,
-  IE extends HTMLElement = HTMLElement
+    D = unknown,
+    CE extends HTMLElement = HTMLElement,
+    IE extends HTMLElement = HTMLElement
 >({
-  onKeyDown,
-  incrementKeys,
-  decrementKeys,
-  jumpToFirstKeys,
-  jumpToLastKeys,
-  stopPropagation = true,
-  onChange,
-  items,
-  resetTime,
-  findMatchIndex,
-  focusedIndex,
-  loopable = true,
-  searchable = true,
-  valueKey = DEFAULT_VALUE_KEY,
-  getItemValue = DEFAULT_GET_ITEM_VALUE,
-}: KeyboardMovementOptions<D, CE, IE>): KeyboardMovementProviders<CE, IE> {
-  const keys = useMemo(
-    () => [
-      ...transformKeys(incrementKeys, "increment"),
-      ...transformKeys(decrementKeys, "decrement"),
-      ...transformKeys(jumpToFirstKeys, "first"),
-      ...transformKeys(jumpToLastKeys, "last"),
-    ],
-    [incrementKeys, decrementKeys, jumpToFirstKeys, jumpToLastKeys]
-  );
-
-  const itemRefs = useMemo<ItemRefList<IE>>(
-    () => Array.from(items, () => ({ current: null })),
-    [items]
-  );
-
-  const handleSearch = useKeyboardSearch<D, CE>({
+    onKeyDown,
+    incrementKeys,
+    decrementKeys,
+    jumpToFirstKeys,
+    jumpToLastKeys,
+    stopPropagation = true,
+    onChange,
     items,
-    valueKey,
-    getItemValue,
-    onChange(data) {
-      onChange(data, itemRefs);
-    },
-    searchIndex: focusedIndex,
     resetTime,
     findMatchIndex,
-  });
+    focusedIndex,
+    loopable = true,
+    searchable = true,
+    valueKey = DEFAULT_VALUE_KEY,
+    getItemValue = DEFAULT_GET_ITEM_VALUE,
+}: KeyboardMovementOptions<D, CE, IE>): KeyboardMovementProviders<CE, IE> {
+    const keys = useMemo(() => [
+        ...transformKeys($$(incrementKeys), "increment"),
+        ...transformKeys($$(decrementKeys), "decrement"),
+        ...transformKeys($$(jumpToFirstKeys), "first"),
+        ...transformKeys($$(jumpToLastKeys), "last"),
+    ])
 
-  const handleKeyDown = useCallback<MovementHandler<CE>>(
-    (event) => {
-      if (searchable) {
-        handleSearch(event);
-      }
+    const itemRefs = useMemo<ItemRefList<IE>>(() => Array.from(items, () => $(null)))
 
-      if (onKeyDown) {
-        onKeyDown(event);
-      }
-
-      const target = event.target as HTMLElement;
-      const keyConfig = getKeyboardConfig(event, keys);
-      if (!keyConfig || !target) {
-        return;
-      }
-
-      // implementing custom behavior, so prevent default of scrolling or other
-      // things
-      event.preventDefault();
-      if (stopPropagation) {
-        event.stopPropagation();
-      }
-
-      const { type } = keyConfig;
-
-      const lastIndex = items.length - 1;
-      let index: number;
-      switch (type) {
-        case "first":
-          index = 0;
-          break;
-        case "last":
-          index = lastIndex;
-          break;
-        default:
-          index = loop({
-            value: focusedIndex,
-            max: lastIndex,
-            increment: type === "increment",
-            minmax: !loopable,
-          });
-      }
-
-      if (index === focusedIndex) {
-        return;
-      }
-
-      const data: SearchData<D, CE> = {
-        index,
-        item: items[index],
+    const handleSearch = useKeyboardSearch<D, CE>({
         items,
-        query: getStringifiedKeyConfig(keyConfig),
-        target: event.currentTarget,
-      };
-      onChange(data, itemRefs);
-    },
-    [
-      onKeyDown,
-      stopPropagation,
-      focusedIndex,
-      keys,
-      items,
-      handleSearch,
-      loopable,
-      searchable,
-      onChange,
-      itemRefs,
-    ]
-  );
+        valueKey,
+        getItemValue,
+        onChange(data) {
+            onChange(data, itemRefs())
+        },
+        searchIndex: focusedIndex,
+        resetTime,
+        findMatchIndex,
+    })
 
-  return [itemRefs, handleKeyDown];
+    const handleKeyDown = $<MovementHandler<CE>>((event) => {
+        if (searchable) {
+            //@ts-ignore
+            handleSearch(event)
+        }
+
+        if (onKeyDown) {
+            //@ts-ignore
+            onKeyDown(event)
+        }
+
+        const target = event.target as HTMLElement
+        const keyConfig = getKeyboardConfig(event, keys())
+        if (!keyConfig || !target) {
+            return
+        }
+
+        // implementing custom behavior, so prevent default of scrolling or other
+        // things
+        event.preventDefault()
+        if (stopPropagation) {
+            event.stopPropagation()
+        }
+
+        const { type } = keyConfig
+
+        const lastIndex = items.length - 1
+        let index: number
+        switch (type) {
+            case "first":
+                index = 0
+                break
+            case "last":
+                index = lastIndex
+                break
+            default:
+                index = loop({
+                    value: $$(focusedIndex),
+                    max: lastIndex,
+                    increment: type === "increment",
+                    minmax: !loopable,
+                })
+        }
+
+        if (index === focusedIndex) {
+            return
+        }
+
+        const data: SearchData<D, CE> = {
+            index,
+            item: items[index],
+            items,
+            query: getStringifiedKeyConfig(keyConfig),
+            target: event.currentTarget,
+        }
+        onChange(data, itemRefs())
+    })
+
+    return [itemRefs(), handleKeyDown]
 }

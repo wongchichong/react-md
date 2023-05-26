@@ -3,7 +3,7 @@ import type { ReactElement } from "react";
 
 import TableCellList from "./TableCellList";
 
-export default function OtherPros(): ReactElement {
+export default function OtherPros(): Child {
   return (
     <TableCellList>
       <li>

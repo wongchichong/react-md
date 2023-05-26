@@ -1,6 +1,6 @@
-import { useCallback, useState } from "react";
+import { $, $$ } from 'voby'
 
-import type { ExpandedIds, TreeItemExpansion, TreeItemId } from "./types";
+import type { ExpandedIds, TreeItemExpansion, TreeItemId } from "./types"
 
 /**
  * A hook that implements the base functionality for expanding different tree
@@ -13,32 +13,29 @@ import type { ExpandedIds, TreeItemExpansion, TreeItemId } from "./types";
  * component to handle the expansion state within the tree.
  */
 export function useTreeItemExpansion(
-  defaultExpandedIds: ExpandedIds | (() => ExpandedIds)
+    defaultExpandedIds: FunctionMaybe<ExpandedIds>
 ): TreeItemExpansion {
-  const [expandedIds, setExpandedIds] = useState(defaultExpandedIds);
-  const onItemExpansion = useCallback(
-    (itemId: TreeItemId, expanded: boolean) => {
-      setExpandedIds((expandedIds) => {
-        const i = expandedIds.indexOf(itemId);
-        if (i === -1 && expanded) {
-          return [...expandedIds, itemId];
-        }
+    const expandedIds = $($$(defaultExpandedIds))
+    const onItemExpansion = (itemId: TreeItemId, expanded: boolean) => {
+        expandedIds((expandedIds) => {
+            const i = expandedIds.indexOf(itemId)
+            if (i === -1 && expanded) {
+                return [...expandedIds, itemId]
+            }
 
-        if (i !== -1 && !expanded) {
-          const nextIds = expandedIds.slice();
-          nextIds.splice(i, 1);
-          return nextIds;
-        }
+            if (i !== -1 && !expanded) {
+                const nextIds = expandedIds.slice()
+                nextIds.splice(i, 1)
+                return nextIds
+            }
 
-        return expandedIds;
-      });
-    },
-    []
-  );
+            return expandedIds
+        })
+    }
 
-  return {
-    expandedIds,
-    onItemExpansion,
-    onMultiItemExpansion: setExpandedIds,
-  };
+    return {
+        expandedIds,
+        onItemExpansion,
+        onMultiItemExpansion: expandedIds,
+    }
 }

@@ -1,14 +1,14 @@
-import type { CSSProperties, InputHTMLAttributes, ReactNode } from "react";
-import { forwardRef } from "react";
-import cn from "classnames";
-import type { InteractionStatesOptions } from "@react-md/states";
-import { useInteractionStates } from "@react-md/states";
-import { bem } from "@react-md/utils";
+import { CSSProperties, $$ } from 'voby'
 
-import { Label } from "../label/Label";
-import { useFocusState } from "../useFocusState";
-import { ToggleContainer } from "./ToggleContainer";
-import { InputToggleIcon } from "./InputToggleIcon";
+
+import type { InteractionStatesOptions } from "@react-md/states"
+import { useInteractionStates } from "@react-md/states"
+import { bem } from "@react-md/utils"
+
+import { Label } from "../label/Label"
+import { useFocusState } from "../useFocusState"
+import { ToggleContainer } from "./ToggleContainer"
+import { InputToggleIcon } from "./InputToggleIcon"
 
 /**
  * The props for a checkbox or radio input element.
@@ -16,261 +16,270 @@ import { InputToggleIcon } from "./InputToggleIcon";
  * Note: The `readOnly` attribute is not valid for these input types since they
  * update the `checked` property while `readOnly` is specific to `value` itself.
  */
+//@ts-ignore
 export interface InputToggleProps
-  extends Omit<InputHTMLAttributes<HTMLInputElement>, "type" | "readOnly">,
+    extends Omit<InputHTMLAttributes<HTMLInputElement>, "type" | "readOnly">,
     Pick<
-      InteractionStatesOptions,
-      | "rippleTimeout"
-      | "disableRipple"
-      | "disableProgrammaticRipple"
-      | "disablePressedFallback"
-      | "rippleClassNames"
+        InteractionStatesOptions,
+        | "rippleTimeout"
+        | "disableRipple"
+        | "disableProgrammaticRipple"
+        | "disablePressedFallback"
+        | "rippleClassNames"
     > {
-  /**
-   * The id for the radio or checkbox. This is required for a11y and will be
-   * used as the `for` attribute if the `label` prop is provided.
-   */
-  id: string;
+    /**
+     * The id for the radio or checkbox. This is required for a11y and will be
+     * used as the `for` attribute if the `label` prop is provided.
+     */
+    id: string
 
-  /**
-   * The icon to use for either a radio or a checkbox.
-   */
-  icon?: ReactNode;
+    /**
+     * The icon to use for either a radio or a checkbox.
+     */
+    icon?: Child
 
-  /**
-   * An optional style to apply to the `<span>` surrounding the toggle icon.
-   */
-  iconStyle?: CSSProperties;
+    /**
+     * An optional style to apply to the `<span>` surrounding the toggle icon.
+     */
+    iconStyle?: FunctionMaybe<Nullable<string | StyleProperties>>
 
-  /**
-   * An optional className to apply to the `<span>` surrounding the toggle icon.
-   */
-  iconClassName?: string;
+    /**
+     * An optional className to apply to the `<span>` surrounding the toggle icon.
+     */
+    iconClassName?: Class
 
-  /**
-   * An optional style to apply to the toggle `<span>` element. The `style` prop
-   * will be applied to the container `<div>` element instead.
-   */
-  toggleStyle?: CSSProperties;
+    /**
+     * An optional style to apply to the toggle `<span>` element. The `style` prop
+     * will be applied to the container `<div>` element instead.
+     */
+    toggleStyle?: FunctionMaybe<Nullable<string | StyleProperties>>
 
-  /**
-   * An optional className to apply to the toggle `<span>` element. The
-   * `className` prop will be applied to the container `<div>` element instead.
-   */
-  toggleClassName?: string;
+    /**
+     * An optional className to apply to the toggle `<span>` element. The
+     * `className` prop will be applied to the container `<div>` element instead.
+     */
+    toggleClassName?: Class
 
-  /**
-   * An optional `style` to provide to the invisible `<input>` element that is
-   * used to toggle the checked state. This prop is only available since the
-   * `style` prop is passed to the container element, but you probably shouldn't
-   * really style this element anyways.
-   *
-   * @remarks \@since 2.2.0
-   */
-  inputStyle?: CSSProperties;
+    /**
+     * An optional `style` to provide to the invisible `<input>` element that is
+     * used to toggle the checked state. This prop is only available since the
+     * `style` prop is passed to the container element, but you probably shouldn't
+     * really style this element anyways.
+     *
+     * @remarks \@since 2.2.0
+     */
+    inputStyle?: FunctionMaybe<Nullable<string | StyleProperties>>
 
-  /**
-   * An optional `className` to provide to the invisible `<input>` element that
-   * is used to toggle the checked state. This prop does not have many uses and
-   * is really just provided since the `className` is passed to the container
-   * element instead of the `<input>`. However, this can be used to update the
-   * icon styles if needed using the `:checked` state:
-   *
-   * ```scss
-   * .custom-toggle-icon {
-   *   // styles
-   * }
-   *
-   * .custom-input:checked + .custom-toggle-icon {
-   *   // custom checked styles
-   * }
-   * ```
-   *
-   * @remarks \@since 2.2.0
-   */
-  inputClassName?: string;
+    /**
+     * An optional `className` to provide to the invisible `<input>` element that
+     * is used to toggle the checked state. This prop does not have many uses and
+     * is really just provided since the `className` is passed to the container
+     * element instead of the `<input>`. However, this can be used to update the
+     * icon styles if needed using the `:checked` state:
+     *
+     * ```scss
+     * .custom-toggle-icon {
+     *   // styles
+     * }
+     *
+     * .custom-input:checked + .custom-toggle-icon {
+     *   // custom checked styles
+     * }
+     * ```
+     *
+     * @remarks \@since 2.2.0
+     */
+    inputClassName?: Class
 
-  /**
-   * Boolean if the icon's overlay should be disabled. The way the Checkbox and
-   * Radio input elements work is by applying different opacity to the
-   * `::before` and `::after` pseudo selectors and animating it. If you want to
-   * use a custom icon that is not a material-icon checkbox outline or radio
-   * button, you should probably enable this prop.
-   */
-  disableIconOverlay?: boolean;
+    /**
+     * Boolean if the icon's overlay should be disabled. The way the Checkbox and
+     * Radio input elements work is by applying different opacity to the
+     * `::before` and `::after` pseudo selectors and animating it. If you want to
+     * use a custom icon that is not a material-icon checkbox outline or radio
+     * button, you should probably enable this prop.
+     */
+    disableIconOverlay?: FunctionMaybe<Nullable<boolean>>
 
-  /**
-   * Boolean if the input toggle is currently errored. This will update the
-   * label and the input to gain error colors.
-   */
-  error?: boolean;
+    /**
+     * Boolean if the input toggle is currently errored. This will update the
+     * label and the input to gain error colors.
+     */
+    error?: FunctionMaybe<Nullable<boolean>>
 
-  /**
-   * Boolean if the container element should be rendered as `inline-flex`
-   * instead of `flex`.
-   */
-  inline?: boolean;
+    /**
+     * Boolean if the container element should be rendered as `inline-flex`
+     * instead of `flex`.
+     */
+    inline?: FunctionMaybe<Nullable<boolean>>
 
-  /**
-   * Boolean if the label should be stacked above/below the input toggle instead
-   * of inline.
-   */
-  stacked?: boolean;
+    /**
+     * Boolean if the label should be stacked above/below the input toggle instead
+     * of inline.
+     */
+    stacked?: FunctionMaybe<Nullable<boolean>>
 
-  /**
-   * An optional label to display with the input. If this prop is omitted, you
-   * **should** apply an `aria-label` or `aria-labelledby` for a11y.
-   */
-  label?: ReactNode;
+    /**
+     * An optional label to display with the input. If this prop is omitted, you
+     * **should** apply an `aria-label` or `aria-labelledby` for a11y.
+     */
+    label?: Child
 
-  /**
-   * An optional style to apply to the `<label>` when the `label` prop is used.
-   */
-  labelStyle?: CSSProperties;
+    /**
+     * An optional style to apply to the `<label>` when the `label` prop is used.
+     */
+    labelStyle?: FunctionMaybe<Nullable<string | StyleProperties>>
 
-  /**
-   * An optional className to apply to the `<label>` when the `label` prop is
-   * used.
-   */
-  labelClassName?: string;
+    /**
+     * An optional className to apply to the `<label>` when the `label` prop is
+     * used.
+     */
+    labelClassName?: Class
 
-  /**
-   * An optional boolean if the label should gain the disabled style. When this
-   * is `undefined`, the `disabled` prop will be used instead. This is really
-   * just useful when you want to disable the switch from being toggled while
-   * some async action is being called, but not changing styles during the wait.
-   */
-  labelDisabled?: boolean;
+    /**
+     * An optional boolean if the label should gain the disabled style. When this
+     * is `undefined`, the `disabled` prop will be used instead. This is really
+     * just useful when you want to disable the switch from being toggled while
+     * some async action is being called, but not changing styles during the wait.
+     */
+    labelDisabled?: FunctionMaybe<Nullable<boolean>>
 
-  /**
-   * Boolean if the input toggle should appear after the label instead of
-   * before.
-   */
-  iconAfter?: boolean;
+    /**
+     * Boolean if the input toggle should appear after the label instead of
+     * before.
+     */
+    iconAfter?: FunctionMaybe<Nullable<boolean>>
 
-  /**
-   * Optional content to render after the icon element.
-   */
-  children?: ReactNode;
+    /**
+     * Optional content to render after the icon element.
+     */
+    children?: Children
 }
 
 type Props = InputToggleProps &
-  ({ type: "radio" } | { type: "checkbox"; indeterminate?: boolean });
+    ({ type: "radio" } | { type: "checkbox"; indeterminate?: FunctionMaybe<Nullable<boolean>> })
 type CheckboxOrRadioProps = InputToggleProps & {
-  type: "checkbox" | "radio";
-  indeterminate?: boolean;
-};
+    type: "checkbox" | "radio"
+    indeterminate?: FunctionMaybe<Nullable<boolean>>
+}
 
-const block = bem("rmd-toggle");
+const block = bem("rmd-toggle")
 
-export const InputToggle = forwardRef<HTMLInputElement, Props>(
-  function InputToggle(allProps, ref) {
+export const InputToggle = (allProps: Props) => {
     const {
-      style,
-      className,
-      iconStyle,
-      iconClassName,
-      toggleStyle,
-      toggleClassName: propToggleClassName,
-      inputStyle,
-      inputClassName,
-      icon,
-      onFocus: propOnFocus,
-      onBlur: propOnBlur,
-      error = false,
-      inline = false,
-      stacked = false,
-      disabled = false,
-      label,
-      labelStyle,
-      labelClassName,
-      labelDisabled,
-      iconAfter = false,
-      disableIconOverlay = false,
-      disableRipple,
-      disableProgrammaticRipple,
-      rippleTimeout,
-      rippleClassNames,
-      children,
-      indeterminate,
-      ...props
-    } = allProps as CheckboxOrRadioProps;
+        style,
+        className,
+        iconStyle,
+        iconClassName,
+        toggleStyle,
+        toggleClassName: propToggleClassName,
+        inputStyle,
+        inputClassName,
+        icon,
+        onFocus: propOnFocus,
+        onBlur: propOnBlur,
+        error = false,
+        inline = false,
+        stacked = false,
+        disabled = false,
+        label,
+        labelStyle,
+        labelClassName,
+        labelDisabled,
+        iconAfter = false,
+        disableIconOverlay = false,
+        disableRipple,
+        disableProgrammaticRipple,
+        rippleTimeout,
+        rippleClassNames,
+        children,
+        indeterminate,
+        ref,
+        ...props
+    } = allProps as CheckboxOrRadioProps
 
-    const { id, type } = props;
+    const { id, type } = props
 
     const {
-      ripples,
-      handlers,
-      className: toggleClassName,
+        ripples,
+        handlers,
+        className: toggleClassName,
     } = useInteractionStates({
-      handlers: props,
-      disabled,
-      className: propToggleClassName,
-      disableRipple,
-      disableProgrammaticRipple,
-      rippleTimeout,
-      rippleClassNames,
-    });
+        handlers: props,
+        disabled: $$(disabled),
+        className: propToggleClassName,
+        disableRipple,
+        disableProgrammaticRipple,
+        rippleTimeout,
+        rippleClassNames,
+    })
     const [focused, onFocus, onBlur] = useFocusState({
-      onFocus: propOnFocus,
-      onBlur: propOnBlur,
-    });
+        //@ts-ignore
+        onFocus: propOnFocus,
+        //@ts-ignore
+        onBlur: propOnBlur,
+    })
 
     const labelEl = (
-      <Label
-        style={labelStyle}
-        className={labelClassName}
-        htmlFor={id}
-        error={error}
-        disabled={typeof labelDisabled === "boolean" ? labelDisabled : disabled}
-      >
-        {label}
-      </Label>
-    );
+        <Label
+            style={labelStyle}
+            className={labelClassName}
+            htmlFor={id}
+            error={error}
+            disabled={typeof labelDisabled === "boolean" ? labelDisabled : disabled}
+        >
+            {label}
+        </Label>
+    )
 
     return (
-      <ToggleContainer
-        style={style}
-        className={className}
-        inline={inline}
-        stacked={stacked}
-      >
-        {iconAfter && labelEl}
-        <span
-          style={toggleStyle}
-          className={cn(
-            block({
-              focused,
-              disabled,
-            }),
-            toggleClassName
-          )}
+        <ToggleContainer
+            style={style}
+            className={className}
+            inline={inline}
+            stacked={stacked}
         >
-          <input
-            {...props}
-            {...handlers}
-            ref={ref}
-            style={inputStyle}
-            disabled={disabled}
-            onFocus={onFocus}
-            onBlur={onBlur}
-            className={cn(block("input"), inputClassName)}
-          />
-          <InputToggleIcon
-            circle={!disableIconOverlay && type === "radio"}
-            disabled={disabled}
-            overlay={!disableIconOverlay}
-            indeterminate={indeterminate}
-            style={iconStyle}
-            className={iconClassName}
-          >
-            {icon}
-          </InputToggleIcon>
-          {ripples}
-          {children}
-        </span>
-        {!iconAfter && labelEl}
-      </ToggleContainer>
-    );
-  }
-);
+            {iconAfter && labelEl}
+            {/* @ts-ignore */}
+            <span
+                // /@ts-ignore
+                style={toggleStyle}
+                className={[
+                    block({
+                        focused,
+                        disabled,
+                    }),
+                    toggleClassName
+                ]}
+            >
+                <input
+                    {...props}
+                    {...handlers}
+                    ref={ref}
+                    style={inputStyle}
+                    disabled={disabled}
+                    //@ts-ignore
+                    onFocus={onFocus}
+                    //@ts-ignore
+                    onBlur={onBlur}
+                    className={[block("input"), inputClassName]}
+                />
+                <InputToggleIcon
+                    circle={!disableIconOverlay && type === "radio"}
+                    //@ts-ignore
+                    disabled={disabled}
+                    overlay={!disableIconOverlay}
+                    indeterminate={indeterminate}
+                    //@ts-ignore
+                    style={iconStyle}
+                    className={iconClassName}
+                >
+                    {icon}
+                </InputToggleIcon>
+                {ripples}
+                {children}
+            </span>
+            {!iconAfter && labelEl}
+        </ToggleContainer>
+    )
+}
+

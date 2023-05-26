@@ -1,26 +1,26 @@
-import type { ReactElement } from "react";
+import type { ReactElement } from "react"
 
-import DemoPage from "../DemoPage";
+import DemoPage from "../DemoPage"
 
-import AllElevations from "./AllElevations";
-import allElevations from "./AllElevations.md";
+import AllElevations from "./AllElevations"
+import allElevations from "./AllElevations.md"
 
-import AnimatingElevation from "./AnimatingElevation";
-import animatingElevation from "./AnimatingElevation.md";
+import AnimatingElevation from "./AnimatingElevation"
+import animatingElevation from "./AnimatingElevation.md"
 
 const demos = [
-  {
-    name: "All Elevations",
-    description: allElevations,
-    children: <AllElevations />,
-  },
-  {
-    name: "Animating Elevation",
-    description: animatingElevation,
-    children: <AnimatingElevation />,
-  },
-];
+    {
+        name: "All Elevations",
+        description: allElevations,
+        children: <AllElevations />,
+    },
+    {
+        name: "Animating Elevation",
+        description: animatingElevation,
+        children: <AnimatingElevation />,
+    },
+]
 
-export default function Elevation(): ReactElement {
-  return <DemoPage demos={demos} packageName="elevation" />;
+export default function Elevation(): Child {
+    return <DemoPage demos={demos} packageName="elevation" />
 }

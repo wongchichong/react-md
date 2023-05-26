@@ -1,23 +1,23 @@
-import type { DragEvent, HTMLAttributes } from "react";
-import { useCallback, useState } from "react";
+// import type { DragEvent, HTMLAttributes } from 'voby';
+import { $ } from 'voby'
 
 /**
  * @remarks \@since 2.9.0
  * @deprecated \@since 5.1.3 Use `DropzoneHandlers` instead.
  */
-export type DropzoneHanders<E extends HTMLElement> = DropzoneHandlers<E>;
+export type DropzoneHanders<E extends HTMLElement> = DropzoneHandlers<E>
 
 /** @remarks \@since 5.1.3 */
 export type DropzoneHandlers<E extends HTMLElement> = Pick<
-  HTMLAttributes<E>,
-  "onDragEnter" | "onDragOver" | "onDrop" | "onDragLeave"
->;
+    HTMLAttributes<E>,
+    "onDragEnter" | "onDragOver" | "onDrop" | "onDragLeave"
+>
 
 /** @remarks \@since 2.9.0 */
 export type DropzoneHookReturnValue<E extends HTMLElement> = [
-  boolean,
-  DropzoneHandlers<E>
-];
+    boolean,
+    DropzoneHandlers<E>
+]
 
 /**
  * This hook can be used to implement simple drag-and-drop behavior for file
@@ -30,7 +30,7 @@ export type DropzoneHookReturnValue<E extends HTMLElement> = [
  *   border: '1px solid blue',
  * };
  *
- * function Example(): ReactElement {
+ * function Example(): Element {
  *   const { onDrop } = useFileUpload()
  *   const [isOver, handlers] = useDropzone({
  *     onDrop: (event) => {
@@ -56,67 +56,60 @@ export type DropzoneHookReturnValue<E extends HTMLElement> = [
  * @remarks \@since 2.9.0
  */
 export function useDropzone<E extends HTMLElement>(
-  options: DropzoneHandlers<E>
+    options: DropzoneHandlers<E>
 ): DropzoneHookReturnValue<E> {
-  const {
-    onDragEnter: propOnDragEnter,
-    onDragOver: propOnDragOver,
-    onDragLeave: propOnDragLeave,
-    onDrop: propOnDrop,
-  } = options;
-  const [isOver, setOver] = useState(false);
+    const {
+        onDragEnter: propOnDragEnter,
+        onDragOver: propOnDragOver,
+        onDragLeave: propOnDragLeave,
+        onDrop: propOnDrop,
+    } = options
+    const isOver = $(false)
 
-  const onDragOver = useCallback(
-    (event: DragEvent<E>) => {
-      propOnDragOver?.(event);
-      event.preventDefault();
-      event.stopPropagation();
-      setOver(true);
-    },
-    [propOnDragOver]
-  );
-  const onDragEnter = useCallback(
-    (event: DragEvent<E>) => {
-      propOnDragEnter?.(event);
-      event.preventDefault();
-      event.stopPropagation();
-      setOver(true);
-    },
-    [propOnDragEnter]
-  );
-  const onDrop = useCallback(
-    (event: DragEvent<E>) => {
-      propOnDrop?.(event);
-      event.preventDefault();
-      event.stopPropagation();
-      setOver(false);
-    },
-    [propOnDrop]
-  );
-  const onDragLeave = useCallback(
-    (event: DragEvent<E>) => {
-      propOnDragLeave?.(event);
-      event.preventDefault();
-      event.stopPropagation();
+    const onDragOver = $((event: DragEvent/*<E>*/) => {
+        //@ts-ignore
+        propOnDragOver?.(event)
+        event.preventDefault()
+        event.stopPropagation()
+        isOver(true)
+    })
+    const onDragEnter = $((event: DragEvent/*<E>*/) => {
+        //@ts-ignore
+        propOnDragEnter?.(event)
+        event.preventDefault()
+        event.stopPropagation()
+        isOver(true)
+    })
+    const onDrop = $((event: DragEvent/*<E>*/) => {
+        //@ts-ignore
+        propOnDrop?.(event)
+        event.preventDefault()
+        event.stopPropagation()
+        isOver(false)
+    })
+    const onDragLeave = $((event: DragEvent/*<E>*/) => {
+        //@ts-ignore
+        propOnDragLeave?.(event)
+        event.preventDefault()
+        event.stopPropagation()
 
-      if (
-        !event.target ||
-        event.currentTarget === event.target ||
-        !event.currentTarget.contains(event.target as HTMLElement)
-      ) {
-        setOver(false);
-      }
-    },
-    [propOnDragLeave]
-  );
+        if (
+            !event.target ||
+            event.currentTarget === event.target ||
+            //@ts-ignore
+            !event.currentTarget.contains(event.target as HTMLElement)
+        ) {
+            isOver(false)
+        }
+    })
 
-  return [
-    isOver,
-    {
-      onDragOver,
-      onDragEnter,
-      onDrop,
-      onDragLeave,
-    },
-  ];
+    return [
+        isOver(),
+        {
+            onDragOver,
+            onDragEnter,
+            onDrop,
+            onDragLeave,
+        },
+    ]
 }

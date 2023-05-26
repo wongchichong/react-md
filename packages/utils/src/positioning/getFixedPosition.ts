@@ -1,11 +1,13 @@
-import { BELOW_CENTER_ANCHOR } from "./constants";
-import { createHorizontalPosition } from "./createHorizontalPosition";
-import { createVerticalPosition } from "./createVerticalPosition";
-import { findSizingContainer } from "./findSizingContainer";
-import { getElementRect } from "./getElementRect";
-import { getTransformOrigin } from "./getTransformOrigin";
-import { getViewportSize } from "./getViewportSize";
-import type { FixedPosition, FixedPositionOptions } from "./types";
+import { $$ } from "voby"
+import { BELOW_CENTER_ANCHOR } from "./constants"
+import { createHorizontalPosition } from "./createHorizontalPosition"
+import { createVerticalPosition } from "./createVerticalPosition"
+import { findSizingContainer } from "./findSizingContainer"
+import { getElementRect } from "./getElementRect"
+import { getTransformOrigin } from "./getTransformOrigin"
+import { getViewportSize } from "./getViewportSize"
+import type { FixedPosition, FixedPositionOptions } from "./types"
+import '@react-md/react'
 
 /**
  * This is used when there is no `container` element so that some styles can
@@ -16,18 +18,18 @@ import type { FixedPosition, FixedPositionOptions } from "./types";
  * @remarks \@since 5.0.0
  */
 const FALLBACK_DOM_RECT: DOMRect = {
-  x: 0,
-  y: 0,
-  height: 0,
-  width: 0,
-  left: 0,
-  right: 0,
-  top: 0,
-  bottom: 0,
-  toJSON() {
-    // do nothing
-  },
-};
+    x: 0,
+    y: 0,
+    height: 0,
+    width: 0,
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    toJSON() {
+        // do nothing
+    },
+}
 
 /**
  * One of the most complicated functions in this project that will attempt to
@@ -61,96 +63,99 @@ const FALLBACK_DOM_RECT: DOMRect = {
  * otherwise keep both the `left` and `right` styles.
  */
 export function getFixedPosition({
-  container,
-  element,
-  anchor = BELOW_CENTER_ANCHOR,
-  initialX,
-  initialY,
-  vwMargin = 16,
-  vhMargin = 16,
-  xMargin = 0,
-  yMargin = 0,
-  width: widthType = "auto",
-  preventOverlap = false,
-  transformOrigin = false,
-  disableSwapping: propDisableSwapping = false,
-  disableVHBounds = false,
+    container,
+    element,
+    anchor: a = BELOW_CENTER_ANCHOR,
+    initialX: ix,
+    initialY: iy,
+    vwMargin = 16,
+    vhMargin = 16,
+    xMargin = 0,
+    yMargin = 0,
+    width: widthType = "auto",
+    preventOverlap = false,
+    transformOrigin = false,
+    disableSwapping: propDisableSwapping = false,
+    disableVHBounds = false,
 }: FixedPositionOptions): FixedPosition {
-  container = findSizingContainer(container);
+    let initialX = $$(ix), initialY = $$(iy), anchor = $$(a)
 
-  if (process.env.NODE_ENV !== "production") {
-    if (widthType !== "auto" && anchor.x !== "center") {
-      throw new Error(
-        'Unable to use a calculated width when the horizontal anchor is not `"center"`.'
-      );
+    container = findSizingContainer(container)
+
+    if (process.env.NODE_ENV !== "production") {
+        if (widthType !== "auto" && anchor.x !== "center") {
+            throw new Error(
+                'Unable to use a calculated width when the horizontal anchor is not `"center"`.'
+            )
+        }
+
+        if (preventOverlap && anchor.y !== "above" && anchor.y !== "below") {
+            throw new Error(
+                'Unable to prevent overlap when the vertical anchor is not `"above"` or `"below"`'
+            )
+        }
     }
 
-    if (preventOverlap && anchor.y !== "above" && anchor.y !== "below") {
-      throw new Error(
-        'Unable to prevent overlap when the vertical anchor is not `"above"` or `"below"`'
-      );
+    if (!element) {
+        return {
+            actualX: anchor.x,
+            actualY: anchor.y,
+        }
     }
-  }
 
-  if (!element) {
+    const containerRect = container?.getBoundingClientRect() ?? FALLBACK_DOM_RECT
+    const vh = getViewportSize("height")
+    const vw = getViewportSize("width")
+
+    const { height, width: elWidth } = getElementRect(element)
+    if (disableVHBounds) {
+        const dialog = element.closest("[role='dialog']")
+        if (!dialog) {
+            initialY = (initialY ?? 0) + window.scrollY
+        }
+    }
+
+    const disableSwapping = propDisableSwapping || !container
+
+    const { left, right, width, minWidth, actualX: ax } = createHorizontalPosition({
+        x: anchor.x,
+        vw,
+        vwMargin,
+        xMargin,
+        width: widthType,
+        elWidth,
+        initialX,
+        containerRect,
+        disableSwapping,
+    })
+    const { top, bottom, actualY: ay } = createVerticalPosition({
+        y: anchor.y,
+        vh,
+        vhMargin,
+        yMargin,
+        initialY,
+        elHeight: height,
+        containerRect,
+        disableSwapping,
+        preventOverlap,
+        disableVHBounds,
+    })
+    const actualX = $$(ax), actualY = $$(ay)
+
     return {
-      actualX: anchor.x,
-      actualY: anchor.y,
-    };
-  }
-
-  const containerRect = container?.getBoundingClientRect() ?? FALLBACK_DOM_RECT;
-  const vh = getViewportSize("height");
-  const vw = getViewportSize("width");
-
-  const { height, width: elWidth } = getElementRect(element);
-  if (disableVHBounds) {
-    const dialog = element.closest("[role='dialog']");
-    if (!dialog) {
-      initialY = (initialY ?? 0) + window.scrollY;
+        actualX,
+        actualY,
+        style: {
+            left,
+            top,
+            right,
+            bottom,
+            width,
+            minWidth,
+            position: disableVHBounds ? "absolute" : "fixed",
+            transformOrigin: transformOrigin
+                ? getTransformOrigin({ x: actualX, y: actualY })
+                : undefined,
+        },
     }
-  }
-
-  const disableSwapping = propDisableSwapping || !container;
-
-  const { left, right, width, minWidth, actualX } = createHorizontalPosition({
-    x: anchor.x,
-    vw,
-    vwMargin,
-    xMargin,
-    width: widthType,
-    elWidth,
-    initialX,
-    containerRect,
-    disableSwapping,
-  });
-  const { top, bottom, actualY } = createVerticalPosition({
-    y: anchor.y,
-    vh,
-    vhMargin,
-    yMargin,
-    initialY,
-    elHeight: height,
-    containerRect,
-    disableSwapping,
-    preventOverlap,
-    disableVHBounds,
-  });
-
-  return {
-    actualX,
-    actualY,
-    style: {
-      left,
-      top,
-      right,
-      bottom,
-      width,
-      minWidth,
-      position: disableVHBounds ? "absolute" : "fixed",
-      transformOrigin: transformOrigin
-        ? getTransformOrigin({ x: actualX, y: actualY })
-        : undefined,
-    },
-  };
 }

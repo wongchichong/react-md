@@ -1,13 +1,13 @@
-import type { ReactNode } from "react";
+import { Element, $$ } from 'voby'
 
-import { useRippleTransition } from "./reducer";
-import { RippleContainer } from "./RippleContainer";
-import type { MergableRippleHandlers, RipplesOptions } from "./types";
-import { useRippleHandlers } from "./useRippleHandlers";
+import { useRippleTransition } from "./reducer"
+import { RippleContainer } from "./RippleContainer"
+import type { MergableRippleHandlers, RipplesOptions } from "./types"
+import { useRippleHandlers } from "./useRippleHandlers"
 
 interface ReturnValue<E extends HTMLElement> {
-  handlers: MergableRippleHandlers<E>;
-  ripples: ReactNode;
+    handlers: MergableRippleHandlers<E>
+    ripples: Element
 }
 
 /**
@@ -16,37 +16,37 @@ interface ReturnValue<E extends HTMLElement> {
  * the ripple effects.
  */
 export function useRipples<E extends HTMLElement = HTMLElement>({
-  rippleTimeout,
-  rippleClassNames,
-  rippleContainerClassName,
-  rippleClassName,
-  disableRipple,
-  disableSpacebarClick,
-  ...options
-}: RipplesOptions<E>): ReturnValue<E> {
-  const { create, state, release, entered, remove, cancel } =
-    useRippleTransition(disableSpacebarClick);
-  const handlers = useRippleHandlers({
-    create,
-    release,
-    cancel,
+    rippleTimeout,
+    rippleClassNames,
+    rippleContainerClassName,
+    rippleClassName,
     disableRipple,
-    ...options,
-  });
+    disableSpacebarClick,
+    ...options
+}: RipplesOptions<E>): ReturnValue<E> {
+    const { create, state, release, entered, remove, cancel } =
+        useRippleTransition($$(disableSpacebarClick))
+    const handlers = useRippleHandlers({
+        create,
+        release,
+        cancel,
+        disableRipple,
+        ...options,
+    })
 
-  return {
-    handlers,
-    ripples: disableRipple ? null : (
-      <RippleContainer
-        key="ripples"
-        ripples={state}
-        className={rippleContainerClassName}
-        rippleClassName={rippleClassName}
-        timeout={rippleTimeout}
-        classNames={rippleClassNames}
-        entered={entered}
-        exited={remove}
-      />
-    ),
-  };
+    return {
+        handlers,
+        ripples: disableRipple ? null : (
+            <RippleContainer
+                key="ripples"
+                ripples={state}
+                className={rippleContainerClassName}
+                rippleClassName={rippleClassName}
+                timeout={rippleTimeout}
+                classNames={rippleClassNames}
+                entered={entered}
+                exited={remove}
+            />
+        ),
+    }
 }

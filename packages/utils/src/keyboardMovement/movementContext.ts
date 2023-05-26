@@ -1,6 +1,7 @@
-import { createContext, useContext } from "react";
+import { createContext, useContext, $ } from 'voby'
+import '@react-md/react'
 
-import type { KeyboardFocusContext, KeyboardMovementConfig } from "./types";
+import type { KeyboardFocusContext, KeyboardMovementConfig } from "./types"
 
 /**
  * @remarks \@since 5.0.0
@@ -8,9 +9,9 @@ import type { KeyboardFocusContext, KeyboardMovementConfig } from "./types";
  */
 const noop = (): void => {
   if (process.env.NODE_ENV !== "production") {
-    throw new Error("KeyboardMovementProvider must be a parent component.");
+    throw new Error("KeyboardMovementProvider must be a parent component.")
   }
-};
+}
 
 /**
  * Most custom keyboard functionality use these keys.
@@ -23,7 +24,7 @@ export const DEFAULT_KEYBOARD_MOVEMENT: Readonly<KeyboardMovementConfig> = {
   decrementKeys: ["ArrowUp"],
   jumpToFirstKeys: ["Home"],
   jumpToLastKeys: ["End"],
-};
+}
 
 /**
  * @remarks \@since 5.1.2
@@ -34,7 +35,7 @@ export const DEFAULT_LTR_KEYBOARD_MOVEMENT: Readonly<KeyboardMovementConfig> = {
   decrementKeys: ["ArrowLeft"],
   jumpToFirstKeys: ["Home"],
   jumpToLastKeys: ["End"],
-};
+}
 
 /**
  * @remarks \@since 5.1.2
@@ -45,34 +46,33 @@ export const DEFAULT_RTL_KEYBOARD_MOVEMENT: Readonly<KeyboardMovementConfig> = {
   decrementKeys: ["ArrowRight"],
   jumpToFirstKeys: ["Home"],
   jumpToLastKeys: ["End"],
-};
+}
 
 /**
  * @remarks \@since 5.0.0
  * @internal
  */
-const context = createContext<KeyboardFocusContext>({
+const context = Object.assign(createContext<KeyboardFocusContext>({
   attach: noop,
   detach: noop,
-  watching: { current: [] },
+  watching: [],
   loopable: false,
   searchable: false,
   horizontal: false,
   includeDisabled: false,
-  config: { current: DEFAULT_KEYBOARD_MOVEMENT },
-});
-context.displayName = "KeyboardMovement";
+  config: $(DEFAULT_KEYBOARD_MOVEMENT),
+}), { displayName: "KeyboardMovement" })
 
 /**
  * @remarks \@since 5.0.0
  * @internal
  */
-export const { Provider: KeyboardMovementContextProvider } = context;
+export const { Provider: KeyboardMovementContextProvider } = context
 
 /**
  * @remarks \@since 5.0.0
  * @internal
  */
 export function useKeyboardFocusContext(): Readonly<KeyboardFocusContext> {
-  return useContext(context);
+  return useContext(context)
 }

@@ -1,7 +1,7 @@
-import type { HTMLAttributes, ReactElement } from "react";
-import { forwardRef } from "react";
-import cn from "classnames";
-import { bem } from "@react-md/utils";
+import type { } from 'voby'
+
+
+import { bem } from "@react-md/utils"
 
 /**
  * @remarks \@since 2.8.0
@@ -11,38 +11,35 @@ export interface InputToggleIconProps extends HTMLAttributes<HTMLSpanElement> {
    * Boolean if the icon should use circle styles. This should normally be
    * enabled for radio input types.
    */
-  circle?: boolean;
+  circle?: FunctionMaybe<Nullable<boolean>>
 
   /**
    * Boolean if the disabled styles should be applied.
    */
-  disabled?: boolean;
+  disabled?: FunctionMaybe<Nullable<boolean>>
 
   /**
    * Boolean if using an overlay for the different icon states.
    */
-  overlay?: boolean;
+  overlay?: FunctionMaybe<Nullable<boolean>>
 
   /**
    * Boolean if the icon should gain the checked state.
    */
-  checked?: boolean;
+  checked?: FunctionMaybe<Nullable<boolean>>
 
   /**
    * Boolean if using the indeterminate checkbox state.
    */
-  indeterminate?: boolean;
+  indeterminate?: FunctionMaybe<Nullable<boolean>>
 }
 
-const styles = bem("rmd-toggle");
+const styles = bem("rmd-toggle")
 
 /**
  * @remarks \@since 2.8.0
  */
-export const InputToggleIcon = forwardRef<
-  HTMLSpanElement,
-  InputToggleIconProps
->(function InputToggleIcon(
+export const InputToggleIcon = (
   {
     circle = false,
     disabled = false,
@@ -51,15 +48,15 @@ export const InputToggleIcon = forwardRef<
     indeterminate = false,
     className,
     children,
+    ref,
     ...props
   }: InputToggleIconProps,
-  ref
-): ReactElement {
+): Child => {
   return (
     <span
       {...props}
       ref={ref}
-      className={cn(
+      className={[
         styles("icon", {
           circle,
           disabled,
@@ -69,9 +66,9 @@ export const InputToggleIcon = forwardRef<
           "indeterminate-checked": checked && indeterminate,
         }),
         className
-      )}
+      ]}
     >
       {children}
     </span>
-  );
-});
+  )
+}

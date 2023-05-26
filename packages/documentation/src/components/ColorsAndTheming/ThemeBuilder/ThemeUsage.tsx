@@ -23,7 +23,7 @@ export default function ThemeUsage({
   secondary,
   accent,
   theme,
-}: ThemeUsageProps): ReactElement {
+}: ThemeUsageProps): Child {
   const cssName = `dist/css/react-md.${toCSSName(primary)}-${toCSSName(
     secondary
   )}-${accent}-${theme}.min.css`;

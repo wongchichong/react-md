@@ -1,0 +1,21 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "declarationDir": "./dist/types",
+    "composite": true,
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "jsx": "preserve",
+    "jsxImportSource": "voby",
+    "types": [
+      "voby/dist/jsx/jsx"
+    ],
+  },
+  "exclude": [
+    "vite.config.ts",
+"vite.config.umd.ts",
+    "types",
+  ],
+}

@@ -1,4 +1,4 @@
-import { createContext, useContext } from "react";
+import { $$, createContext, useContext } from 'voby';
 
 const context = createContext(false);
 
@@ -8,10 +8,12 @@ const context = createContext(false);
  * inherited context value will be used.
  * @internal
  */
-export function useSticky(sticky: boolean | string | undefined): boolean {
-  const isSticky = useContext(context);
+export function useSticky(sticky: FunctionMaybe<boolean | string | undefined>): boolean {
+    const sticky_ = $$(sticky)
+  
+    const isSticky = useContext(context);
 
-  return typeof sticky !== "undefined" ? !!sticky : isSticky;
+  return typeof sticky_ !== "undefined" ? !!sticky_ : isSticky;
 }
 
 /**

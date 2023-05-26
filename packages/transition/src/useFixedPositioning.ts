@@ -1,20 +1,20 @@
-import type { CSSProperties, RefCallback, RefObject } from "react";
-import { useCallback, useEffect, useRef, useState } from "react";
-import type { CalculateFixedPositionOptions } from "@react-md/utils";
+import { CSSProperties, ObservableMaybe, $$ } from 'voby'
+import { $, useEffect } from 'voby'
+import type { CalculateFixedPositionOptions, FixedPositionStyle } from "@react-md/utils"
 import {
-  BELOW_CENTER_ANCHOR,
-  getFixedPosition,
-  useEnsuredRef,
-  useResizeListener,
-  useScrollListener,
-} from "@react-md/utils";
+    BELOW_CENTER_ANCHOR,
+    getFixedPosition,
+    useEnsuredRef,
+    useResizeListener,
+    useScrollListener,
+} from "@react-md/utils"
 
 import type {
-  FixedPositioningTransitionCallbacks,
-  FixedPositioningTransitionOptions,
-  TransitionScrollCallback,
-} from "./types";
-import { isWithinViewport } from "./utils";
+    FixedPositioningTransitionCallbacks,
+    FixedPositioningTransitionOptions,
+    TransitionScrollCallback,
+} from "./types"
+import { isWithinViewport } from "./utils"
 
 /**
  * @typeParam FixedToElement - An HTMLElement type for the static element.
@@ -22,38 +22,38 @@ import { isWithinViewport } from "./utils";
  * @remarks \@since 4.0.0
  */
 export interface FixedPositioningOptions<
-  FixedToElement extends HTMLElement,
-  FixedElement extends HTMLElement
+    FixedToElement extends HTMLElement,
+    FixedElement extends HTMLElement
 > extends FixedPositioningTransitionOptions<FixedElement>,
     CalculateFixedPositionOptions {
-  /**
-   * An optional style that will be merged with the fixed positioning required
-   * styles.
-   *
-   * @see {@link FixedPositionStyle}
-   */
-  style?: CSSProperties;
+    /**
+     * An optional style that will be merged with the fixed positioning required
+     * styles.
+     *
+     * @see {@link FixedPositionStyle}
+     */
+    style?: FunctionMaybe<Nullable<string | StyleProperties>>
 
-  /**
-   * A ref pointing to an element that another element should be fixed to. This
-   * **must** be provided for the positioning to work.
-   */
-  fixedTo: RefObject<FixedToElement>;
+    /**
+     * A ref pointing to an element that another element should be fixed to. This
+     * **must** be provided for the positioning to work.
+     */
+    fixedTo: ObservableMaybe<FixedToElement>
 
-  /**
-   * An optional function that can be used to override positioning options if
-   * some options require the element to be in the DOM for specific
-   * calculations.
-   */
-  getFixedPositionOptions?(): CalculateFixedPositionOptions;
+    /**
+     * An optional function that can be used to override positioning options if
+     * some options require the element to be in the DOM for specific
+     * calculations.
+     */
+    getFixedPositionOptions?(): CalculateFixedPositionOptions
 
-  /**
-   * An optional function to call if the page resizes while the
-   * {@link FixedElement} is visible.
-   */
-  onResize?: EventListener;
-  /** {@inheritDoc TransitionScrollCallback} */
-  onScroll?: TransitionScrollCallback<FixedToElement, FixedElement>;
+    /**
+     * An optional function to call if the page resizes while the
+     * {@link FixedElement} is visible.
+     */
+    onResize?: EventListener
+    /** {@inheritDoc TransitionScrollCallback} */
+    onScroll?: TransitionScrollCallback<FixedToElement, FixedElement>
 }
 
 /**
@@ -61,33 +61,33 @@ export interface FixedPositioningOptions<
  * @remarks \@since 4.0.0
  */
 export interface FixedPositioningHookReturnValue<E extends HTMLElement> {
-  /**
-   * A ref that should be passed to a component for the fixed positioning
-   * behavior to work correctly.
-   *
-   * This should really only be used if the {@link transitionOptions} is not
-   * being used.
-   */
-  ref: RefCallback<E>;
+    /**
+     * A ref that should be passed to a component for the fixed positioning
+     * behavior to work correctly.
+     *
+     * This should really only be used if the {@link transitionOptions} is not
+     * beRefs
+     */
+    ref: Refs<E>
 
-  /**
-   * @see {@link FixedPositionStyle}
-   */
-  style: CSSProperties;
+    /**
+     * @see {@link FixedPositionStyle}
+     */
+    style: FunctionMaybe<string | StyleProperties>
 
-  /**
-   * This should really only be used if the {@link transitionOptions} is not
-   * being used.
-   */
-  callbacks: Readonly<Required<FixedPositioningTransitionCallbacks>>;
+    /**
+     * This should really only be used if the {@link transitionOptions} is not
+     * being used.
+     */
+    callbacks: Readonly<Required<FixedPositioningTransitionCallbacks>>
 
-  /**
-   * A function that can be called to update the style for the fixed element.
-   */
-  updateStyle(): void;
+    /**
+     * A function that can be called to update the style for the fixed element.
+     */
+    updateStyle(): void
 
-  /** {@inheritDoc FixedPositioningTransitionOptions} */
-  transitionOptions: Readonly<Required<FixedPositioningTransitionOptions<E>>>;
+    /** {@inheritDoc FixedPositioningTransitionOptions} */
+    transitionOptions: Readonly<Required<FixedPositioningTransitionOptions<E>>>
 }
 
 /**
@@ -103,7 +103,7 @@ export interface FixedPositioningHookReturnValue<E extends HTMLElement> {
  * import { Button } from "@react-md/button";
  * import { useCSSTransition, useFixedPositioning } from "@react-md/transition";
  *
- * function Example(): ReactElement {
+ * function Example(): Element {
  *   const fixedTo = useRef<HTMLButtonElement>(null);
  *   const [transitionIn, setTransitionIn] = useState(false);
  *   const { style, transitionOptions } = useFixedPositioning({
@@ -147,45 +147,19 @@ export interface FixedPositioningHookReturnValue<E extends HTMLElement> {
  * @typeParam FixedElement - An HTMLElement type for the fixed element.
  * @remarks \@since 4.0.0
  */
-export function useFixedPositioning<
-  FixedToElement extends HTMLElement,
-  FixedElement extends HTMLElement
->({
-  style: propStyle,
-  nodeRef,
-  fixedTo,
-  onEnter,
-  onEntering,
-  onEntered,
-  onExited,
-  anchor = BELOW_CENTER_ANCHOR,
-  disableSwapping,
-  disableVHBounds,
-  initialX,
-  initialY,
-  preventOverlap,
-  transformOrigin,
-  vhMargin,
-  vwMargin,
-  width,
-  xMargin,
-  yMargin,
-  getFixedPositionOptions,
-  onScroll,
-  onResize,
-}: FixedPositioningOptions<
-  FixedToElement,
-  FixedElement
->): FixedPositioningHookReturnValue<FixedElement> {
-  const [style, setStyle] = useState<CSSProperties | undefined>();
-  const [active, setActive] = useState(false);
-  const [ref, refHandler] = useEnsuredRef(nodeRef);
-  const options = {
-    ref,
+export function useFixedPositioning<FixedToElement extends HTMLElement, FixedElement extends HTMLElement>({
+    style: propStyle,
+    nodeRef,
     fixedTo,
-    anchor,
+    onEnter,
+    onEntering,
+    onEntered,
+    onExited,
+    anchor = BELOW_CENTER_ANCHOR,
     disableSwapping,
     disableVHBounds,
+    initialX,
+    initialY,
     preventOverlap,
     transformOrigin,
     vhMargin,
@@ -194,111 +168,141 @@ export function useFixedPositioning<
     xMargin,
     yMargin,
     getFixedPositionOptions,
-  } as const;
-  const optionsRef = useRef(options);
-  optionsRef.current = options;
+    onScroll,
+    onResize,
+}: FixedPositioningOptions<
+    FixedToElement,
+    FixedElement
+>): FixedPositioningHookReturnValue<FixedElement> {
+    const style = $<undefined | FixedPositionStyle>()
+    const active = $(false)
+    const [ref, refHandler] = useEnsuredRef(nodeRef)
+    const options = {
+        ref,
+        fixedTo,
+        anchor,
+        disableSwapping,
+        disableVHBounds,
+        preventOverlap,
+        transformOrigin,
+        vhMargin,
+        vwMargin,
+        width,
+        xMargin,
+        yMargin,
+        getFixedPositionOptions,
+    } as const
+    const optionsRef = $(options)
+    optionsRef(options)
 
-  const updateStyle = useCallback(() => {
-    const {
-      ref,
-      fixedTo,
-      anchor,
-      disableSwapping,
-      disableVHBounds,
-      preventOverlap,
-      transformOrigin,
-      vhMargin,
-      vwMargin,
-      width,
-      xMargin,
-      yMargin,
-      getFixedPositionOptions,
-    } = optionsRef.current;
-    const element = ref.current;
-    const container = fixedTo.current;
-    const { style } = getFixedPosition({
-      container,
-      element,
-      anchor,
-      disableSwapping,
-      disableVHBounds,
-      initialX,
-      initialY,
-      preventOverlap,
-      transformOrigin,
-      vhMargin,
-      vwMargin,
-      width,
-      xMargin,
-      yMargin,
-      ...getFixedPositionOptions?.(),
-    });
+    const updateStyle = $(() => {
+        const {
+            ref,
+            fixedTo,
+            anchor,
+            disableSwapping,
+            disableVHBounds,
+            preventOverlap,
+            transformOrigin,
+            vhMargin,
+            vwMargin,
+            width,
+            xMargin,
+            yMargin,
+            getFixedPositionOptions,
+        } = optionsRef()
+        const element = ref()
+        const container = $$(fixedTo)
+        const { style: sty } = getFixedPosition({
+            container,
+            element,
+            anchor,
+            disableSwapping,
+            disableVHBounds,
+            initialX,
+            initialY,
+            preventOverlap,
+            transformOrigin,
+            vhMargin,
+            vwMargin,
+            width,
+            xMargin,
+            yMargin,
+            ...getFixedPositionOptions?.(),
+        })
 
-    setStyle(style);
-    setActive(!!element && !element.hidden);
+        style($$(sty))
+        active(!!element && !element.hidden)
 
-    // Only changing the initialX and initialY should cause the useEffect below
-    // to trigger, which is why everything else is set in a ref.
-  }, [initialX, initialY]);
+        // Only changing the initialX and initialY should cause the useEffect below
+        // to trigger, which is why everything else is set in a ref.
+    })
 
-  useResizeListener({
-    enabled: active,
-    onResize(event) {
-      onResize?.(event);
-      updateStyle();
-    },
-  });
+    useResizeListener({
+        enabled: active(),
+        onResize(event) {
+            onResize?.(event)
+            updateStyle()
+        },
+    })
 
-  useScrollListener({
-    enabled: active,
-    onScroll(event) {
-      const fixedElement = ref.current;
-      const fixedToElement = fixedTo.current;
-      if (onScroll && fixedElement && fixedToElement) {
-        onScroll(event, {
-          visible: isWithinViewport({ fixedElement, fixedToElement }),
-          fixedElement,
-          fixedToElement,
-        });
-      }
+    useScrollListener({
+        enabled: active(),
+        onScroll(event) {
+            const fixedElement = ref()
+            const fixedToElement = $$(fixedTo)
+            if (onScroll && fixedElement && fixedToElement) {
+                onScroll(event, {
+                    visible: isWithinViewport({ fixedElement, fixedToElement }),
+                    fixedElement,
+                    //@ts-ignore
+                    fixedToElement,
+                })
+            }
 
-      updateStyle();
-    },
-  });
+            updateStyle()
+        },
+    })
 
-  useEffect(() => {
-    if (!ref.current || !ref.current.hidden) {
-      updateStyle();
+    useEffect(() => {
+        if (!ref() || !ref().hidden) {
+            updateStyle()
+        }
+    })
+
+    const callbacks: Required<FixedPositioningTransitionCallbacks> = {
+        onEnter(appearing) {
+            onEnter?.(appearing)
+            updateStyle()
+        },
+        onEntering(appearing) {
+            onEntering?.(appearing)
+            updateStyle()
+        },
+        onEntered(appearing) {
+            onEntered?.(appearing)
+            updateStyle()
+        },
+        onExited() {
+            onExited?.()
+            active(false)
+        },
     }
-  }, [ref, updateStyle]);
 
-  const callbacks: Required<FixedPositioningTransitionCallbacks> = {
-    onEnter(appearing) {
-      onEnter?.(appearing);
-      updateStyle();
-    },
-    onEntering(appearing) {
-      onEntering?.(appearing);
-      updateStyle();
-    },
-    onEntered(appearing) {
-      onEntered?.(appearing);
-      updateStyle();
-    },
-    onExited() {
-      onExited?.();
-      setActive(false);
-    },
-  };
+    useEffect(() => {
+        style(Object.assign({ ...style(), propStyle }))
+    })
 
-  return {
-    ref: refHandler,
-    style: { ...style, ...propStyle },
-    callbacks,
-    updateStyle,
-    transitionOptions: {
-      ...callbacks,
-      nodeRef: refHandler,
-    },
-  };
+    //@ts-ignore
+    return {
+        ref: refHandler,
+        //@ts-ignore
+        style,
+        callbacks,
+        updateStyle,
+        transitionOptions: {
+            ...callbacks,
+            nodeRef: refHandler as any,
+        },
+    }
 }

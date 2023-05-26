@@ -1,10 +1,10 @@
-import type { CSSProperties, HTMLAttributes, ReactNode } from "react";
-import { forwardRef, useCallback, useMemo, useRef } from "react";
-import cn from "classnames";
-import { useIcon } from "@react-md/icon";
-import type { ListElement } from "@react-md/list";
-import { useFixedPositioning } from "@react-md/transition";
-import type { PositionAnchor, PositionWidth } from "@react-md/utils";
+import { $$, CSSProperties, } from 'voby'
+import { $, useMemo } from 'voby'
+
+import { useIcon } from "@react-md/icon"
+import type { ListElement } from "@react-md/list"
+import { useFixedPositioning } from "@react-md/transition"
+import type { PositionAnchor, PositionWidth } from "@react-md/utils"
 import {
   BELOW_CENTER_ANCHOR,
   bem,
@@ -13,90 +13,91 @@ import {
   useCloseOnOutsideClick,
   useEnsuredRef,
   useToggle,
-} from "@react-md/utils";
+} from "@react-md/utils"
 
-import { useFormTheme } from "../FormThemeProvider";
-import { FloatingLabel } from "../label/FloatingLabel";
-import type { TextFieldContainerOptions } from "../text-field/TextFieldContainer";
-import { TextFieldContainer } from "../text-field/TextFieldContainer";
-import { useFocusState } from "../useFocusState";
-import type { ListboxOptions } from "./Listbox";
-import { Listbox } from "./Listbox";
+import { useFormTheme } from "../FormThemeProvider"
+import { FloatingLabel } from "../label/FloatingLabel"
+import type { TextFieldContainerOptions } from "../text-field/TextFieldContainer"
+import { TextFieldContainer } from "../text-field/TextFieldContainer"
+import { useFocusState } from "../useFocusState"
+import type { ListboxOptions } from "./Listbox"
+import { Listbox } from "./Listbox"
 import {
   defaultIsOptionDisabled,
   getDisplayLabel as DEFAULT_GET_DISPLAY_LABEL,
   getOptionId as DEFAULT_GET_OPTION_ID,
   getOptionLabel as DEFAULT_GET_OPTION_LABEL,
-} from "./utils";
+} from "./utils"
 
 type FakeSelectAttributes = Omit<
   HTMLAttributes<HTMLDivElement>,
   "placeholder" | "children" | "onChange" | "defaultValue" | "value"
->;
+>
 
+//@ts-ignore
 export interface SelectProps
   extends FakeSelectAttributes,
-    TextFieldContainerOptions,
-    ListboxOptions {
+  TextFieldContainerOptions,
+  ListboxOptions {
   /**
    * The id for the select component. This is required for a11y and will be used
    * to generate ids for the listbox and each option within the listbox.
    */
-  id: string;
+  id: string
 
   /**
    * Boolean if the select is currently disabled.
    */
-  disabled?: boolean;
+  disabled?: FunctionMaybe<Nullable<boolean>>
 
   /**
    * An optional floating label to use with the select.
    */
-  label?: ReactNode;
+  label?: Child
 
   /**
    * An optional style to apply to the label element.
    */
-  labelStyle?: CSSProperties;
+  labelStyle?: FunctionMaybe<Nullable<string | StyleProperties>>
 
   /**
    * An optional className to apply to the label element.
    */
-  labelClassName?: string;
+  labelClassName?: Class
 
   /**
    * An optional style to apply to the current display value within the
    * `Select`'s button component.
    */
-  displayLabelStyle?: CSSProperties;
+  displayLabelStyle?: FunctionMaybe<Nullable<string | StyleProperties>>
 
   /**
    * An optional className to apply to the current display value within the
    * `Select`'s button component.
    */
-  displayLabelClassName?: string;
+  displayLabelClassName?: Class
 
   /**
    * An optional style to apply to the listbox.
    */
-  listboxStyle?: CSSProperties;
+  listboxStyle?: FunctionMaybe<Nullable<string | StyleProperties>>
 
   /**
    * An optional className to apply to the listbox.
    */
-  listboxClassName?: string;
+  listboxClassName?: Class
 
   /**
    * Boolean if the select should act as a read only select field which just
    * allows for all the options to be visible when toggled open.
    */
-  readOnly?: boolean;
+  readOnly?: FunctionMaybe<Nullable<boolean>>
 
   /**
    * An optional placeholder text to show while the select is unvalued and is
    * either currently focused or the `label` prop was not provided.
    */
-  placeholder?: ReactNode;
+  placeholder?: Child
 
   /**
    * A function that gets called whenever the Select's value changes so that the
@@ -107,13 +108,13 @@ export interface SelectProps
    * `leftAddon` from the option and use the `TextIconSpacing` component with
    * the label + icon/avatar.
    */
-  getDisplayLabel?: typeof DEFAULT_GET_DISPLAY_LABEL;
+  getDisplayLabel?: typeof DEFAULT_GET_DISPLAY_LABEL
 
   /**
    * The positioning configuration for how the listbox should be anchored to the
    * select button.
    */
-  anchor?: PositionAnchor;
+  anchor?: PositionAnchor
 
   /**
    * The sizing behavior for the listbox. It will default to have the same width
@@ -124,25 +125,25 @@ export interface SelectProps
    * The sizing behavior will always ensure that the left and right bounds of
    * the listbox appear within the viewport.
    */
-  listboxWidth?: PositionWidth;
+  listboxWidth?: PositionWidth
 
   /**
    * Boolean if the `Select`'s button display value should not attempt to
    * extract a `leftAddon` from the current selected option to display.
    */
-  disableLeftAddon?: boolean;
+  disableLeftAddon?: FunctionMaybe<Nullable<boolean>>
 
   /**
    * Boolean if the select's listbox should not hide if the user resizes the
    * browser while it is visible.
    */
-  closeOnResize?: boolean;
+  closeOnResize?: FunctionMaybe<Nullable<boolean>>
 
   /**
    * Boolean if the select's listbox should not hide if the user scrolls the
    * page while it is visible.
    */
-  closeOnScroll?: boolean;
+  closeOnScroll?: FunctionMaybe<Nullable<boolean>>
 
   /**
    * An optional icon to display to the right of the select. This should
@@ -153,10 +154,10 @@ export interface SelectProps
    * This defaults to the `IconProvider`'s dropdown icon from the
    * `@react-md/icon` package.
    */
-  rightChildren?: ReactNode;
+  rightChildren?: Child
 }
 
-const block = bem("rmd-select");
+const block = bem("rmd-select")
 
 /**
  * This component is an accessible version of the `<select>` element that allows
@@ -171,7 +172,7 @@ const block = bem("rmd-select");
  * sent along in forms. It is highly recommended to always provide a `name` prop
  * so this value is sent.
  */
-export const Select = forwardRef<HTMLDivElement, SelectProps>(function Select(
+export const Select = (
   {
     onBlur,
     onFocus,
@@ -201,8 +202,8 @@ export const Select = forwardRef<HTMLDivElement, SelectProps>(function Select(
     portalIntoId,
     name,
     options,
-    labelKey = "label",
-    valueKey = "value",
+    labelKey: lk = "label",
+    valueKey: vk = "value",
     getOptionId = DEFAULT_GET_OPTION_ID,
     getOptionLabel = DEFAULT_GET_OPTION_LABEL,
     getOptionValue = DEFAULT_GET_ITEM_VALUE,
@@ -217,69 +218,63 @@ export const Select = forwardRef<HTMLDivElement, SelectProps>(function Select(
     value,
     onChange,
     rightChildren: propRightChildren,
+    ref: forwardedRef,
     ...props
-  },
-  forwardedRef
-) {
-  const { id } = props;
-  const rightChildren = useIcon("dropdown", propRightChildren);
+  }: SelectProps
+) => {
+  const labelKey = $$(lk), valueKey = $$(vk)
+
+  const { id } = props
+  const rightChildren = useIcon("dropdown", propRightChildren)
   const { theme, underlineDirection } = useFormTheme({
     theme: propTheme,
     underlineDirection: propUnderlineDirection,
-  });
+  })
 
-  const valued = typeof value === "number" || !!value;
+  const valued = typeof value === "number" || !!value
   const displayValue = useMemo(() => {
     const currentOption =
       options.find((option) => getOptionValue(option, valueKey) === value) ||
-      null;
+      null
 
-    return getDisplayLabel(currentOption, labelKey, !disableLeftAddon);
-  }, [
-    options,
-    getDisplayLabel,
-    labelKey,
-    disableLeftAddon,
-    getOptionValue,
-    valueKey,
-    value,
-  ]);
+    return getDisplayLabel(currentOption, labelKey, !disableLeftAddon)
+  })
 
-  const [visible, show, hide] = useToggle(false);
-  const [focused, handleFocus, handleBlur] = useFocusState({ onBlur, onFocus });
-  const handleKeyDown = useCallback(
-    (event: React.KeyboardEvent<HTMLDivElement>) => {
-      if (onKeyDown) {
-        onKeyDown(event);
-      }
+  const [visible, show, hide] = useToggle(false)
+  //@ts-ignore
+  const [focused, handleFocus, handleBlur] = useFocusState({ onBlur, onFocus })
+  const handleKeyDown = $((event: JSX.TargetedKeyboardEvent<HTMLDivElement>) => {
+    if (onKeyDown) {
+      //@ts-ignore
+      onKeyDown(event)
+    }
 
-      if (tryToSubmitRelatedForm(event)) {
-        return;
-      }
+    if (tryToSubmitRelatedForm(event)) {
+      return
+    }
 
-      switch (event.key) {
-        case " ":
-        case "ArrowUp":
-        case "ArrowDown":
-          // prevent page scroll
-          event.preventDefault();
-          show();
-          break;
-        // no default
-      }
-    },
-    [onKeyDown, show]
-  );
+    switch (event.key) {
+      case " ":
+      case "ArrowUp":
+      case "ArrowDown":
+        // prevent page scroll
+        event.preventDefault()
+        show()
+        break
+      // no default
+    }
+  })
 
-  const [ref, refHandler] = useEnsuredRef(forwardedRef);
+  //@ts-ignore
+  const [ref, refHandler] = useEnsuredRef(forwardedRef)
 
   useCloseOnOutsideClick({
-    enabled: visible,
-    element: ref.current,
+    enabled: visible(),
+    element: ref(),
     onOutsideClick: hide,
-  });
+  })
 
-  const nodeRef = useRef<ListElement | null>(null);
+  const nodeRef = $<ListElement | null>(null)
   const {
     ref: listboxRef,
     style: listboxStyle,
@@ -292,6 +287,7 @@ export const Select = forwardRef<HTMLDivElement, SelectProps>(function Select(
     onScroll: closeOnScroll ? hide : undefined,
     onResize: closeOnResize ? hide : undefined,
     transformOrigin: true,
+    //@ts-ignore
     width: listboxWidth,
     onEntering() {
       // can't do onEnter since the positioning styles haven't been applied to the
@@ -299,32 +295,30 @@ export const Select = forwardRef<HTMLDivElement, SelectProps>(function Select(
       // when portalled, which causes the page to scroll to the end. Moving it to
       // onEntering will ensure the styles have been applied and won't cause page
       // scrolling
-      nodeRef.current?.focus();
+      nodeRef().focus
     },
-  });
+  })
 
-  const handleClick = useCallback(
-    (event: React.MouseEvent<HTMLDivElement>) => {
-      if (onClick) {
-        onClick(event);
-      }
-
-      show();
-    },
-    [onClick, show]
-  );
-
-  const handleKeyboardClose = useCallback(() => {
-    hide();
-    if (ref.current) {
-      ref.current.focus();
+  const handleClick = $((event: JSX.TargetedMouseEvent<HTMLDivElement>) => {
+    if (onClick) {
+      //@ts-ignore
+      onClick(event)
     }
-  }, [hide, ref]);
 
-  const labelId = `${id}-label`;
-  const valueId = `${id}-value`;
-  const listboxId = `${id}-listbox`;
-  const displayValueId = `${id}-display-value`;
+    show()
+  })
+
+  const handleKeyboardClose = $(() => {
+    hide()
+    if (ref()) {
+      ref().focus()
+    }
+  })
+
+  const labelId = `${id}-label`
+  const valueId = `${id}-value`
+  const listboxId = `${id}-listbox`
+  const displayValueId = `${id}-display-value`
 
   return (
     <>
@@ -337,7 +331,9 @@ export const Select = forwardRef<HTMLDivElement, SelectProps>(function Select(
         dense={dense}
         tabIndex={disabled ? undefined : 0}
         label={!!label}
+        //@ts-ignore
         onFocus={handleFocus}
+        //@ts-ignore
         onBlur={handleBlur}
         onKeyDown={disabled ? undefined : handleKeyDown}
         onClick={disabled ? undefined : handleClick}
@@ -351,12 +347,13 @@ export const Select = forwardRef<HTMLDivElement, SelectProps>(function Select(
         isLeftAddon={isLeftAddon}
         isRightAddon={isRightAddon}
         rightChildren={rightChildren}
-        className={cn(block({ disabled }), className)}
+        className={[block({ disabled }), className]}
       >
         <FloatingLabel
           id={labelId}
+          //@ts-ignore
           style={labelStyle}
-          className={cn(block("label"), labelClassName)}
+          className={[block("label"), labelClassName]}
           htmlFor={id}
           error={error}
           active={valued && (focused || visible)}
@@ -368,10 +365,12 @@ export const Select = forwardRef<HTMLDivElement, SelectProps>(function Select(
         >
           {label}
         </FloatingLabel>
+        {/* @ts-ignore */}
         <span
           id={displayValueId}
+          //@ts-ignore
           style={displayLabelStyle}
-          className={cn(
+          className={[
             block("value", {
               disabled,
               readonly: readOnly,
@@ -380,19 +379,22 @@ export const Select = forwardRef<HTMLDivElement, SelectProps>(function Select(
                 !valued && placeholder && (focused || visible),
             }),
             displayLabelClassName
-          )}
+          ]}
         >
           {displayValue || (!valued && placeholder)}
         </span>
         <input id={valueId} type="hidden" name={name} value={value} />
       </TextFieldContainer>
+      {/* @ts-ignore */}
       <Listbox
         id={listboxId}
         ref={listboxRef}
         {...transitionOptions}
         aria-labelledby={id}
+        //@ts-ignore
         style={listboxStyle}
         className={listboxClassName}
+        //@ts-ignore
         name={name}
         readOnly={readOnly}
         portal={portal}
@@ -400,7 +402,7 @@ export const Select = forwardRef<HTMLDivElement, SelectProps>(function Select(
         portalIntoId={portalIntoId}
         value={value}
         onChange={onChange}
-        visible={visible}
+        visible={visible()}
         temporary
         onRequestClose={handleKeyboardClose}
         options={options}
@@ -413,5 +415,5 @@ export const Select = forwardRef<HTMLDivElement, SelectProps>(function Select(
         disableMovementChange={disableMovementChange}
       />
     </>
-  );
-});
+  )
+}

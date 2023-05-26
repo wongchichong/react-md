@@ -1,26 +1,28 @@
-type Block = string;
-type Element = string;
-type Modifier = Record<string, unknown>;
+import '@react-md/react'
+
+type Block = string
+type Element = string
+type Modifier = Record<string, unknown>
 
 function modify(base: string, modifier?: Modifier): string {
   if (!modifier) {
-    return base;
+    return base
   }
 
-  const hasOwn = Object.prototype.hasOwnProperty;
+  const hasOwn = Object.prototype.hasOwnProperty
   return Object.keys(modifier).reduce((s, mod) => {
     if (hasOwn.call(modifier, mod) && modifier[mod]) {
-      s = `${s} ${base}--${mod}`;
+      s = `${s} ${base}--${mod}`
     }
 
-    return s;
-  }, base);
+    return s
+  }, base)
 }
 
 type BEMResult = (
   elementOrModifier?: Element | Modifier,
   modifier?: Modifier
-) => string;
+) => string
 
 /**
  * Applies the BEM styled class name to an element.
@@ -34,7 +36,7 @@ export function bem(base: Block): BEMResult {
     if (!base) {
       throw new Error(
         "bem requires a base block class but none were provided."
-      );
+      )
     }
   }
 
@@ -50,26 +52,23 @@ export function bem(base: Block): BEMResult {
    * element.
    * @returns the full class name
    */
-  return function block(
-    elementOrModifier?: Element | Modifier,
-    modifier?: Modifier
-  ): string {
+  return function block(elementOrModifier?: Element | Modifier, modifier?: Modifier): string {
     if (process.env.NODE_ENV !== "production") {
       if (typeof elementOrModifier !== "string" && modifier) {
         throw new TypeError(
           "bem does not support having two modifier arguments."
-        );
+        )
       }
     }
 
     if (!elementOrModifier) {
-      return base;
+      return base
     }
 
     if (typeof elementOrModifier !== "string") {
-      return modify(base, elementOrModifier);
+      return modify(base, elementOrModifier)
     }
 
-    return modify(`${base}__${elementOrModifier}`, modifier);
-  };
+    return modify(`${base}__${elementOrModifier}`, modifier)
+  }
 }

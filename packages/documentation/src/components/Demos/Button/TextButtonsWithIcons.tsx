@@ -9,7 +9,7 @@ import {
 } from "@react-md/material-icons";
 import Container from "./Container";
 
-export default function TextButtonsWithIcons(): ReactElement {
+export default function TextButtonsWithIcons(): Child {
   return (
     <Container>
       <Button id="combined-button-1">

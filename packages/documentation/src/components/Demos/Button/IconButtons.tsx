@@ -5,7 +5,7 @@ import { DeleteSVGIcon, FavoriteSVGIcon } from "@react-md/material-icons";
 
 import Container from "./Container";
 
-export default function IconButtons(): ReactElement {
+export default function IconButtons(): Child {
   return (
     <Container>
       <Button

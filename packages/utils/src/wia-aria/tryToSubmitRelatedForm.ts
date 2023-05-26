@@ -3,10 +3,7 @@
  * so that both the React keydown listener and native keydown listener can use
  * this function if needed.
  */
-type KeyboardSubmitEventPartial = Pick<
-  KeyboardEvent,
-  "key" | "preventDefault" | "stopPropagation" | "currentTarget"
->;
+type KeyboardSubmitEventPartial = Pick<KeyboardEvent, "key" | "preventDefault" | "stopPropagation" | "currentTarget">
 
 /**
  * The default  behavior when pressing the `"Enter"` key on a form control
@@ -41,21 +38,21 @@ export function tryToSubmitRelatedForm(
   event: KeyboardSubmitEventPartial
 ): boolean {
   if (event.key !== "Enter") {
-    return false;
+    return false
   }
 
-  event.preventDefault();
-  event.stopPropagation();
+  event.preventDefault()
+  event.stopPropagation()
 
   /* istanbul ignore next */
-  const form = (event.currentTarget as Element)?.closest?.("form");
-  let submit = form?.querySelector<HTMLButtonElement>('[type="submit"]');
+  const form = (event.currentTarget as Element)?.closest?.("form")
+  let submit = form?.querySelector<HTMLButtonElement>('[type="submit"]')
   if (!submit && form?.id) {
     submit = document.querySelector<HTMLButtonElement>(
       `[type="submit"][form="${form.id}"]`
-    );
+    )
   }
 
-  submit?.click();
-  return true;
+  submit?.click()
+  return true
 }

@@ -47,7 +47,7 @@ const demos = [
   },
 ];
 
-export default function AppBar(): ReactElement {
+export default function AppBar(): Child {
   return (
     <DemoPage
       demos={demos}

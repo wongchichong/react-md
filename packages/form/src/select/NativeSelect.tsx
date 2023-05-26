@@ -1,33 +1,32 @@
-import type {
+import {
   CSSProperties,
-  ReactNode,
-  Ref,
-  SelectHTMLAttributes,
-} from "react";
-import { forwardRef } from "react";
-import cn from "classnames";
-import { useIcon } from "@react-md/icon";
-import { bem } from "@react-md/utils";
+  ObservableMaybe,
+  $$,
+} from 'voby'
 
-import { useFormTheme } from "../FormThemeProvider";
-import { FloatingLabel } from "../label/FloatingLabel";
-import type { TextFieldContainerOptions } from "../text-field/TextFieldContainer";
-import { TextFieldContainer } from "../text-field/TextFieldContainer";
-import { useFieldStates } from "../useFieldStates";
+import { useIcon } from "@react-md/icon"
+import { bem } from "@react-md/utils"
 
-export interface NativeSelectProps
-  extends SelectHTMLAttributes<HTMLSelectElement>,
-    TextFieldContainerOptions {
+import { useFormTheme } from "../FormThemeProvider"
+import { FloatingLabel } from "../label/FloatingLabel"
+import type { TextFieldContainerOptions } from "../text-field/TextFieldContainer"
+import { TextFieldContainer } from "../text-field/TextFieldContainer"
+import { FormElement, useFieldStates } from "../useFieldStates"
+
+//@ts-ignore
+export interface NativeSelectProps<T extends EventTarget = HTMLSelectElement>
+  extends SelectHTMLAttributes<T>,
+  TextFieldContainerOptions {
   /**
    * The id for the select. This is required for accessibility.
    */
-  id: string;
+  id: FunctionMaybe<Nullable<string>>
 
   /**
    * An optional ref to apply to the text field's container div element. The
    * default ref is forwarded on to the `input` element.
    */
-  containerRef?: Ref<HTMLDivElement>;
+  containerRef?: ObservableMaybe<HTMLDivElement>
 
   /**
    * An optional icon to display to the right of the select. This should
@@ -38,7 +37,7 @@ export interface NativeSelectProps
    * This defaults to the `IconProvider`'s dropdown icon from the
    * `@react-md/icon` package.
    */
-  icon?: ReactNode;
+  icon?: Child
 
   /**
    * An optional floating label to use for the text field. This should really
@@ -46,29 +45,29 @@ export interface NativeSelectProps
    * wrapped in the `<Label>` component itself and automatically apply the
    * `htmlFor` prop for this text field.
    */
-  label?: ReactNode;
+  label?: Child
 
   /**
    * An optional style to apply to the label wrapper.
    */
-  labelStyle?: CSSProperties;
+  labelStyle?: FunctionMaybe<Nullable<string | StyleProperties>>
 
   /**
    * An optional className to apply to the label wrapper.
    */
-  labelClassName?: string;
+  labelClassName?: Class
 
   /**
    * An optional style to apply to the select itself. The `style` prop will be
    * applied to the container `<div>` instead.
    */
-  selectStyle?: CSSProperties;
+  selectStyle?: FunctionMaybe<string | StyleProperties>
 
   /**
    * An optional className to apply to the select itself. The `className` prop
    * will be applied to the container `<div>` instead.
    */
-  selectClassName?: string;
+  selectClassName?: Class
 
   /**
    * The value to use for the text field. This will make the component
@@ -77,7 +76,7 @@ export interface NativeSelectProps
    *
    * If the `multiple` prop is enabled, this **must** be a list of strings.
    */
-  value?: string | readonly string[];
+  value?: FunctionMaybe<Nullable<string>> | readonly string[]
 
   /**
    * The default value for the text field which will make it uncontrolled. If
@@ -87,125 +86,132 @@ export interface NativeSelectProps
    *
    * If the `multiple` prop is enabled, this **must** be a list of strings.
    */
-  defaultValue?: string | readonly string[];
+  defaultValue?: FunctionMaybe<Nullable<string>> | readonly string[]
 }
 
-const block = bem("rmd-native-select");
-const container = bem("rmd-native-select-container");
+const block = bem("rmd-native-select")
+const container = bem("rmd-native-select-container")
 
 /**
  * This component is used to render a native `<select>` element with the text
  * field theme styles. This component is great to use for native behavior and
  * full accessibility.
  */
-export const NativeSelect = forwardRef<HTMLSelectElement, NativeSelectProps>(
-  function NativeSelect(
-    {
-      style,
-      className,
-      labelStyle,
-      labelClassName,
-      selectStyle,
-      selectClassName,
-      icon: propIcon,
-      theme: propTheme,
-      dense = false,
-      inline = false,
-      stretch = false,
-      error = false,
-      disabled = false,
-      label,
-      onBlur: propOnBlur,
-      onFocus: propOnFocus,
-      onChange: propOnChange,
-      containerRef,
-      isLeftAddon,
-      isRightAddon,
-      leftChildren,
-      rightChildren,
-      underlineDirection: propUnderlineDirection,
-      children,
-      ...props
-    },
-    ref
-  ) {
-    const { id, value, defaultValue, multiple } = props;
-    const { theme, underlineDirection } = useFormTheme({
-      theme: propTheme,
-      underlineDirection: propUnderlineDirection,
-    });
-    const underline = theme === "underline" || theme === "filled";
+export const NativeSelect = (
+  {
+    style,
+    className,
+    labelStyle,
+    labelClassName,
+    selectStyle,
+    selectClassName,
+    icon: propIcon,
+    theme: propTheme,
+    dense = false,
+    inline = false,
+    stretch = false,
+    error = false,
+    disabled = false,
+    label,
+    onBlur: propOnBlur,
+    onFocus: propOnFocus,
+    onChange: propOnChange,
+    containerRef,
+    isLeftAddon,
+    isRightAddon,
+    leftChildren,
+    rightChildren,
+    underlineDirection: propUnderlineDirection,
+    children,
+    ref,
+    ...props
+  }: NativeSelectProps<HTMLSelectElement & TargetedEvent<EventTarget, Event>>
+) => {
+  const { id, value, defaultValue, multiple } = props
+  const { theme, underlineDirection } = useFormTheme({
+    theme: propTheme,
+    underlineDirection: propUnderlineDirection,
+  })
+  const underline = theme === "underline" || theme === "filled"
 
-    const icon = useIcon("dropdown", propIcon);
-    const { valued, focused, onBlur, onFocus, onChange } = useFieldStates({
-      onBlur: propOnBlur,
-      onFocus: propOnFocus,
-      onChange: propOnChange,
-      value,
-      defaultValue,
-    });
+  const icon = useIcon("dropdown", propIcon)
+  const { valued, focused, onBlur, onFocus, onChange } = useFieldStates<HTMLSelectElement & TargetedEvent<EventTarget, Event>>({
+    onBlur: propOnBlur,
+    onFocus: propOnFocus,
+    //@ts-ignore
+    onChange: propOnChange,
+    value,
+    defaultValue,
+  })
 
-    return (
-      <TextFieldContainer
-        style={style}
-        className={cn(
-          container({
-            multi: multiple,
-            padded: multiple && label,
-          }),
-          className
-        )}
-        ref={containerRef}
-        theme={theme}
+  return (
+    <TextFieldContainer
+      style={style}
+      className={[container({
+        multi: multiple,
+        padded: multiple && label,
+      }),
+        className
+      ]}
+      //@ts-ignore
+      ref={containerRef}
+      theme={theme}
+      error={error}
+      active={focused}
+      label={!!label}
+      dense={dense}
+      inline={inline}
+      stretch={stretch}
+      disabled={disabled}
+      isLeftAddon={isLeftAddon}
+      isRightAddon={isRightAddon}
+      leftChildren={leftChildren}
+      rightChildren={multiple && rightChildren}
+      underlineDirection={underlineDirection}
+    >
+      {/* @ts-ignore */}
+      <FloatingLabel
+        //@ts-ignore
+        style={labelStyle}
+        className={[block("label"), labelClassName]}
+        //@ts-ignore
+        htmlFor={id}
         error={error}
-        active={focused}
-        label={!!label}
+        active={valued && focused}
+        valued={valued}
+        floating={valued || $$(multiple)}
         dense={dense}
-        inline={inline}
-        stretch={stretch}
         disabled={disabled}
-        isLeftAddon={isLeftAddon}
-        isRightAddon={isRightAddon}
-        leftChildren={leftChildren}
-        rightChildren={multiple && rightChildren}
-        underlineDirection={underlineDirection}
       >
-        <FloatingLabel
-          style={labelStyle}
-          className={cn(block("label"), labelClassName)}
-          htmlFor={id}
-          error={error}
-          active={valued && focused}
-          valued={valued}
-          floating={valued || multiple}
-          dense={dense}
-          disabled={disabled}
-        >
-          {label}
-        </FloatingLabel>
-        <select
-          {...props}
-          ref={ref}
-          style={selectStyle}
-          className={cn(
-            block({
-              icon,
-              multi: multiple,
-              "label-underline": label && underline,
-              "placeholder-underline": !label && underline,
-              floating: label && theme !== "none",
-            }),
-            selectClassName
-          )}
-          disabled={disabled}
-          onFocus={onFocus}
-          onBlur={onBlur}
-          onChange={onChange}
-        >
-          {children}
-        </select>
-        {!multiple && icon && <span className={block("icon")}>{icon}</span>}
-      </TextFieldContainer>
-    );
-  }
-);
+        {label}
+      </FloatingLabel>
+      {/* @ts-ignore */}
+      <select
+        {...props}
+        //@ts-ignore
+        ref={ref}
+        style={selectStyle}
+        className={[
+          block({
+            icon,
+            multi: multiple,
+            "label-underline": label && underline,
+            "placeholder-underline": !label && underline,
+            floating: label && theme !== "none",
+          }),
+          selectClassName
+        ]}
+        disabled={disabled}
+        //@ts-ignore
+        onFocus={onFocus}
+        //@ts-ignore
+        onBlur={onBlur}
+        //@ts-ignore
+        onChange={onChange}
+      >
+        {children}
+      </select>
+      {!multiple && icon && <span className={block("icon")}>{icon}</span>}
+    </TextFieldContainer>
+  )
+}

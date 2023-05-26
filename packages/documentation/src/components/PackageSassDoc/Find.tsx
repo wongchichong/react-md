@@ -16,7 +16,8 @@ import Code from "components/Code";
 import type {
   FormattedSassDocItem,
   FormattedVariableItem,
-} from "utils/sassdoc";
+} from "@react-md/dev-utils/src/utils";
+import "@react-md/dev-utils/@types/sassdoc";
 
 import getId from "./getId";
 import getType from "./getType";

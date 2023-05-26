@@ -1,16 +1,16 @@
-import { useCallback, useRef } from "react";
-import { useRefCache } from "@react-md/utils";
+import { $ } from 'voby'
+// import { $ } from "@react-md/utils"
 
-import type { MergableRippleHandlers, RippleEvent } from "./types";
+import type { MergableRippleHandlers, RippleEvent } from "./types"
 
 interface Options<E extends HTMLElement> {
-  create: (event: RippleEvent<E>) => void;
-  release: (event: RippleEvent<E>) => void;
-  cancel: (ease: boolean) => void;
-  handlers?: MergableRippleHandlers<E>;
-  disabled?: boolean;
-  disableRipple?: boolean;
-  disableProgrammaticRipple?: boolean;
+    create: (event: RippleEvent<E>, disableSpacebarClick?: boolean) => void
+    release: (event: RippleEvent<E>) => void
+    cancel: (ease: boolean) => void
+    handlers?: MergableRippleHandlers<E>
+    disabled?: FunctionMaybe<Nullable<boolean>>
+    disableRipple?: FunctionMaybe<Nullable<boolean>>
+    disableProgrammaticRipple?: FunctionMaybe<Nullable<boolean>>
 }
 
 /**
@@ -21,165 +21,129 @@ interface Options<E extends HTMLElement> {
  * returned instead.
  */
 export function useRippleHandlers<E extends HTMLElement>({
-  create,
-  release,
-  cancel,
-  handlers = {},
-  disabled: propDisabled = false,
-  disableRipple = false,
-  disableProgrammaticRipple = false,
+    create,
+    release,
+    cancel,
+    handlers = {},
+    disabled: propDisabled = false,
+    disableRipple = false,
+    disableProgrammaticRipple = false,
 }: Options<E>): MergableRippleHandlers<E> {
-  const disabled = propDisabled || disableRipple;
-  const ref = useRefCache({ ...handlers, disableProgrammaticRipple });
+    const disabled = propDisabled || disableRipple
+    const ref = $({ ...handlers, disableProgrammaticRipple })
 
-  // some OS/browser don't actually focus buttons/elements that are focusable after a click
-  // event which causes a double ripple effect. This ref is used to disable the programmatic
-  // ripple in these cases.
-  const disableProgrammatic = useRef(false);
+    // some OS/browser don't actually focus buttons/elements that are focusable after a click
+    // event which causes a double ripple effect. This ref is used to disable the programmatic
+    // ripple in these cases.
+    const disableProgrammatic = $(false)
 
-  const onKeyDown = useCallback(
-    (event: React.KeyboardEvent<E>) => {
-      const { onKeyDown: callback } = ref.current;
-      if (callback) {
-        callback(event);
-      }
+    const onKeyDown = $((event: JSX.TargetedKeyboardEvent<E>) => {
+        const { onKeyDown: callback } = ref()
+        if (callback) {
+            //@ts-ignore
+            callback(event)
+        }
 
-      create(event);
-    },
-    // disabled since useRefCache
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [create]
-  );
-  const onKeyUp = useCallback(
-    (event: React.KeyboardEvent<E>) => {
-      const { onKeyUp: callback } = ref.current;
-      if (callback) {
-        callback(event);
-      }
+        create(event)
+    })
+    const onKeyUp = $((event: JSX.TargetedKeyboardEvent<E>) => {
+        const { onKeyUp: callback } = ref()
+        if (callback) {
+            //@ts-ignore
+            callback(event)
+        }
 
-      release(event);
-    },
-    // disabled since useRefCache
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [release]
-  );
+        release(event)
+    })
 
-  const onMouseDown = useCallback(
-    (event: React.MouseEvent<E>) => {
-      const { onMouseDown: callback } = ref.current;
-      if (callback) {
-        callback(event);
-      }
+    const onMouseDown = $((event: JSX.TargetedMouseEvent<E>) => {
+        const { onMouseDown: callback } = ref()
+        if (callback) {
+            //@ts-ignore
+            callback(event)
+        }
 
-      create(event);
-      disableProgrammatic.current = true;
-    },
-    // disabled since useRefCache
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [create]
-  );
-  const onMouseUp = useCallback(
-    (event: React.MouseEvent<E>) => {
-      const { onMouseUp: callback } = ref.current;
-      if (callback) {
-        callback(event);
-      }
+        create(event)
+        disableProgrammatic(true)
+    })
+    const onMouseUp = $((event: JSX.TargetedMouseEvent<E>) => {
+        const { onMouseUp: callback } = ref()
+        if (callback) {
+            //@ts-ignore
+            callback(event)
+        }
 
-      release(event);
-    },
-    // disabled since useRefCache
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [release]
-  );
-  const onMouseLeave = useCallback(
-    (event: React.MouseEvent<E>) => {
-      const { onMouseLeave: callback } = ref.current;
-      if (callback) {
-        callback(event);
-      }
+        release(event)
+    })
+    const onMouseLeave = $((event: JSX.TargetedMouseEvent<E>) => {
+        const { onMouseLeave: callback } = ref()
+        if (callback) {
+            //@ts-ignore
+            callback(event)
+        }
 
-      cancel(true);
-    },
-    // disabled since useRefCache
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [cancel]
-  );
+        cancel(true)
+    })
 
-  const onTouchStart = useCallback(
-    (event: React.TouchEvent<E>) => {
-      const { onTouchStart: callback } = ref.current;
-      if (callback) {
-        callback(event);
-      }
+    const onTouchStart = $((event: JSX.TargetedTouchEvent<E>) => {
+        const { onTouchStart: callback } = ref()
+        if (callback) {
+            //@ts-ignore
+            callback(event)
+        }
 
-      create(event);
-    },
-    // disabled since useRefCache
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [create]
-  );
-  const onTouchMove = useCallback(
-    (event: React.TouchEvent<E>) => {
-      const { onTouchMove: callback } = ref.current;
-      if (callback) {
-        callback(event);
-      }
+        create(event)
+    })
+    const onTouchMove = $((event: JSX.TargetedTouchEvent<E>) => {
+        const { onTouchMove: callback } = ref()
+        if (callback) {
+            //@ts-ignore
+            callback(event)
+        }
 
-      cancel(false);
-    },
-    // disabled since useRefCache
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [cancel]
-  );
-  const onTouchEnd = useCallback(
-    (event: React.TouchEvent<E>) => {
-      const { onTouchEnd: callback } = ref.current;
-      if (callback) {
-        callback(event);
-      }
+        cancel(false)
+    })
+    const onTouchEnd = $((event: JSX.TargetedTouchEvent<E>) => {
+        const { onTouchEnd: callback } = ref()
+        if (callback) {
+            //@ts-ignore
+            callback(event)
+        }
 
-      release(event);
-    },
-    // disabled since useRefCache
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [release]
-  );
+        release(event)
+    })
 
-  const onClick = useCallback(
-    (event: React.MouseEvent<E>) => {
-      const { onClick: callback, disableProgrammaticRipple } = ref.current;
-      if (callback) {
-        callback(event);
-      }
+    const onClick = $((event: JSX.TargetedMouseEvent<E>) => {
+        const { onClick: callback, disableProgrammaticRipple } = ref()
+        if (callback) {
+            //@ts-ignore
+            callback(event)
+        }
 
-      // when a click event is triggered and the current active element is not
-      // the event target, we know it was a true programmatic event and should
-      // trigger a ripple for it.
-      if (
-        disableProgrammaticRipple ||
-        document.activeElement === event.currentTarget ||
-        disableProgrammatic.current
-      ) {
-        disableProgrammatic.current = false;
-        return;
-      }
+        // when a click event is triggered and the current active element is not
+        // the event target, we know it was a true programmatic event and should
+        // trigger a ripple for it.
+        if (
+            disableProgrammaticRipple ||
+            document.activeElement === event.currentTarget ||
+            disableProgrammatic()
+        ) {
+            disableProgrammatic(false)
+            return
+        }
 
-      create(event);
-    },
-    // disabled since useRefCache
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [create]
-  );
+        create(event)
+    })
 
-  return {
-    onKeyDown: disabled ? handlers.onKeyDown : onKeyDown,
-    onKeyUp: disabled ? handlers.onKeyUp : onKeyUp,
-    onMouseDown: disabled ? handlers.onMouseDown : onMouseDown,
-    onMouseUp: disabled ? handlers.onMouseUp : onMouseUp,
-    onMouseLeave: disabled ? handlers.onMouseLeave : onMouseLeave,
-    onTouchStart: disabled ? handlers.onTouchStart : onTouchStart,
-    onTouchMove: disabled ? handlers.onTouchMove : onTouchMove,
-    onTouchEnd: disabled ? handlers.onTouchEnd : onTouchEnd,
-    onClick: disabled || disableProgrammaticRipple ? handlers.onClick : onClick,
-  };
+    return {
+        onKeyDown: disabled ? handlers.onKeyDown : onKeyDown,
+        onKeyUp: disabled ? handlers.onKeyUp : onKeyUp,
+        onMouseDown: disabled ? handlers.onMouseDown : onMouseDown,
+        onMouseUp: disabled ? handlers.onMouseUp : onMouseUp,
+        onMouseLeave: disabled ? handlers.onMouseLeave : onMouseLeave,
+        onTouchStart: disabled ? handlers.onTouchStart : onTouchStart,
+        onTouchMove: disabled ? handlers.onTouchMove : onTouchMove,
+        onTouchEnd: disabled ? handlers.onTouchEnd : onTouchEnd,
+        onClick: disabled || disableProgrammaticRipple ? handlers.onClick : onClick,
+    }
 }

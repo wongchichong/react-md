@@ -1,12 +1,12 @@
-import { useRef, useState } from "react";
+import { $ } from 'voby'
 
-import type { UserInteractionMode } from "./types";
-import { useIsomorphicLayoutEffect } from "../useIsomorphicLayoutEffect";
+import type { UserInteractionMode } from "./types"
+import { useIsomorphicLayoutEffect } from "../useIsomorphicLayoutEffect"
 
 /**
  * @internal
  */
-const TOUCH_TIMEOUT = 1200;
+const TOUCH_TIMEOUT = 1200
 
 /**
  * This hook helps determine the current interaction mode by attaching the
@@ -51,60 +51,59 @@ const TOUCH_TIMEOUT = 1200;
  * @internal
  */
 export function useInteractionMode(): UserInteractionMode {
-  const [mode, setMode] = useState<UserInteractionMode>("mouse");
-  const lastTouchTime = useRef(0);
-  const isTouchContextMenu = useRef(false);
+  const mode = $<UserInteractionMode>("mouse")
+  const lastTouchTime = $(0)
+  const isTouchContextMenu = $(false)
 
   useIsomorphicLayoutEffect(() => {
-    const enableMouseMode = (): void => setMode("mouse");
-    const enableKeyboardMode = (): void => setMode("keyboard");
+    const enableMouseMode = (): void => { mode("mouse") }
+    const enableKeyboardMode = (): void => { mode("keyboard") }
 
     const handleTouchStart = (): void => {
-      lastTouchTime.current = Date.now();
-      isTouchContextMenu.current = false;
-      setMode("touch");
-    };
+      lastTouchTime(Date.now())
+      isTouchContextMenu(false)
+      mode("touch")
+    }
 
     const handleMouseMove = (): void => {
       if (
-        isTouchContextMenu.current ||
-        Date.now() - lastTouchTime.current < TOUCH_TIMEOUT
+        isTouchContextMenu(Date.now() - lastTouchTime() < TOUCH_TIMEOUT)
       ) {
-        isTouchContextMenu.current = false;
-        return;
+        isTouchContextMenu(false)
+        return
       }
 
-      enableMouseMode();
-    };
+      enableMouseMode()
+    }
     const handleContextMenu = (): void => {
-      isTouchContextMenu.current = true;
-    };
+      isTouchContextMenu(true)
+    }
 
-    const className = `rmd-utils--${mode}`;
-    document.body.classList.add(className);
-    window.addEventListener("touchstart", handleTouchStart, true);
-    if (mode === "mouse") {
-      window.addEventListener("keydown", enableKeyboardMode, true);
-    } else if (mode === "keyboard") {
-      window.addEventListener("mousedown", enableMouseMode, true);
+    const className = `rmd-utils--${mode()}`
+    document.body.classList.add(className)
+    window.addEventListener("touchstart", handleTouchStart, true)
+    if (mode() === "mouse") {
+      window.addEventListener("keydown", enableKeyboardMode, true)
+    } else if (mode() === "keyboard") {
+      window.addEventListener("mousedown", enableMouseMode, true)
     } else {
-      window.addEventListener("mousemove", handleMouseMove, true);
-      window.addEventListener("contextmenu", handleContextMenu, true);
+      window.addEventListener("mousemove", handleMouseMove, true)
+      window.addEventListener("contextmenu", handleContextMenu, true)
     }
 
     return () => {
-      document.body.classList.remove(className);
-      window.removeEventListener("touchstart", handleTouchStart, true);
-      if (mode === "mouse") {
-        window.removeEventListener("keydown", enableKeyboardMode, true);
-      } else if (mode === "keyboard") {
-        window.removeEventListener("mousedown", enableMouseMode, true);
+      document.body.classList.remove(className)
+      window.removeEventListener("touchstart", handleTouchStart, true)
+      if (mode() === "mouse") {
+        window.removeEventListener("keydown", enableKeyboardMode, true)
+      } else if (mode() === "keyboard") {
+        window.removeEventListener("mousedown", enableMouseMode, true)
       } else {
-        window.removeEventListener("mousemove", handleMouseMove, true);
-        window.removeEventListener("contextmenu", handleContextMenu, true);
+        window.removeEventListener("mousemove", handleMouseMove, true)
+        window.removeEventListener("contextmenu", handleContextMenu, true)
       }
-    };
-  }, [mode]);
+    }
+  }/* , [mode()] */)
 
-  return mode;
+  return mode()
 }

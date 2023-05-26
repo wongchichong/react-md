@@ -15,7 +15,7 @@ export default function Toggle({
   onClick,
   isLargeDesktop,
   isDialogVisible,
-}: ToggleProps): ReactElement {
+}: ToggleProps): Child {
   let tooltip: ReactNode = null;
   if (!isLargeDesktop) {
     tooltip = "Table of Contents";

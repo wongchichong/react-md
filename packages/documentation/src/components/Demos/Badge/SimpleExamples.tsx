@@ -4,7 +4,7 @@ import { NotificationsSVGIcon } from "@react-md/material-icons";
 
 import styles from "./SimpleExamples.module.scss";
 
-export default function SimpleExamples(): ReactElement {
+export default function SimpleExamples(): Child {
   return (
     <>
       <BadgedButton id="badged-button-1" className={styles.container}>

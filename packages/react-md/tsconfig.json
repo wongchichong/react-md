@@ -1,5 +1,109 @@
 {
   "extends": "../../tsconfig.base.json",
-  "compilerOptions": { "noEmit": true, "composite": false },
-  "include": ["src"]
+  "compilerOptions": {
+    "noEmit": true,
+    "composite": false
+  },
+  "include": ["src"],
+  "references": [
+    {
+      "path": "../alert"
+    },
+    {
+      "path": "../app-bar"
+    },
+    {
+      "path": "../autocomplete"
+    },
+    {
+      "path": "../avatar"
+    },
+    {
+      "path": "../badge"
+    },
+    {
+      "path": "../button"
+    },
+    {
+      "path": "../card"
+    },
+    {
+      "path": "../chip"
+    },
+    {
+      "path": "../dialog"
+    },
+    {
+      "path": "../divider"
+    },
+    {
+      "path": "../elevation"
+    },
+    {
+      "path": "../expansion-panel"
+    },
+    {
+      "path": "../form"
+    },
+    {
+      "path": "../icon"
+    },
+    {
+      "path": "../layout"
+    },
+    {
+      "path": "../link"
+    },
+    {
+      "path": "../list"
+    },
+    {
+      "path": "../material-icons"
+    },
+    {
+      "path": "../media"
+    },
+    {
+      "path": "../menu"
+    },
+    {
+      "path": "../overlay"
+    },
+    {
+      "path": "../portal"
+    },
+    {
+      "path": "../progress"
+    },
+    {
+      "path": "../sheet"
+    },
+    {
+      "path": "../states"
+    },
+    {
+      "path": "../table"
+    },
+    {
+      "path": "../tabs"
+    },
+    {
+      "path": "../theme"
+    },
+    {
+      "path": "../tooltip"
+    },
+    {
+      "path": "../transition"
+    },
+    {
+      "path": "../tree"
+    },
+    {
+      "path": "../typography"
+    },
+    {
+      "path": "../utils"
+    }
+  ]
 }

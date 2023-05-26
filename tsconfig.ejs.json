@@ -1,4 +1,8 @@
 {
+  "compilerOptions": {
+    "tsBuildInfoFile": "./dist/tsconfig.cjs.tsbuildinfo"
+  },
+
   "files": [],
   "references": [
     {

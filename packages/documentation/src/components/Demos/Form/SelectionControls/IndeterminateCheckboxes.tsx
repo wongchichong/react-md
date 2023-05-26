@@ -3,7 +3,7 @@ import { Checkbox, Fieldset, useIndeterminateChecked } from "@react-md/form";
 
 const condiments = ["Lettuce", "Tomato", "Mustard", "Sprouts"];
 
-export default function IndeterminateCheckboxes(): ReactElement {
+export default function IndeterminateCheckboxes(): Child {
   const {
     getProps,
     rootProps,

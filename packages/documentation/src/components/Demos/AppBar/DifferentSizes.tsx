@@ -12,7 +12,7 @@ import AppBarTitle from "components/AppBarTitle";
 
 import Container from "./Container";
 
-function DenseAppBar(): ReactElement {
+function DenseAppBar(): Child {
   return (
     <AppBar height="dense">
       <AppBarNav aria-label="Navigation" id="dense-nav">
@@ -29,7 +29,7 @@ function DenseAppBar(): ReactElement {
   );
 }
 
-function NormalAppBar(): ReactElement {
+function NormalAppBar(): Child {
   return (
     // or add height="normal"
     <AppBar>
@@ -47,7 +47,7 @@ function NormalAppBar(): ReactElement {
   );
 }
 
-function DenseProminentAppBar(): ReactElement {
+function DenseProminentAppBar(): Child {
   return (
     <AppBar height="prominent-dense">
       <AppBar height="dense">
@@ -74,7 +74,7 @@ function DenseProminentAppBar(): ReactElement {
   );
 }
 
-function ProminentAppBar(): ReactElement {
+function ProminentAppBar(): Child {
   return (
     <AppBar height="prominent">
       <AppBar>
@@ -100,7 +100,7 @@ function ProminentAppBar(): ReactElement {
   );
 }
 
-export default function DifferentSizes(): ReactElement {
+export default function DifferentSizes(): Child {
   return (
     <Container>
       <DenseAppBar />

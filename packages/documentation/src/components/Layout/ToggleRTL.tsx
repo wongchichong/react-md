@@ -12,7 +12,7 @@ export interface ToggleRTLProps {
   as: "action" | "menuitem";
 }
 
-export default function ToggleRTL({ as }: ToggleRTLProps): ReactElement {
+export default function ToggleRTL({ as }: ToggleRTLProps): Child {
   const { dir, toggleDir } = useDir();
   const isRTL = dir === "rtl";
   let icon = <FormatAlignLeftSVGIcon />;

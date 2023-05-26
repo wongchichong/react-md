@@ -1,11 +1,10 @@
 import type { AppSize } from "@react-md/utils";
 
-import {
-  DEFAULT_DESKTOP_LAYOUT,
-  DEFAULT_LANDSCAPE_TABLET_LAYOUT,
-  DEFAULT_PHONE_LAYOUT,
-  DEFAULT_TABLET_LAYOUT,
-} from "./constants";
+import { 
+DEFAULT_DESKTOP_LAYOUT, 
+DEFAULT_LANDSCAPE_TABLET_LAYOUT, 
+DEFAULT_PHONE_LAYOUT, 
+DEFAULT_TABLET_LAYOUT,  } from "./constants";
 import type { LayoutConfiguration, SupportedWideLayout } from "./types";
 
 export interface GetLayoutOptions extends LayoutConfiguration {

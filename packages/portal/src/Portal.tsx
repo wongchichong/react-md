@@ -1,33 +1,32 @@
-import type { ReactElement, ReactNode } from "react";
-import { useEffect, useState } from "react";
-import { createPortal } from "react-dom";
+import { useEffect, $, Portal as VPortal, $$ } from 'voby'
+import type { Element } from 'voby'
 
-import type { PortalInto } from "./getContainer";
-import { getContainer } from "./getContainer";
+import type { PortalInto } from "./getContainer"
+import { getContainer } from "./getContainer"
 
 export interface PortalProps {
-  /**
-   * Either a function that returns an HTMLElement, an HTMLElement, or a
-   * `document.querySelector` string that will return the HTMLElement to render
-   * the children into. If both the `into` and `intoId` props are `undefined`,
-   * the `document.body` will be chosen instead.
-   *
-   * If the `querySelector` string does not return a valid HTMLElement, an error
-   * will be thrown.
-   */
-  into?: PortalInto;
+    /**
+     * Either a function that returns an HTMLElement, an HTMLElement, or a
+     * `document.querySelector` string that will return the HTMLElement to render
+     * the children into. If both the `into` and `intoId` props are `undefined`,
+     * the `document.body` will be chosen instead.
+     *
+     * If the `querySelector` string does not return a valid HTMLElement, an error
+     * will be thrown.
+     */
+    into?: PortalInto
 
-  /**
-   * The id of an element that the portal should be rendered into. If an element
-   * with the provided id can not be found on the page at the time of mounting,
-   * an error will be thrown.
-   */
-  intoId?: string;
+    /**
+     * The id of an element that the portal should be rendered into. If an element
+     * with the provided id can not be found on the page at the time of mounting,
+     * an error will be thrown.
+     */
+    intoId?: FunctionMaybe<Nullable<string>>
 
-  /**
-   * The children to render within the portal.
-   */
-  children?: ReactNode;
+    /**
+     * The children to render within the portal.
+     */
+    children?: Children
 }
 
 /**
@@ -36,26 +35,23 @@ export interface PortalProps {
  * rendering as well as a "nice" way to choose specific portal targets or just
  * falling back to the `document.body`.
  */
-export function Portal({
-  into,
-  intoId,
-  children,
-}: PortalProps): ReactElement | null {
-  const [container, setContainer] = useState<HTMLElement | null>(null);
+export function Portal({ into, intoId, children, }: PortalProps): Element {
+    const container = $<ReturnType<typeof getContainer>>(null)
 
-  // setting the container via useEffect instead of immediately in the render
-  // just so that it doesn't throw an error immediately if the dom hasn't fully
-  // painted after a SSR
-  useEffect(() => {
-    const nextContainer = getContainer(into, intoId);
-    if (container !== nextContainer) {
-      setContainer(nextContainer);
+    // setting the container via useEffect instead of immediately in the render
+    // just so that it doesn't throw an error immediately if the dom hasn't fully
+    // painted after a SSR
+    useEffect(() => {
+        const nextContainer = getContainer(into, $$(intoId))
+        if (container() !== nextContainer) {
+            container($$(nextContainer))
+        }
+    })
+
+    if (!container()) {
+        return null
     }
-  }, [into, intoId, container]);
 
-  if (!container) {
-    return null;
-  }
-
-  return createPortal(children, container) as any;
+    //@ts-ignore
+    return (<VPortal wrapper={container()} children={children} />) as any
 }

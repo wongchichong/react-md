@@ -1,22 +1,23 @@
-import type { HTMLAttributes } from "react";
-import { forwardRef } from "react";
-import type { PropsWithRef } from "@react-md/utils";
+;
+
+import type { PropsWithRef } from "@react-md/utils"
 
 import {
   DEFAULT_SLIDER_ANIMATION_TIME,
   DEFAULT_SLIDER_GET_VALUE_TEXT,
-} from "./constants";
-import { SliderContainer } from "./SliderContainer";
-import { SliderThumb } from "./SliderThumb";
-import { SliderTrack } from "./SliderTrack";
-import type { BaseSliderProps } from "./types";
-import type { SliderRequiredProps } from "./useSlider";
-import { useSliderControls } from "./useSliderControls";
+} from "./constants"
+import { SliderContainer } from "./SliderContainer"
+import { SliderThumb } from "./SliderThumb"
+import { SliderTrack } from "./SliderTrack"
+import type { BaseSliderProps } from "./types"
+import type { SliderRequiredProps } from "./useSlider"
+import { useSliderControls } from "./useSliderControls"
+import { $$ } from "voby"
 
 /**
  * @remarks \@since 2.5.0
  */
-export interface SliderProps extends SliderRequiredProps, BaseSliderProps {
+export interface SliderProps<T extends EventTarget = HTMLDivElement> extends SliderRequiredProps, Omit<BaseSliderProps<T>, 'max' | 'min' | 'step' | 'value'> {
   /**
    * An optional label to apply to the slider's thumb. This should normally be a
    * short (1-4 word) description for this slider.
@@ -24,7 +25,7 @@ export interface SliderProps extends SliderRequiredProps, BaseSliderProps {
    * @see {@link SliderLabelProps.label}
    * @see {@link thumbLabelledBy}
    */
-  thumbLabel?: string;
+  thumbLabel?: FunctionMaybe<Nullable<string>>
 
   /**
    * An optional id point to a label describing the slider's thumb. This should
@@ -33,19 +34,19 @@ export interface SliderProps extends SliderRequiredProps, BaseSliderProps {
    * @see {@link SliderLabelProps.label}
    * @see {@link thumbLabel}
    */
-  thumbLabelledBy?: string;
+  thumbLabelledBy?: FunctionMaybe<Nullable<string>>
 
   /**
    * Any additional props you'd like to pass to the track element as well as an
    * optional `ref` if you need access to the track element for some reason.
    */
-  trackProps?: PropsWithRef<HTMLAttributes<HTMLSpanElement>, HTMLSpanElement>;
+  trackProps?: PropsWithRef<HTMLAttributes<HTMLSpanElement>, HTMLSpanElement>
 
   /**
    * Any additional props you'd like to pass to the thumb element as well as an
    * optional `ref` if you need access to the track element for some reason.
    */
-  thumbProps?: PropsWithRef<HTMLAttributes<HTMLSpanElement>, HTMLSpanElement>;
+  thumbProps?: PropsWithRef<HTMLAttributes<HTMLSpanElement>, HTMLSpanElement>
 }
 
 /**
@@ -55,7 +56,7 @@ export interface SliderProps extends SliderRequiredProps, BaseSliderProps {
  *
  * @remarks \@since 2.5.0
  */
-export const Slider = forwardRef<HTMLDivElement, SliderProps>(function Slider(
+export const Slider = (
   {
     baseId,
     trackProps: propTrackProps,
@@ -83,11 +84,11 @@ export const Slider = forwardRef<HTMLDivElement, SliderProps>(function Slider(
     decrement,
     decrementJump,
     persist,
-    setValue,
+    // setValue,
+    ref,
     ...props
-  },
-  ref
-) {
+  }: SliderProps<HTMLSpanElement>
+) => {
   const {
     thumb1Ref,
     thumb1Value,
@@ -118,12 +119,12 @@ export const Slider = forwardRef<HTMLDivElement, SliderProps>(function Slider(
     decrement,
     decrementJump,
     persist,
-    setValue,
-  });
+    // setValue,
+  })
 
-  let labelId = "";
+  let labelId = ""
   if (label) {
-    labelId = labelProps?.id || `${baseId}-label`;
+    labelId = $$(labelProps?.id) as string || `${baseId}-label`
   }
 
   return (
@@ -165,5 +166,5 @@ export const Slider = forwardRef<HTMLDivElement, SliderProps>(function Slider(
         />
       </SliderTrack>
     </SliderContainer>
-  );
-});
+  )
+}

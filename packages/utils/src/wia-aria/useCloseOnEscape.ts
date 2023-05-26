@@ -1,5 +1,5 @@
-import type { KeyboardEventHandler } from "react";
-import { useCallback } from "react";
+// import type { KeyboardEventHandler } from 'voby';
+import { $ } from 'voby'
 
 /**
  * This will conditionally close the dialog when the escape key is pressed.
@@ -13,19 +13,17 @@ export function useCloseOnEscape<E extends HTMLElement>(
   onRequestClose: () => void,
   disabled: boolean,
   onKeyDown?: KeyboardEventHandler<E>
-): KeyboardEventHandler<E> | undefined {
-  const handleKeyDown = useCallback<KeyboardEventHandler<E>>(
-    (event) => {
-      if (onKeyDown) {
-        onKeyDown(event);
-      }
+): JSX.KeyboardEventHandler<E> | undefined {
+  const handleKeyDown = $<JSX.KeyboardEventHandler<E>>((event) => {
+    if (onKeyDown) {
+      //@ts-ignore
+      onKeyDown(event)
+    }
 
-      if (event.key === "Escape") {
-        onRequestClose();
-      }
-    },
-    [onKeyDown, onRequestClose]
-  );
+    if (event.key === "Escape") {
+      onRequestClose()
+    }
+  })
 
-  return disabled ? onKeyDown : handleKeyDown;
+  return disabled ? onKeyDown : handleKeyDown
 }

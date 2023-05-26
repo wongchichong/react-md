@@ -1,11 +1,10 @@
-import type { ReactElement } from "react";
-import { createContext, useContext, useState } from "react";
-import type { ListProps } from "@react-md/list";
-import { List } from "@react-md/list";
-import type { LabelRequiredForA11y } from "@react-md/utils";
-import { useKeyboardFocus } from "@react-md/utils";
-
-import { useMenuBarContext } from "./MenuBarProvider";
+import type { Element } from 'voby'
+import { createContext, useContext, $ } from 'voby'
+import type { ListProps } from "@react-md/list"
+import { List } from "@react-md/list"
+import type { LabelA11y, LabelRequiredForA11y } from "@react-md/utils"
+import { useKeyboardFocus } from "@react-md/utils"
+import { useMenuBarContext } from "./MenuBarProvider"
 
 /**
  * This context is used to implement the "roving tab index" behavior
@@ -13,20 +12,21 @@ import { useMenuBarContext } from "./MenuBarProvider";
  * @internal
  * @remarks \@since 5.0.0
  */
-const context = createContext("");
-context.displayName = "MenuBarWidgetFocusId";
-const { Provider } = context;
+const context = createContext("")
+//@ts-ignore
+context.displayName = "MenuBarWidgetFocusId"
+const { Provider } = context
 
 /** @remarks \@since 5.0.0 */
 export function useMenuBarWidgetFocusId(): string {
-  return useContext(context);
+  return useContext(context)
 }
 
 /** @remarks \@since 5.0.0 */
-export type BaseMenuBarWidgetProps = Omit<ListProps, "role" | "horizontal">;
+export type BaseMenuBarWidgetProps = Omit<ListProps, "role" | "horizontal">
 
 /** @remarks \@since 5.0.0 */
-export type MenuBarWidgetProps = LabelRequiredForA11y<BaseMenuBarWidgetProps>;
+export type MenuBarWidgetProps = LabelRequiredForA11y<BaseMenuBarWidgetProps & LabelA11y>
 
 /**
  * This component implements the keyboard focus behavior for the `MenuBar`
@@ -40,18 +40,18 @@ export function MenuBarWidget({
   onFocus: propOnFocus,
   onKeyDown: propOnKeyDown,
   ...props
-}: MenuBarWidgetProps): ReactElement {
-  const { setActiveId } = useMenuBarContext();
-  const [focusId, setFocusId] = useState("");
+}: MenuBarWidgetProps): Element {
+  const { activeId } = useMenuBarContext()
+  const focusId = $("")
   const { onFocus, onKeyDown } = useKeyboardFocus({
     onFocus: propOnFocus,
     onKeyDown: propOnKeyDown,
     onFocusChange(element) {
-      element.focus();
-      setFocusId(element.id);
-      setActiveId((prevActiveId) => (prevActiveId ? element.id : ""));
+      element.focus()
+      focusId(element.id)
+      activeId((prevActiveId) => (prevActiveId ? element.id : ""))
     },
-  });
+  })
 
   return (
     <Provider value={focusId}>
@@ -66,5 +66,5 @@ export function MenuBarWidget({
         {children}
       </List>
     </Provider>
-  );
+  )
 }

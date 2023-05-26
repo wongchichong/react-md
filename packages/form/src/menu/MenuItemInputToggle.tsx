@@ -1,20 +1,20 @@
-import type { HTMLAttributes, MouseEvent, ReactNode } from "react";
-import { forwardRef } from "react";
-import cn from "classnames";
-import { useIcon } from "@react-md/icon";
+import type { } from 'voby'
+
+
+import { useIcon } from "@react-md/icon"
 import type {
   ListItemAddonPosition,
   ListItemAddonType,
   SimpleListItemProps,
-} from "@react-md/list";
-import { ListItem } from "@react-md/list";
-import { bem, useKeyboardFocusableElement } from "@react-md/utils";
+} from "@react-md/list"
+import { ListItem } from "@react-md/list"
+import { bem, useKeyboardFocusableElement } from "@react-md/utils"
 
-import type { IndeterminateCheckboxProps } from "../toggle/Checkbox";
-import { InputToggleIcon } from "../toggle/InputToggleIcon";
-import { SwitchTrack } from "../toggle/SwitchTrack";
+import type { IndeterminateCheckboxProps } from "../toggle/Checkbox"
+import { InputToggleIcon } from "../toggle/InputToggleIcon"
+import { SwitchTrack } from "../toggle/SwitchTrack"
 
-const styles = bem("rmd-input-toggle-menu-item");
+const styles = bem("rmd-input-toggle-menu-item")
 
 /**
  * @remarks \@since 2.8.0
@@ -32,32 +32,33 @@ type AllowedListItemProps = Pick<
   | "secondaryText"
   | "secondaryTextClassName"
   | "forceAddonWrap"
->;
+>
 
 /** @remarks \@since 2.8.0 */
+//@ts-ignore
 export interface BaseMenuItemInputToggleProps
   extends HTMLAttributes<HTMLLIElement>,
-    AllowedListItemProps {
+  AllowedListItemProps {
   /**
    * An id required for a11y.
    */
-  id: string;
+  id: string
 
   /**
    * Boolean if the element should be disabled.
    */
-  disabled?: boolean;
+  disabled?: FunctionMaybe<Nullable<boolean>>
 
   /**
    * Boolean if the element is currently checked.
    */
-  checked: boolean;
+  checked: boolean
 
   /**
    * A function to call that should updated the `checked` state to the new
    * value.
    */
-  onCheckedChange(checked: boolean, event: MouseEvent<HTMLLIElement>): void;
+  onCheckedChange(checked: boolean, event: JSX.TargetedMouseEvent<HTMLLIElement>): void
 
   /**
    * The icon will default to:
@@ -68,13 +69,13 @@ export interface BaseMenuItemInputToggleProps
    * If this behavior isn't preferred, you can provide your own icon with this
    * prop.
    */
-  icon?: ReactNode;
+  icon?: Child
 
   /**
    * Boolean if the `icon` prop should appear as the `rightAddon` instead of the
    * `leftAddon` for the `ListItem`
    */
-  iconAfter?: boolean;
+  iconAfter?: FunctionMaybe<Nullable<boolean>>
 
   /**
    * An optional {@link ListItem} addon to display on the opposite side of the
@@ -82,17 +83,17 @@ export interface BaseMenuItemInputToggleProps
    * the `right` while setting `iconAfter` to `true` will render the `addon` to
    * the `left` instead.
    */
-  addon?: ReactNode;
+  addon?: Child
 
   /**
    * The {@link ListItemAddonType} for the `addon`.
    */
-  addonType?: ListItemAddonType;
+  addonType?: ListItemAddonType
 
   /**
    * The {@link ListItemAddonPosition} for the `addon`.
    */
-  addonPosition?: ListItemAddonPosition;
+  addonPosition?: ListItemAddonPosition
 }
 
 /** @remarks \@since 2.8.0 */
@@ -109,7 +110,7 @@ export interface MenuItemInputToggleProps extends BaseMenuItemInputToggleProps {
    *
    * @see {@link https://www.w3.org/TR/wai-aria-1.1/#menuitemradio}
    */
-  type: "checkbox" | "radio" | "switch";
+  type: "checkbox" | "radio" | "switch"
 }
 
 /** @remarks \@since 2.8.5 */
@@ -117,7 +118,7 @@ export type StrictMenuItemInputToggleProps = BaseMenuItemInputToggleProps &
   (
     | ({ type: "checkbox" } & IndeterminateCheckboxProps)
     | { type: "radio" | "switch"; indeterminate?: never }
-  );
+  )
 
 /**
  * This is a low-level component that should probably not be used externally and
@@ -129,10 +130,7 @@ export type StrictMenuItemInputToggleProps = BaseMenuItemInputToggleProps &
  * @see {@link MenuItemSwitch} for switch examples
  * @remarks \@since 2.8.0
  */
-export const MenuItemInputToggle = forwardRef<
-  HTMLLIElement,
-  StrictMenuItemInputToggleProps
->(function MenuItemInputToggle(
+export const MenuItemInputToggle = (
   {
     children,
     tabIndex = -1,
@@ -148,17 +146,18 @@ export const MenuItemInputToggle = forwardRef<
     disabled = false,
     className,
     indeterminate = false,
+    ref: nodeRef,
     ...props
-  },
-  nodeRef
-) {
-  const ref = useKeyboardFocusableElement(nodeRef);
-  let icon = useIcon(type === "radio" ? "radio" : "checkbox", propIcon);
+  }: StrictMenuItemInputToggleProps
+) => {
+  //@ts-ignore
+  const ref = useKeyboardFocusableElement(nodeRef)
+  let icon = useIcon(type === "radio" ? "radio" : "checkbox", propIcon)
   if (type === "switch" && typeof propIcon === "undefined") {
-    icon = <SwitchTrack checked={checked} />;
+    icon = <SwitchTrack checked={checked} />
   } else if (icon && type !== "switch") {
     icon = (
-      <span className={cn("rmd-toggle", styles("toggle"))}>
+      <span className={["rmd-toggle", styles("toggle")]}>
         <InputToggleIcon
           circle={type === "radio"}
           disabled={disabled}
@@ -169,25 +168,25 @@ export const MenuItemInputToggle = forwardRef<
           {icon}
         </InputToggleIcon>
       </span>
-    );
+    )
   }
 
-  let leftAddon: ReactNode;
-  let leftAddonType: ListItemAddonType | undefined;
-  let leftAddonPosition: ListItemAddonPosition | undefined;
-  let rightAddon: ReactNode;
-  let rightAddonType: ListItemAddonType | undefined;
-  let rightAddonPosition: ListItemAddonPosition | undefined;
+  let leftAddon: Child
+  let leftAddonType: ListItemAddonType | undefined
+  let leftAddonPosition: ListItemAddonPosition | undefined
+  let rightAddon: Child
+  let rightAddonType: ListItemAddonType | undefined
+  let rightAddonPosition: ListItemAddonPosition | undefined
   if (iconAfter) {
-    leftAddon = addon;
-    leftAddonType = addonType;
-    leftAddonPosition = addonPosition;
-    rightAddon = icon;
+    leftAddon = addon
+    leftAddonType = addonType
+    leftAddonPosition = addonPosition
+    rightAddon = icon
   } else {
-    leftAddon = icon;
-    rightAddon = addon;
-    rightAddonType = addonType;
-    rightAddonPosition = addonPosition;
+    leftAddon = icon
+    rightAddon = addon
+    rightAddonType = addonType
+    rightAddonPosition = addonPosition
   }
 
   return (
@@ -198,11 +197,11 @@ export const MenuItemInputToggle = forwardRef<
       aria-checked={checked}
       role={type === "radio" ? "menuitemradio" : "menuitemcheckbox"}
       onClick={(event) => {
-        onClick?.(event);
-        onCheckedChange(!checked, event);
+        onClick?.(event)
+        onCheckedChange(!checked, event)
       }}
       ref={ref}
-      className={cn(styles({ switch: type === "switch" }), className)}
+      className={[styles({ switch: type === "switch" }), className]}
       tabIndex={tabIndex}
       leftAddon={leftAddon}
       leftAddonType={leftAddonType}
@@ -213,5 +212,5 @@ export const MenuItemInputToggle = forwardRef<
     >
       {children}
     </ListItem>
-  );
-});
+  )
+}

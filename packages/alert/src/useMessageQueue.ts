@@ -1,73 +1,72 @@
-import type { Reducer } from "react";
-import { useCallback, useEffect, useReducer, useRef } from "react";
-import { useTimeout, useToggle } from "@react-md/utils";
+import { $, useEffect, store, ObservableMaybe, $$ } from 'voby'
+import { useTimeout, useToggle } from "@react-md/utils"
 
 import type {
-  AddMessage,
-  DuplicateBehavior,
-  Message,
-  MessageQueueActions,
-  PopMessage,
-  ResetQueue,
-  ToastMessage,
-} from "./MessageQueueContext";
-import { DEFAULT_MESSAGE_QUEUE_TIMEOUT } from "./MessageQueueContext";
-import { useWindowBlurPause } from "./useWindowBlurPause";
+    AddMessage,
+    DuplicateBehavior,
+    Message,
+    MessageQueueActions,
+    PopMessage,
+    ResetQueue,
+    ToastMessage,
+} from "./MessageQueueContext"
+import { DEFAULT_MESSAGE_QUEUE_TIMEOUT } from "./MessageQueueContext"
+import { useWindowBlurPause } from "./useWindowBlurPause"
 
-export const ADD_MESSAGE = "ADD_MESSAGE";
-export const POP_MESSAGE = "POP_MESSAGE";
-export const RESET_QUEUE = "RESET_QUEUE";
+export const ADD_MESSAGE = "ADD_MESSAGE"
+export const POP_MESSAGE = "POP_MESSAGE"
+export const RESET_QUEUE = "RESET_QUEUE"
 
 /**
  * @internal
  */
 export interface AddMessageAction<M extends Message = ToastMessage> {
-  type: typeof ADD_MESSAGE;
-  message: M;
-  duplicates: DuplicateBehavior;
+    type: typeof ADD_MESSAGE
+    message: M
+    duplicates: DuplicateBehavior
 }
 
 /**
  * @internal
  */
 export function addMessage<M extends Message = ToastMessage>(
-  message: M,
-  duplicates: DuplicateBehavior
+    message: M,
+    duplicates: DuplicateBehavior
 ): AddMessageAction {
-  return { type: ADD_MESSAGE, message, duplicates };
+    return { type: ADD_MESSAGE, message, duplicates }
 }
 
 /**
  * @internal
  */
 export interface PopMessageAction {
-  type: typeof POP_MESSAGE;
+    type: typeof POP_MESSAGE
 }
 
 /**
  * @internal
  */
-export const popMessage = (): PopMessageAction => ({ type: POP_MESSAGE });
+export const popMessage = (): PopMessageAction => ({ type: POP_MESSAGE })
 
 /**
  * @internal
  */
 export interface ResetQueueAction {
-  type: typeof RESET_QUEUE;
+    type: typeof RESET_QUEUE
 }
 
 /**
  * @internal
  */
-export const resetQueue = (): ResetQueueAction => ({ type: RESET_QUEUE });
+export const resetQueue = (): ResetQueueAction => ({ type: RESET_QUEUE })
 
 /**
  * @internal
  */
 export type MessageActions<M extends Message = ToastMessage> =
-  | AddMessageAction<M>
-  | PopMessageAction
-  | ResetQueueAction;
+    | AddMessageAction<M>
+    | PopMessageAction
+    | ResetQueueAction
 
 /**
  * This function is used to update the message queue state by adding a new
@@ -75,98 +74,100 @@ export type MessageActions<M extends Message = ToastMessage> =
  *
  * @internal
  */
-export function handleAddMessage<M extends Message = ToastMessage>(
-  state: readonly M[],
-  message: M,
-  duplicates: DuplicateBehavior
-): readonly M[] {
-  if (state.length === 0) {
-    return [message];
-  }
-
-  const { messageId, messagePriority = "normal" } = message;
-  const i = state.findIndex((mes) => mes.messageId === messageId);
-  const isNext = messagePriority === "next";
-  const isNormal = messagePriority === "normal";
-  const isReplace = messagePriority === "replace";
-  const isImmediate = messagePriority === "immediate";
-  const isDuplicable = duplicates === "allow";
-  const isRestart = duplicates === "restart";
-  if (isNext || isImmediate) {
-    const nextState = state.slice();
-
-    // remove the existing message if duplicated messages aren't allowed. This
-    // will kind of act like a replace + next behavior
-    if (!isDuplicable && i > 0) {
-      nextState.splice(i, 1);
+export function handleAddMessage<M extends Message = ToastMessage>(state: Array<M>, message: M, duplicates: DuplicateBehavior): Array<M> {
+    if (duplicates !== "allow" && !message.messageId) {
+        throw new Error(
+            `A messageId is required when the "${duplicates}" duplicate behavior is enabled but it was not provided in the current message.`
+        )
     }
 
-    const [current, ...remaining] = nextState;
-    if (isImmediate && current.messagePriority !== "immediate") {
-      return [current, message, current, ...remaining];
+    if (state.length === 0) {
+        state.push(message)
+        return state
     }
 
-    return [current, message, ...remaining];
-  }
+    const { messageId, messagePriority = "normal" } = message
+    const i = state.findIndex((mes) => mes.messageId === messageId)
+    const isNext = messagePriority === "next"
+    const isNormal = messagePriority === "normal"
+    const isReplace = messagePriority === "replace"
+    const isImmediate = messagePriority === "immediate"
+    const isDuplicable = duplicates === "allow"
+    const isRestart = duplicates === "restart"
+    if (isNext || isImmediate) {
+        const nextState = state//.slice()
 
-  if (i === -1 || (isDuplicable && isNormal)) {
-    return [...state, message];
-  }
+        // remove the existing message if duplicated messages aren't allowed. This
+        // will kind of act like a replace + next behavior
+        if (!isDuplicable && i > 0) {
+            nextState.splice(i, 1)
+        }
 
-  if (isNormal) {
-    if (isRestart) {
-      // creating a new state so that the queue visibility hook can still be
-      // triggered which will restart the timer
-      return state.slice();
+        // const [current, ...remaining] = nextState
+        const current = nextState.shift()
+        if (isImmediate && current.messagePriority !== "immediate") {
+            // return [current, message, current, ...remaining]
+            nextState.unshift(current, message, current)
+            return nextState
+        }
+
+        // return [current, message, ...remaining]
+        nextState.unshift(current, message)
+        return nextState
     }
 
-    return state;
-  }
+    if (i === -1 || (isDuplicable && isNormal)) {
+        state.push(message)
+        return state
+    }
 
-  if (isReplace) {
-    const nextState = state.slice();
-    nextState[i] = message;
-    return nextState;
-  }
+    if (isNormal) {
+        if (isRestart) {
+            // creating a new state so that the queue visibility hook can still be
+            // triggered which will restart the timer
+            debugger
+            return state//.slice()
+        }
 
-  return [...state, message];
+        return state
+    }
+
+    if (isReplace) {
+        const nextState = state//.slice()
+        nextState[i] = message
+        return nextState
+    }
+
+    state.push(message)
+    return state
 }
 
-type MessageQueueReducer<M extends Message = ToastMessage> = Reducer<
-  readonly M[],
-  MessageActions<M>
->;
+// type MessageQueueReducer<M extends Message = ToastMessage> = Reducer<
+//   readonly M[],
+//   MessageActions<M>
+// >
 
 /**
  * @internal
  */
-export function reducer<M extends Message = ToastMessage>(
-  state: readonly M[],
-  action: MessageActions<M>
-): readonly M[] {
-  switch (action.type) {
-    case ADD_MESSAGE:
-      return handleAddMessage(state, action.message, action.duplicates);
-    case POP_MESSAGE:
-      return state.length ? state.slice(1) : state;
-    case RESET_QUEUE:
-      return state.length ? [] : state;
-    default:
-      return state;
-  }
+export function reducer<M extends Message = ToastMessage>(state: Array<M>) {
+    const addMessage = (message: M, duplicates: DuplicateBehavior) => handleAddMessage(state, message, duplicates)
+    const popMessage = () => state.length ? (state.shift(), state) : state
+    const resetQueue = () => state.length ? (state.length = 0, state) : state
+
+    return { state, addMessage, popMessage, resetQueue, }
 }
 
 export interface MessageQueueOptions<M extends Message = ToastMessage> {
-  timeout?: number;
-  duplicates?: DuplicateBehavior;
-  defaultQueue?: readonly M[];
+    timeout?: FunctionMaybe<Nullable<number>>
+    duplicates?: FunctionMaybe<Nullable<DuplicateBehavior>>
+    defaultQueue?: M[]
 }
 
-export interface MessageQueueResult<M extends Message = ToastMessage>
-  extends MessageQueueActions<M> {
-  queue: readonly M[];
-  visible: boolean;
-  addMessage: AddMessage<M>;
+export interface MessageQueueResult<M extends Message = ToastMessage> extends MessageQueueActions<M> {
+    queue: ReturnType<typeof reducer<M>>
+    visible: ObservableMaybe<boolean>
+    // addMessage: AddMessage<M>
 }
 
 /**
@@ -179,101 +180,100 @@ export interface MessageQueueResult<M extends Message = ToastMessage>
  * @internal
  */
 export function useMessageQueue<M extends Message = ToastMessage>({
-  timeout = DEFAULT_MESSAGE_QUEUE_TIMEOUT,
-  duplicates = "allow",
-  defaultQueue = [],
+    timeout = DEFAULT_MESSAGE_QUEUE_TIMEOUT,
+    duplicates = "allow",
+    defaultQueue = store([] as M[]),
 }: MessageQueueOptions<M>): MessageQueueResult<M> {
-  const [queue, dispatch] = useReducer<MessageQueueReducer<M>>(
-    (state, action) => reducer<M>(state, action),
-    defaultQueue
-  );
-  const queueRef = useRef(queue);
+    const queue = reducer<M>(defaultQueue)
 
-  const addMessageDispatch = useCallback<AddMessage<M>>(
-    (message) => {
-      if (duplicates !== "allow" && !message.messageId) {
-        throw new Error(
-          `A messageId is required when the "${duplicates}" duplicate behavior is enabled but it was not provided in the current message.`
-        );
-      }
+    // const queueRef = $(queue.state)
 
-      dispatch({ type: ADD_MESSAGE, message, duplicates });
-    },
-    [duplicates]
-  );
+    // const addMessageDispatch = $<AddMessage<M>>((message) => {
+    //   if (duplicates !== "allow" && !message.messageId) {
+    //     throw new Error(
+    //       `A messageId is required when the "${duplicates}" duplicate behavior is enabled but it was not provided in the current message.`
+    //     )
+    //   }
+    //   queue.addMessage(message, duplicates)
+    //   // dispatch({ type: ADD_MESSAGE, message, duplicates })
+    // })
 
-  const popMessageDispatch = useCallback<PopMessage>(() => {
-    dispatch(popMessage());
-  }, []);
+    // const popMessageDispatch = $<PopMessage>(() => {
+    //   queue.pop_message()
+    //   // dispatch(popMessage())
+    // })
 
-  const resetQueueDispatch = useCallback<ResetQueue<M>>(() => {
-    dispatch(resetQueue());
-    return queueRef.current;
-  }, []);
-  const [visible, showMessage, hideMessage] = useToggle(
-    defaultQueue.length > 0
-  );
-  const [startTimer, stopTimer, restartTimer] = useTimeout(
-    hideMessage,
-    timeout
-  );
+    // const resetQueueDispatch = $<ResetQueue<M>>(() => {
+    //   queue.reset_queue()
+    //   return queue
+    //   // dispatch(resetQueue())
+    //   // return queueRef()
+    // })
+    const [visible, showMessage, hideMessage] = useToggle(
+        defaultQueue.length > 0
+    )
+    const [startTimer, stopTimer, restartTimer] = useTimeout(
+        hideMessage,
+        $$(timeout)
+    )
 
-  useEffect(() => {
-    // this effect will handle all the "logic" for transitioning between each
-    // message along with the message priority updates.
-    const [message, nextMessage] = queue;
-    if (!message) {
-      return;
+    useEffect(() => {
+        // this effect will handle all the "logic" for transitioning between each
+        // message along with the message priority updates.
+        const [message, nextMessage] = queue.state
+        if (!message) {
+            return
+        }
+
+        const prevQueue = queue.state//queueRef()
+        const [prevMessage] = prevQueue
+        if (
+            message.messagePriority !== "immediate" &&
+            nextMessage &&
+            nextMessage.messagePriority === "immediate"
+        ) {
+            stopTimer()
+            if (!visible) {
+                queue.popMessage()
+                // popMessageDispatch()
+                return
+            }
+
+            hideMessage()
+            return
+        }
+
+        if (!visible) {
+            showMessage()
+        }
+
+        if (queue.state.length === prevQueue.length && message === prevMessage) {
+            restartTimer()
+        }
+
+        // only want to run this on queue changes
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    })
+
+    useWindowBlurPause({
+        startTimer,
+        stopTimer,
+        visible,
+        message: queue[0],
+    })
+    // useEffect(() => {
+    //   queueRef(queue)
+    // })
+
+    return {
+        queue,
+        // resetQueue: resetQueueDispatch,
+        visible,
+        hideMessage,
+        // addMessage: addMessageDispatch,
+        // popMessage: popMessageDispatch,
+        startTimer,
+        stopTimer,
+        restartTimer,
     }
-
-    const prevQueue = queueRef.current;
-    const [prevMessage] = prevQueue;
-    if (
-      message.messagePriority !== "immediate" &&
-      nextMessage &&
-      nextMessage.messagePriority === "immediate"
-    ) {
-      stopTimer();
-      if (!visible) {
-        popMessageDispatch();
-        return;
-      }
-
-      hideMessage();
-      return;
-    }
-
-    if (!visible) {
-      showMessage();
-    }
-
-    if (queue.length === prevQueue.length && message === prevMessage) {
-      restartTimer();
-    }
-
-    // only want to run this on queue changes
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [queue]);
-
-  useWindowBlurPause({
-    startTimer,
-    stopTimer,
-    visible,
-    message: queue[0],
-  });
-  useEffect(() => {
-    queueRef.current = queue;
-  });
-
-  return {
-    queue,
-    resetQueue: resetQueueDispatch,
-    visible,
-    hideMessage,
-    addMessage: addMessageDispatch,
-    popMessage: popMessageDispatch,
-    startTimer,
-    stopTimer,
-    restartTimer,
-  };
 }

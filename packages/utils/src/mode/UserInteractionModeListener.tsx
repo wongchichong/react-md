@@ -1,28 +1,28 @@
-import type { ReactElement, ReactNode } from "react";
-import { createContext, useContext } from "react";
+// ;
+import { createContext, useContext } from 'voby'
 
-import type { UserInteractionMode } from "./types";
-import { useInteractionMode } from "./useInteractionMode";
-
-/**
- * @internal
- */
-const modeContext = createContext<UserInteractionMode>("mouse");
+import type { UserInteractionMode } from "./types"
+import { useInteractionMode } from "./useInteractionMode"
 
 /**
  * @internal
  */
-const parentContext = createContext(false);
+const modeContext = createContext<UserInteractionMode>("mouse")
 
 /**
  * @internal
  */
-const { Provider: UserInteractionModeProvider } = modeContext;
+const parentContext = createContext(false)
 
 /**
  * @internal
  */
-const { Provider: ParentProvider } = parentContext;
+const { Provider: UserInteractionModeProvider } = modeContext
+
+/**
+ * @internal
+ */
+const { Provider: ParentProvider } = parentContext
 
 /**
  * Returns the current user interaction mode.
@@ -30,7 +30,7 @@ const { Provider: ParentProvider } = parentContext;
  * @returns {@link UserInteractionMode}
  */
 export function useUserInteractionMode(): UserInteractionMode {
-  return useContext(modeContext);
+    return useContext(modeContext)
 }
 
 /**
@@ -46,15 +46,15 @@ export function useUserInteractionMode(): UserInteractionMode {
  * mode.
  */
 export function useIsUserInteractionMode(mode: UserInteractionMode): boolean {
-  return useUserInteractionMode() === mode;
+    return useUserInteractionMode() === mode
 }
 
 export interface UserInteractionModeListenerProps {
-  /**
-   * The `children` are required since this component basically does nothing
-   * other than providing a `className` to the `document.body` otherwise.
-   */
-  children: ReactNode;
+    /**
+     * The `children` are required since this component basically does nothing
+     * other than providing a `className` to the `document.body` otherwise.
+     */
+    children: Children //Child
 }
 
 /**
@@ -67,18 +67,18 @@ export interface UserInteractionModeListenerProps {
  * @throws When this component has been mounted multiple times in your app.
  */
 export function UserInteractionModeListener({
-  children,
-}: UserInteractionModeListenerProps): ReactElement {
-  const mode = useInteractionMode();
-  if (useContext(parentContext)) {
-    throw new Error(
-      "Mounted multiple `UserInteractionModeListener` components."
-    );
-  }
+    children,
+}: UserInteractionModeListenerProps)/* : ReactElement */ {
+    const mode = useInteractionMode()
+    if (useContext(parentContext)) {
+        throw new Error(
+            "Mounted multiple `UserInteractionModeListener` components."
+        )
+    }
 
-  return (
-    <UserInteractionModeProvider value={mode}>
-      <ParentProvider value>{children}</ParentProvider>
-    </UserInteractionModeProvider>
-  );
+    return (
+        <UserInteractionModeProvider value={mode}>
+            <ParentProvider value>{children}</ParentProvider>
+        </UserInteractionModeProvider>
+    )
 }

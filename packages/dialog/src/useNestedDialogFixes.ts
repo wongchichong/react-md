@@ -1,17 +1,17 @@
-import { useEffect, useMemo } from "react";
+import { Observable, useEffect, useMemo, $$ } from 'voby'
 
-import { useNestedDialogContext } from "./NestedDialogContext";
+import { useNestedDialogContext } from "./NestedDialogContext"
 
 interface Options {
-  id: string;
-  visible: boolean;
-  disabled: boolean;
-  disableEscapeClose: boolean;
+  id: FunctionMaybe<string>
+  visible: FunctionMaybe<boolean>
+  disabled: FunctionMaybe<boolean>
+  disableEscapeClose: FunctionMaybe<boolean>
 }
 
 interface ReturnValue {
-  disableOverlay: boolean;
-  disableEscapeClose: boolean;
+  disableOverlay: FunctionMaybe<boolean>
+  disableEscapeClose: FunctionMaybe<boolean>
 }
 
 /**
@@ -26,39 +26,36 @@ interface ReturnValue {
  * instead of parent -&gt; child. This flow shouldn't really happen though so it
  * isn't planned on being fixed.
  */
-export function useNestedDialogFixes({
-  id,
-  visible,
-  disabled,
-  disableEscapeClose: propDisableEscapeClose,
-}: Options): ReturnValue {
-  const { add, remove, stack } = useNestedDialogContext();
+export function useNestedDialogFixes({ id: id_, visible: v, disabled: d, disableEscapeClose: dc, }: Options): Observable<ReturnValue> {
+  const id = $$(id_), visible = $$(v), disabled = $$(d), propDisableEscapeClose = $$(dc)
+
+  const { add, remove, stack } = useNestedDialogContext()
   useEffect(() => {
     if (disabled || !visible) {
-      return;
+      return
     }
 
-    add(id);
+    add(id)
     return () => {
-      remove(id);
-    };
-  }, [visible, disabled, id, add, remove]);
+      remove(id)
+    }
+  })
 
   return useMemo(() => {
-    let disableOverlay = false;
-    let disableEscapeClose = propDisableEscapeClose;
+    let disableOverlay = false
+    let disableEscapeClose = propDisableEscapeClose
     if (!disabled && visible && stack.length > 1) {
-      const lastIndex = stack.length - 1;
-      const i = stack.findIndex((dialogId) => id === dialogId);
-      disableOverlay = i < lastIndex;
+      const lastIndex = stack.length - 1
+      const i = stack.findIndex((dialogId) => id === dialogId)
+      disableOverlay = i < lastIndex
       if (!propDisableEscapeClose) {
-        disableEscapeClose = i < lastIndex;
+        disableEscapeClose = i < lastIndex
       }
     }
 
     return {
       disableOverlay,
       disableEscapeClose,
-    };
-  }, [id, propDisableEscapeClose, disabled, visible, stack]);
+    }
+  })
 }

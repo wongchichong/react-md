@@ -18,7 +18,7 @@ export default function ColorPicker({
   name,
   value,
   onChange,
-}: ColorPickerProps): ReactElement {
+}: ColorPickerProps): Child {
   return (
     <Select
       id={`color-${name}`}

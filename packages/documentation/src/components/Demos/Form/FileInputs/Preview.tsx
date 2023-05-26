@@ -16,7 +16,7 @@ export interface PreviewProps {
   result: FileReaderResult;
 }
 
-export default function Preview({ file, result }: PreviewProps): ReactElement {
+export default function Preview({ file, result }: PreviewProps): Child {
   const [error, setError] = useState(false);
 
   const onError = (): void => setError(true);
