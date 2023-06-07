@@ -1,6 +1,6 @@
 /* eslint-disable import/export */
 /* eslint-disable @typescript-eslint/no-empty-function */
-import type { ReactElement, ReactNode } from "react"
+import type { ReactElement, ReactNode } from 'voby'
 import { RouterContext } from "next/dist/shared/lib/router-context"
 import type { NextRouter } from "next/router"
 import { Configuration } from "@react-md/layout"

@@ -1,4 +1,4 @@
-import type { ReactElement } from "react";
+import type { ReactElement } from 'voby';
 import { BadgedButton } from "@react-md/badge";
 import { NotificationsSVGIcon } from "@react-md/material-icons";
 

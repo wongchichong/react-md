@@ -1,5 +1,3 @@
-/// <reference types="@react-md/react"/>
-
 import '@react-md/react'
 
 import {

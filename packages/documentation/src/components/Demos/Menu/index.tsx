@@ -1,8 +1,7 @@
-import type { ReactElement } from "react"
-import {
-    DEFAULT_MENU_CONFIGURATION,
-    MenuConfigurationProvider,
-} from "@react-md/menu"
+import type { ReactElement } from 'voby'
+import { 
+ DEFAULT_MENU_CONFIGURATION, 
+ MenuConfigurationProvider,  } from "@react-md/menu"
 import { IconProvider } from "@react-md/icon"
 
 import type { DemoConfig } from "../types"

@@ -1,9 +1,8 @@
-import type { ReactElement } from "react"
-import {
-    useLayoutConfig,
-    isPersistentLayout,
-    LayoutCloseNavigationButton,
-} from "@react-md/layout"
+import type { ReactElement } from 'voby'
+import { 
+ useLayoutConfig, 
+ isPersistentLayout, 
+ LayoutCloseNavigationButton,  } from "@react-md/layout"
 
 export default function CloseButton(): Child {
     const { layout } = useLayoutConfig()

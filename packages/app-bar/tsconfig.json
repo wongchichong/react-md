@@ -3,7 +3,10 @@
   "compilerOptions": {
     "outDir": "./dist",
     "rootDir": "./src",
-    "declarationDir": "./dist/types"
+    "declarationDir": "./dist/types",
+    "types": ["node", "./node_modules/voby/dist/types/types"],
+    "typeRoots": ["./node_modules/voby/dist/types/types"],
+    "tsBuildInfoFile": "./dist/tsconfig.tsbuildinfo",
   },
   "exclude": [
     "vite.config.ts",

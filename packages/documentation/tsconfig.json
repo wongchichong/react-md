@@ -4,14 +4,23 @@
     "allowJs": true,
     "jsx": "preserve",
     "noEmit": true,
-    //"composite": true,
     "target": "esnext",
-    "rootDir": "src",
+    "rootDirs": ["src", "../../../../packages"],
     "baseUrl": "src",
     "isolatedModules": true,
     "incremental": true,
-    "typeRoots": ["@react-md/dev-utils/@types"]
+    "tsBuildInfoFile": "./dist/tsconfig.tsbuildinfo",
+    "typeRoots": [
+      "@react-md/dev-utils/@types"
+    ],
+    "moduleResolution": "node"
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules"]
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

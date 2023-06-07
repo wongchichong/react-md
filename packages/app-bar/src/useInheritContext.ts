@@ -1,10 +1,14 @@
+/// <reference types="@react-md/utils/node_modules/voby/dist/types/types"/>
+
 import { createContext, useContext } from 'voby'
 import '@react-md/react'
+
 
 /**
  * Boolean if the child components should inherit the color of the app bar.
  * @internal
  */
+//@ts-ignore
 export const InheritContext = createContext(false)
 
 export interface AppBarColorInherit {
@@ -39,6 +43,7 @@ export function useInheritContext(inheritColor: boolean | undefined): boolean {
  *
  * @internal
  */
+//@ts-ignore
 export const ParentContext = createContext(false)
 
 /**

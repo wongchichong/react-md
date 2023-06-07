@@ -1,5 +1,5 @@
-import type { HTMLAttributes, ReactElement } from "react"
-import { useEffect, useState } from "react"
+import type { HTMLAttributes, ReactElement } from 'voby'
+import { useEffect, $ } from 'voby'
 
 import { Markdown as MarkdownRenderer } from "react-marked-renderer"
 
@@ -16,18 +16,18 @@ function useMarkdownResolver(markdown: MarkdownProps["children"]): string {
         return transformMarkdown(markdown)
     }
 
-    const [resolved, setResolved] = useState("")
+    const resolved = $("")
     useEffect(() => {
         markdown().then((md) => {
             if (typeof md === "string") {
-                setResolved(transformMarkdown(md))
+                resolved(transformMarkdown(md))
             } else if (typeof md.default === "string") {
-                setResolved(transformMarkdown(md.default))
+                resolved(transformMarkdown(md.default))
             }
         })
-    }, [markdown])
+    })
 
-    return resolved
+    return resolved()
 }
 
 export type ResolveMarkdown = () => Promise<string | { default: string }>

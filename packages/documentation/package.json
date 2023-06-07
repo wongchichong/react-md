@@ -21,8 +21,8 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@react-md/alert": "workspace:../alert",
-    "@react-md/app-bar": "workspace:../app-bar",
+    "@react-md/alert": "workspace:..alert",
+    "@react-md/app-bar": "link:C:/Users/hongo/Documents/Meta/packages/react-md/packages/app-bar",
     "@react-md/autocomplete": "workspace:../autocomplete",
     "@react-md/avatar": "workspace:../avatar",
     "@react-md/badge": "workspace:../badge",
@@ -74,8 +74,7 @@
     "react-md": "workspace:../react-md",
     "react-router-dom": "^6.11.0",
     "react-virtualized": "^9.22.5",
-    "react2voby": "workspace:../../../react2voby",
-    "voby": "workspace:../../../woby"
+    "react2voby": "workspace:../../../react2voby"
   },
   "devDependencies": {
     "@babel/core": "^7.21.5",
@@ -100,6 +99,9 @@
     "vite-plugin-sass-dts": "^1.3.4",
     "vite-plugin-static-copy": "^0.13.1",
     "webpack": "^5.81.0"
+  },
+  "peerDependencies": {
+    "voby": "workspace:../../../woby"
   },
   "browerlist": [
     "not ie 11",

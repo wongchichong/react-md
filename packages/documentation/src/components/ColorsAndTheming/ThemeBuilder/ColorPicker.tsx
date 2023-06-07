@@ -1,4 +1,4 @@
-import type { ReactElement } from "react";
+import type { ReactElement } from 'voby';
 import type { ListboxProps } from "@react-md/form";
 import { Select } from "@react-md/form";
 

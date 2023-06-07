@@ -1,4 +1,4 @@
-import type { ReactElement } from "react"
+import type { ReactElement } from 'voby'
 
 import DemoPage from "../DemoPage"
 
@@ -7,10 +7,9 @@ import README from "./README.md"
 import DefaultStyles from "./DefaultStyles"
 import defaultStyles from "./DefaultStyles.md"
 
-import {
-    DefaultStylesConfigurable,
-    defaultStylesConfigurable,
-} from "./DefaultStylesConfigurable"
+import { 
+ DefaultStylesConfigurable, 
+ defaultStylesConfigurable,  } from "./DefaultStylesConfigurable"
 
 import SelectableRows from "./SelectableRows"
 import selectableRows from "./SelectableRows.md"

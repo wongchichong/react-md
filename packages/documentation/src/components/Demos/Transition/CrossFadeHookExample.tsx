@@ -1,5 +1,5 @@
-import type { ReactElement } from "react"
-import { useState } from "react"
+import type { ReactElement } from 'voby'
+import { $ } from 'voby'
 import { AppBar } from "@react-md/app-bar"
 import { TabsManager, Tabs, TabPanel } from "@react-md/tabs"
 import { useCrossFadeTransition } from "@react-md/transition"
@@ -12,11 +12,11 @@ import Page3 from "./Page3"
 const tabs = ["Page 1", "Page 2", "Page 3"]
 
 export default function CrossFadeHookExample(): Child {
-    const [page, setPage] = useState(0)
+    const page = $(0)
     const { elementProps, transitionTo } = useCrossFadeTransition()
-    const onActiveIndexChange = (page: number): void => {
+    const onActiveIndexChange = (page(): number): void => {
         transitionTo("enter")
-        setPage(page)
+        page(page())
     }
 
     return (

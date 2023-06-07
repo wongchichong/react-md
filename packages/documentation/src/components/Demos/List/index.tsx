@@ -1,4 +1,4 @@
-import type { ReactElement } from "react"
+import type { ReactElement } from 'voby'
 
 import DemoPage from "../DemoPage"
 
@@ -11,10 +11,9 @@ import twoLineExamples from "./TwoLineExamples.md"
 import ThreeLineExamples from "./ThreeLineExamples"
 import threeLineExamples from "./ThreeLineExamples.md"
 
-import {
-    ConfigurableExample,
-    configurableExample,
-} from "./ConfigurableExample"
+import { 
+ ConfigurableExample, 
+ configurableExample,  } from "./ConfigurableExample"
 
 import NonInteractable from "./NonInteractable"
 import nonInteractable from "./NonInteractable.md"

@@ -1,16 +1,15 @@
-import type { ReactElement } from "react"
-import { useState } from "react"
+import type { ReactElement } from 'voby'
+import { $ } from 'voby'
 import { Switch } from "@react-md/form"
-import {
-    DropdownMenu,
-    MenuConfigurationProvider,
-    MenuItem,
-} from "@react-md/menu"
+import { 
+ DropdownMenu, 
+ MenuConfigurationProvider, 
+ MenuItem,  } from "@react-md/menu"
 import { Grid } from "@react-md/utils"
 import InfiniteDropdownMenu from "./InfiniteDropdownMenu"
 
 export default function NestedDropdownMenus(): Child {
-    const [horizontal, setHorizontal] = useState(false)
+    const horizontal = $(false)
     return (
         <MenuConfigurationProvider horizontal={horizontal}>
             <Grid columns={1} wrapOnly>
@@ -19,7 +18,7 @@ export default function NestedDropdownMenus(): Child {
                     label="Horizontal"
                     name="horizontal"
                     checked={horizontal}
-                    onChange={(event) => setHorizontal(event.currentTarget.checked)}
+                    onChange={(event) => horizontal(event.currentTarget.checked)}
                 />
                 <DropdownMenu id="nested-dropdown-menus" buttonChildren="Dropdown">
                     <MenuItem>Item 1</MenuItem>

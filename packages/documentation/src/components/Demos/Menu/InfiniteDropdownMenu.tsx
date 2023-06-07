@@ -1,4 +1,4 @@
-import type { ReactElement, ReactNode } from "react"
+import type { ReactElement, ReactNode } from 'voby'
 import { DropdownMenu, MenuItem } from "@react-md/menu"
 
 export interface InfiniteDropdownMenuProps {

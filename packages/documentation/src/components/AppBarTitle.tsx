@@ -1,5 +1,5 @@
-import type { ReactElement, ReactNode } from "react"
-import { useCallback, useState } from "react"
+import type { ReactElement, ReactNode } from 'voby'
+import { $ } from 'voby'
 import type { AppBarTitleProps } from "@react-md/app-bar"
 import { AppBarTitle as RMDAppBarTitle } from "@react-md/app-bar"
 import { Tooltip, useTooltip } from "@react-md/tooltip"
@@ -20,23 +20,20 @@ export default function AppBarTitle({
     children,
     ...props
 }: AppBarTitleProps): Child {
-    const [tooltip, setTooltip] = useState<ReactNode>(null)
-    const updateTooltip = useCallback(
-        ({ width, scrollWidth }) => {
+    const tooltip = $<ReactNode>(null)
+    const updateTooltip = (({ width, scrollWidth }) => {
             // the `width` is a `DOMRectReadOnly` object which allows for fractional
             // values while `scrollWidth` is always `Math.ceil` so to be able to
             // compare correctly, need to also `Math.ceil` the width or use
             // `target.offsetWidth`
             const offsetWidth = Math.ceil(width)
             const isTruncated = offsetWidth < scrollWidth
-            if (isTruncated && !tooltip) {
-                setTooltip(children)
-            } else if (!isTruncated && tooltip) {
-                setTooltip(null)
+            if (isTruncated && !tooltip()) {
+                tooltip(children)
+            } else if (!isTruncated && tooltip()) {
+                tooltip(null)
             }
-        },
-        [tooltip, children]
-    )
+        })
     const [, refHandler] = useResizeObserver(updateTooltip, {
         disableHeight: true,
     })

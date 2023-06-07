@@ -1,4 +1,4 @@
-import type { ReactElement } from "react"
+import type { ReactElement } from 'voby'
 import Link from "components/Link"
 import { useRouter } from "next/router"
 

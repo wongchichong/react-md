@@ -1,12 +1,11 @@
-import type { ReactElement } from "react"
-import {
-    Caption,
-    Table,
-    TableBody,
-    TableCell,
-    TableHeader,
-    TableRow,
-} from "@react-md/table"
+import type { ReactElement } from 'voby'
+import { 
+ Caption, 
+ Table, 
+ TableBody, 
+ TableCell, 
+ TableHeader, 
+ TableRow,  } from "@react-md/table"
 
 import styles from "./DefaultStyles.module.scss"
 

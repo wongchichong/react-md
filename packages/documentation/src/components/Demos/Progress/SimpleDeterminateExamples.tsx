@@ -1,12 +1,11 @@
-import type { ReactElement, ReactNode } from "react"
+import type { ReactElement, ReactNode } from 'voby'
 import { Button } from "@react-md/button"
 import { TextIconSpacing } from "@react-md/icon"
 import { CloudDownloadSVGIcon } from "@react-md/material-icons"
-import {
-    CircularProgress,
-    getProgressA11y,
-    LinearProgress,
-} from "@react-md/progress"
+import { 
+ CircularProgress, 
+ getProgressA11y, 
+ LinearProgress,  } from "@react-md/progress"
 
 import useDownloadInterval from "./useDownloadInterval"
 import styles from "./SimpleDeterminateExamples.module.scss"

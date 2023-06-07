@@ -1,5 +1,5 @@
-import type { ReactElement } from "react"
-import { useCallback, useMemo } from "react"
+import type { ReactElement } from 'voby'
+import { $, useMemo } from 'voby'
 import type { IFiles } from "codesandbox-import-utils/lib/api/define"
 import { useRouter } from "next/router"
 import '@react-md/react'
@@ -34,8 +34,7 @@ export default function DemoSandbox({
         pathname: router.pathname,
     })
     const files = useFiles(sandbox || EMPTY)
-    const folders = useMemo(
-        () =>
+    const folders = useMemo(() =>
             Object.values(files).reduce<string[]>(
                 (foldersPaths, { itemId }, _i, list) => {
                     if (list.find(({ parentId }) => itemId === parentId)) {
@@ -45,20 +44,17 @@ export default function DemoSandbox({
                     return foldersPaths
                 },
                 []
-            ),
-        [files]
-    )
+            ))
 
-    const onRequestClose = useCallback(() => {
+    const onRequestClose = (() => {
         if (from && from.startsWith("/packages")) {
             router.push(from)
             return
         }
 
         router.push(router.pathname)
-    }, [from, router])
-    const onFileChange = useCallback(
-        (nextFileName: string) => {
+    })
+    const onFileChange = ((nextFileName: string) => {
             if (nextFileName === fileName || folders.includes(nextFileName)) {
                 return
             }
@@ -73,9 +69,7 @@ export default function DemoSandbox({
             }
 
             router.replace({ pathname: router.pathname, query })
-        },
-        [folders, router, pkg, name, from, fileName]
-    )
+        })
 
     if (!sandbox && !loading) {
         if (process.env.NODE_ENV !== "production" && (pkg || name || from)) {

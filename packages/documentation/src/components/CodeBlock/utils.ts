@@ -13,10 +13,9 @@ import "prismjs/components/prism-git";
 import "prismjs/components/prism-diff";
 import "prismjs/components/prism-json";
 import "prismjs/components/prism-properties";
-import type {
-  DangerouslyHighlightCode,
-  GetCodeLanguage,
-} from "react-marked-renderer";
+import type { 
+ DangerouslyHighlightCode, 
+ GetCodeLanguage,  } from "react-marked-renderer";
 
 export const getLanguage: GetCodeLanguage = (lang, _rawCode) => {
   // allow aliases

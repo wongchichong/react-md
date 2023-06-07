@@ -1,9 +1,8 @@
-import type { ReactElement } from "react";
+import type { ReactElement } from 'voby';
 import { Checkbox, InputToggle, Radio } from "@react-md/form";
-import {
-  CheckBoxSVGIcon,
-  RadioButtonCheckedSVGIcon,
-} from "@react-md/material-icons";
+import { 
+ CheckBoxSVGIcon, 
+ RadioButtonCheckedSVGIcon,  } from "@react-md/material-icons";
 
 export default function CheckboxAndRadioExamples(): Child {
   return (

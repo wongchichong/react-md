@@ -1,5 +1,5 @@
-import type { ReactElement } from "react";
-import { useState } from "react";
+import type { ReactElement } from 'voby';
+import { $ } from 'voby';
 import { Chip } from "@react-md/chip";
 import { Typography } from "@react-md/typography";
 
@@ -15,7 +15,7 @@ const amenities = [
 ];
 
 export default function FilterChips(): Child {
-  const [selectedAmenities, setSelected] = useState<string[]>([]);
+  const selectedAmenities = $<string[]>([]);
   return (
     <>
       <Typography type="headline-5" className={styles.header}>
@@ -31,7 +31,7 @@ export default function FilterChips(): Child {
               selected={selected}
               className={styles.chip}
               onClick={() =>
-                setSelected((prevSelected) => {
+                selectedAmenities((prevSelected) => {
                   if (prevSelected.includes(amenity)) {
                     return prevSelected.filter((am) => am !== amenity);
                   }

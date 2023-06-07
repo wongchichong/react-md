@@ -1,16 +1,15 @@
-import type { ReactElement } from "react";
-import { useState } from "react";
+import type { ReactElement } from 'voby';
+import { $ } from 'voby';
 import type { UseSliderOptions } from "@react-md/form";
-import {
-  Checkbox,
-  Form,
-  Select,
-  Slider,
-  TextField,
-  TextFieldWithMessage,
-  useNumberField,
-  useSlider,
-} from "@react-md/form";
+import { 
+ Checkbox, 
+ Form, 
+ Select, 
+ Slider, 
+ TextField, 
+ TextFieldWithMessage, 
+ useNumberField, 
+ useSlider,  } from "@react-md/form";
 import { Typography } from "@react-md/typography";
 import { Grid, GridCell } from "@react-md/utils";
 
@@ -80,9 +79,9 @@ export default function ConfigurableSlider(): Child {
     disableMessage: true,
     updateOnChange: false,
   });
-  const [before, setBefore] = useState(false);
-  const [after, setAfter] = useState(false);
-  const [disabled, setDisabled] = useState(false);
+  const before = $(false);
+  const after = $(false);
+  const disabled = $(false);
 
   if (min > max) {
     minControls.setNumber(max - 1);
@@ -90,7 +89,7 @@ export default function ConfigurableSlider(): Child {
   if (max < min) {
     maxControls.setNumber(min + 1);
   }
-  const [updateOn, setUpdateOn] = useState<"change" | "blur">("change");
+  const updateOn = $<"change" | "blur">("change");
   return (
     <Form>
       <Grid columns={1} desktopColumns={2} largeDesktopColumns={3}>
@@ -101,28 +100,28 @@ export default function ConfigurableSlider(): Child {
           id="configurable-slider-update-on"
           label="Update On"
           value={updateOn}
-          onChange={(value) => setUpdateOn(value === "change" ? value : "blur")}
+          onChange={(value) => updateOn(value === "change" ? value : "blur")}
           options={["change", "blur"]}
         />
         <Checkbox
           id="configurable-slider-before-addon"
           name="before"
           checked={before}
-          onChange={(event) => setBefore(event.currentTarget.checked)}
+          onChange={(event) => before(event.currentTarget.checked)}
           label="Before Addon?"
         />
         <Checkbox
           id="configurable-slider-after-addon"
           name="after"
           checked={after}
-          onChange={(event) => setAfter(event.currentTarget.checked)}
+          onChange={(event) => after(event.currentTarget.checked)}
           label="After Addon?"
         />
         <Checkbox
           id="configurable-slider-disabled"
           name="disabled"
           checked={disabled}
-          onChange={(event) => setDisabled(event.currentTarget.checked)}
+          onChange={(event) => disabled(event.currentTarget.checked)}
           label="Disabled?"
         />
         <GridCell desktop={{ colSpan: 2 }} largeDesktop={{ colSpan: 3 }}>

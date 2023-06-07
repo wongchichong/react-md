@@ -1,4 +1,4 @@
-import { forwardRef } from "react"
+import { forwardRef } from 'voby'
 import { LinkSVGIcon } from "@react-md/material-icons"
 import type { MenuItemLinkProps } from "@react-md/menu"
 import { MenuItemLink } from "@react-md/menu"

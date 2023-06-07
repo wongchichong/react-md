@@ -1,4 +1,4 @@
-import type { ReactElement, ReactNode } from "react"
+import type { ReactElement, ReactNode } from 'voby'
 
 export interface CustomLabelProps {
     isDefault: boolean

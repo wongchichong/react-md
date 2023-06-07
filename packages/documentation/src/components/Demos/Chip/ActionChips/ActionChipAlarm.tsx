@@ -1,5 +1,5 @@
-import type { ReactElement } from "react";
-import { useState } from "react";
+import type { ReactElement } from 'voby';
+import { $ } from 'voby';
 import { Button } from "@react-md/button";
 import { AlarmSVGIcon, CloseSVGIcon } from "@react-md/material-icons";
 import { Sheet } from "@react-md/sheet";
@@ -8,15 +8,15 @@ import ActionChip from "./ActionChip";
 import styles from "./ActionChipAlarm.module.scss";
 
 export default function ActionChipAlarm(): Child {
-  const [visible, setVisible] = useState(false);
-  const hide = (): void => setVisible(false);
+  const visible = $(false);
+  const hide = (): void => visible(false);
 
   return (
     <>
       <ActionChip
         id="action-chip-alarm"
         leftIcon={<AlarmSVGIcon />}
-        onClick={() => setVisible(true)}
+        onClick={() => visible(true)}
       >
         Set Alarm
       </ActionChip>

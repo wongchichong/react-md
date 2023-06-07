@@ -1,27 +1,25 @@
 import { snakeCase } from "lodash"
 import type { LayoutNavigationTree } from "@react-md/layout"
-import {
-    BuildSVGIcon,
-    ColorLensSVGIcon,
-    DescriptionSVGIcon,
-    FunctionsSVGIcon,
-    HomeSVGIcon,
-    InfoOutlineSVGIcon,
-    LibraryBooksSVGIcon,
-    TrendingUpSVGIcon,
-} from "@react-md/material-icons"
+import { 
+ BuildSVGIcon, 
+ ColorLensSVGIcon, 
+ DescriptionSVGIcon, 
+ FunctionsSVGIcon, 
+ HomeSVGIcon, 
+ InfoOutlineSVGIcon, 
+ LibraryBooksSVGIcon, 
+ TrendingUpSVGIcon,  } from "@react-md/material-icons"
 
 import MaterialDesignSVGIcon from "icons/MaterialDesignSVGIcon"
 import ReactSVGIcon from "icons/ReactSVGIcon"
 import createIdGenerator from "utils/createIdGenerator"
 import { toTitle } from "utils/toTitle"
 
-import type {
-    DividerNavItem,
-    NavItem,
-    RouteNavItem,
-    SubheaderNavItem,
-} from "./meta/types"
+import type { 
+ DividerNavItem, 
+ NavItem, 
+ RouteNavItem, 
+ SubheaderNavItem,  } from "./meta/types"
 import { PACKAGE_NAMES, SCSS_PACKAGES, TYPESCRIPT_PACKAGES } from "./packages"
 
 const uuid = createIdGenerator("nav")

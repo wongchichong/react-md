@@ -1,14 +1,13 @@
-import type { ReactElement } from "react"
+import type { ReactElement } from 'voby'
 import { useIndeterminateChecked } from "@react-md/form"
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableCheckbox,
-    TableContainer,
-    TableHeader,
-    TableRow,
-} from "@react-md/table"
+import { 
+ Table, 
+ TableBody, 
+ TableCell, 
+ TableCheckbox, 
+ TableContainer, 
+ TableHeader, 
+ TableRow,  } from "@react-md/table"
 
 import styles from "./StickyColumnsPart4.module.scss"
 

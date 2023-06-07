@@ -1,49 +1,46 @@
-import type { ReactElement } from "react"
-import { useEffect, useState } from "react"
+import type { ReactElement } from 'voby'
+import { useEffect, $ } from 'voby'
 import { upperFirst } from "lodash"
-import type {
-    ButtonTheme,
-    ButtonThemeType,
-    ButtonType,
-} from "@react-md/button"
+import type { 
+ ButtonTheme, 
+ ButtonThemeType, 
+ ButtonType,  } from "@react-md/button"
 import { Divider } from "@react-md/divider"
 import { Checkbox, Form, Select, useSelectState } from "@react-md/form"
-import {
-    InfoOutlineSVGIcon,
-    MoreVertSVGIcon,
-    StarSVGIcon,
-} from "@react-md/material-icons"
+import { 
+ InfoOutlineSVGIcon, 
+ MoreVertSVGIcon, 
+ StarSVGIcon,  } from "@react-md/material-icons"
 import type { MenuItemProps } from "@react-md/menu"
 import { DropdownMenu, MenuItem, MenuItemSeparator } from "@react-md/menu"
 import { Typography } from "@react-md/typography"
-import {
-    ABOVE_CENTER_ANCHOR,
-    ABOVE_INNER_LEFT_ANCHOR,
-    ABOVE_INNER_RIGHT_ANCHOR,
-    ABOVE_LEFT_ANCHOR,
-    ABOVE_RIGHT_ANCHOR,
-    BELOW_CENTER_ANCHOR,
-    BELOW_INNER_LEFT_ANCHOR,
-    BELOW_INNER_RIGHT_ANCHOR,
-    BELOW_LEFT_ANCHOR,
-    BELOW_RIGHT_ANCHOR,
-    BOTTOM_CENTER_ANCHOR,
-    BOTTOM_INNER_LEFT_ANCHOR,
-    BOTTOM_INNER_RIGHT_ANCHOR,
-    BOTTOM_LEFT_ANCHOR,
-    BOTTOM_RIGHT_ANCHOR,
-    CENTER_CENTER_ANCHOR,
-    CENTER_INNER_LEFT_ANCHOR,
-    CENTER_INNER_RIGHT_ANCHOR,
-    CENTER_LEFT_ANCHOR,
-    CENTER_RIGHT_ANCHOR,
-    Grid,
-    TOP_CENTER_ANCHOR,
-    TOP_INNER_LEFT_ANCHOR,
-    TOP_INNER_RIGHT_ANCHOR,
-    TOP_LEFT_ANCHOR,
-    TOP_RIGHT_ANCHOR,
-} from "@react-md/utils"
+import { 
+ ABOVE_CENTER_ANCHOR, 
+ ABOVE_INNER_LEFT_ANCHOR, 
+ ABOVE_INNER_RIGHT_ANCHOR, 
+ ABOVE_LEFT_ANCHOR, 
+ ABOVE_RIGHT_ANCHOR, 
+ BELOW_CENTER_ANCHOR, 
+ BELOW_INNER_LEFT_ANCHOR, 
+ BELOW_INNER_RIGHT_ANCHOR, 
+ BELOW_LEFT_ANCHOR, 
+ BELOW_RIGHT_ANCHOR, 
+ BOTTOM_CENTER_ANCHOR, 
+ BOTTOM_INNER_LEFT_ANCHOR, 
+ BOTTOM_INNER_RIGHT_ANCHOR, 
+ BOTTOM_LEFT_ANCHOR, 
+ BOTTOM_RIGHT_ANCHOR, 
+ CENTER_CENTER_ANCHOR, 
+ CENTER_INNER_LEFT_ANCHOR, 
+ CENTER_INNER_RIGHT_ANCHOR, 
+ CENTER_LEFT_ANCHOR, 
+ CENTER_RIGHT_ANCHOR, 
+ Grid, 
+ TOP_CENTER_ANCHOR, 
+ TOP_INNER_LEFT_ANCHOR, 
+ TOP_INNER_RIGHT_ANCHOR, 
+ TOP_LEFT_ANCHOR, 
+ TOP_RIGHT_ANCHOR,  } from "@react-md/utils"
 
 import styles from "./ConfigurableDropdownMenu.module.scss"
 
@@ -99,27 +96,26 @@ export default function ConfigurableDropdownMenu(): Child {
         useSelectState<ButtonType>("text")
     const [dropdownIcon, handleDropdownIconChange] =
         useSelectState<typeof dropdownIcons[number]>("undefined")
-    const [horizontal, setHorizontal] = useState(false)
-    const [leftAddon, setLeftAddon] = useState(true)
-    const [rightAddon, setRightAddon] = useState(true)
-    const [anchorIndex, setAnchorIndex] = useState(() =>
-        anchors.findIndex((a) => a === TOP_INNER_RIGHT_ANCHOR)
-    )
-    const [equalWidth, setEqualWidth] = useState(false)
+    const horizontal = $(false)
+    const leftAddon = $(true)
+    const rightAddon = $(true)
+    const anchorIndex = $(() =>
+        anchors.findIndex((a) => a === TOP_INNER_RIGHT_ANCHOR))
+    const equalWidth = $(false)
 
     const anchor = anchors[anchorIndex]
     useEffect(() => {
-        if (anchor.x !== "center" && equalWidth) {
-            setEqualWidth(false)
+        if (anchor.x !== "center" && equalWidth()) {
+            equalWidth(false)
         }
-    }, [anchor.x, equalWidth])
+    })
     useEffect(() => {
-        const defaultAnchor = horizontal
+        const defaultAnchor = horizontal()
             ? CENTER_CENTER_ANCHOR
             : TOP_INNER_RIGHT_ANCHOR
 
-        setAnchorIndex(anchors.findIndex((a) => a === defaultAnchor))
-    }, [horizontal])
+        anchorIndex(anchors.findIndex((a) => a === defaultAnchor))
+    })
 
     let disableDropdownIcon: boolean | undefined
     if (dropdownIcon === "true") {
@@ -133,8 +129,8 @@ export default function ConfigurableDropdownMenu(): Child {
             // eslint-disable-next-line no-console
             console.log(`Clicked ${event.currentTarget.innerText}`)
         },
-        leftAddon: leftAddon && <StarSVGIcon />,
-        rightAddon: rightAddon && <InfoOutlineSVGIcon />,
+        leftAddon: leftAddon() && <StarSVGIcon />,
+        rightAddon: rightAddon() && <InfoOutlineSVGIcon />,
     }
 
     return (
@@ -195,7 +191,7 @@ export default function ConfigurableDropdownMenu(): Child {
                             onChange={(value) => {
                                 const i = parseInt(value, 10)
                                 if (!Number.isNaN(i) && i >= 0 && i <= anchorOptions.length) {
-                                    setAnchorIndex(i)
+                                    anchorIndex(i)
                                 }
                             }}
                         />
@@ -203,14 +199,14 @@ export default function ConfigurableDropdownMenu(): Child {
                             id="dropdown-menu-horizontal"
                             name="horizontal"
                             checked={horizontal}
-                            onChange={(event) => setHorizontal(event.currentTarget.checked)}
+                            onChange={(event) => horizontal(event.currentTarget.checked)}
                             label="Horizontal"
                         />
                         <Checkbox
                             id="dropdown-menu-equal-width"
                             name="equalWidth"
                             checked={equalWidth}
-                            onChange={(event) => setEqualWidth(event.currentTarget.checked)}
+                            onChange={(event) => equalWidth(event.currentTarget.checked)}
                             label="Equal Width"
                             disabled={anchor.x !== "center"}
                         />
@@ -223,14 +219,14 @@ export default function ConfigurableDropdownMenu(): Child {
                             id="dropdown-menu-left-addon"
                             name="leftAddon"
                             checked={leftAddon}
-                            onChange={(event) => setLeftAddon(event.currentTarget.checked)}
+                            onChange={(event) => leftAddon(event.currentTarget.checked)}
                             label="leftAddon"
                         />
                         <Checkbox
                             id="dropdown-menu-right-addon"
                             name="rightAddon"
                             checked={rightAddon}
-                            onChange={(event) => setRightAddon(event.currentTarget.checked)}
+                            onChange={(event) => rightAddon(event.currentTarget.checked)}
                             label="rightAddon"
                         />
                     </Grid>

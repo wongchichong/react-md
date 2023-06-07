@@ -1,5 +1,5 @@
-import type { ReactElement } from "react";
-import { useState } from "react";
+import type { ReactElement } from 'voby';
+import { $ } from 'voby';
 import type { FileReaderResult } from "@react-md/form";
 import { isImageFile, isVideoFile } from "@react-md/form";
 import { ErrorSVGIcon } from "@react-md/material-icons";
@@ -17,9 +17,9 @@ export interface PreviewProps {
 }
 
 export default function Preview({ file, result }: PreviewProps): Child {
-  const [error, setError] = useState(false);
+  const error = $(false);
 
-  const onError = (): void => setError(true);
+  const onError = (): void => error(true);
   const isGifLike = file.size < THREE_MB;
 
   return (

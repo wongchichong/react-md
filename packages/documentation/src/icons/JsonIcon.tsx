@@ -1,4 +1,4 @@
-import type { ReactElement } from "react"
+import type { ReactElement } from 'voby'
 import type { SVGIconProps } from "@react-md/icon"
 import { SVGIcon } from "@react-md/icon"
 

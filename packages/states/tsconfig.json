@@ -4,7 +4,7 @@
     "outDir": "./dist",
     "rootDir": "./src",
     "declarationDir": "./dist/types",
-    "composite": true
+    "tsBuildInfoFile": "./dist/tsconfig.tsbuildinfo",
   },
   "exclude": [
     "vite.config.ts",

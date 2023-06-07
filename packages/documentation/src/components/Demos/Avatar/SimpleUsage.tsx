@@ -1,4 +1,4 @@
-import type { ReactElement } from "react";
+import type { ReactElement } from 'voby';
 import { Avatar } from "@react-md/avatar";
 import { FontIcon } from "@react-md/icon";
 import { NoteSVGIcon } from "@react-md/material-icons";

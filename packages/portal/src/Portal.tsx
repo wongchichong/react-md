@@ -1,5 +1,5 @@
 import { useEffect, $, Portal as VPortal, $$ } from 'voby'
-import type { Element } from 'voby'
+import type { Element} from 'voby'
 
 import type { PortalInto } from "./getContainer"
 import { getContainer } from "./getContainer"

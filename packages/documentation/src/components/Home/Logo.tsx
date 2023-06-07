@@ -1,4 +1,4 @@
-import type { ReactElement, HTMLAttributes } from "react"
+import type { ReactElement, HTMLAttributes } from 'voby'
 
 
 import styles from "./Logo.module.scss"

@@ -1,4 +1,4 @@
-import type { ReactElement } from "react";
+import type { ReactElement } from 'voby';
 import { Divider } from "@react-md/divider";
 import { Typography, TextContainer } from "@react-md/typography";
 

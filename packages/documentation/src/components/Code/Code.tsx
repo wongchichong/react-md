@@ -1,6 +1,6 @@
-import React from 'react'
-import type { HTMLAttributes } from "react"
-import { forwardRef } from "react"
+import React from 'voby'
+import type { HTMLAttributes } from 'voby'
+import { forwardRef } from 'voby'
 
 
 import styles from "./Code.module.scss"

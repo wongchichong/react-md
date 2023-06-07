@@ -1,4 +1,4 @@
-import type { ReactElement } from "react"
+import type { ReactElement } from 'voby'
 import type { ButtonThemeProps } from "@react-md/button"
 import { buttonThemeClassNames } from "@react-md/button"
 import { useInteractionStates } from "@react-md/states"

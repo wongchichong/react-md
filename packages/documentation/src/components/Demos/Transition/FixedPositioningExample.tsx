@@ -1,5 +1,5 @@
-import type { ReactElement } from "react"
-import { useCallback, useRef, useState } from "react"
+import type { ReactElement } from 'voby'
+import { $ } from 'voby'
 import { Button } from "@react-md/button"
 import type { ListboxOption } from "@react-md/form"
 import { Checkbox, Fieldset, Form, Select, useChecked } from "@react-md/form"
@@ -8,12 +8,11 @@ import { Overlay } from "@react-md/overlay"
 import type { CSSTransitionClassNames } from "@react-md/transition"
 import { CSSTransition, useFixedPositioning } from "@react-md/transition"
 import { Typography } from "@react-md/typography"
-import type {
-    HorizontalPosition,
-    PositionAnchor,
-    PositionWidth,
-    VerticalPosition,
-} from "@react-md/utils"
+import type { 
+ HorizontalPosition, 
+ PositionAnchor, 
+ PositionWidth, 
+ VerticalPosition,  } from "@react-md/utils"
 import { useToggle } from "@react-md/utils"
 
 import styles from "./FixedPositioningExample.module.scss"
@@ -68,28 +67,27 @@ const CLASSNAMES: CSSTransitionClassNames = {
 
 export default function FixedPositioningExample(): Child {
     const [visible, show, hide] = useToggle(false)
-    const buttonRef = useRef<HTMLButtonElement | null>(null)
+    const buttonRef = $<HTMLButtonElement | null>(null)
     const [disableSwapping, handleSwapChange] = useChecked(false)
     const [transformOrigin, handleOriginChange] = useChecked(false)
     const [hideOnScroll, handleScrollChange] = useChecked(true)
     const [hideOnResize, handleScrollResize] = useChecked(true)
-    const [anchor, setAnchor] = useState(anchorOptions[0])
-    const handleAnchorChange = useCallback(
-        (_value: string, anchor: ListboxOption) => {
-            setAnchor(anchor as Anchor)
+    const anchor = $(anchorOptions[0])
+    const handleAnchorChange = ((_value: string, anchor) => {
+            anchor(anchor() as Anchor)
         },
         []
     )
-    const [width, setWidth] = useState<PositionWidth>("auto")
-    const handleWidthChange = useCallback((nextWidth: string) => {
-        setAnchor(CENTERED_ANCHOR)
-        setWidth(nextWidth as PositionWidth)
-    }, [])
+    const width = $<PositionWidth>("auto")
+    const handleWidthChange = ((nextWidth: string) => {
+        anchor(CENTERED_ANCHOR)
+        width(nextWidth as PositionWidth)
+    })
 
     const { style, transitionOptions } = useFixedPositioning({
         fixedTo: buttonRef,
-        anchor: { x: anchor.x, y: anchor.y },
-        width,
+        anchor: { x: anchor().x, y: anchor().y ,
+        width(),
         transformOrigin,
         disableSwapping,
         onScroll(_event, { fixedToElement: button }) {
@@ -113,7 +111,7 @@ export default function FixedPositioningExample(): Child {
                 hide()
             }
         },
-    })
+    )
 
     return (
         <>

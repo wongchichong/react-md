@@ -1,16 +1,14 @@
-import type { ReactElement } from "react"
-import {
-    AppBar,
-    AppBarAction,
-    AppBarNav,
-    AppBarTitle,
-} from "@react-md/app-bar"
-import {
-    FavoriteSVGIcon,
-    MenuSVGIcon,
-    MoreVertSVGIcon,
-    TimerSVGIcon,
-} from "@react-md/material-icons"
+import type { ReactElement } from 'voby'
+import { 
+ AppBar, 
+ AppBarAction, 
+ AppBarNav, 
+ AppBarTitle,  } from "@react-md/app-bar"
+import { 
+ FavoriteSVGIcon, 
+ MenuSVGIcon, 
+ MoreVertSVGIcon, 
+ TimerSVGIcon,  } from "@react-md/material-icons"
 import { MediaContainer } from "@react-md/media"
 import type { TabConfig } from "@react-md/tabs"
 import { TabPanel, TabPanels, Tabs, TabsManager } from "@react-md/tabs"

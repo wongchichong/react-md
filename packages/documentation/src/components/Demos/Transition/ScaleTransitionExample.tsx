@@ -1,5 +1,5 @@
-import type { ReactElement } from "react"
-import { useCallback, useState } from "react"
+import type { ReactElement } from 'voby'
+import { $ } from 'voby'
 
 import { Button } from "@react-md/button"
 import { Checkbox, Form, useChecked } from "@react-md/form"
@@ -12,10 +12,10 @@ import Page1 from "./Page1"
 import styles from "./ScaleTransitionExample.module.scss"
 
 export default function ScaleTransitionExample(): Child {
-    const [visible, setVisible] = useState(false)
+    const visible = $(false)
     const [temporary, onTemporaryChange] = useChecked(false)
     const [vertical, onVerticalChange] = useChecked(false)
-    const hide = useCallback(() => setVisible(false), [])
+    const hide = (() => visible(false))
 
     return (
         <div className={styles.container}>
@@ -32,7 +32,7 @@ export default function ScaleTransitionExample(): Child {
                     checked={vertical}
                     onChange={onVerticalChange}
                 />
-                <Button onClick={() => setVisible(!visible)}>Toggle</Button>
+                <Button onClick={() => visible(!visible)}>Toggle</Button>
             </Form>
             <ScaleTransition transitionIn={visible} vertical={vertical}>
                 <FocusContainer

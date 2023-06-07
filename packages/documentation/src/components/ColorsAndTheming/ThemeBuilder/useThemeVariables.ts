@@ -1,11 +1,10 @@
-import { useMemo } from "react";
+import { useMemo } from 'voby';
 import type { HexString } from "@react-md/utils";
 import { getContrastRatio } from "@react-md/utils";
 
-import {
-  DEFAULT_PRIMARY_COLOR,
-  DEFAULT_SECONDARY_COLOR,
-} from "components/Theme/useTheme";
+import { 
+ DEFAULT_PRIMARY_COLOR, 
+ DEFAULT_SECONDARY_COLOR,  } from "components/Theme/useTheme";
 
 type CSSVariableValue = string | number | null;
 interface CSSVariable {
@@ -62,5 +61,5 @@ export default function useThemeVariables(
     }
 
     return variables;
-  }, [primaryColor, secondaryColor]);
+  });
 }

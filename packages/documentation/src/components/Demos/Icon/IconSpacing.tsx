@@ -1,4 +1,4 @@
-import type { ReactElement } from "react"
+import type { ReactElement } from 'voby'
 import { Button } from "@react-md/button"
 import { Divider } from "@react-md/divider"
 import { TextIconSpacing } from "@react-md/icon"

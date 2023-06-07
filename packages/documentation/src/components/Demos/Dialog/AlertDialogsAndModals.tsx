@@ -1,5 +1,5 @@
-import type { ReactElement } from "react"
-import { useState } from "react"
+import type { ReactElement } from 'voby'
+import { $ } from 'voby'
 import { Button } from "@react-md/button"
 import { Dialog, DialogContent, DialogFooter } from "@react-md/dialog"
 import { TextArea } from "@react-md/form"
@@ -14,12 +14,12 @@ if you really want to submit this.
 `.replace(/\r?\n/g, " ")
 
 export default function AlertDialogsAndModals(): Child {
-    const [state, setState] = useState({ visible: false, modal: false })
+    const state = $({ visible: false, modal: false })
     const hide = (): void => {
-        setState((prevState) => ({ ...prevState, visible: false }))
+        state((prevState) => ({ ...prevState, visible: false }))
     }
     const show = (event: React.JSX.TargetedMouseEvent<HTMLButtonElement>): void => {
-        setState({
+        state({
             visible: true,
             modal: event.currentTarget.id === "draft-submit",
         })

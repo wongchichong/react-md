@@ -1,15 +1,14 @@
-import type { ReactElement } from "react"
-import { useState } from "react"
+import type { ReactElement } from 'voby'
+import { $ } from 'voby'
 import { Button } from "@react-md/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@react-md/card"
 import { DialogFooter } from "@react-md/dialog"
-import {
-    Fieldset,
-    Form,
-    Select,
-    useNumberField,
-    TextFieldWithMessage,
-} from "@react-md/form"
+import { 
+ Fieldset, 
+ Form, 
+ Select, 
+ useNumberField, 
+ TextFieldWithMessage,  } from "@react-md/form"
 import { Collapse } from "@react-md/transition"
 import { Grid } from "@react-md/utils"
 
@@ -18,7 +17,7 @@ import styles from "./ConfigurableCollapseExample.module.scss"
 const options = ["undefined", "true", "false"]
 
 export default function ConfigurableCollapseExample(): Child {
-    const [collapsed, setCollapsed] = useState(true)
+    const collapsed = $(true)
     const [minHeight, minHeightProps, { reset: resetMinHeight }] = useNumberField(
         {
             id: "collapse-min-height",
@@ -45,11 +44,11 @@ export default function ConfigurableCollapseExample(): Child {
         defaultValue: 0,
     })
 
-    const [temporaryBehavior, setTemporary] = useState("undefined")
+    const temporaryBehavior = $("undefined")
 
     let temporary: boolean | undefined
-    if (temporaryBehavior !== "undefined") {
-        temporary = temporaryBehavior === "true"
+    if (temporaryBehavior() !== "undefined") {
+        temporary = temporaryBehavior() === "true"
     }
 
     return (
@@ -60,8 +59,8 @@ export default function ConfigurableCollapseExample(): Child {
                     resetMinHeight()
                     resetMinPaddingTop()
                     resetMinPaddingBottom()
-                    setTemporary("undefined")
-                    setCollapsed(true)
+                    temporaryBehavior("undefined")
+                    collapsed(true)
                 }}
             >
                 <Fieldset legend="Collapse Options">
@@ -87,7 +86,7 @@ export default function ConfigurableCollapseExample(): Child {
                             options={options}
                             name="temporary"
                             value={temporaryBehavior}
-                            onChange={(nextValue) => setTemporary(nextValue)}
+                            onChange={(nextValue) => temporaryBehavior(nextValue)}
                         />
                     </Grid>
                 </Fieldset>
@@ -100,7 +99,7 @@ export default function ConfigurableCollapseExample(): Child {
                             minPaddingTopProps.error ||
                             minPaddingBottomProps.error
                         }
-                        onClick={() => setCollapsed(!collapsed)}
+                        onClick={() => collapsed(!collapsed)}
                         type="submit"
                         className={styles.submit}
                     >

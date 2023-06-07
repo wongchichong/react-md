@@ -1,4 +1,4 @@
-import type { ReactElement } from "react"
+import type { ReactElement } from 'voby'
 
 import { TextIconSpacing } from "@react-md/icon"
 import { HomeSVGIcon } from "@react-md/material-icons"

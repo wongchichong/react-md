@@ -4,9 +4,7 @@
     "outDir": "./dist",
     "rootDir": "./src",
     "declarationDir": "./dist/types",
-    "composite": true,
-    "jsx": "preserve",
-    "jsxImportSource": "voby"
+    "tsBuildInfoFile": "./dist/tsconfig.tsbuildinfo",
   },
   "exclude": [
     "vite.config.ts",

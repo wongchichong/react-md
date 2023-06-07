@@ -1,4 +1,4 @@
-import type { ReactElement } from "react";
+import type { ReactElement } from 'voby';
 import { Form, Switch } from "@react-md/form";
 
 export default function SwitchExamples(): Child {

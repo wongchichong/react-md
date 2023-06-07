@@ -1,4 +1,4 @@
-import type { ReactElement } from "react"
+import type { ReactElement } from 'voby'
 import { TextField } from "@react-md/form"
 
 import TextFieldThemeConfig from "../TextFieldThemeConfig"

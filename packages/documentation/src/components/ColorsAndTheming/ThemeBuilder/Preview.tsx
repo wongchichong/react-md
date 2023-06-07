@@ -1,5 +1,5 @@
-import type { ReactElement } from "react";
-import { useRef } from "react";
+import type { ReactElement } from 'voby';
+import { $ } from 'voby';
 import { AppBar, AppBarNav, AppBarTitle } from "@react-md/app-bar";
 import { Button } from "@react-md/button";
 import { List, ListItem } from "@react-md/list";
@@ -12,7 +12,7 @@ import styles from "./Preview.module.scss";
 
 export default function Preview(): Child {
   const [visible, show, hide] = useToggle(false);
-  const container = useRef<HTMLDivElement | null>(null);
+  const container = $<HTMLDivElement | null>(null);
 
   return (
     <GridCell clone>
@@ -28,7 +28,7 @@ export default function Preview(): Child {
           aria-labelledby="theme-preview-title"
           visible={visible}
           onRequestClose={hide}
-          portalInto={() => container.current}
+          portalInto={() => container()}
           disableScrollLock
         >
           <List>

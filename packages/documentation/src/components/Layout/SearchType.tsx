@@ -1,4 +1,4 @@
-import type { ReactElement } from "react";
+import type { ReactElement } from 'voby';
 import type { MetadataType } from "constants/meta/types";
 import { toTitle } from "utils/toTitle";
 

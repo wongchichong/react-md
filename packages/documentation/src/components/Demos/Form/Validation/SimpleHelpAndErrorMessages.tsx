@@ -1,13 +1,13 @@
-import type { ReactElement } from "react"
-import { useState } from "react"
+import type { ReactElement } from 'voby'
+import { $ } from 'voby'
 import { FormMessage, TextField } from "@react-md/form"
 import { Grid } from "@react-md/utils"
 
 const id = "simple-help-and-error-messages"
 
 export default function SimpleHelpAndErrorMessages(): Child {
-    const [value1, setValue1] = useState("")
-    const [value2, setValue2] = useState("")
+    const value1 = $("")
+    const value2 = $("")
     return (
         <Grid columns={1} desktopColumns={2} largeDesktopColumns={3}>
             <div>
@@ -39,7 +39,7 @@ export default function SimpleHelpAndErrorMessages(): Child {
                     placeholder="John Doe"
                     value={value1}
                     error={value1.length > 20}
-                    onChange={(event) => setValue1(event.currentTarget.value)}
+                    onChange={(event) => value1(event.currentTarget.value)}
                 />
                 <FormMessage
                     id={`${id}-field-3-message`}
@@ -55,7 +55,7 @@ export default function SimpleHelpAndErrorMessages(): Child {
                     label="Name"
                     placeholder="John Doe"
                     value={value2}
-                    onChange={(event) => setValue2(event.currentTarget.value)}
+                    onChange={(event) => value2(event.currentTarget.value)}
                     error={value2.length > 20}
                 />
                 <FormMessage

@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
-import type { ReactElement } from "react"
-import { useState } from "react"
+import type { ReactElement } from 'voby'
+import { $ } from 'voby'
 import { AppBar, AppBarNav } from "@react-md/app-bar"
 import { Button } from "@react-md/button"
 import { Dialog, DialogContent } from "@react-md/dialog"
@@ -122,17 +122,17 @@ const previews = validIds.map((id) => ({
 }))
 
 export default function FullPageExample(): Child {
-    const [state, setState] = useState({ imageId: 277, visible: false })
+    const state = $({ imageId: 277, visible: false })
     const show = (event: React.JSX.TargetedMouseEvent<HTMLButtonElement>): void => {
         const [index] = event.currentTarget.id.split("-").reverse()
         if (!validIds.includes(index)) {
             return
         }
 
-        setState({ visible: true, imageId: parseInt(index, 10) })
+        state({ visible: true, imageId: parseInt(index, 10) })
     }
     const hide = (): void => {
-        setState((prevState) => ({ ...prevState, visible: false }))
+        state((prevState) => ({ ...prevState, visible: false }))
     }
 
     const { visible, imageId } = state

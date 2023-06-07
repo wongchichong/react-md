@@ -1,10 +1,9 @@
-import type { ReactElement } from "react";
+import type { ReactElement } from 'voby';
 import { MenuItem } from "@react-md/menu";
 import { ViewHeadlineSVGIcon } from "@react-md/material-icons";
-import {
-  useTOCActions,
-  useTOCVisibility,
-} from "components/TableOfContents/VisibilityContext";
+import { 
+ useTOCActions, 
+ useTOCVisibility,  } from "components/TableOfContents/VisibilityContext";
 
 export default function TableOfContentsMenuItem(): ReactElement | null {
   const { show } = useTOCActions();

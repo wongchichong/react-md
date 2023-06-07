@@ -1,13 +1,12 @@
-import type { ReactElement } from "react";
-import { useCallback, useState } from "react";
+import type { ReactElement } from 'voby';
+import { $ } from 'voby';
 import type { AutoCompleteHandler } from "@react-md/autocomplete";
 import { AutoComplete } from "@react-md/autocomplete";
-import {
-  AppBarNav,
-  AppBar,
-  AppBarAction,
-  AppBarTitle,
-} from "@react-md/app-bar";
+import { 
+ AppBarNav, 
+ AppBar, 
+ AppBarAction, 
+ AppBarTitle,  } from "@react-md/app-bar";
 import { SearchSVGIcon, KeyboardVoiceSVGIcon } from "@react-md/material-icons";
 import { Typography } from "@react-md/typography";
 import { PhoneOnly, useAppSize } from "@react-md/utils";
@@ -22,17 +21,17 @@ import styles from "./HighlightMatches.module.scss";
 const desserts = dessertList.map(({ name }) => name);
 
 export default function HighlightMatches(): Child {
-  const [dessert, setDessert] = useState<Dessert | null>(null);
-  const onAutoComplete = useCallback<AutoCompleteHandler>(({ dataIndex }) => {
-    setDessert(dessertList[dataIndex]);
-  }, []);
+  const dessert = $<Dessert | null>(null);
+  const onAutoComplete = (({ dataIndex }) => {
+    dessert(dessertList[dataIndex]);
+  });
 
   const { isPhone } = useAppSize();
 
   return (
     <Phone
       id="highlight-example"
-      onPhoneClose={() => setDessert(null)}
+      onPhoneClose={() => dessert(null)}
       disableAppBar
       disableContent={isPhone}
       contentClassName={styles.container}

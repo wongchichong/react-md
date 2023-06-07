@@ -1,5 +1,5 @@
-import type { ReactElement } from "react"
-import { useEffect, useRef } from "react"
+import type { ReactElement } from 'voby'
+import { useEffect, $ } from 'voby'
 
 import type { IFiles } from "codesandbox-import-utils/lib/api/define"
 
@@ -41,12 +41,11 @@ export default function CodePreview({
         content = content.trim()
     }
 
-    const code = useRef<HTMLPreElement | null>(null)
+    const code = $<HTMLPreElement | null>(null)
     useEffect(() => {
-        if (code.current) {
-            code.current.scrollTop = 0
-        }
-    }, [content])
+        if (code()) {
+            code().scrollTop        }
+    })
 
     if (loading) {
         return <LoadingCode offset={offset} />

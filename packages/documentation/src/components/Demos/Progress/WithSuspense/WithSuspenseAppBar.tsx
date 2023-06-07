@@ -1,14 +1,13 @@
-import type { ReactElement } from "react"
+import type { ReactElement } from 'voby'
 import { AppBar, AppBarAction, AppBarTitle } from "@react-md/app-bar"
 import { Button } from "@react-md/button"
 import { AddSVGIcon, ShareSVGIcon } from "@react-md/material-icons"
 
-import {
-    ClosePhone,
-    OptionsAction,
-    PhoneAppBar,
-    SearchAction,
-} from "components/Phone"
+import { 
+ ClosePhone, 
+ OptionsAction, 
+ PhoneAppBar, 
+ SearchAction,  } from "components/Phone"
 
 import styles from "./WithSuspenseAppBar.module.scss"
 

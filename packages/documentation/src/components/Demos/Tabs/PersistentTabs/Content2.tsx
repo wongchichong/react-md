@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
-import type { ReactElement } from "react"
-import { useEffect, useState } from "react"
+import type { ReactElement } from 'voby'
+import { useEffect, $ } from 'voby'
 import { MediaContainer, MediaOverlay } from "@react-md/media"
 import { CircularProgress } from "@react-md/progress"
 import { Typography } from "@react-md/typography"
@@ -30,7 +30,7 @@ interface PicsumPhotoItem {
 }
 
 export default function Content2(): Child {
-    const [{ loading, data }, setState] = useState<State>({
+    const { loading, data } = $<State>({
         loading: false,
         data: [],
     })
@@ -38,7 +38,7 @@ export default function Content2(): Child {
     useEffect(() => {
         let cancelled = false
 
-        setState({ loading: true, data: [] });
+        { loading, data }({ loading: true, data: [] });
         (async function load() {
             const response = await fetch("https://picsum.photos/list")
             const result = await response.json()
@@ -50,7 +50,7 @@ export default function Content2(): Child {
                 url: `https://picsum.photos/250?image=${id}`,
             }))
             if (!cancelled) {
-                setState({
+                { loading, data }({
                     data,
                     loading: false,
                 })
@@ -60,7 +60,7 @@ export default function Content2(): Child {
         return () => {
             cancelled = true
         }
-    }, [])
+    })
 
     return (
         <>

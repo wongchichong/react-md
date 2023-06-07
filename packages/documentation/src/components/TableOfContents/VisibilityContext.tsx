@@ -1,5 +1,5 @@
-import type { ReactElement, ReactNode } from "react"
-import { createContext, useContext, useEffect, useMemo } from "react"
+import type { ReactElement, ReactNode } from 'voby'
+import { createContext, useContext, useEffect, useMemo } from 'voby'
 import { useAppSize, useToggle } from "@react-md/utils"
 import '@react-md/react'
 
@@ -53,20 +53,17 @@ export function TOCVisibilityProvider({
 
         // disabled since I only want to update it on desktop changes
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isLargeDesktop])
+    })
 
     // I get SSR errors in dev mode since I normally have the dev tools open which
     // results in different app sizes
     const rendered =
         !!tocs[pathname]?.length && process.env.NODE_ENV === "production"
-    const actions = useMemo(() => ({ show, hide, toggle }), [hide, show, toggle])
-    const visibility = useMemo(
-        () => ({
+    const actions = useMemo(() => ({ show, hide, toggle }))
+    const visibility = useMemo(() => ({
             visible,
             rendered,
-        }),
-        [rendered, visible]
-    )
+        }))
 
     return (
         <TOCVisibility.Provider value={visibility}>

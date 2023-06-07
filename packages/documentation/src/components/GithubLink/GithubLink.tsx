@@ -1,4 +1,4 @@
-import type { ReactElement } from "react"
+import type { ReactElement } from 'voby'
 
 
 import { GITHUB_URL } from "../../constants/github"

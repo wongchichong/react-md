@@ -1,5 +1,5 @@
-import type { DOMAttributes, HTMLAttributes, ReactNode } from "react"
-import { forwardRef } from "react"
+import type { DOMAttributes, HTMLAttributes, ReactNode } from 'voby'
+import { forwardRef } from 'voby'
 
 
 import Code from "../Code"

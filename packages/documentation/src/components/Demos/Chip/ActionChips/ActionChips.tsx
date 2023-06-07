@@ -1,12 +1,11 @@
-import type { ReactElement } from "react";
-import { useState } from "react";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardSubtitle,
-  CardTitle,
-} from "@react-md/card";
+import type { ReactElement } from 'voby';
+import { $ } from 'voby';
+import { 
+ Card, 
+ CardContent, 
+ CardHeader, 
+ CardSubtitle, 
+ CardTitle,  } from "@react-md/card";
 import { Divider } from "@react-md/divider";
 import { MediaContainer } from "@react-md/media";
 
@@ -21,7 +20,7 @@ const width = 240;
 const height = width * 0.75;
 
 export default function ActionChips(): Child {
-  const [blinds, setBlinds] = useState(false);
+  const blinds = $(false);
   return (
     <Card id="action-chips-card" className={styles.container}>
       <MediaContainer fullWidth>
@@ -38,7 +37,7 @@ export default function ActionChips(): Child {
         <ActionChipAlarm />
         <ActionChipBlinds
           visible={blinds}
-          onClick={() => setBlinds((prevBlinds) => !prevBlinds)}
+          onClick={() => blinds((prevBlinds) => !prevBlinds)}
         />
       </CardContent>
     </Card>

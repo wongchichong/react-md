@@ -1,12 +1,11 @@
-import type { ReactElement } from "react"
+import type { ReactElement } from 'voby'
 import { Divider } from "@react-md/divider"
 import { TextContainer, Typography } from "@react-md/typography"
-import {
-    MobileOnly,
-    PhoneOnly,
-    TabletOnly,
-    DesktopOnly,
-} from "@react-md/utils"
+import { 
+ MobileOnly, 
+ PhoneOnly, 
+ TabletOnly, 
+ DesktopOnly,  } from "@react-md/utils"
 
 import styles from "./MediaQueryComponents.module.scss"
 

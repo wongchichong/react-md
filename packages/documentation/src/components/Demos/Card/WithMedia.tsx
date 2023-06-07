@@ -1,4 +1,4 @@
-import type { ReactElement } from "react";
+import type { ReactElement } from 'voby';
 import { Card, CardContent, CardTitle } from "@react-md/card";
 import { MediaContainer, MediaOverlay } from "@react-md/media";
 import { Typography } from "@react-md/typography";

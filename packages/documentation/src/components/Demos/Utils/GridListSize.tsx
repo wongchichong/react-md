@@ -1,4 +1,4 @@
-import type { ReactElement } from "react"
+import type { ReactElement } from 'voby'
 import { Table, TableBody, TableCell, TableRow } from "@react-md/table"
 import { GridList, GridListCell, useGridListSize } from "@react-md/utils"
 

@@ -1,4 +1,4 @@
-import type { ReactElement } from "react";
+import type { ReactElement } from 'voby';
 import { Table, TableBody, TableRow, TableCell } from "@react-md/table";
 import { CrossFade } from "@react-md/transition";
 

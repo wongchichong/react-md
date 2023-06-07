@@ -1,10 +1,9 @@
-import type { ReactElement } from "react"
+import type { ReactElement } from 'voby'
 import { TextArea } from "@react-md/form"
-import {
-    ContentCopySVGIcon,
-    ContentCutSVGIcon,
-    ContentPasteSVGIcon,
-} from "@react-md/material-icons"
+import { 
+ ContentCopySVGIcon, 
+ ContentCutSVGIcon, 
+ ContentPasteSVGIcon,  } from "@react-md/material-icons"
 import { Menu, MenuItem, useContextMenu } from "@react-md/menu"
 
 export default function SimpleContextMenu(): Child {

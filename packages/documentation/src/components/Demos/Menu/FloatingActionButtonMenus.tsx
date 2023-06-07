@@ -1,4 +1,4 @@
-import type { ReactElement } from "react"
+import type { ReactElement } from 'voby'
 import type { FABPosition } from "@react-md/button"
 import { MoreVertSVGIcon } from "@react-md/material-icons"
 

@@ -1,5 +1,5 @@
-import type { ReactElement } from "react"
-import { useEffect, useState } from "react"
+import type { ReactElement } from 'voby'
+import { useEffect, $ } from 'voby'
 
 import type { CSSTransitionClassNames } from "@react-md/transition"
 import { useCSSTransition } from "@react-md/transition"
@@ -19,16 +19,16 @@ const CLASSNAMES: CSSTransitionClassNames = {
 }
 
 export default function Blinds({ visible }: BlindsProps): ReactElement | null {
-    const [exited, setExited] = useState(true)
+    const exited = $(true)
     useEffect(() => {
-        if (visible && exited) {
-            setExited(false)
+        if (visible && exited()) {
+            exited(false)
         }
-    }, [visible, exited])
+    })
 
-    const hide = (): void => setExited(true)
+    const hide = (): void => exited(true)
 
-    const isVisible = visible || !exited
+    const isVisible = visible || !exited()
     const { elementProps, rendered, stage } = useCSSTransition({
         className: styles.blinds,
         transitionIn: isVisible,

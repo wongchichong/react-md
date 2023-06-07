@@ -1,4 +1,4 @@
-import type { ReactElement } from "react"
+import type { ReactElement } from 'voby'
 import type { HexString, ContrastRatioCompliance } from "@react-md/utils"
 import { isContrastCompliant } from "@react-md/utils"
 import scssVariables from "@react-md/theme/dist/scssVariables"

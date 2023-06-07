@@ -1,5 +1,5 @@
-import type { ReactElement } from "react"
-import { useEffect, useState } from "react"
+import type { ReactElement } from 'voby'
+import { useEffect, $ } from 'voby'
 import { getParameters } from "codesandbox/lib/api/define"
 
 import { useCodePreference } from "../../components/CodePreference"
@@ -22,7 +22,7 @@ export default function SandboxDefineForm({
   packageName,
   onCreated,
 }: SandboxDefineFormProps): ReactElement | null {
-  const [parameters, setParameters] = useState("")
+  const parameters = $("")
   const { theme } = useTheme()
   const { pref } = useCodePreference()
   const isJs = pref === "js"
@@ -43,7 +43,7 @@ export default function SandboxDefineForm({
     (async function load(): Promise<void> {
       const files = await getter()
       if (!cancelled) {
-        setParameters(getParameters({ files }))
+        parameters(getParameters({ files }))
       }
     })()
 
@@ -52,9 +52,9 @@ export default function SandboxDefineForm({
     }
     // only want to run this on mount
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  })
 
-  if (!parameters) {
+  if (!parameters()) {
     return null
   }
 

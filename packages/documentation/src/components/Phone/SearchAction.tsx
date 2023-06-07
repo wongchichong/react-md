@@ -1,4 +1,4 @@
-import type { ReactElement } from "react";
+import type { ReactElement } from 'voby';
 import type { AppBarActionProps } from "@react-md/app-bar";
 import { AppBarAction } from "@react-md/app-bar";
 import { SearchSVGIcon } from "@react-md/material-icons";

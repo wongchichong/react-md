@@ -1,12 +1,11 @@
-import type { ReactElement } from "react";
+import type { ReactElement } from 'voby';
 import { Button } from "@react-md/button";
 import { FontIcon, TextIconSpacing } from "@react-md/icon";
-import {
-  ChatSVGIcon,
-  DeleteSVGIcon,
-  DoneSVGIcon,
-  SaveSVGIcon,
-} from "@react-md/material-icons";
+import { 
+ ChatSVGIcon, 
+ DeleteSVGIcon, 
+ DoneSVGIcon, 
+ SaveSVGIcon,  } from "@react-md/material-icons";
 import Container from "./Container";
 
 export default function TextButtonsWithIcons(): Child {

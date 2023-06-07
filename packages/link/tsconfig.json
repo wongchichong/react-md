@@ -3,8 +3,9 @@
   "compilerOptions": {
     "outDir": "./dist",
     "rootDir": "./src",
-    "declarationDir": "./dist/types"
-    //"composite": true,
+    "declarationDir": "./dist/types",
+    "tsBuildInfoFile": "./dist/tsconfig.tsbuildinfo",
+    "types": ["node"]
   },
   "include": ["./src"],
   "exclude": [

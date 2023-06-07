@@ -1,11 +1,10 @@
-import type { ReactElement } from "react"
+import type { ReactElement } from 'voby'
 
 import { AppBar } from "@react-md/app-bar"
-import {
-    NetworkWifiSVGIcon,
-    NetworkCellSVGIcon,
-    BatteryFullSVGIcon,
-} from "@react-md/material-icons"
+import { 
+ NetworkWifiSVGIcon, 
+ NetworkCellSVGIcon, 
+ BatteryFullSVGIcon,  } from "@react-md/material-icons"
 
 import styles from "./StatusBar.module.scss"
 

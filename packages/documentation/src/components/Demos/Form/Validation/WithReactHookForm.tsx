@@ -1,17 +1,16 @@
-import type { ReactElement } from "react"
-import { useEffect, useState } from "react"
+import type { ReactElement } from 'voby'
+import { useEffect, $ } from 'voby'
 import { Controller, useForm } from "react-hook-form"
 import { Button } from "@react-md/button"
 import { DialogFooter } from "@react-md/dialog"
-import {
-    Checkbox,
-    Fieldset,
-    Form,
-    FormMessage,
-    Radio,
-    Select,
-    Switch,
-} from "@react-md/form"
+import { 
+ Checkbox, 
+ Fieldset, 
+ Form, 
+ FormMessage, 
+ Radio, 
+ Select, 
+ Switch,  } from "@react-md/form"
 import { CircularProgress } from "@react-md/progress"
 import { useTimeout } from "@react-md/utils"
 
@@ -59,25 +58,25 @@ export default function WithReactHookForm(): Child {
         },
     } = useForm<ExampleFormData>({ mode: "onChange" })
 
-    const [{ data, loading }, setState] = useState<State>({
+    const { data, loading } = $<State>({
         loading: false,
         data: null,
     })
 
     const [start] = useTimeout(() => {
-        setState((prevState) => ({ loading: false, data: prevState.data }))
+        { data, loading }((prevState) => ({ loading: false, data: prevState.data }))
     }, 10000)
     useEffect(() => {
         if (loading) {
             start()
         }
-    }, [loading, start])
+    })
 
     return (
         <>
             <Form
                 onReset={() => {
-                    setState({ loading: false, data: null })
+                    { data, loading }({ loading: false, data: null })
                     reset({
                         firstName: "",
                         lastName: "",
@@ -89,7 +88,7 @@ export default function WithReactHookForm(): Child {
                         save: "",
                     })
                 }}
-                onSubmit={handleSubmit((data) => setState({ data, loading: true }))}
+                onSubmit={handleSubmit((data) => { data, loading }({ data, loading: true }))}
             >
                 <ControllerTextField
                     id="rhf-first-name"

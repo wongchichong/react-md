@@ -1,5 +1,5 @@
-import type { ReactElement } from "react"
-import { useState } from "react"
+import type { ReactElement } from 'voby'
+import { $ } from 'voby'
 import { Button } from "@react-md/button"
 import { useCSSTransition } from "@react-md/transition"
 
@@ -7,10 +7,10 @@ import Page1 from "./Page1"
 import styles from "./UseCSSTransition.module.scss"
 
 export default function UseCSSTransition(): Child {
-    const [transitionIn, setTransitionIn] = useState(false)
+    const transitionIn = $(false)
     const { elementProps, rendered } = useCSSTransition({
         // changing this value causes the transition behavior to change
-        transitionIn,
+        transitionIn(),
 
         // 5 seconds just for demo purposes... can also be an object
         timeout: 5000,
@@ -36,7 +36,7 @@ export default function UseCSSTransition(): Child {
 
     return (
         <>
-            <Button onClick={() => setTransitionIn(!transitionIn)}>Toggle</Button>
+            <Button onClick={() => transitionIn(!transitionIn)}>Toggle</Button>
             {rendered && <Page1 {...elementProps} />}
         </>
     )

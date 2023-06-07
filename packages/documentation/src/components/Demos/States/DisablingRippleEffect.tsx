@@ -1,4 +1,4 @@
-import type { ReactElement } from "react"
+import type { ReactElement } from 'voby'
 import { StatesConfig } from "@react-md/states"
 import { Button } from "@react-md/button"
 

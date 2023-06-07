@@ -1,18 +1,15 @@
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from "react"
+import { 
+ createContext, 
+ $, 
+ useContext, 
+ useEffect, 
+ useMemo,  } from 'voby'
 import type { ListboxChangeEventHandler } from "@react-md/form"
-import type {
-  TableCellConfiguration,
-  TableCellHorizontalAlignment,
-  TableCellVerticalAlignment,
-  TableConfiguration,
-} from "@react-md/table"
+import type { 
+ TableCellConfiguration, 
+ TableCellHorizontalAlignment, 
+ TableCellVerticalAlignment, 
+ TableConfiguration,  } from "@react-md/table"
 import { useAppSize } from "@react-md/utils"
 import '@react-md/react'
 
@@ -63,7 +60,7 @@ const defaultState: Omit<
  */
 export function useStylesState(): DefaultStylesContext {
   const { isPhone } = useAppSize()
-  const [state, setState] = useState({
+  const state = $({
     ...defaultState,
     // need to force the container on mobile so that Google doesn't complain
     // that my website isn't mobile friendly with horizontal scrolling
@@ -72,7 +69,7 @@ export function useStylesState(): DefaultStylesContext {
 
   useEffect(() => {
     if (isPhone) {
-      setState((prevState) => {
+      state((prevState) => {
         if (prevState.container) {
           return prevState
         }
@@ -80,13 +77,12 @@ export function useStylesState(): DefaultStylesContext {
         return { ...prevState, container: true }
       })
     }
-  }, [isPhone])
+  })
 
   /* eslint-disable no-console */
-  const onInputChange = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
+  const onInputChange = ((event: React.ChangeEvent<HTMLInputElement>) => {
       const { name, checked } = event.currentTarget
-      setState((prevState) => {
+      state((prevState) => {
         if (name in prevState) {
           return {
             ...prevState,
@@ -100,16 +96,13 @@ export function useStylesState(): DefaultStylesContext {
 
         return prevState
       })
-    },
-    []
-  )
+    })
 
-  const onNumberChange = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
+  const onNumberChange = ((event: React.ChangeEvent<HTMLInputElement>) => {
       const { name, value } = event.currentTarget
       const min = parseInt(event.currentTarget.min, 10)
       const max = parseInt(event.currentTarget.max, 10)
-      setState((prevState) => {
+      state((prevState) => {
         if (name in prevState) {
           const number = parseInt(value, 10)
           // happens if the user types a letter instead of a number
@@ -129,14 +122,11 @@ export function useStylesState(): DefaultStylesContext {
 
         return prevState
       })
-    },
-    []
-  )
+    })
 
-  const onSelectChange = useCallback<ListboxChangeEventHandler>(
-    (nextValue, _option, listbox) => {
+  const onSelectChange = ((nextValue, _option, listbox) => {
       const { name = "" } = listbox
-      setState((prevState) => {
+      state((prevState) => {
         if (name in prevState) {
           let value: string | boolean = nextValue
           if (/linewrap/i.test(name)) {
@@ -161,19 +151,14 @@ export function useStylesState(): DefaultStylesContext {
 
         return prevState
       })
-    },
-    []
-  )
+    })
 
-  return useMemo(
-    () => ({
-      ...state,
+  return useMemo(() => ({
+      ...state(),
       onInputChange,
       onNumberChange,
       onSelectChange,
-    }),
-    [state, onInputChange, onNumberChange, onSelectChange]
-  )
+    }))
 }
 
 const context = createContext<DefaultStylesContext>({

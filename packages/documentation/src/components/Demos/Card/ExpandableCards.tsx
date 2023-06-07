@@ -1,15 +1,14 @@
-import type { ReactElement } from "react";
+import type { ReactElement } from 'voby';
 import { Collapse } from "@react-md/transition";
 import { Card, CardHeader, CardTitle, CardSubtitle } from "@react-md/card";
 import { Avatar } from "@react-md/avatar";
 import { useToggle } from "@react-md/utils";
 import { Button } from "@react-md/button";
 import { IconRotator } from "@react-md/icon";
-import {
-  PhoneSVGIcon,
-  EmailSVGIcon,
-  KeyboardArrowDownSVGIcon,
-} from "@react-md/material-icons";
+import { 
+ PhoneSVGIcon, 
+ EmailSVGIcon, 
+ KeyboardArrowDownSVGIcon,  } from "@react-md/material-icons";
 import { List, ListItem } from "@react-md/list";
 import { MediaContainer } from "@react-md/media";
 

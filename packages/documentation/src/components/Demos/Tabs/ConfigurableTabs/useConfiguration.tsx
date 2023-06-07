@@ -1,18 +1,17 @@
 /* eslint-disable react/jsx-key */
-import type { ChangeEventHandler } from "react";
-import { useEffect } from "react";
+import type { ChangeEventHandler } from 'voby';
+import { useEffect } from 'voby';
 import { useChecked, useChoice } from "@react-md/form";
-import {
-  FavoriteSVGIcon,
-  NearMeSVGIcon,
-  WatchLaterSVGIcon,
-  FreeBreakfastSVGIcon,
-  PlaceSVGIcon,
-  MailSVGIcon,
-  AddCircleSVGIcon,
-  StarSVGIcon,
-  PersonSVGIcon,
-} from "@react-md/material-icons";
+import { 
+ FavoriteSVGIcon, 
+ NearMeSVGIcon, 
+ WatchLaterSVGIcon, 
+ FreeBreakfastSVGIcon, 
+ PlaceSVGIcon, 
+ MailSVGIcon, 
+ AddCircleSVGIcon, 
+ StarSVGIcon, 
+ PersonSVGIcon,  } from "@react-md/material-icons";
 import LightbulbSVGIcon from "icons/LightbulbSVGIcon";
 import type { TabConfig } from "@react-md/tabs";
 
@@ -96,7 +95,7 @@ export default function useConfiguration(): TabConfiguration {
     if (customTransition && persistent) {
       setTransition("enabled");
     }
-  }, [customTransition, persistent, setTransition]);
+  });
 
   const noIcon = icons === "none";
   const onlyIcon = icons === "only";

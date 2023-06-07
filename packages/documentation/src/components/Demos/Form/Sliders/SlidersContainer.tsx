@@ -1,5 +1,5 @@
-import type { ReactElement, ReactNode } from "react"
-import { Children, cloneElement, isValidElement, HTMLAttributes } from "react"
+import type { ReactElement, ReactNode } from 'voby'
+import { Children, cloneElement, isValidElement, HTMLAttributes } from 'voby'
 
 import styles from "./SlidersContainer.module.scss"
 

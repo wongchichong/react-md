@@ -1,5 +1,5 @@
-import type { ReactElement } from "react"
-import React, { useCallback, useEffect, useState } from "react"
+import type { ReactElement } from 'voby'
+import React, { $, useEffect } from 'voby'
 import type { Message, MessagePriority } from "@react-md/alert"
 import { MessageQueue, useAddMessage, useQueue } from "@react-md/alert"
 import { Button } from "@react-md/button"
@@ -19,15 +19,15 @@ function UpdatingMessagePriority(): Child {
     const addMessage = useAddMessage<ExampleMessage>()
     const [priority, handlePriorityChange] = useChoice<MessagePriority>("next")
     const queue = useQueue<ExampleMessage>()
-    const [running, setRunning] = useState(false)
+    const running = $(false)
 
     useEffect(() => {
-        if (running && !queue.length) {
-            setRunning(false)
+        if (running() && !queue.length) {
+            running(false)
         }
-    }, [running, queue])
+    })
 
-    const exampleNextFlow = useCallback(() => {
+    const exampleNextFlow = (() => {
         addMessage({
             messageId: "message-1",
             children: "First normal message",
@@ -38,11 +38,11 @@ function UpdatingMessagePriority(): Child {
             children: "Second normal message",
             messagePriority: "normal",
         })
-        setRunning(true)
-    }, [addMessage])
+        running(true)
+    })
 
     useEffect(() => {
-        if (!running) {
+        if (!running()) {
             return
         }
 
@@ -60,7 +60,7 @@ function UpdatingMessagePriority(): Child {
 
         // only want to run on running changes
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [running])
+    })
 
     return (
         <>

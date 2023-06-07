@@ -1,4 +1,4 @@
-import type { ReactElement } from "react"
+import type { ReactElement } from 'voby'
 
 import { TabPanel, TabPanels, Tabs, TabsManager } from "@react-md/tabs"
 

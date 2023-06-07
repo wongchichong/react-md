@@ -1,4 +1,4 @@
-import type { ReactElement } from "react";
+import type { ReactElement } from 'voby';
 import { AppBar, AppBarNav } from "@react-md/app-bar";
 import { MenuSVGIcon } from "@react-md/material-icons";
 

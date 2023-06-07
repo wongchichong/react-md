@@ -1,19 +1,17 @@
-import type { HTMLAttributes, ReactElement } from "react"
+import type { HTMLAttributes, ReactElement } from 'voby'
 
 import filesize from "filesize"
 import { Button } from "@react-md/button"
-import {
-    Card,
-    CardContent,
-    CardHeader,
-    CardSubtitle,
-    CardTitle,
-} from "@react-md/card"
-import type {
-    FileReaderResult,
-    FileUploadActions,
-    FileUploadStats,
-} from "@react-md/form"
+import { 
+ Card, 
+ CardContent, 
+ CardHeader, 
+ CardSubtitle, 
+ CardTitle,  } from "@react-md/card"
+import type { 
+ FileReaderResult, 
+ FileUploadActions, 
+ FileUploadStats,  } from "@react-md/form"
 import { CloseSVGIcon } from "@react-md/material-icons"
 import { LinearProgress } from "@react-md/progress"
 import { GridListCell } from "@react-md/utils"

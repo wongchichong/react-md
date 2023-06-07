@@ -1,12 +1,11 @@
-import type { ReactElement } from "react";
+import type { ReactElement } from 'voby';
 import { Button } from "@react-md/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@react-md/dialog";
+import { 
+ Dialog, 
+ DialogContent, 
+ DialogFooter, 
+ DialogHeader, 
+ DialogTitle,  } from "@react-md/dialog";
 
 const noop = (): void => {
   // do nothing

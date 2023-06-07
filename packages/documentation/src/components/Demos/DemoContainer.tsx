@@ -1,9 +1,8 @@
-import type {
-    ElementType,
-    HTMLAttributes,
-    ReactElement,
-    ReactNode,
-} from "react"
+import type { 
+ ElementType, 
+ HTMLAttributes, 
+ ReactElement, 
+ ReactNode,  } from 'voby'
 
 import styles from "./DemoContainer.module.scss"
 

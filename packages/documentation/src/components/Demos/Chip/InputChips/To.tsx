@@ -1,9 +1,8 @@
-import type { ReactElement } from "react";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import type {
-  AutoCompleteHandler,
-  AutoCompleteData,
-} from "@react-md/autocomplete";
+import type { ReactElement } from 'voby';
+import { $, useEffect, useMemo } from 'voby';
+import type { 
+ AutoCompleteHandler, 
+ AutoCompleteData,  } from "@react-md/autocomplete";
 import { AutoComplete } from "@react-md/autocomplete";
 import { Avatar } from "@react-md/avatar";
 import { Chip } from "@react-md/chip";
@@ -16,11 +15,10 @@ import contacts from "./contacts";
 import styles from "./To.module.scss";
 
 export default function To(): Child {
-  const [chips, setChips] = useState<Contact[]>([]);
-  const data = useMemo<(AutoCompleteData & { label: string })[]>(
-    () =>
+  const chips = $<Contact[]>([]);
+  const data = useMemo<(AutoCompleteData & { label: string })[]>(() =>
       contacts
-        .filter(({ id }) => !chips.find((chip) => chip.id === id))
+        .filter(({ id }) => !chips().find((chip) => chip.id === id))
         .map(({ name, avatar, email }) => ({
           label: name,
           leftAddon: (
@@ -30,26 +28,24 @@ export default function To(): Child {
           ),
           leftAddonType: "avatar",
           secondaryText: email,
-        })),
-    [chips]
-  );
+        })));
 
-  const onAutoComplete = useCallback<AutoCompleteHandler>((result) => {
+  const onAutoComplete = ((result) => {
     const item = result.result as typeof data[0];
     const contact = contacts.find(({ name }) => item.label === name);
     if (!contact) {
       throw new Error();
     }
-    setChips((prevChips) => [...prevChips, contact]);
-  }, []);
+    chips((prevChips) => [...prevChips, contact]);
+  });
 
-  const emailsRef = useRef<HTMLDivElement | null>(null);
+  const emailsRef = $<HTMLDivElement | null>(null);
   useEffect(() => {
-    const div = emailsRef.current;
+    const div = emailsRef();
     if (div) {
       div.scrollLeft = div.scrollWidth;
     }
-  }, [chips]);
+  });
   return (
     <div className={styles.container}>
       <Label htmlFor="input-chips-email" className={styles.spacing}>
@@ -67,7 +63,7 @@ export default function To(): Child {
             rightIcon={<AddCircleSVGIcon className={styles.rotate} />}
             className={styles.spacing}
             onClick={() =>
-              setChips((prevChips) =>
+              chips((prevChips) =>
                 prevChips.filter((chip) => chip.id !== id)
               )
             }

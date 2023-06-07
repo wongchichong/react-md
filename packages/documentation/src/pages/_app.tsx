@@ -1,5 +1,5 @@
 import "./app.scss"
-import type { ReactElement } from "react"
+import type { ReactElement } from 'voby'
 import type { AppContext, AppInitialProps } from "next/app"
 import NextApp from "next/app"
 import Head from "next/head"
@@ -7,14 +7,13 @@ import Router from "next/router"
 import type { AppSize } from "@react-md/utils"
 import '@react-md/react'
 
-import {
-    DEFAULT_APP_SIZE,
-    DEFAULT_DESKTOP_LARGE_MIN_WIDTH,
-    DEFAULT_DESKTOP_MIN_WIDTH,
-    DEFAULT_PHONE_MAX_WIDTH,
-    DEFAULT_TABLET_MAX_WIDTH,
-    DEFAULT_TABLET_MIN_WIDTH,
-} from "@react-md/utils"
+import { 
+ DEFAULT_APP_SIZE, 
+ DEFAULT_DESKTOP_LARGE_MIN_WIDTH, 
+ DEFAULT_DESKTOP_MIN_WIDTH, 
+ DEFAULT_PHONE_MAX_WIDTH, 
+ DEFAULT_TABLET_MAX_WIDTH, 
+ DEFAULT_TABLET_MIN_WIDTH,  } from "@react-md/utils"
 import MobileDetect from "mobile-detect"
 import Layout from "components/Layout"
 import type { ThemeMode } from "components/Theme"

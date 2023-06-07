@@ -1,4 +1,4 @@
-import type { ReactElement } from "react";
+import type { ReactElement } from 'voby';
 import { AppBarAction } from "@react-md/app-bar";
 import { IconRotator } from "@react-md/icon";
 import { Brightness4SVGIcon } from "@react-md/material-icons";

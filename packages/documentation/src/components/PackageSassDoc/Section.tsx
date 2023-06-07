@@ -1,4 +1,4 @@
-import type { ReactElement } from "react";
+import type { ReactElement } from 'voby';
 
 import type { FormattedSassDocItem } from "@react-md/dev-utils/src/utils/";
 import "@react-md/dev-utils/@types/sassdoc";

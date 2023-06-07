@@ -1,5 +1,5 @@
-import React from 'react'
-import type { ReactElement, ReactNode } from "react"
+import React from 'voby'
+import type { ReactElement, ReactNode } from 'voby'
 import { AppBar, AppBarAction } from "@react-md/app-bar"
 import { Button } from "@react-md/button"
 import type { DialogProps } from "@react-md/dialog"

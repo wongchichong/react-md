@@ -1,5 +1,5 @@
-import type { ReactElement } from "react";
-import { useEffect, useState, useCallback } from "react";
+import type { ReactElement } from 'voby';
+import { useEffect, $ } from 'voby';
 import Head from "next/head";
 import type { IFiles } from "codesandbox-import-utils/lib/api/define";
 import { Dialog } from "@react-md/dialog";
@@ -46,19 +46,19 @@ export default function SandboxModal({
   const { isPhone, isTablet, isDesktop, isLandscape } = useAppSize();
   const isLandscapeTablet = isLandscape && isTablet;
   const inline = isDesktop || isLandscapeTablet;
-  const [isTreeVisible, setTreeVisible] = useState(isDesktop);
-  const showOrToggleTree = useCallback(() => {
+  const isTreeVisible = $(isDesktop);
+  const showOrToggleTree = (() => {
     if (isPhone) {
-      setTreeVisible(true);
+      isTreeVisible(true);
       return;
     }
 
-    setTreeVisible((prevVisible) => !prevVisible);
-  }, [isPhone]);
-  const hideTree = useCallback(() => setTreeVisible(false), []);
+    isTreeVisible((prevVisible) => !prevVisible);
+  });
+  const hideTree = (() => isTreeVisible(false));
 
   useEffect(() => {
-    setTreeVisible((prevVisible) => {
+    isTreeVisible((prevVisible) => {
       if (isDesktop) {
         return true;
       }
@@ -69,7 +69,7 @@ export default function SandboxModal({
 
       return false;
     });
-  }, [fileName, isPhone, isTablet, isDesktop, isLandscape]);
+  });
 
   return (
     <Dialog

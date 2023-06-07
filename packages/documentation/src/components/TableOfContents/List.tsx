@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions, jsx-a11y/click-events-have-key-events */
-import type { ReactElement } from "react"
-import { useCallback } from "react"
+import type { ReactElement } from 'voby'
+import { $ } from 'voby'
 import { Link } from "@react-md/link"
 
 import type { TOCAnchor } from "constants/meta/types"
@@ -18,8 +18,7 @@ export default function List({
     isLargeDesktop,
     onRequestClose,
 }: ListProps): Child {
-    const handleClick = useCallback(
-        (event: React.JSX.TargetedMouseEvent<HTMLUListElement>) => {
+    const handleClick = ((event: React.JSX.TargetedMouseEvent<HTMLUListElement>) => {
             if (
                 !isLargeDesktop &&
                 event.target &&
@@ -27,9 +26,7 @@ export default function List({
             ) {
                 onRequestClose()
             }
-        },
-        [onRequestClose, isLargeDesktop]
-    )
+        })
 
     return (
         <ul onClick={handleClick} className={styles.list}>

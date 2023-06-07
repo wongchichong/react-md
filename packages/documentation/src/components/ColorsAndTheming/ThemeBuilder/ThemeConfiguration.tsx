@@ -1,17 +1,16 @@
-import type { ReactElement } from "react";
-import { useCallback, useEffect, useState } from "react";
+import type { ReactElement } from 'voby';
+import { $, useEffect } from 'voby';
 import { Button } from "@react-md/button";
 import { Checkbox, Form, Select } from "@react-md/form";
 import { Typography } from "@react-md/typography";
 import type { ContrastRatioCompliance, HexString } from "@react-md/utils";
 import { Grid, GridCell } from "@react-md/utils";
 
-import type {
-  ColorAccent,
-  PrimaryColor,
-  SecondaryColor,
-  ThemeMode,
-} from "components/Theme";
+import type { 
+ ColorAccent, 
+ PrimaryColor, 
+ SecondaryColor, 
+ ThemeMode,  } from "components/Theme";
 import { primaries, secondaries, useThemeActions } from "components/Theme";
 import BackgroundWarnings from "./BackgroundWarnings";
 import ConfigurationCell from "./ConfigurationCell";
@@ -61,20 +60,18 @@ export default function ThemeConfiguration({
     useThemeActions();
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => () => reset(), []);
+  useEffect(() => () => reset());
   const variables = useThemeVariables(primaryColor, secondaryColor);
-  const [compliance, setCompliance] =
-    useState<ContrastRatioCompliance>("large");
-  const handleComplianceChange = useCallback(
-    (compliance: string) =>
-      setCompliance(compliance as ContrastRatioCompliance),
+  const compliance = $<ContrastRatioCompliance>("large");
+  const handleComplianceChange = ((compliance()) =>
+      compliance(compliance() as ContrastRatioCompliance),
     []
   );
 
-  const resetAll = useCallback(() => {
+  const resetAll = (() => {
     reset();
-    setCompliance("large");
-  }, [reset]);
+    compliance("large");
+  });
 
   useEffect(() => {
     const { style } = document.documentElement;
@@ -87,7 +84,7 @@ export default function ThemeConfiguration({
         style.setProperty(variable.name, "");
       });
     };
-  }, [variables]);
+  });
 
   return (
     <GridCell clone>

@@ -1,4 +1,4 @@
-import type { ReactElement } from "react"
+import type { ReactElement } from 'voby'
 import { useRouter } from "next/router"
 import { useActionClassName } from "@react-md/app-bar"
 import { CodeSVGIcon } from "@react-md/material-icons"

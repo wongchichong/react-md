@@ -1,5 +1,5 @@
-import type { ReactElement } from "react";
-import { useEffect } from "react";
+import type { ReactElement } from 'voby';
+import { useEffect } from 'voby';
 import { TextIconSpacing } from "@react-md/icon";
 import { Button } from "@react-md/button";
 import { CircularProgress, getProgressA11y } from "@react-md/progress";
@@ -13,7 +13,7 @@ export default function ButtonWithCircularProgress(): ReactElement | null {
     if (loading) {
       start();
     }
-  }, [loading, start]);
+  });
 
   const id = "button-with-progress";
   const progressId = `${id}-loading`;

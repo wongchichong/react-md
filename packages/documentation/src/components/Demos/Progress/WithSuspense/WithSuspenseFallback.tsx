@@ -1,5 +1,5 @@
-import type { ReactElement } from "react"
-import { useEffect } from "react"
+import type { ReactElement } from 'voby'
+import { useEffect } from 'voby'
 import { LinearProgress } from "@react-md/progress"
 import { Typography } from "@react-md/typography"
 
@@ -14,7 +14,7 @@ export default function WithSuspenseFallback({
 }: WithSuspenseFallbackProps): Child {
     // trigger the complete action when this component unmounts
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    useEffect(() => () => complete(), [])
+    useEffect(() => () => complete())
 
     return (
         <div className={styles.container}>

@@ -1,10 +1,9 @@
-import type { ReactElement } from "react";
+import type { ReactElement } from 'voby';
 import filesize from "filesize";
-import type {
-  FileExtensionError,
-  FileSizeError,
-  TooManyFilesError,
-} from "@react-md/form";
+import type { 
+ FileExtensionError, 
+ FileSizeError, 
+ TooManyFilesError,  } from "@react-md/form";
 import { isFileSizeError, isTooManyFilesError } from "@react-md/form";
 import { Typography } from "@react-md/typography";
 

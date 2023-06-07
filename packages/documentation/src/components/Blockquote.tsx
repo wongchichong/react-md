@@ -1,4 +1,4 @@
-import type { HTMLAttributes, ReactElement } from "react"
+import type { HTMLAttributes, ReactElement } from 'voby'
 
 
 import styles from "./Blockquote.module.scss"

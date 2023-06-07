@@ -1,4 +1,4 @@
-import type { ReactElement } from "react";
+import type { ReactElement } from 'voby';
 import scssVariables from "@react-md/theme/dist/scssVariables";
 
 import About from "./About";

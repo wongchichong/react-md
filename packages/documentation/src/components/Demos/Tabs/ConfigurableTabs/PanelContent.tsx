@@ -1,5 +1,5 @@
-import type { ReactElement } from "react"
-import { Fragment } from "react"
+import type { ReactElement } from 'voby'
+import { Fragment } from 'voby'
 import { Button } from "@react-md/button"
 import { CrossFade } from "@react-md/transition"
 import { Typography } from "@react-md/typography"

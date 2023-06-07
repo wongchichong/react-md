@@ -1,4 +1,4 @@
-import type { ReactElement } from "react";
+import type { ReactElement } from 'voby';
 
 import description from "./README.md";
 import DemoPage from "../DemoPage";

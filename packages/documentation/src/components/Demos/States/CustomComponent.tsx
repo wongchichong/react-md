@@ -1,4 +1,4 @@
-import type { ButtonHTMLAttributes, ReactElement } from "react"
+import type { ButtonHTMLAttributes, ReactElement } from 'voby'
 
 import type { InteractionStatesOptions } from "@react-md/states"
 import { useInteractionStates } from "@react-md/states"

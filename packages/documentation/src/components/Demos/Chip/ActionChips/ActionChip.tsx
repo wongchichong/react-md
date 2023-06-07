@@ -1,4 +1,4 @@
-import type { ReactElement } from "react"
+import type { ReactElement } from 'voby'
 
 import type { ChipProps } from "@react-md/chip"
 import { Chip } from "@react-md/chip"

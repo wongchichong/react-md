@@ -1,5 +1,5 @@
-import type { ReactElement } from "react"
-import { useMemo } from "react"
+import type { ReactElement } from 'voby'
+import { useMemo } from 'voby'
 
 import type { PackageSassDoc as FoundSassDoc } from "@react-md/dev-utils/src/utils/"
 import "@react-md/dev-utils/@types/sassdoc"
@@ -19,26 +19,17 @@ export default function PackageSassDoc({
     functions: functionRecord,
     variables: variableRecord,
 }: PackageSassDocProps): Child {
-    const variables = useMemo(
-        () =>
+    const variables = useMemo(() =>
             Object.values(variableRecord).filter(
                 ({ packageName, name }) =>
                     // don't want the color variables since the SassDoc provides zero
                     // additional info
                     packageName !== "theme" || name.startsWith("rmd-theme")
-            ),
-        [variableRecord]
-    )
-    const mixins = useMemo(() => Object.values(mixinRecord), [mixinRecord])
-    const functions = useMemo(
-        () => Object.values(functionRecord),
-        [functionRecord]
-    )
+            ))
+    const mixins = useMemo(() => Object.values(mixinRecord))
+    const functions = useMemo(() => Object.values(functionRecord))
 
-    const items = useMemo(
-        () => [...variables, ...mixins, ...functions],
-        [variables, mixins, functions]
-    )
+    const items = useMemo(() => [...variables, ...mixins, ...functions])
 
     return (
         <div className={styles.container}>

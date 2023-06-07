@@ -1,28 +1,25 @@
-import type { ReactElement } from "react"
-import { useState } from "react"
-import type {
-    LayoutNavigationTree,
-    SupportedPhoneLayout,
-    SupportedTabletLayout,
-    SupportedWideLayout,
-} from "@react-md/layout"
-import {
-    DEFAULT_DESKTOP_LAYOUT,
-    DEFAULT_LANDSCAPE_TABLET_LAYOUT,
-    DEFAULT_PHONE_LAYOUT,
-    DEFAULT_TABLET_LAYOUT,
-    Layout,
-    useLayoutNavigation,
-} from "@react-md/layout"
-import {
-    HomeSVGIcon,
-    SecuritySVGIcon,
-    SettingsSVGIcon,
-    ShareSVGIcon,
-    SnoozeSVGIcon,
-    StarSVGIcon,
-    StorageSVGIcon,
-} from "@react-md/material-icons"
+import type { ReactElement } from 'voby'
+import { $ } from 'voby'
+import type { 
+ LayoutNavigationTree, 
+ SupportedPhoneLayout, 
+ SupportedTabletLayout, 
+ SupportedWideLayout,  } from "@react-md/layout"
+import { 
+ DEFAULT_DESKTOP_LAYOUT, 
+ DEFAULT_LANDSCAPE_TABLET_LAYOUT, 
+ DEFAULT_PHONE_LAYOUT, 
+ DEFAULT_TABLET_LAYOUT, 
+ Layout, 
+ useLayoutNavigation,  } from "@react-md/layout"
+import { 
+ HomeSVGIcon, 
+ SecuritySVGIcon, 
+ SettingsSVGIcon, 
+ ShareSVGIcon, 
+ SnoozeSVGIcon, 
+ StarSVGIcon, 
+ StorageSVGIcon,  } from "@react-md/material-icons"
 
 import { ConfigurationForm } from "./ConfigurationForm"
 import { CurrentChildren } from "./CurrentChildren"
@@ -84,20 +81,13 @@ const navItems: LayoutNavigationTree = {
 }
 
 export default function ConfigurableLayout(): Child {
-    const [phoneLayout, setPhoneLayout] =
-        useState<SupportedPhoneLayout>(DEFAULT_PHONE_LAYOUT)
-    const [tabletLayout, setTabletLayout] = useState<SupportedTabletLayout>(
-        DEFAULT_TABLET_LAYOUT
-    )
-    const [landscapeTabletLayout, setLandscapeTabletLayout] =
-        useState<SupportedTabletLayout>(DEFAULT_LANDSCAPE_TABLET_LAYOUT)
-    const [desktopLayout, setDesktopLayout] = useState<SupportedWideLayout>(
-        DEFAULT_DESKTOP_LAYOUT
-    )
-    const [largeDesktopLayout, setLargeDesktopLayout] =
-        useState<SupportedWideLayout>(DEFAULT_DESKTOP_LAYOUT)
+    const phoneLayout = $<SupportedPhoneLayout>(DEFAULT_PHONE_LAYOUT)
+    const tabletLayout = $<SupportedTabletLayout>(DEFAULT_TABLET_LAYOUT)
+    const landscapeTabletLayout = $<SupportedTabletLayout>(DEFAULT_LANDSCAPE_TABLET_LAYOUT)
+    const desktopLayout = $<SupportedWideLayout>(DEFAULT_DESKTOP_LAYOUT)
+    const largeDesktopLayout = $<SupportedWideLayout>(DEFAULT_DESKTOP_LAYOUT)
 
-    const [selectedId, setSelectedId] = useState("/")
+    const selectedId = $("/")
 
     return (
         <Layout

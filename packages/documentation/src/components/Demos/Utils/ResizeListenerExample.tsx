@@ -1,5 +1,5 @@
-import type { ReactElement } from "react"
-import { useState } from "react"
+import type { ReactElement } from 'voby'
+import { $ } from 'voby'
 import { Checkbox, useChecked } from "@react-md/form"
 import { Typography } from "@react-md/typography"
 import { ResizeListener } from "@react-md/utils"
@@ -7,7 +7,7 @@ import { ResizeListener } from "@react-md/utils"
 import CodeBlock from "components/CodeBlock"
 
 export default function ResizeListenerExample(): Child {
-    const [size, setSize] = useState(() => {
+    const size = $(() => {
         if (typeof window !== "undefined") {
             return window.innerWidth
         }
@@ -37,7 +37,7 @@ export default function ResizeListenerExample(): Child {
             {enabled && (
                 <ResizeListener
                     immediate={immediate}
-                    onResize={() => setSize(window.innerWidth)}
+                    onResize={() => size(window.innerWidth)}
                 />
             )}
             <Typography>The current app size is:</Typography>

@@ -1,4 +1,4 @@
-import type { ReactElement } from "react"
+import type { ReactElement } from 'voby'
 import { Typography } from "@react-md/typography"
 
 import Code from "components/Code"
@@ -7,12 +7,11 @@ import GithubLink from "components/GithubLink"
 import Link from "components/Link"
 import Heading from "components/Heading"
 import { GITHUB_FILE_URL, GITHUB_URL } from "constants/github"
-import type {
-    FormattedSassDocItem,
-    FormattedVariableItem,
-    FormattedMixinItem,
-    FormattedFunctionItem,
-} from "@react-md/dev-utils/src/utils/"
+import type { 
+ FormattedSassDocItem, 
+ FormattedVariableItem, 
+ FormattedMixinItem, 
+ FormattedFunctionItem,  } from "@react-md/dev-utils/src/utils/"
 import "@react-md/dev-utils/@types/sassdoc"
 
 import getId from "./getId"

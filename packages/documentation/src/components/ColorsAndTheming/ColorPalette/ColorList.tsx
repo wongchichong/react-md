@@ -1,4 +1,4 @@
-import type { ReactElement } from "react";
+import type { ReactElement } from 'voby';
 
 import type { ColorValue } from "./Color";
 import Color from "./Color";

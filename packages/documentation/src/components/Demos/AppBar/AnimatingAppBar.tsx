@@ -1,5 +1,5 @@
-import type { ReactElement } from "react";
-import { useState } from "react";
+import type { ReactElement } from 'voby';
+import { $ } from 'voby';
 import { AppBar, AppBarAction, AppBarNav } from "@react-md/app-bar";
 import { Avatar } from "@react-md/avatar";
 import avatarVariables from "@react-md/avatar/dist/scssVariables";
@@ -32,9 +32,9 @@ const HEIGHT = 96;
 const SCROLL_MULTIPLIER = 0.314;
 
 export default function AnimatingAppBar(): Child {
-  const [height, setHeight] = useState(`${HEIGHT}px`);
+  const height = $(`${HEIGHT}px`);
   const style: CSSProperties = {
-    "--offset": height,
+    "--offset": height(),
   };
 
   return (
@@ -63,7 +63,7 @@ export default function AnimatingAppBar(): Child {
           );
           const nextHeight = `${remaining}px`;
           if (height !== nextHeight) {
-            setHeight(nextHeight);
+            height(nextHeight);
           }
         }}
       >

@@ -1,14 +1,13 @@
-import type { ReactElement } from "react"
+import type { ReactElement } from 'voby'
 import { Avatar } from "@react-md/avatar"
 import { Divider } from "@react-md/divider"
 import { List, ListItem } from "@react-md/list"
-import {
-    AdjustSVGIcon,
-    AppsSVGIcon,
-    ArchiveSVGIcon,
-    ArrowBackSVGIcon,
-    DeleteSVGIcon,
-} from "@react-md/material-icons"
+import { 
+ AdjustSVGIcon, 
+ AppsSVGIcon, 
+ ArchiveSVGIcon, 
+ ArrowBackSVGIcon, 
+ DeleteSVGIcon,  } from "@react-md/material-icons"
 
 import people from "constants/people"
 

@@ -1,12 +1,12 @@
-import type { ReactElement } from "react"
-import { useState } from "react"
+import type { ReactElement } from 'voby'
+import { $ } from 'voby'
 import { usePanels, ExpansionPanel } from "@react-md/expansion-panel"
 import { Typography } from "@react-md/typography"
 import { Grid } from "@react-md/utils"
 
 export default function SinglePanel(): Child {
     const [[panelProps]] = usePanels({ idPrefix: "single-panel", count: 1 })
-    const [expanded, setExpanded] = useState(false)
+    const expanded = $(false)
     return (
         <Grid columns={1}>
             <ExpansionPanel {...panelProps} header="With usePanels">
@@ -30,7 +30,7 @@ export default function SinglePanel(): Child {
             <ExpansionPanel
                 id="single-panel-own-props"
                 expanded={expanded}
-                onExpandClick={() => setExpanded(!expanded)}
+                onExpandClick={() => expanded(!expanded)}
                 header="Custom Props"
             >
                 <Typography>

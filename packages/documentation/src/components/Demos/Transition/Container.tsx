@@ -1,5 +1,5 @@
-import type { HTMLAttributes, ReactNode } from "react"
-import { forwardRef } from "react"
+import type { HTMLAttributes, ReactNode } from 'voby'
+import { forwardRef } from 'voby'
 
 
 import styles from "./Container.module.scss"

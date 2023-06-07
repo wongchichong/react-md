@@ -1,5 +1,5 @@
-import type { ReactNode, ReactElement } from "react"
-import { createContext, useContext, useMemo } from "react"
+import type { ReactNode, ReactElement } from 'voby'
+import { createContext, useContext, useMemo } from 'voby'
 import createIdGenerator from "../../utils/createIdGenerator"
 
 type IdGenerator = ReturnType<typeof createIdGenerator>
@@ -16,7 +16,7 @@ export function useId(id?: FunctionMaybe<Nullable<string>>): string {
         }
 
         return generator()
-    }, [id, generator])
+    })
 }
 
 export interface IdProviderProps {
@@ -28,7 +28,7 @@ export function IdProvider({
     children,
     prefix = "autoid",
 }: IdProviderProps): Child {
-    const value = useMemo(() => createIdGenerator(prefix), [prefix])
+    const value = useMemo(() => createIdGenerator(prefix))
 
     return <Provider value={value}>{children}</Provider>
 }

@@ -1,4 +1,4 @@
-import type { HTMLAttributes, ReactElement } from "react"
+import type { HTMLAttributes, ReactElement } from 'voby'
 import { SVGIcon } from "@react-md/icon"
 
 export default function TwitterIcon(

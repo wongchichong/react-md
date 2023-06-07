@@ -1,5 +1,5 @@
-import type { ReactElement } from "react"
-import { useEffect } from "react"
+import type { ReactElement } from 'voby'
+import { useEffect } from 'voby'
 
 import { defaults } from "lodash"
 
@@ -75,7 +75,7 @@ export default function DemoPage(props: DemoPageProps): Child {
                 head.removeChild(link)
             })
         }
-    }, [fonts])
+    })
 
     return (
         <div id="demo-page-container" className={cn(styles.container, className)}>

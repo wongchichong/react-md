@@ -1,5 +1,5 @@
-import type { ChangeEvent, ReactElement } from "react"
-import { useCallback, useEffect, useRef, useState } from "react"
+import type { ChangeEvent, ReactElement } from 'voby'
+import { $, useEffect } from 'voby'
 
 import { useRouter } from "next/router"
 import type { AutoCompleteHandler } from "@react-md/autocomplete"
@@ -14,51 +14,47 @@ import styles from "./Search.module.scss"
 import SearchType from "./SearchType"
 
 export default function Search(): Child {
-    const [value, setValue] = useState("")
-    const [data, setData] = useState<readonly RouteMetadata[]>([])
+    const value = $("")
+    const data = $<readonly RouteMetadata[]>([])
     const router = useRouter()
 
-    const unmounted = useRef(false)
-    const filter = useRef(
-        throttle(
+    const unmounted = $(false)
+    const filter = $(throttle(
             (query: string) => {
                 (async function check() {
                     const response = await fetch(`/api/search?q=${query}`)
                     if (response.ok) {
                         const json = await response.json()
                         const data = json as readonly RouteMetadata[]
-                        if (!unmounted.current) {
-                            setData(data)
+                        if (!unmounted()) {
+                            data(data())
                         }
                     }
                 })()
             },
             500,
             { leading: true, trailing: true }
-        )
-    )
+        ))
 
-    const handleChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
+    const handleChange = ((event: ChangeEvent<HTMLInputElement>) => {
         const { value } = event.currentTarget
-        setValue(value)
-        if (!value) {
-            setData([])
-            filter.current.cancel()
-        } else {
-            filter.current(encodeURIComponent(value))
+        value(value())
+        if (!value()) {
+            data([])
+            filter().cancel      } else {
+            filter()(encodeURIComponent(value()))
         }
-    }, [])
+    })
 
     useEffect(() => {
-        unmounted.current = false
+        unmounted(false)
 
         return () => {
-            unmounted.current = true
+            unmounted(true)
         }
-    }, [])
+    })
 
-    const handleAutoComplete = useCallback<AutoCompleteHandler>(
-        (result) => {
+    const handleAutoComplete = ((result) => {
             const match = data[result.dataIndex]
             if (match) {
                 const { pageUrl, pathname } = match
@@ -69,11 +65,9 @@ export default function Search(): Child {
                         window.scrollTo(0, 0)
                     }
                 })
-                setData([])
+                data([])
             }
-        },
-        [data, router]
-    )
+        })
 
     const [focused, enable, disable] = useToggle(false)
 
@@ -81,7 +75,7 @@ export default function Search(): Child {
         <AutoComplete
             id="main-search"
             filter="none"
-            data={data.map(({ title, summary, type }) => ({
+            data()={data.map(({ title, summary, type }) => ({
                 title,
                 secondaryText: (
                     <HighlightedResult

@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { useEffect, useState } from "react"
+import { useEffect, $ } from 'voby'
 import '@react-md/react'
 
 type Refresh<T> = (key: string) => Promise<T>
@@ -23,7 +23,7 @@ export function useHotReload<T>(
     return initial
   }
 
-  const [state, setState] = useState(initial)
+  const state = $(initial)
   useEffect(() => {
     let cancelled = false;
 
@@ -33,14 +33,14 @@ export function useHotReload<T>(
         return
       }
 
-      setState(props)
+      state(props)
     })()
 
     return () => {
       cancelled = true
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [key])
+  })
 
-  return state
+  return state()
 }

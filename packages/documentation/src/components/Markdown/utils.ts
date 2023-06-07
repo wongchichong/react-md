@@ -1,9 +1,8 @@
-import {
-  RMD_VERSION,
-  GITHUB_URL,
-  COMMIT_SHA,
-  GITHUB_FILE_URL,
-} from "../../constants/github";
+import { 
+ RMD_VERSION, 
+ GITHUB_URL, 
+ COMMIT_SHA, 
+ GITHUB_FILE_URL,  } from "../../constants/github";
 import { PACKAGE_NAMES, SCSS_PACKAGES } from "../../constants/packages";
 
 type Transformer = (markdown: string) => string;

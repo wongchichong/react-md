@@ -1,4 +1,4 @@
-import type { ReactElement, ReactNode } from "react"
+import type { ReactElement, ReactNode } from 'voby'
 import type { AppBarNavProps } from "@react-md/app-bar"
 import { AppBarNav as RMDAppBarNav } from "@react-md/app-bar"
 import { Tooltip, useTooltip } from "@react-md/tooltip"

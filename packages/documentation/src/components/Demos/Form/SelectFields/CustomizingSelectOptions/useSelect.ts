@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { $ } from 'voby';
 
 type ChangeHandler = (nextValue: string) => void;
 
@@ -20,10 +20,10 @@ type ChangeHandler = (nextValue: string) => void;
 export default function useSelect(
   defaultValue: string
 ): [string, ChangeHandler] {
-  const [value, setValue] = useState(defaultValue);
-  const handleChange = useCallback((nextValue: string) => {
-    setValue(nextValue);
-  }, []);
+  const value = $(defaultValue);
+  const handleChange = ((nextValue: string) => {
+    value(nextValue);
+  });
 
-  return [value, handleChange];
+  return [value(), handleChange];
 }

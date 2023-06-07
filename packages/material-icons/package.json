@@ -3,13 +3,13 @@
   "version": "5.1.3",
   "description": "This package is just a simple wrapper for using material icons within react-md as either font icons or svg icons.",
   "scripts": {
+    "compile:bin": "tsc -p tsconfig.bin.json",
+    "update:icon": "node ./bin/cli.js update",
+    "compile": "pnpm clean && run-p compile:cjs compile:ejs",
     "executable": "chmod +x bin/cli.js",
     "compile:cjs": "tsc -p tsconfig.cjs.json",
     "compile:ejs": "tsc -p tsconfig.ejs.json",
     "clean": "del *.tsbuildinfo /s",
-    "compile": "pnpm clean && run-p compile:cjs compile:ejs",
-    "compile:bin": "tsc -p tsconfig.bin.json",
-    "update:icon": "node ./bin/cli.js update",
     "build-cli": "npm-run-all compile executable",
     "watcher": "chokidar \"bin/cli.js\" -c \"npm run executable\"",
     "watch": "npm-run-all -p \"compile -- -w\" watcher"

@@ -1,4 +1,4 @@
-import type { ReactElement } from "react"
+import type { ReactElement } from 'voby'
 import type { AppBarActionProps } from "@react-md/app-bar"
 import type { MenuItemProps } from "@react-md/menu"
 import { MenuItem } from "@react-md/menu"

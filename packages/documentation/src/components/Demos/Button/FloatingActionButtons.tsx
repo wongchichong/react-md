@@ -1,10 +1,9 @@
-import type { ReactElement } from "react";
-import {
-  StarSVGIcon,
-  StarHalfSVGIcon,
-  StarBorderSVGIcon,
-  StarsSVGIcon,
-} from "@react-md/material-icons";
+import type { ReactElement } from 'voby';
+import { 
+ StarSVGIcon, 
+ StarHalfSVGIcon, 
+ StarBorderSVGIcon, 
+ StarsSVGIcon,  } from "@react-md/material-icons";
 import { Button } from "@react-md/button";
 
 export default function FloatingActionButtons(): Child {

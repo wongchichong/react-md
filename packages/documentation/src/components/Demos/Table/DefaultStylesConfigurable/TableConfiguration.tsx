@@ -1,9 +1,8 @@
-import type { ReactElement } from "react"
+import type { ReactElement } from 'voby'
 import { Checkbox, Fieldset, Select, TextField } from "@react-md/form"
-import type {
-    TableCellHorizontalAlignment,
-    TableCellVerticalAlignment,
-} from "@react-md/table"
+import type { 
+ TableCellHorizontalAlignment, 
+ TableCellVerticalAlignment,  } from "@react-md/table"
 import { Grid } from "@react-md/utils"
 
 import { useDefaultStylesContext } from "./context"

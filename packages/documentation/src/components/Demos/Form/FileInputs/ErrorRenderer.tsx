@@ -1,5 +1,5 @@
-import type { ReactElement } from "react";
-import { Fragment } from "react";
+import type { ReactElement } from 'voby';
+import { Fragment } from 'voby';
 import filesize from "filesize";
 import type { FileValidationError } from "@react-md/form";
 import { isFileSizeError } from "@react-md/form";

@@ -1,15 +1,14 @@
-import type { ReactElement } from "react"
+import type { ReactElement } from 'voby'
 import { Typography } from "@react-md/typography"
-import {
-    AccessAlarmFontIcon,
-    AccessAlarmSVGIcon,
-    Rotation3DFontIcon, // the sprite name for this was 3d_rotation.svg
-    Rotation3DSVGIcon, // the sprite name for this was 3d_rotation.svg
-    TvFontIcon,
-    TvSVGIcon,
-    HomeFontIcon,
-    HomeSVGIcon,
-} from "@react-md/material-icons"
+import { 
+ AccessAlarmFontIcon, 
+ AccessAlarmSVGIcon, 
+ Rotation3DFontIcon, // the sprite name for this was 3d_rotation.svg
+ Rotation3DSVGIcon, // the sprite name for this was 3d_rotation.svg
+ TvFontIcon, 
+ TvSVGIcon, 
+ HomeFontIcon, 
+ HomeSVGIcon,  } from "@react-md/material-icons"
 
 import styles from "./SimpleExamples.module.scss"
 

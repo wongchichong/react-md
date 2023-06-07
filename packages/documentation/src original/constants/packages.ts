@@ -1,0 +1,49 @@
+/*
+ * This file was generated from @react-md/dev-utils and should not be updated
+ * manually.
+ */
+
+export const PACKAGE_NAMES = [
+  "alert",
+  "app-bar",
+  "autocomplete",
+  "avatar",
+  "badge",
+  "button",
+  "card",
+  "chip",
+  "dialog",
+  "divider",
+  "elevation",
+  "expansion-panel",
+  "form",
+  "icon",
+  "layout",
+  "link",
+  "list",
+  "material-icons",
+  "media",
+  "menu",
+  "overlay",
+  "portal",
+  "progress",
+  "react",
+  "sheet",
+  "states",
+  "table",
+  "tabs",
+  "theme",
+  "tooltip",
+  "transition",
+  "tree",
+  "typography",
+  "utils",
+];
+
+export const TYPESCRIPT_PACKAGES = PACKAGE_NAMES.filter(
+  (name) => !/elevation|theme/.test(name)
+);
+
+export const SCSS_PACKAGES = PACKAGE_NAMES.filter(
+  (name) => !/autocomplete|material-icons|portal/.test(name)
+);

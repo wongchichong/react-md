@@ -1,5 +1,5 @@
-import type { ReactElement } from "react";
-import { useState } from "react";
+import type { ReactElement } from 'voby';
+import { $ } from 'voby';
 import { Button } from "@react-md/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@react-md/card";
 import { Chip } from "@react-md/chip";
@@ -14,7 +14,7 @@ const sizes = Array.from({ length: 8 }, (_, i) => {
 });
 
 export default function ChoiceChips(): Child {
-  const [selectedSize, setSelectedSize] = useState<string>("02");
+  const selectedSize = $<string>("02");
   return (
     <Card className={styles.container}>
       <CardHeader>
@@ -37,7 +37,7 @@ export default function ChoiceChips(): Child {
               className={styles.chip}
               selected={selectedSize === size}
               selectedThemed
-              onClick={() => setSelectedSize(size)}
+              onClick={() => selectedSize(size)}
             >
               {size}
             </Chip>

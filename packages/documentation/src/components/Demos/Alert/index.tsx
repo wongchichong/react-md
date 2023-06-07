@@ -1,6 +1,6 @@
-import React from 'react'
+import React from 'voby'
 import { createRoot } from 'react-dom/client'
-import type { ReactElement } from "react"
+import type { ReactElement } from 'voby'
 
 import description from "./README.md"
 import DemoPage from "../DemoPage"

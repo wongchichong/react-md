@@ -1,4 +1,4 @@
-import { CSSProperties, ObservableMaybe, $$ } from 'voby'
+import { ObservableMaybe, $$ } from 'voby'
 import { $, useEffect } from 'voby'
 import type { CalculateFixedPositionOptions, FixedPositionStyle } from "@react-md/utils"
 import {
