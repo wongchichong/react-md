@@ -68,8 +68,7 @@
     "@react-md/tree": "workspace:../tree",
     "@react-md/typography": "workspace:../typography",
     "@react-md/utils": "workspace:../utils",
-    "pnpm": "^8.3.1",
-    "react2voby": "workspace:../../../react2voby"
+    "pnpm": "^8.3.1"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^22.0.2",

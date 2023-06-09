@@ -14,8 +14,7 @@
     "types": [
       "voby/dist/types/jsx/jsx",
       "voby/dist/types/jsx/types",
-      "jest",
-      "@types/testing-library__jest-dom"
+      "jest"
     ],
     "rootDir": "./src",
     "allowJs": false,
