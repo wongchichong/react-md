@@ -2,11 +2,11 @@
   "name": "react-md",
   "version": "5.1.4",
   "description": "This is the full react-md library bundled together for convenience.",
-  "main": "./lib/index.js",
-  "module": "./es/index.js",
-  "unpkg": "./dist/umd/react-md.production.min.js",
-  "types": "./dist/types/index.d.ts",
-  "sass": "./dist/_everything.scss",
+  "main": "./dist/index.cjs.js",
+  "-module": "./dist/index.es.js",
+  "-browser": "./dist/index.umd.js",
+  "-types": "./dist/types/index.d.ts",
+  "-sass": "./dist/styles.scss",
   "sideEffects": [
     "dist/**/*"
   ],
@@ -68,6 +68,7 @@
     "@react-md/tree": "workspace:../tree",
     "@react-md/typography": "workspace:../typography",
     "@react-md/utils": "workspace:../utils",
+    "@react-md/react": "workspace:../react",
     "pnpm": "^8.3.1"
   },
   "devDependencies": {
@@ -89,13 +90,6 @@
   },
   "peerDependencies": {
     "voby": "workspace:../../../woby"
-  },
-  "peerDependenciesMeta": {
-    "react": {
-      "optional": false
-    }
-  },
-  "publishConfig": {
-    "access": "public"
   }
+
 }

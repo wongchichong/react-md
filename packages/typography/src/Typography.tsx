@@ -1,5 +1,6 @@
 import type { CSSProperties, } from 'voby'
 import { createElement, Component, $$ } from 'voby'
+import{jsx} from "voby/jsx-runtime"
 
 import type { ClassNameCloneableChild } from "@react-md/utils"
 import { bem } from "@react-md/utils"
@@ -256,9 +257,9 @@ export const Typography = /* TypographyHTMLElement */(
         return (children as TypographyRenderFunction)({ className })
     }
 
+    // const C =getComponent(component, $$(type)) as IntrinsicElement<any>
+    // return <C { ...props} { ...{ className, ref, children} }         />
     return createElement(getComponent(component, $$(type)),
-        { ...props, className, ref },
-        //@ts-ignore
-        children
+        { ...props, className, ref, children }        
     )
 }

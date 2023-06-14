@@ -3,6 +3,7 @@
   "compilerOptions": {
     "outDir": "./dist",
     "rootDir": "./src",
+    "declarationDir": "./dist/types",
     "skipLibCheck": true,
     "tsBuildInfoFile": "./dist/tsconfig.tsbuildinfo",
     "composite": true
