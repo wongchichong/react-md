@@ -13,7 +13,7 @@ const config = defineConfig({
     build: {
         minify: false,
         lib: {
-            entry: ["./src/index.ts", "./src/styles.scss"],
+            entry: ["./src/index.ts", "./src/styles.scss", "./src/scssVariables.ts"],
             name: "app-bar",
             formats: ['cjs', 'es'],
             fileName: (format: string, entryName: string) => `${entryName}.${format}.js`

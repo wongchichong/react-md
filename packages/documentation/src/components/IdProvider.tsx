@@ -1,6 +1,6 @@
 import type { ReactNode, ReactElement } from 'voby'
 import { createContext, useContext, useMemo } from 'voby'
-import createIdGenerator from "../../utils/createIdGenerator"
+import createIdGenerator from "../utils/createIdGenerator"
 
 type IdGenerator = ReturnType<typeof createIdGenerator>
 

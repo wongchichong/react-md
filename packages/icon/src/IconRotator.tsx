@@ -65,7 +65,6 @@ export const IconRotator = (
     const className = [block({ animate, rotated }), propClassName]
     if (!forceIconWrap/*  && isValidElement(children) */) {
         const child = Children.only(children)
-        debugger
         return cloneElement(child, {
             className: [className] //, child.props.className),
         })

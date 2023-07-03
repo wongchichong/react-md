@@ -1,4 +1,4 @@
-import { useMemo } from 'voby'
+import { useMemo, $$, store } from 'voby'
 
 import type { AddMessage, Message, ToastMessage } from "./MessageQueueContext"
 import {
@@ -6,6 +6,7 @@ import {
     MessageQueueActionsContext,
     MessageQueueContext,
     MessageVisibilityContext,
+    useAddMessage,
 } from "./MessageQueueContext"
 import type { SnackbarProps } from "./Snackbar"
 import type { ActionEventHandler } from "./SnackbarQueue"
@@ -42,6 +43,7 @@ export function MessageQueue<M extends ToastMessage = ToastMessage>({
     children,
     ...props
 }: MessageQueueProps<M>): Element {
+    debugger
     const {
         queue,
         visible,
@@ -49,30 +51,30 @@ export function MessageQueue<M extends ToastMessage = ToastMessage>({
         startTimer,
         stopTimer,
         restartTimer,
-        // addMessage,
-        // popMessage,
-        // resetQueue,
+        addMessage,
+        popMessage,
+        resetQueue,
     } = useMessageQueue<M>({ timeout, duplicates, defaultQueue })
     const actions = useMemo(() => ({
-        // popMessage,
+        popMessage,
         hideMessage,
         startTimer,
         stopTimer,
-        // resetQueue,
+        resetQueue,
         restartTimer,
     }))
 
     return (
-        // <AddMessageContext.Provider value={queue.addMessage as AddMessage<Message>}>
-        // <MessageQueueActionsContext.Provider value={actions}>
-        <MessageVisibilityContext.Provider value={visible}>
-            <MessageQueueContext.Provider value={queue.state}>
-                {children}
-            </MessageQueueContext.Provider>
-            {/** @ts-ignore */}
-            <SnackbarQueue {...props} queue={queue} />
-        </MessageVisibilityContext.Provider>
-        // </MessageQueueActionsContext.Provider>
-        // </AddMessageContext.Provider>
+        <AddMessageContext.Provider value={addMessage as AddMessage<Message>}>
+             <MessageQueueActionsContext.Provider value={actions}>
+            <MessageVisibilityContext.Provider value={visible}>
+
+                <MessageQueueContext.Provider value={queue.state}>
+                    {children}
+                </MessageQueueContext.Provider>
+                <SnackbarQueue {...props} queue={queue.state} />
+            </MessageVisibilityContext.Provider>  
+            </MessageQueueActionsContext.Provider>    
+            </AddMessageContext.Provider>
     )
 }

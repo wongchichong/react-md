@@ -6,10 +6,8 @@ import {
     useInheritContext,
     useParentContext,
 } from "./useInheritContext"
-
 export type AppBarPosition = "top" | "bottom"
 export type AppBarTheme = "clear" | "primary" | "secondary" | "default"
-
 /**
  * `AppBar`s have multiple heights available:
  *

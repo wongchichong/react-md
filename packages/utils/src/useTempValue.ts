@@ -1,11 +1,5 @@
 import type { ObservableMaybe } from 'voby'
-import { $ } from 'voby'
-
-type CurrentValueRef<T> = ObservableMaybe<T>
-type SetValue<T> = (nextValue: T) => void
-type ResetValue = () => void
-
-type ReturnValue<T> = [CurrentValueRef<T>, SetValue<T>, ResetValue]
+import { $, useEffect } from 'voby'
 
 /**
  * Creates a temporary value that gets reset every `x`ms back to the provided
@@ -24,19 +18,22 @@ type ReturnValue<T> = [CurrentValueRef<T>, SetValue<T>, ResetValue]
 export function useTempValue<T>(
     defaultValue: T,
     resetTime = 500
-): ReturnValue<T> {
+){
     const value = $(defaultValue)
     const timeout = $<number>()
-    const resetValue = $(() => {
+    const resetValue = () => {
         window.clearTimeout(timeout())
         value(defaultValue)
+    }
+
+    useEffect(()=>{
+        if(value() != defaultValue){
+            // if(timeout()){
+            //     window.clearTimeout(timeout())  
+            // }    
+            timeout(window.setTimeout(resetValue, resetTime))
+        }
     })
 
-    const setValue = $((nextValue: T) => {
-        value(nextValue)
-        window.clearTimeout(timeout())
-        timeout(window.setTimeout(resetValue, resetTime))
-    })
-
-    return [value, setValue, resetValue]
+    return [value, resetValue]
 }

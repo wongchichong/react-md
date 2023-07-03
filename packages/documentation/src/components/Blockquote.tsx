@@ -1,6 +1,3 @@
-import type { HTMLAttributes, ReactElement } from 'voby'
-
-
 import styles from "./Blockquote.module.scss"
 
 export default function Blockquote({
@@ -9,7 +6,7 @@ export default function Blockquote({
     ...props
 }: HTMLAttributes<HTMLQuoteElement>): Child {
     return (
-        <blockquote {...props} className={cn(styles.blockquote, className)}>
+        <blockquote {...props} className={[styles.blockquote, className]}>
             {children}
         </blockquote>
     )

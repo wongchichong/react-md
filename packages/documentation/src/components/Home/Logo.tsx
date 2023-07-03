@@ -1,4 +1,3 @@
-import type { ReactElement, HTMLAttributes } from 'voby'
 
 
 import styles from "./Logo.module.scss"
@@ -8,7 +7,7 @@ export default function Logo({
 }: HTMLAttributes<SVGSVGElement>): Child {
     return (
         <svg
-            className={cn(className)}
+            className={(className)}
             height="206px"
             width="206px"
             viewBox="0 0 206 206"
@@ -165,7 +164,7 @@ export default function Logo({
                                 xlinkHref="#main-logo-circle-path"
                             />
                         </g>
-                        <text className={cn(styles.text, styles.secondary)} x="103" y="103">
+                        <text className={[styles.text, styles.secondary]} x="103" y="103">
                             MD
                         </text>
                     </g>

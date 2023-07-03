@@ -7,7 +7,8 @@ import '@react-md/react'
 import { 
  Configuration, 
  Layout as RMDLayout, 
- useLayoutNavigation,  } from "@react-md/layout"
+ useLayoutNavigation, 
+ } from "@react-md/layout"
 import { 
  ArrowDropDownSVGIcon, 
  ArrowUpwardSVGIcon, 
@@ -21,7 +22,8 @@ import {
  MenuSVGIcon, 
  NotificationsSVGIcon, 
  RadioButtonCheckedSVGIcon, 
- RemoveRedEyeSVGIcon,  } from "@react-md/material-icons"
+ RemoveRedEyeSVGIcon, 
+ } from "@react-md/material-icons"
 import type { MenuConfiguration } from "@react-md/menu"
 import { useCrossFadeTransition } from "@react-md/transition"
 import type { AppSizeListenerProps } from "@react-md/utils"
@@ -104,14 +106,14 @@ export default function Layout({
         // since the sandbox route is a full page modal, don't want to transition
         // to make it appear smoother between the two
         const isTransitionable =
-            !prevPathname().startsWithdbox") &&
+            !prevPathname().startsWith("/sandbox") &&
             !pathname.startsWith("/sandbox")
 
         prevPathname(pathname)
         if (isTransitionable) {
             transitionTo("enter")
         }
-    }, [pathname, transitionTo])
+    })
 
     return (
         <Configuration

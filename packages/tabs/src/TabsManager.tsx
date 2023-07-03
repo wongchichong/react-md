@@ -100,8 +100,9 @@ export interface TabsManagerProps
     /**
      * The children to render that should eventually have the `Tabs` component and
      * the `TabContent` for matching specific tabs.
+     * */
     children: Children;
-    children: Child;
+    // children: Child;
 
     /**
      * Boolean if all the `tabs` that have icons should be stacked instead of
@@ -166,8 +167,9 @@ export function TabsManager({
         typeof propActiveIndex === "number"
             ? (onActiveIndexChange as TabsManagerContext["onActiveIndexChange"])
             : handleActiveIndexChange
-
-    const value = useMemo(() => ({
+    
+    console.log("abf")
+    const value = (() => ({
         activeIndex,
         onActiveIndexChange: updateActiveIndex,
         tabs: tabs.map((config, i) => {
@@ -192,7 +194,7 @@ export function TabsManager({
             }
         }),
         tabsId,
-    }))
+    }))()
 
     return <Provider value={value}>{children}</Provider>
 }

@@ -1,5 +1,5 @@
-import type { ObservableMaybe, Observable } from 'voby'
-import { useEffect } from 'voby'
+import type { ObservableMaybe, } from 'voby'
+import { useEffect, $$ } from 'voby'
 
 import { containsElement } from "./containsElement"
 
@@ -8,17 +8,17 @@ import { containsElement } from "./containsElement"
  * @internal
  */
 export function getElement<E extends HTMLElement>(
-    element: Observable<E | null> | E | null
+    element: ObservableMaybe<E | null> | E | null
 ): E | null {
-    if (!element) {
+    if (!$$(element)) {
         return null
     }
 
-    if (typeof (element as Observable<E | null>)() !== "undefined") {
-        return (element as Observable<E | null>)()
+    if ($$(element) instanceof HTMLElement)
+        return $$(element)  //as E | null
+    else {
+        return null
     }
-
-    return element as E | null
 }
 
 type Contains = typeof containsElement
@@ -45,7 +45,7 @@ export interface CloseOnOutsideClickOptions<E extends HTMLElement> {
     /**
      * Boolean if the behavior is enabled.
      */
-    enabled: FunctionMaybe<boolean>
+    enabled: ObservableMaybe<boolean>
 
     /**
      * The element that should not trigger the onOutsideClick callback when it or
@@ -75,18 +75,20 @@ export function useCloseOnOutsideClick<E extends HTMLElement>({
     element,
     onOutsideClick,
 }: CloseOnOutsideClickOptions<E>): void {
-    useEffect(() => {
-        if (!enabled) {
-            return
+    
+    function handleClick(event: MouseEvent): void {
+        const target = event.target as HTMLElement | null
+        const el = getElement<E>(element)
+
+        if (!containsElement(el, target)) {
+            onOutsideClick(el, target, containsElement)
         }
+    }
 
-        function handleClick(event: MouseEvent): void {
-            const target = event.target as HTMLElement | null
-            const el = getElement<E>(element)
-
-            if (!containsElement(el, target)) {
-                onOutsideClick(el, target, containsElement)
-            }
+    useEffect(() => {
+        if (!$$(enabled)) {
+            window.removeEventListener("click", handleClick)
+            return
         }
 
         window.addEventListener("click", handleClick)

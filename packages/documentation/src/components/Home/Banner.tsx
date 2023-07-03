@@ -1,8 +1,7 @@
-import type { ReactElement } from 'voby';
 import { $, useEffect } from 'voby';
 import { Typography } from "@react-md/typography";
 
-import { useFixedAppBarContext } from "components/Layout/fixedAppBarContext";
+import { useFixedAppBarContext } from "../Layout/fixedAppBarContext";
 
 import Logo from "./Logo";
 import styles from "./Banner.module.scss";

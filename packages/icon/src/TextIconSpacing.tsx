@@ -112,7 +112,6 @@ export function TextIconSpacing({
     let iconEl: Child = propIcon
     let content = children
     if (!forceIconWrap /* && isValidElement(propIcon) */) {
-        debugger
         const icon = Children.only(propIcon)
         iconEl = cloneElement(icon, {
             className: [baseclass] //, icon.className],

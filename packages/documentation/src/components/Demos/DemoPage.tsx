@@ -1,4 +1,3 @@
-import type { ReactElement } from 'voby'
 import { useEffect } from 'voby'
 
 import { defaults } from "lodash"
@@ -78,7 +77,7 @@ export default function DemoPage(props: DemoPageProps): Child {
     })
 
     return (
-        <div id="demo-page-container" className={cn(styles.container, className)}>
+        <div id="demo-page-container" className={[styles.container, className]}>
             <DemoPageHeader packageName={packageName}>{description}</DemoPageHeader>
             {demos.map((demo, index) => (
                 // eslint-disable-next-line react/jsx-key

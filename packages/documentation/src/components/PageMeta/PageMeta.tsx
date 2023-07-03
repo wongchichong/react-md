@@ -1,4 +1,3 @@
-import type { ReactElement } from 'voby'
 import Head from "next/head"
 import { useRouter } from "next/router"
 

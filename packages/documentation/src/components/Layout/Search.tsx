@@ -10,7 +10,7 @@ import { throttle } from "lodash"
 
 import type { RouteMetadata } from "constants/meta/types"
 
-import styles from "./Search.module.scss"
+//import styles from "./Search.module.scss"
 import SearchType from "./SearchType"
 
 export default function Search(): Child {
@@ -75,7 +75,7 @@ export default function Search(): Child {
         <AutoComplete
             id="main-search"
             filter="none"
-            data()={data.map(({ title, summary, type }) => ({
+            data={data().map(({ title, summary, type }) => ({
                 title,
                 secondaryText: (
                     <HighlightedResult

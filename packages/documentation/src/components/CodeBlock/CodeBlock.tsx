@@ -1,13 +1,9 @@
-import type { DOMAttributes, HTMLAttributes, ReactNode } from 'voby'
-import { forwardRef } from 'voby'
-
-
 import Code from "../Code"
 import styles from "./CodeBlock.module.scss"
 import LineNumbers from "./LineNumbers"
 import { highlightCode } from "./utils"
 
-export interface CodeBlockProps extends HTMLAttributes<HTMLPreElement> {
+export interface CodeBlockProps<T extends HTMLPreElement> extends HTMLAttributes<T> {
     /**
      * An optional code language. This should be one of:
      * - js
@@ -53,7 +49,7 @@ export interface CodeBlockProps extends HTMLAttributes<HTMLPreElement> {
 /**
  * Renders a code block with highlighted code using PrismJS.
  */
-export default forwardRef<HTMLPreElement, CodeBlockProps>(function CodeBlock(
+export default function CodeBlock(
     {
         className,
         language = "markdown",
@@ -61,10 +57,10 @@ export default forwardRef<HTMLPreElement, CodeBlockProps>(function CodeBlock(
         highlight = true,
         lineNumbers: propLineNumbers,
         suppressHydrationWarning = false,
+        ref,
         ...props
-    },
-    ref
-) {
+    }:CodeBlockProps<HTMLPreElement>) 
+    {
     const code = typeof children === "string" ? children : ""
 
     const lineNumbers =
@@ -84,12 +80,12 @@ export default forwardRef<HTMLPreElement, CodeBlockProps>(function CodeBlock(
             {...props}
             data-linenumbers={lineNumbers || undefined}
             ref={ref}
-            className={cn(
+            className={[
                 styles.block,
                 lineNumbers && styles.counted,
                 `language-${language}`,
                 className
-            )}
+            ]}
             suppressHydrationWarning={suppressHydrationWarning}
         >
             {lineNumbers && code && <LineNumbers code={code} />}
@@ -102,4 +98,4 @@ export default forwardRef<HTMLPreElement, CodeBlockProps>(function CodeBlock(
             </Code>
         </pre>
     )
-})
+}

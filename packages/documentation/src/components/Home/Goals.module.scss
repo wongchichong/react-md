@@ -1,0 +1,11 @@
+@use '@react-md/react-md/dist/styles' as *;
+
+.goals {
+  @media (min-width: 37.5625rem) {
+    padding: 0 2rem;
+  }
+
+  p {
+    @include rmd-typography(headline-6);
+  }
+}

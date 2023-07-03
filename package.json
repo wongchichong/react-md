@@ -4,9 +4,9 @@
   "version": "2.4.0",
   "description": "The mono-repo for react-md",
   "main": "index.js",
-  "type": "module",
   "scripts": {
     "preinstall": "npx only-allow pnpm",
+    "test:build": "cross-env NODE_ENV=test && vite build --config vite.config.test.ts",
     "release//": "git add . && git commit -m \"Bump version\" git push && pnpm version patch",
     "prepare//": "husky install",
     "rmd-codemod": "node packages/codemod/bin/rmd-codemod.js",
@@ -112,52 +112,46 @@
   },
   "homepage": "https://react-md.dev",
   "dependencies": {
-    "pnpm": "^8.3.1",
+    "@testing-library/jasmine-dom": "^1.3.3",
+    "@types/testing-library__jasmine-dom": "^1.3.0",
     "voby": "workspace:../woby"
   },
   "devDependencies": {
     "@babel/plugin-transform-typescript": "^7.21.3",
     "@mlaursen/eslint-config": "^1.9.0",
     "@testing-library/dom": "^8.20.0",
-    "@testing-library/jest-dom": "^5.16.5",
-    "@testing-library/react": "^12.1.5",
-    "@testing-library/react-hooks": "^7.0.2",
     "@testing-library/user-event": "13.5.0",
     "@types/fs-extra": "^9.0.13",
-    "@types/glob": "^7.2.0",
-    "@types/jest": "^29.5.1",
+    "@types/jasmine": "^4.3.1",
     "@types/lodash": "^4.14.194",
     "@types/node": "^18.16.3",
     "@types/prettier": "^2.7.2",
-    "@types/reach__router": "^1.3.11",
-    "@types/react-dom": "^17.0.20",
     "@types/react-test-renderer": "^17.0.2",
     "chokidar": "^3.5.3",
     "dev-utils": "workspace:./packages/dev-utils",
     "eslint": "^8.39.0",
+    "glob": "^10.2.6",
     "husky": "^7.0.4",
     "identity-obj-proxy": "^3.0.0",
+    "jasmine": "^5.0.1",
     "jasmine-browser-runner": "^2.0.0",
     "jasmine-core": "^5.0.0",
-    "jest": "^29.5.0",
-    "jest-environment-jsdom": "^29.5.0",
-    "jest-watch-typeahead": "^1.1.0",
-    "lerna": "^4.0.0",
     "lint-staged": "^12.5.0",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.8.8",
-    "react-test-renderer": "^17.0.2",
     "stylelint": "^14.16.1",
     "stylelint-config-recommended": "^7.0.0",
     "stylelint-config-standard": "^25.0.0",
     "stylelint-config-standard-scss": "^3.0.0",
     "stylelint-order": "^5.0.0",
     "stylelint-scss": "^4.6.0",
-    "ts-jest": "^29.1.0",
     "ts-node": "^10.9.1",
     "typescript": "^5.0.4",
-    "vite-plugin-externalize-deps": "^0.6.0",
-    "vitest": "^0.30.1"
+    "vite": "^4.3.3",
+    "vite-plugin-dts": "^2.3.0",
+    "vite-plugin-sass-dts": "^1.3.4",
+    "vite-plugin-static-copy": "^0.13.1",
+    "voby-jasmine": "workspace:../voby-jasmine"
   },
   "//lint-staged": {
     "**/*.{ts,tsx}": [
@@ -167,6 +161,9 @@
     "**/*.{scss,js,jsx,md,yml,json}": [
       "prettier --write"
     ]
+  },
+  "peerDependencies": {
+    "oby": "workspace:../oby"
   },
   "workspaces": [
     "packages/*"

@@ -1,6 +1,6 @@
 // import type { Element } from 'voby'
 import { Children } from '@react-md/react'
-import { cloneElement, createContext, $, useContext, useEffect, useMemo, $$ } from 'voby'
+import { cloneElement, createContext, $, useContext, useEffect, useMemo, $$, Observable } from 'voby'
 
 /**
  * Note: unlike the `dir` DOM attribute, the `"auto"` value is not supported
@@ -16,7 +16,7 @@ export interface WritingDirectionContext {
     /**
      * The current writing direction that is being inherited.
      */
-    dir: WritingDirection
+    dir: Observable<WritingDirection>
 
     /**
      * Toggles the current writing direction for the first parent `Dir` component.
@@ -31,7 +31,7 @@ interface InheritableContext extends WritingDirectionContext {
     root: boolean
 }
 
-const context = createContext<InheritableContext>({
+const context = createContext<ObservableMaybe<InheritableContext>>({
     root: true,
     dir: "ltr",
     toggleDir: () => {
@@ -49,7 +49,7 @@ const { Provider } = context
  * @remarks \@since 2.3.0
  */
 export function useDir(): WritingDirectionContext {
-    const { root: _root, ...current } = useContext(context)
+    const { root: _root, ...current } = $$(useContext(context))
     return current
 }
 
@@ -123,7 +123,7 @@ export const DEFAULT_DIR = (): WritingDirection => {
  * @remarks \@since 2.3.0
  */
 export function Dir({ children, defaultDir = DEFAULT_DIR, }: DirProps): Element {
-    const { root } = useContext(context)
+    const { root } = $$(useContext(context))
     const dir = $<WritingDirection>($$(defaultDir))
     useEffect(() => {
         if (!root || typeof document === "undefined") {
@@ -137,14 +137,14 @@ export function Dir({ children, defaultDir = DEFAULT_DIR, }: DirProps): Element 
         }
     })
 
-    const toggleDir = $(() => {
+    const toggleDir = () => {
         dir((prevDir) => (prevDir === "ltr" ? "rtl" : "ltr"))
-    })
+    }
 
-    const value = useMemo<InheritableContext>(() => ({ root: false, dir: dir(), toggleDir }))
+    const value = useMemo<InheritableContext>(() => ({ root: false, dir: dir, toggleDir }))
     let child = Children.only(children)
     if (!root) {
-        child = cloneElement(child, { dic: dir() })
+        child = cloneElement(child, { dir: dir })
     }
 
     return <Provider value={value}>{child}</Provider>

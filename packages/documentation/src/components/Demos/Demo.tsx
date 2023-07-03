@@ -1,7 +1,6 @@
 import type { ReactElement } from 'voby'
 
 import { AppBar } from "@react-md/app-bar"
-import { AppBar } from "../../../../app-bar/src/AppBar"
 import { Divider } from "@react-md/divider"
 import { useAppSize, useToggle } from "@react-md/utils"
 

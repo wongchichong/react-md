@@ -2,9 +2,7 @@
  * @jest-environment node
  */
 
-import { describe, expect, test, it, jest } from 'vitest';
 import { unitToNumber } from "../unitToNumber";
-
 describe("unitToNumber", () => {
   it("should return the correct value for numbers and px strings", () => {
     expect(typeof document).toBe("undefined");

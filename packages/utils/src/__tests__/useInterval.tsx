@@ -1,6 +1,5 @@
-import { describe, expect, test, it, jest } from 'vitest'
-import { render } from "@testing-library/react";
-import { act, renderHook } from "@testing-library/react-hooks";
+import { render } from "voby";
+import {act, renderHook, jest} from "voby-jasmine"
 
 import { useInterval } from "../useInterval";
 
@@ -25,7 +24,7 @@ function Test({ cb, delay = 300, defaultRunning = false }: TestProps): null {
 
 // going to remove in next major release
 // eslint-disable-next-line jest/no-disabled-tests
-describe.skip("useInterval", () => {
+describe("useInterval", () => {
   it("should default to not starting the interval when mounted", () => {
     const cb = jest.fn();
     const { result } = renderHook(() => useInterval(cb, 300));

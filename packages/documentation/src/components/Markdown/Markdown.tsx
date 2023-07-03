@@ -1,4 +1,3 @@
-import type { HTMLAttributes, ReactElement } from 'voby'
 import { useEffect, $ } from 'voby'
 
 import { Markdown as MarkdownRenderer } from "react-marked-renderer"
@@ -50,13 +49,12 @@ export default function Markdown({
         <>
             <div
                 {...props}
-                className={cn(
-                    styles.container,
+                className={[styles.container,
                     {
                         [styles.marginless]: disableSinglePMargin,
                     },
                     className
-                )}
+                ]}
             >
                 <MarkdownRenderer
                     markdown={markdown}

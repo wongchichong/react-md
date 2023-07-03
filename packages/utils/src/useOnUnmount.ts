@@ -1,4 +1,4 @@
-import { useEffect, $ } from 'voby'
+import { useEffect, $$, isObservable } from 'voby'
 
 /**
  * A simple hook that only triggers the callback when a component is unmounted.
@@ -23,14 +23,18 @@ import { useEffect, $ } from 'voby'
  * @remarks \@since 2.7.1
  * @param callback - the function to call when the component unmounts.
  */
-export function useOnUnmount(callback: () => void): void {
-  const ref = $(callback)
-  useEffect(() => {
-    ref(callback)
-  })
+export function useOnUnmount(callback: ObservableMaybe<Function>): void {
+
 
   // return useEffect(() => () => ref.current());
 
   //@ts-ignore
-  return useEffect(() => (() => ref()()))
+  return useEffect(() => (
+    () => {
+      if (isObservable(callback))
+        $$(callback)()
+      else {
+        callback()
+      }
+    }))
 }

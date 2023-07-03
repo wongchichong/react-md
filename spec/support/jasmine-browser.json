@@ -1,9 +1,9 @@
 {
-  "srcDir": "src",
+  "srcDir": "test",
   "srcFiles": [],
-  "specDir": ".",
+  "specDir": "test",
   "specFiles": [
-    "spec/**/*[sS]pec.?(m)js"
+    "**/*[tT]est.?(m)js"
   ],
   "helpers": [
     "spec/helpers/**/*.?(m)js"
@@ -14,6 +14,12 @@
     "stopSpecOnExpectationFailure": false,
     "stopOnSpecFailure": false,
     "random": true
+  },
+  "importMap": {
+    "moduleRootDir": "node_modules",
+    "imports": {
+      "voby":"woby/dist/index.es.mjs"
+    }
   },
   "browser": {
     "name": "firefox"

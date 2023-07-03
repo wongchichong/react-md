@@ -2,7 +2,8 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "allowJs": true,
-    "jsx": "preserve",
+    "jsx": "react-jsx",
+    "jsxImportSource": "voby",
     "noEmit": true,
     "target": "esnext",
     "rootDirs": ["src", "../../../../packages"],
@@ -11,7 +12,8 @@
     "incremental": true,
     "tsBuildInfoFile": "./dist/tsconfig.tsbuildinfo",
     "typeRoots": [
-      "@react-md/dev-utils/@types"
+      "@react-md/dev-utils/@types",
+      "voby/dist/types"
     ],
     "moduleResolution": "node"
   },

@@ -46,13 +46,14 @@ function getId(
  *
  * @internal
  */
-function SnackbarQueueT<M extends ToastMessage = ToastMessage>(
+export function SnackbarQueueT<M extends ToastMessage = ToastMessage>(
     { queue, onActionClick, ...props }: SnackbarQueueProps<M>,
     ref?: Observable<HTMLDivElement>
 ): Element {
-    const [toast] = queue.state
+    debugger
+    const [toast] = queue
     const visible = useMessageVisibility()
-    const { /* popMessage, */ hideMessage, startTimer } = useMessageQueueActions()
+    const {  hideMessage, startTimer } = useMessageQueueActions()
 
     let content = null
     if (toast) {

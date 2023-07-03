@@ -1,10 +1,10 @@
-import type { ReactElement, ReactNode } from 'voby'
 import { 
  createContext, 
  useContext, 
  useEffect, 
  useMemo, 
- $,  } from 'voby'
+ $, 
+ } from 'voby'
 import Cookie from "js-cookie"
 import '@react-md/react'
 
@@ -77,7 +77,6 @@ export function CodePreferenceProvider({
 }: CodePreferenceProviderProps): Child {
     const pref = $(defaultPreference)
     const value = useMemo(() => ({
-            pref(),
             toggle() {
                 pref((prev) => (prev === "js" ? "ts" : "js"))
             },

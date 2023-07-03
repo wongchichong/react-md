@@ -16,6 +16,7 @@ export type TabsProps<T extends EventTarget =  HTMLDivElement> = Omit<
  * parent `TabsManager` component inside of the `TabsList`.
  */
 export const Tabs = ({ ref, ...props }: TabsProps<HTMLDivElement>) => {
+    debugger
     const { tabsId, tabs, activeIndex, onActiveIndexChange } = useTabs()
     const horizontal = props.orientation !== "vertical"
 

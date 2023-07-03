@@ -1,7 +1,7 @@
 import type { ReactElement } from 'voby';
 
-import Code from "components/Code";
-import Link from "components/Link";
+import Code from "../../Code";
+import Link from "../../Link";
 
 import { UNPKG } from "./constants";
 import TableCellList from "./TableCellList";

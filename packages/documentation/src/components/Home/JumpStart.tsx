@@ -1,5 +1,3 @@
-import type { ReactElement } from 'voby';
-
 import GettingStarted from "./GettingStarted";
 import Components from "./Components";
 import Customization from "./Customization";

@@ -1,7 +1,4 @@
-import React from 'voby'
-import { createRoot } from 'react-dom/client'
-import type { ReactElement } from 'voby'
-
+import {render} from "voby"
 import description from "./README.md"
 import DemoPage from "../DemoPage"
 
@@ -43,8 +40,8 @@ const demos = [
 
 // const o = styles.output
 const e = document.getElementById('app')
-const root = createRoot(e)
 
-root.render(<div /* className={o} */>
+
+render(<div /* className={o} */>
     <SimpleMessageQueue />
-</div>)
+</div>,e)

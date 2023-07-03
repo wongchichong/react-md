@@ -1,5 +1,5 @@
 import type { ReactElement } from 'voby';
-import scssVariables from "@react-md/app-bar/dist/scssVariables";
+import scssVariables from "@react-md/app-bar/dist/scssVariables.es.js";
 import { useActionClassName } from "@react-md/app-bar";
 import { LinkSVGIcon, MoreVertSVGIcon } from "@react-md/material-icons";
 import { DropdownMenu, MenuItemSeparator } from "@react-md/menu";

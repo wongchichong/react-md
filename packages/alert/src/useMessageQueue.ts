@@ -165,9 +165,9 @@ export interface MessageQueueOptions<M extends Message = ToastMessage> {
 }
 
 export interface MessageQueueResult<M extends Message = ToastMessage> extends MessageQueueActions<M> {
-    queue: ReturnType<typeof reducer<M>>
+     queue: ReturnType<typeof reducer<M>>
     visible: ObservableMaybe<boolean>
-    // addMessage: AddMessage<M>
+    addMessage: AddMessage<M>;
 }
 
 /**
@@ -179,36 +179,14 @@ export interface MessageQueueResult<M extends Message = ToastMessage> extends Me
  *
  * @internal
  */
-export function useMessageQueue<M extends Message = ToastMessage>({
+export function     useMessageQueue<M extends Message = ToastMessage>({
     timeout = DEFAULT_MESSAGE_QUEUE_TIMEOUT,
     duplicates = "allow",
-    defaultQueue = store([] as M[]),
+    defaultQueue = store([]) as M[],
 }: MessageQueueOptions<M>): MessageQueueResult<M> {
+
     const queue = reducer<M>(defaultQueue)
 
-    // const queueRef = $(queue.state)
-
-    // const addMessageDispatch = $<AddMessage<M>>((message) => {
-    //   if (duplicates !== "allow" && !message.messageId) {
-    //     throw new Error(
-    //       `A messageId is required when the "${duplicates}" duplicate behavior is enabled but it was not provided in the current message.`
-    //     )
-    //   }
-    //   queue.addMessage(message, duplicates)
-    //   // dispatch({ type: ADD_MESSAGE, message, duplicates })
-    // })
-
-    // const popMessageDispatch = $<PopMessage>(() => {
-    //   queue.pop_message()
-    //   // dispatch(popMessage())
-    // })
-
-    // const resetQueueDispatch = $<ResetQueue<M>>(() => {
-    //   queue.reset_queue()
-    //   return queue
-    //   // dispatch(resetQueue())
-    //   // return queueRef()
-    // })
     const [visible, showMessage, hideMessage] = useToggle(
         defaultQueue.length > 0
     )
@@ -220,6 +198,7 @@ export function useMessageQueue<M extends Message = ToastMessage>({
     useEffect(() => {
         // this effect will handle all the "logic" for transitioning between each
         // message along with the message priority updates.
+
         const [message, nextMessage] = queue.state
         if (!message) {
             return
@@ -261,17 +240,14 @@ export function useMessageQueue<M extends Message = ToastMessage>({
         visible,
         message: queue[0],
     })
-    // useEffect(() => {
-    //   queueRef(queue)
-    // })
 
     return {
         queue,
-        // resetQueue: resetQueueDispatch,
+        resetQueue,
         visible,
         hideMessage,
-        // addMessage: addMessageDispatch,
-        // popMessage: popMessageDispatch,
+        addMessage,
+        popMessage,
         startTimer,
         stopTimer,
         restartTimer,
