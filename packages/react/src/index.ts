@@ -1,5 +1,8 @@
 ///// <reference types="voby/dist/jsx/types" />
 
+/**
+ * @module @react-md/react
+ */
 import { FunctionMaybe } from "voby"
 
 export const Children = {

@@ -1,5 +1,5 @@
-import type { ReactElement, ReactNode } from "react"
-import { useRef } from "react"
+import type { ReactElement, ReactNode } from 'voby'
+import { $ } from 'voby'
 import { DialogContent, FixedDialog } from "@react-md/dialog"
 import { Link } from "@react-md/link"
 import { BELOW_CENTER_ANCHOR, useHoverMode } from "@react-md/utils"
@@ -35,7 +35,7 @@ export default function WikipediaPreviewLink({
         exitVisibilityDelay: 0,
     })
 
-    const linkRef = useRef<HTMLAnchorElement>(null)
+    const linkRef = $<HTMLAnchorElement>(null)
     return (
         <>
             <Link ref={linkRef} href={href} {...hoverHandlers}>

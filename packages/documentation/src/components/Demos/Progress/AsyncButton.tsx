@@ -1,14 +1,13 @@
-import type { ReactElement, ReactNode } from "react"
+import type { ReactElement, ReactNode } from 'voby'
 
 import type { ButtonProps } from "@react-md/button"
 import { Button } from "@react-md/button"
 import { TextIconSpacing } from "@react-md/icon"
 import { CloudDownloadSVGIcon } from "@react-md/material-icons"
-import {
-    CircularProgress,
-    getProgressA11y,
-    LinearProgress,
-} from "@react-md/progress"
+import { 
+ CircularProgress, 
+ getProgressA11y, 
+ LinearProgress,  } from "@react-md/progress"
 
 import styles from "./AsyncButton.module.scss"
 

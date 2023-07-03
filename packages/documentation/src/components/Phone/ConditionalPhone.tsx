@@ -1,4 +1,4 @@
-import type { ReactElement, ReactNode } from "react"
+import type { ReactElement, ReactNode } from 'voby'
 
 import type { PhoneProps } from "./Phone"
 import Phone from "./Phone"

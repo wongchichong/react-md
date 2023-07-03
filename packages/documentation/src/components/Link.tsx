@@ -1,4 +1,4 @@
-import type { ReactElement, ReactNode } from "react"
+import type { ReactElement, ReactNode } from 'voby'
 import type { LinkProps as NextLinkProps } from "next/link"
 import NextLink from "next/link"
 import { Link as RMDLink } from "@react-md/link"

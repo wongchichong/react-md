@@ -19,12 +19,18 @@ const config = defineConfig({
             formats: ['cjs', 'es'],
             fileName: (format: string, entryName: string) => `${entryName}.${format}.js`
         },
-
-        // rollupOptions: {
-        //   output: {
-        //     preserveModules: true,
-        //   }
-        // },
+        rollupOptions: {
+            external: ['react', 'react-dom', 'voby', 'oby', "voby/jsx-runtime"],
+            output: {
+                globals: {
+                    'react': 'React',
+                    'react-dom': 'ReactDOM',
+                    'voby': 'voby',
+                    'oby': 'oby',
+                    'voby/jsx-runtime':'jsxRuntime'
+                }
+            }
+        },
     },
     resolve: {
         preserveSymlinks: true,

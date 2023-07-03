@@ -1,11 +1,10 @@
-import type { ReactElement } from "react"
+import type { ReactElement } from 'voby'
 import { AppBar, AppBarNav } from "@react-md/app-bar"
 import { Button } from "@react-md/button"
-import {
-    Dialog,
-    DialogContent,
-    NestedDialogContextProvider,
-} from "@react-md/dialog"
+import { 
+ Dialog, 
+ DialogContent, 
+ NestedDialogContextProvider,  } from "@react-md/dialog"
 import { KeyboardArrowLeftSVGIcon } from "@react-md/material-icons"
 import { useToggle } from "@react-md/utils"
 

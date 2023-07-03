@@ -1,12 +1,11 @@
-import type { ReactElement } from "react";
+import type { ReactElement } from 'voby';
 import { Avatar } from "@react-md/avatar";
-import {
-  Card,
-  CardContent,
-  CardTitle,
-  CardSubtitle,
-  CardHeader,
-} from "@react-md/card";
+import { 
+ Card, 
+ CardContent, 
+ CardTitle, 
+ CardSubtitle, 
+ CardHeader,  } from "@react-md/card";
 import { Typography } from "@react-md/typography";
 
 import Container from "./Container";

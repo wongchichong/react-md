@@ -1,5 +1,5 @@
-import type { ReactElement } from "react"
-import { useCallback } from "react"
+import type { ReactElement } from 'voby'
+import { $ } from 'voby'
 import LinkUnstyled from "../../components/LinkUnstyled"
 import { useRouter } from "next/router"
 
@@ -9,8 +9,7 @@ export interface HeadingLinkProps {
 
 export default function HeadingLink({ idRef }: HeadingLinkProps): Child {
     const { asPath } = useRouter()
-    const handleClick = useCallback(
-        (event: React.JSX.TargetedMouseEvent<HTMLAnchorElement>) => {
+    const handleClick = ((event: React.JSX.TargetedMouseEvent<HTMLAnchorElement>) => {
             const area = document.createElement("textarea")
             area.value = event.currentTarget.href
             document.body.appendChild(area)
@@ -23,9 +22,7 @@ export default function HeadingLink({ idRef }: HeadingLinkProps): Child {
                 document.body.removeChild(area)
                 event.currentTarget.focus()
             }
-        },
-        []
-    )
+        })
     const prefix = asPath.replace(/#.*$/, "")
 
     return (

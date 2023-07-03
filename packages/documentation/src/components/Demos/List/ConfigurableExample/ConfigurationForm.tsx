@@ -1,4 +1,4 @@
-import type { ReactElement } from "react"
+import type { ReactElement } from 'voby'
 import type { ListboxOption } from "@react-md/form"
 import { Checkbox, Fieldset, Form, Select, TextArea } from "@react-md/form"
 import type { ListItemAddonPosition, ListItemAddonType } from "@react-md/list"

@@ -1,5 +1,5 @@
-import type { ReactElement } from "react"
-import { useEffect, useRef, useState } from "react"
+import type { ReactElement } from 'voby'
+import { useEffect, $ } from 'voby'
 import { AppBar } from "@react-md/app-bar"
 import { Tabs, TabsManager } from "@react-md/tabs"
 import { CrossFade } from "@react-md/transition"
@@ -10,26 +10,26 @@ import Page2 from "./Page2"
 import Page3 from "./Page3"
 
 export default function CrossFadeExamplesStatic(): Child {
-    const [page, setPage] = useState<number>(0)
+    const page = $<number>(0)
     let content = <Page1 />
-    if (page === 1) {
+    if (page() === 1) {
         content = <Page2 />
-    } else if (page === 2) {
+    } else if (page() === 2) {
         content = <Page3 />
     }
 
     // don't want the first render to trigger the animation, but all changes afterwards
     // should.
-    const rendered = useRef(false)
+    const rendered = $(false)
     useEffect(() => {
-        rendered.current = true
-    }, [])
+        rendered(true)
+    })
 
     return (
         <>
             <TabsManager
                 activeIndex={page}
-                onActiveIndexChange={(index) => setPage(index)}
+                onActiveIndexChange={(index) => page(index)}
                 tabs={["Page 1", "Page 2", "Page 3"]}
                 tabsId="static-transition"
             >
@@ -38,7 +38,7 @@ export default function CrossFadeExamplesStatic(): Child {
                 </AppBar>
             </TabsManager>
             <Container>
-                <CrossFade key={page} appear={rendered.current}>
+                <CrossFade key={page} appear={rendered()}>
                     {content}
                 </CrossFade>
             </Container>

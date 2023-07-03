@@ -1,4 +1,4 @@
-import type { ReactElement } from "react"
+import type { ReactElement } from 'voby'
 import { Switch, useChecked } from "@react-md/form"
 
 import Heading from "components/Heading"

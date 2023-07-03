@@ -1,10 +1,9 @@
-import type { ReactElement, ReactNode } from "react"
-import { useMemo, useCallback } from "react"
+import type { ReactElement, ReactNode } from 'voby'
+import { useMemo, $ } from 'voby'
 
-import {
-    APP_BAR_OFFSET_DENSE_CLASSNAME,
-    APP_BAR_OFFSET_PROMINENT_DENSE_CLASSNAME,
-} from "@react-md/app-bar"
+import { 
+ APP_BAR_OFFSET_DENSE_CLASSNAME, 
+ APP_BAR_OFFSET_PROMINENT_DENSE_CLASSNAME,  } from "@react-md/app-bar"
 import { useAppSize, useToggle, PhoneOnly } from "@react-md/utils"
 
 import type { ConditionalFullPageDialogProps } from "../../components/ConditionalFullPageDialog"
@@ -110,25 +109,22 @@ export default function Phone({
 }: PhoneProps): Child {
     const { isPhone } = useAppSize()
     const [visible, enable, disable] = useToggle(false)
-    const closePhone = useCallback(() => {
+    const closePhone = (() => {
         disable()
         if (onPhoneClose) {
             onPhoneClose()
         }
-    }, [onPhoneClose, disable])
+    })
 
     if (visible && !isPhone) {
         closePhone()
     }
 
-    const value = useMemo(
-        () => ({
+    const value = useMemo(() => ({
             id,
             title,
             closePhone,
-        }),
-        [id, title, closePhone]
-    )
+        }))
 
     return (
         <PhoneContext.Provider value={value}>

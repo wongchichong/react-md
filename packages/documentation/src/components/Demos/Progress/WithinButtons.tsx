@@ -1,4 +1,4 @@
-import type { ReactElement, ReactNode } from "react"
+import type { ReactElement, ReactNode } from 'voby'
 import { Typography } from "@react-md/typography"
 
 import type { AsyncButtonProps } from "./AsyncButton"

@@ -1,11 +1,11 @@
-import type { ReactElement } from "react"
-import { useState } from "react"
+import type { ReactElement } from 'voby'
+import { $ } from 'voby'
 import { Select } from "@react-md/form"
 
 import states from "constants/states"
 
 export default function SimpleSelectExample(): Child {
-    const [value, setValue] = useState("")
+    const value = $("")
     return (
         <Select
             id="simple-select-example"
@@ -14,10 +14,10 @@ export default function SimpleSelectExample(): Child {
             name="select"
             options={states.map(({ abbreviation, name }) => ({
                 label: name,
-                value: abbreviation,
+                value: value(),
             }))}
-            value={value}
-            onChange={(value) => setValue(value)}
+            value()={value}
+            onChange={(value) => value(value)}
         />
     )
 }

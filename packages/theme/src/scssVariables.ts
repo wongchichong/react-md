@@ -2,7 +2,6 @@
  * This file was generated from @react-md/dev-utils and should not be updated
  * manually.
  */
-
 export default {
   "rmd-theme-default-contrast-ratio": 3,
   "rmd-theme-better-contrast-colors": true,

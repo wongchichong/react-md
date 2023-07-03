@@ -1,4 +1,4 @@
-import type { ReactElement } from "react"
+import type { ReactElement } from 'voby'
 import { List, ListItem } from "@react-md/list"
 import { StarSVGIcon } from "@react-md/material-icons"
 

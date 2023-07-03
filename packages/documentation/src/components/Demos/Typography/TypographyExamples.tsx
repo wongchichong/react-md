@@ -1,4 +1,4 @@
-import type { ReactElement } from "react"
+import type { ReactElement } from 'voby'
 import { Typography, TextContainer } from "@react-md/typography"
 
 export default function TypographyExamples(): Child {

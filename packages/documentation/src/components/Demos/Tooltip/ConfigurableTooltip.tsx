@@ -1,21 +1,19 @@
 import { Button } from "@react-md/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@react-md/card"
-import {
-    Checkbox,
-    Form,
-    TextFieldWithMessage,
-    useNumberField,
-} from "@react-md/form"
+import { 
+ Checkbox, 
+ Form, 
+ TextFieldWithMessage, 
+ useNumberField,  } from "@react-md/form"
 import { DEFAULT_TOOLTIP_DELAY } from "@react-md/tooltip"
-import {
-    DEFAULT_HOVER_MODE_DEACTIVATION_TIME,
-    DEFAULT_HOVER_MODE_VISIBLE_IN_TIME,
-    Grid,
-    GridCell,
-    HoverModeProvider,
-} from "@react-md/utils"
-import type { ReactElement } from "react"
-import { useState } from "react"
+import { 
+ DEFAULT_HOVER_MODE_DEACTIVATION_TIME, 
+ DEFAULT_HOVER_MODE_VISIBLE_IN_TIME, 
+ Grid, 
+ GridCell, 
+ HoverModeProvider,  } from "@react-md/utils"
+import type { ReactElement } from 'voby'
+import { $ } from 'voby'
 import styles from "./ConfigurableTooltip.module.scss"
 import TooltippedButton from "./TooltippedButton"
 
@@ -81,7 +79,7 @@ export default function ConfigurableTooltip(): Child {
             ),
         }
     )
-    const [disableHoverMode, setDisableHoverMode] = useState(false)
+    const disableHoverMode = $(false)
 
     return (
         <HoverModeProvider
@@ -121,7 +119,7 @@ export default function ConfigurableTooltip(): Child {
                                 resetDeactivateTime()
                                 resetFocusTime()
                                 resetTouchTime()
-                                setDisableHoverMode(false)
+                                disableHoverMode(false)
                             }}
                         >
                             <TextFieldWithMessage
@@ -145,7 +143,7 @@ export default function ConfigurableTooltip(): Child {
                                     name="hoverMode"
                                     checked={disableHoverMode}
                                     onChange={(event) =>
-                                        setDisableHoverMode(event.currentTarget.checked)
+                                        disableHoverMode(event.currentTarget.checked)
                                     }
                                 />
                             </GridCell>

@@ -9,11 +9,17 @@ const config = defineConfig({
             formats: ['cjs', 'es', 'umd'],
             fileName: (format: string, entryName: string) => `${entryName}.${format}.js`
         },
-        // rollupOptions: {
-        //   output: {
-        //     preserveModules: true,
-        //   }
-        // },
+        rollupOptions: {
+            external: ['react', 'react-dom', 'voby', 'oby'],
+            output: {
+                globals: {
+                    'react': 'React',
+                    'react-dom': 'ReactDOM',
+                    'voby': 'voby',
+                    'oby': 'oby',
+                }
+            }
+        },
     },
 
 

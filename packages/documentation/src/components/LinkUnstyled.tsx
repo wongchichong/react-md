@@ -1,4 +1,4 @@
-import type { AnchorHTMLAttributes, ReactElement } from "react"
+import type { AnchorHTMLAttributes, ReactElement } from 'voby'
 import type { LinkProps } from "next/link"
 import Link from "next/link"
 

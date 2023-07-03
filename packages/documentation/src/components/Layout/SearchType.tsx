@@ -1,8 +1,8 @@
-import type { ReactElement } from "react";
+import type { ReactElement } from 'voby';
 import type { MetadataType } from "constants/meta/types";
-import { toTitle } from "utils/toTitle";
+//import { toTitle } from "../utils/toTitle";
 
-import styles from "./SearchType.module.scss";
+// import styles from "./SearchType.module.scss";
 
 export interface SearchTypeProps {
   type: MetadataType;

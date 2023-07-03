@@ -1,4 +1,4 @@
-import type { ReactElement } from "react"
+import type { ReactElement } from 'voby'
 
 import { RMD_MAJOR_VERSION } from "constants/rmdVersion"
 

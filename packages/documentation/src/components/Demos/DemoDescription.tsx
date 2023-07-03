@@ -1,4 +1,4 @@
-import type { ReactElement } from "react"
+import type { ReactElement } from 'voby'
 import type { MarkdownProps } from "../../components/Markdown/Markdown"
 import Markdown from "../../components/Markdown/Markdown"
 

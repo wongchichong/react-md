@@ -1,35 +1,31 @@
 // This example is mostly a port to react-md from:
 // https://www.w3.org/TR/wai-aria-practices/examples/menubar/menubar-editor.html
-import type { ReactElement } from "react"
-import { useState } from "react"
+import type { ReactElement } from 'voby'
+import { $ } from 'voby'
 import { AppBar } from "@react-md/app-bar"
 import { Button } from "@react-md/button"
-import {
-    Dialog,
-    DialogContent,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-} from "@react-md/dialog"
-import {
-    Form,
-    MenuItemCheckbox,
-    MenuItemRadio,
-    TextFieldWithMessage,
-    useNumberField,
-} from "@react-md/form"
-import {
-    AddSVGIcon,
-    BuildSVGIcon,
-    RemoveSVGIcon,
-} from "@react-md/material-icons"
-import {
-    DropdownMenu,
-    MenuBar,
-    MenuItem,
-    MenuItemGroup,
-    MenuItemSeparator,
-} from "@react-md/menu"
+import { 
+ Dialog, 
+ DialogContent, 
+ DialogFooter, 
+ DialogHeader, 
+ DialogTitle,  } from "@react-md/dialog"
+import { 
+ Form, 
+ MenuItemCheckbox, 
+ MenuItemRadio, 
+ TextFieldWithMessage, 
+ useNumberField,  } from "@react-md/form"
+import { 
+ AddSVGIcon, 
+ BuildSVGIcon, 
+ RemoveSVGIcon,  } from "@react-md/material-icons"
+import { 
+ DropdownMenu, 
+ MenuBar, 
+ MenuItem, 
+ MenuItemGroup, 
+ MenuItemSeparator,  } from "@react-md/menu"
 import scssVariables from "@react-md/theme/dist/scssVariables"
 import { Typography } from "@react-md/typography"
 import type { CalculateFixedPositionOptions } from "@react-md/utils"
@@ -90,27 +86,25 @@ const EXAMPLE_TEXT =
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In dictum sodales sem, non molestie nunc mollis at. Morbi sed lobortis lorem. Vivamus nisi turpis, blandit eu dolor a, tincidunt eleifend odio. Integer id dui velit. Nulla nisi eros, porttitor id ligula id, hendrerit maximus mauris. Sed feugiat lacinia euismod. Mauris eros lectus, ultrices et arcu in, finibus ornare neque. Proin rhoncus molestie sagittis. Cras sit amet magna sed erat scelerisque auctor. Mauris iaculis erat non mi mollis, eget feugiat odio lacinia. Aliquam dapibus at velit quis posuere. Phasellus est sem, auctor in mattis ut, rhoncus eu metus. In turpis sem, fermentum a elementum eu, lobortis ut massa. Suspendisse a urna enim."
 
 export default function HoverableMenus(): Child {
-    const [fontFamily, setFontFamily] = useState<FontFamily>(FONT_FAMILIES[0])
-    const [color, setColor] = useState<Color>(COLORS[0].value)
-    const [bold, setBold] = useState(false)
-    const [italic, setItalic] = useState(false)
-    const [textDecoration, setTextDecoration] = useState<TextDecoration>(
-        TEXT_DECORATIONS[0].value
-    )
-    const [textAlign, setTextAlign] = useState<TextAlign>(TEXT_ALIGNS[0].value)
-    const [fontSize, setFontSize] = useState<FontSize>("medium")
+    const fontFamily = $<FontFamily>(FONT_FAMILIES[0])
+    const color = $<Color>(COLORS[0].value)
+    const bold = $(false)
+    const italic = $(false)
+    const textDecoration = $<TextDecoration>(TEXT_DECORATIONS[0].value)
+    const textAlign = $<TextAlign>(TEXT_ALIGNS[0].value)
+    const fontSize = $<FontSize>("medium")
 
     const updateFontSize = (increment: boolean): void => {
-        setFontSize((fontSize) => {
-            const i = FONT_SIZES.findIndex(({ value }) => value === fontSize)
+        fontSize((fontSize()) => {
+            const i = FONT_SIZES.findIndex(({ value }) => value === fontSize())
             const amount = increment ? 1 : -1
             const nextIndex = Math.max(0, Math.min(FONT_SIZES.length, i + amount))
 
             return FONT_SIZES[nextIndex].value
         })
     }
-    const [visible, setVisible] = useState(false)
-    const onRequestClose = (): void => setVisible(false)
+    const visible = $(false)
+    const onRequestClose = (): void => visible(false)
     const [hoverTimeout, textFieldProps, { reset }] = useNumberField({
         id: "hoverable-menus-hover-timeout",
         min: 0,
@@ -142,7 +136,7 @@ export default function HoverableMenus(): Child {
                                 id={`menubar-item-font-${i + 1}`}
                                 key={font}
                                 checked={font === fontFamily}
-                                onCheckedChange={() => setFontFamily(font)}
+                                onCheckedChange={() => fontFamily(font)}
                             >
                                 {font}
                             </MenuItemRadio>
@@ -156,14 +150,14 @@ export default function HoverableMenus(): Child {
                         <MenuItemCheckbox
                             id="menubar-item-bold"
                             checked={bold}
-                            onCheckedChange={(checked) => setBold(checked)}
+                            onCheckedChange={(checked) => bold(checked)}
                         >
                             Bold
                         </MenuItemCheckbox>
                         <MenuItemCheckbox
                             id="menubar-item-italic"
                             checked={italic}
-                            onCheckedChange={(checked) => setItalic(checked)}
+                            onCheckedChange={(checked) => italic(checked)}
                         >
                             Italic
                         </MenuItemCheckbox>
@@ -173,7 +167,7 @@ export default function HoverableMenus(): Child {
                                     id={`menubar-item-color-${i + 1}`}
                                     key={value}
                                     checked={color === value}
-                                    onCheckedChange={() => setColor(value)}
+                                    onCheckedChange={() => color(value)}
                                 >
                                     {label}
                                 </MenuItemRadio>
@@ -186,7 +180,7 @@ export default function HoverableMenus(): Child {
                                     id={`menubar-item-decoration-${i + 1}`}
                                     key={value}
                                     checked={textDecoration === value}
-                                    onCheckedChange={() => setTextDecoration(value)}
+                                    onCheckedChange={() => textDecoration(value)}
                                 >
                                     {label}
                                 </MenuItemRadio>
@@ -204,7 +198,7 @@ export default function HoverableMenus(): Child {
                                     id={`menubar-item-3-align-${i + 1}`}
                                     key={value}
                                     checked={value === textAlign}
-                                    onCheckedChange={() => setTextAlign(value)}
+                                    onCheckedChange={() => textAlign(value)}
                                 >
                                     {label}
                                 </MenuItemRadio>
@@ -247,7 +241,7 @@ export default function HoverableMenus(): Child {
                                     id={`menubar-item-4-font-size-${i + 1}`}
                                     key={value}
                                     checked={value === fontSize}
-                                    onCheckedChange={() => setFontSize(value)}
+                                    onCheckedChange={() => fontSize(value)}
                                 >
                                     {label}
                                 </MenuItemRadio>
@@ -275,7 +269,7 @@ export default function HoverableMenus(): Child {
                 theme="warning"
                 floating="bottom-left"
                 aria-label="Configure"
-                onClick={() => setVisible((prevVisible) => !prevVisible)}
+                onClick={() => visible((prevVisible) => !prevVisible)}
             >
                 <BuildSVGIcon />
             </Button>

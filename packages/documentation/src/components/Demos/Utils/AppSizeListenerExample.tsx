@@ -1,4 +1,4 @@
-import type { ReactElement } from "react"
+import type { ReactElement } from 'voby'
 import { TextContainer, Typography } from "@react-md/typography"
 import { AppSizeListener, useAppSize } from "@react-md/utils"
 

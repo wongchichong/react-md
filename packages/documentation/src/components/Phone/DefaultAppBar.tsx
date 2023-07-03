@@ -1,4 +1,4 @@
-import type { ReactElement } from "react"
+import type { ReactElement } from 'voby'
 import { AppBar } from "@react-md/app-bar"
 
 import AppBarTitle from "../../components/AppBarTitle"

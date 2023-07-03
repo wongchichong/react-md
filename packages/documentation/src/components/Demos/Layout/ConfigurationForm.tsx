@@ -1,10 +1,9 @@
-import type { ReactElement } from "react"
+import type { ReactElement } from 'voby'
 import { Form, Select } from "@react-md/form"
-import type {
-    SupportedPhoneLayout,
-    SupportedTabletLayout,
-    SupportedWideLayout,
-} from "@react-md/layout"
+import type { 
+ SupportedPhoneLayout, 
+ SupportedTabletLayout, 
+ SupportedWideLayout,  } from "@react-md/layout"
 import { useLayoutConfig } from "@react-md/layout"
 import { Typography } from "@react-md/typography"
 import { Grid, useAppSize } from "@react-md/utils"

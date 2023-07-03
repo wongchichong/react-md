@@ -1,4 +1,4 @@
-import type { ReactElement } from "react"
+import type { ReactElement } from 'voby'
 
 import { Provider, useStylesState } from "./context"
 import StyledTable from "./StyledTable"

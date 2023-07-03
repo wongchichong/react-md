@@ -1,4 +1,4 @@
-import { createContext, useContext } from 'voby'
+import { createContext, useContext, $, store } from 'voby'
 import type { ButtonProps } from "@react-md/button"
 
 import type { ToastProps } from "./Toast"
@@ -84,9 +84,7 @@ export const MessageVisibilityContext = createContext(false)
  * This should normally be used from click event handlers, but can also be
  * triggered with custom logic within components.
  */
-export function useAddMessage<
-  M extends Message = ToastMessage
->(): AddMessage<M> {
+export function useAddMessage<M extends Message = ToastMessage>(): AddMessage<M> {
   return useContext(AddMessageContext)
 }
 
@@ -145,23 +143,23 @@ export type ResetQueue<M extends Message> = () => readonly M[]
  * @internal
  */
 export interface MessageQueueActions<M extends Message> {
-  // popMessage: PopMessage;
+  popMessage: PopMessage;
   hideMessage: HideMessage
   startTimer: StartVisibilityTimer
   stopTimer: StopVisibilityTimer
   restartTimer: RestartVisibilityTimer
-  // resetQueue: ResetQueue<M>;
+  resetQueue: ResetQueue<M>;
 }
 
 /**
  * @internal
  */
 export const MessageQueueActionsContext = createContext<MessageQueueActions<Message>>({
-  // popMessage() {
-  //   throw new Error(
-  //     "Attempted to pop a message without initializing the MessageQueue component."
-  //   );
-  // },
+  popMessage() {
+    throw new Error(
+      "Attempted to pop a message without initializing the MessageQueue component."
+    );
+  },
   hideMessage() {
     throw new Error(
       "Attempted to hide a message within initializing the MessageQueue component."
@@ -182,11 +180,11 @@ export const MessageQueueActionsContext = createContext<MessageQueueActions<Mess
       "Attempted to restart a message queue timer without initializing the MessageQueue component."
     )
   },
-  // resetQueue() {
-  //   throw new Error(
-  //     "Attempted to reset the message queue timer without initializing the MessageQueue component."
-  //   );
-  // },
+  resetQueue() {
+    throw new Error(
+      "Attempted to reset the message queue timer without initializing the MessageQueue component."
+    );
+  },
 })
 
 /**
@@ -203,7 +201,7 @@ export function useMessageQueueActions<
 /**
  * @internal
  */
-export const MessageQueueContext = createContext<readonly Message[]>([])
+export const MessageQueueContext = createContext<readonly Message[]>(store([]))
 
 /**
  * This hook will allow you to get the current queue. This probably shouldn't be

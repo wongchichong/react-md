@@ -1,22 +1,20 @@
-import type { ReactElement } from "react"
-import { useRef } from "react"
-import {
-    AppBar,
-    AppBarAction,
-    AppBarNav,
-    AppBarTitle,
-} from "@react-md/app-bar"
+import type { ReactElement } from 'voby'
+import { $ } from 'voby'
+import { 
+ AppBar, 
+ AppBarAction, 
+ AppBarNav, 
+ AppBarTitle,  } from "@react-md/app-bar"
 import { DialogContent, FixedDialog } from "@react-md/dialog"
-import {
-    CloseSVGIcon,
-    MenuSVGIcon,
-    MoreVertSVGIcon,
-} from "@react-md/material-icons"
+import { 
+ CloseSVGIcon, 
+ MenuSVGIcon, 
+ MoreVertSVGIcon,  } from "@react-md/material-icons"
 import { Typography } from "@react-md/typography"
 import { useToggle } from "@react-md/utils"
 
 export default function FixedDialogExample(): Child {
-    const fixedTo = useRef<HTMLButtonElement>(null)
+    const fixedTo = $<HTMLButtonElement>(null)
     const [visible, show, hide] = useToggle(false)
     return (
         <AppBar>

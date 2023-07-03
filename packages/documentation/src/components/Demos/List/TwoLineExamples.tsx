@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/no-noninteractive-tabindex */
-import type { ReactElement } from "react"
+import type { ReactElement } from 'voby'
 
 import type { AvatarProps } from "@react-md/avatar"
 import { Avatar } from "@react-md/avatar"

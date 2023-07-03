@@ -1,11 +1,6 @@
-import React from 'react'
-import type { HTMLAttributes } from "react"
-import { forwardRef } from "react"
-
-
 import styles from "./Code.module.scss"
 
-export interface CodeProps extends HTMLAttributes<HTMLElement> {
+export interface CodeProps<T extends HTMLElement> extends HTMLAttributes<T> {
     /**
      * Boolean if the code is displayed inline with other text normally meaning it
      * is not a child of the `CodeBlock` component.
@@ -35,7 +30,7 @@ export interface CodeProps extends HTMLAttributes<HTMLElement> {
 /**
  * This component is normally used to render inline code throughout the website.
  */
-export default forwardRef<HTMLElement, CodeProps>(function Code(
+export default function Code(
     {
         children,
         className,
@@ -43,15 +38,14 @@ export default forwardRef<HTMLElement, CodeProps>(function Code(
         inline = !dangerouslySetInnerHTML,
         ticked = inline,
         noWrap = false,
+        ref,
         ...props
-    },
-    ref
-) {
+    }:CodeProps<HTMLElement>) {
     return (
         <code
             {...props}
             ref={ref}
-            className={cn(
+            className={[
                 styles.code,
                 {
                     [styles.inline]: inline,
@@ -59,10 +53,10 @@ export default forwardRef<HTMLElement, CodeProps>(function Code(
                     [styles.oneline]: inline && noWrap,
                 },
                 className
-            )}
+            ]}
             dangerouslySetInnerHTML={dangerouslySetInnerHTML}
         >
             {children}
         </code>
     )
-})
+}

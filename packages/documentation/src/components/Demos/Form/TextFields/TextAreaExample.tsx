@@ -1,14 +1,13 @@
-import type { ReactElement } from "react"
-import { useEffect } from "react"
+import type { ReactElement } from 'voby'
+import { useEffect } from 'voby'
 import type { TextAreaResize } from "@react-md/form"
-import {
-    Checkbox,
-    Fieldset,
-    NativeSelect,
-    TextArea,
-    useChecked,
-    useChoice,
-} from "@react-md/form"
+import { 
+ Checkbox, 
+ Fieldset, 
+ NativeSelect, 
+ TextArea, 
+ useChecked, 
+ useChoice,  } from "@react-md/form"
 
 import TextFieldThemeConfig from "../TextFieldThemeConfig"
 import styles from "./TextAreaExample.module.scss"
@@ -27,7 +26,7 @@ export default function TextAreaExample(): Child {
             const i = MAX_ROWS.find((value) => value >= rowsInt) || -1
             setMaxRows(`${i}`)
         }
-    }, [maxRowsInt, rowsInt, setMaxRows])
+    })
 
     return (
         <TextFieldThemeConfig

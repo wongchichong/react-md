@@ -45,7 +45,7 @@ export function useTabIndicatorStyles(options: TabIndicatorStylesHookOptions): T
         // RTL, but the RTL state isn't required for any styles. Just reference it
         // so that the hooks eslint rule doesn't show a warning...
         isRTL
-
+        debugger
         const current = watching[activeIndex]?.element
         if (!current) {
             return

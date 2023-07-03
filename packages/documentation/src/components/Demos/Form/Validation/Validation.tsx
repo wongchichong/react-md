@@ -1,4 +1,4 @@
-import type { ReactElement } from "react";
+import type { ReactElement } from 'voby';
 import { IconProvider } from "@react-md/icon";
 
 import DemoPage from "components/Demos/DemoPage";

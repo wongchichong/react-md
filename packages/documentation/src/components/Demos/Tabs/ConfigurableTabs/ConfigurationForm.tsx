@@ -1,4 +1,4 @@
-import type { ReactElement } from "react"
+import type { ReactElement } from 'voby'
 import { Checkbox, Fieldset, Form, Radio } from "@react-md/form"
 import { Grid } from "@react-md/utils"
 

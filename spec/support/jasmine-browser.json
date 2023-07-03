@@ -1,0 +1,27 @@
+{
+  "srcDir": "test",
+  "srcFiles": [],
+  "specDir": "test",
+  "specFiles": [
+    "**/*[tT]est.?(m)js"
+  ],
+  "helpers": [
+    "spec/helpers/**/*.?(m)js"
+  ],
+  "esmFilenameExtension": ".mjs",
+  "enableTopLevelAwait": false,
+  "env": {
+    "stopSpecOnExpectationFailure": false,
+    "stopOnSpecFailure": false,
+    "random": true
+  },
+  "importMap": {
+    "moduleRootDir": "node_modules",
+    "imports": {
+      "voby":"woby/dist/index.es.mjs"
+    }
+  },
+  "browser": {
+    "name": "firefox"
+  }
+}

@@ -1,17 +1,16 @@
-import type { ReactElement } from "react";
-import { useRef, useEffect } from "react";
+import { $, useEffect } from 'voby';
 import { Typography } from "@react-md/typography";
 
-import { useFixedAppBarContext } from "components/Layout/fixedAppBarContext";
+import { useFixedAppBarContext } from "../Layout/fixedAppBarContext";
 
 import Logo from "./Logo";
 import styles from "./Banner.module.scss";
 
 export default function Banner(): Child {
-  const ref = useRef<HTMLDivElement | null>(null);
+  const ref = $<HTMLDivElement | null>(null);
   const setElevation = useFixedAppBarContext();
   useEffect(() => {
-    const banner = ref.current;
+    const banner = ref();
     const header = document.getElementById("layout-header");
     if (!banner || !header) {
       return;
@@ -32,7 +31,7 @@ export default function Banner(): Child {
     return () => {
       observer.disconnect();
     };
-  }, [setElevation]);
+  });
   return (
     <div ref={ref} className={styles.banner}>
       <Typography type="headline-2" className={styles.title}>

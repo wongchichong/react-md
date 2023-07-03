@@ -1,5 +1,5 @@
-import type { ReactElement } from "react"
-import { useCallback, useState } from "react"
+import type { ReactElement } from 'voby'
+import { $ } from 'voby'
 import type { ListboxOption } from "@react-md/form"
 import { Checkbox, Fieldset, Select, useChecked } from "@react-md/form"
 
@@ -8,13 +8,10 @@ import TextFieldThemeConfig from "../TextFieldThemeConfig"
 const options = Array.from({ length: 8 }, (_, i) => `Option ${i + 1}`)
 
 export default function SelectExample(): Child {
-    const [value, setValue] = useState("")
-    const handleChange = useCallback(
-        (nextValue: string, _option: ListboxOption) => {
-            setValue(nextValue)
-        },
-        []
-    )
+    const value = $("")
+    const handleChange = ((nextValue: string, _option: ListboxOption) => {
+            value(nextValue)
+        })
     const [disableMovementChange, handleMovementChange] = useChecked(false)
 
     return (

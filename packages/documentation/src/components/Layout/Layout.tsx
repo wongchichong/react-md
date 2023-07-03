@@ -1,29 +1,29 @@
-import type { ReactElement, ReactNode } from "react"
-import { useEffect, useRef, useState } from "react"
+import type { ReactElement, ReactNode } from 'voby'
+import { useEffect, $ } from 'voby'
 import type { ConfiguredIcons } from "@react-md/icon"
 import type { LayoutConfiguration } from "@react-md/layout"
 import '@react-md/react'
 
-import {
-    Configuration,
-    Layout as RMDLayout,
-    useLayoutNavigation,
-} from "@react-md/layout"
-import {
-    ArrowDropDownSVGIcon,
-    ArrowUpwardSVGIcon,
-    CheckBoxSVGIcon,
-    CheckSVGIcon,
-    ErrorOutlineSVGIcon,
-    FileUploadSVGIcon,
-    KeyboardArrowDownSVGIcon,
-    KeyboardArrowLeftSVGIcon,
-    KeyboardArrowRightSVGIcon,
-    MenuSVGIcon,
-    NotificationsSVGIcon,
-    RadioButtonCheckedSVGIcon,
-    RemoveRedEyeSVGIcon,
-} from "@react-md/material-icons"
+import { 
+ Configuration, 
+ Layout as RMDLayout, 
+ useLayoutNavigation, 
+ } from "@react-md/layout"
+import { 
+ ArrowDropDownSVGIcon, 
+ ArrowUpwardSVGIcon, 
+ CheckBoxSVGIcon, 
+ CheckSVGIcon, 
+ ErrorOutlineSVGIcon, 
+ FileUploadSVGIcon, 
+ KeyboardArrowDownSVGIcon, 
+ KeyboardArrowLeftSVGIcon, 
+ KeyboardArrowRightSVGIcon, 
+ MenuSVGIcon, 
+ NotificationsSVGIcon, 
+ RadioButtonCheckedSVGIcon, 
+ RemoveRedEyeSVGIcon, 
+ } from "@react-md/material-icons"
 import type { MenuConfiguration } from "@react-md/menu"
 import { useCrossFadeTransition } from "@react-md/transition"
 import type { AppSizeListenerProps } from "@react-md/utils"
@@ -85,35 +85,35 @@ export default function Layout({
     defaultSize,
     defaultPreference,
 }: LayoutProps): Child {
-    const [elevated, setElevated] = useState(pathname !== "/")
-    const rendered = useRef(false)
+    const elevated = $(pathname !== "/")
+    const rendered = $(false)
     useEffect(() => {
-        if (!rendered.current) {
-            rendered.current = true
+        if (!rendered()) {
+            rendered(true)
             return
         }
 
-        setElevated(pathname !== "/")
-    }, [pathname])
+        elevated(pathname !== "/")
+    })
 
-    const prevPathname = useRef(pathname)
+    const prevPathname = $(pathname)
     const { elementProps, transitionTo } = useCrossFadeTransition()
     useIsomorphicLayoutEffect(() => {
-        if (prevPathname.current === pathname) {
+        if (prevPathname(pathname)) {
             return
         }
 
         // since the sandbox route is a full page modal, don't want to transition
         // to make it appear smoother between the two
         const isTransitionable =
-            !prevPathname.current.startsWith("/sandbox") &&
+            !prevPathname().startsWith("/sandbox") &&
             !pathname.startsWith("/sandbox")
 
-        prevPathname.current = pathname
+        prevPathname(pathname)
         if (isTransitionable) {
             transitionTo("enter")
         }
-    }, [pathname, transitionTo])
+    })
 
     return (
         <Configuration
@@ -126,7 +126,7 @@ export default function Layout({
                     <CodePreferenceProvider defaultPreference={defaultPreference}>
                         <RMDLayout
                             appBarProps={{
-                                fixedElevation: elevated,
+                                fixedElevation: elevated(),
                                 children: <Actions />,
                             }}
                             title={title.replace("react-md@v2 - ", "")}

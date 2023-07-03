@@ -1,5 +1,4 @@
-import React from 'react'
-import type { ReactElement } from "react"
+import React from 'voby'
 import type { DuplicateBehavior, ToastMessage } from "@react-md/alert"
 import { MessageQueue, useAddMessage } from "@react-md/alert"
 import { Button } from "@react-md/button"
@@ -11,7 +10,7 @@ import Code from "../../../components/Code"
 
 interface Props {
     duplicates: DuplicateBehavior
-    onDuplicateChange: React.ChangeEventHandler<HTMLInputElement>
+    onDuplicateChange: JSX.KeyboardEventHandler<HTMLInputElement>
 }
 
 const ONLINE = "ONLINE"
@@ -42,7 +41,7 @@ function HandlingDuplicatedMessages({
     const addMessage = useAddMessage()
     const [key, handleKeyChange] = useChoice<MessageKeys>(ONLINE)
     return (
-        <Form onSubmit={() => addMessage(MESSAGES[key])}>
+        <Form onSubmit={() => addMessage(MESSAGES[key()])}>
             <Fieldset
                 legend={
                     <>
@@ -86,7 +85,7 @@ function HandlingDuplicatedMessages({
                 onChange={handleKeyChange}
             >
                 {Object.keys(MESSAGES).map((key) => (
-                    <option key={key} value={key}>
+                    <option value={key}>
                         {MESSAGES[key as MessageKeys].children}
                     </option>
                 ))}

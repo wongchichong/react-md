@@ -1,9 +1,8 @@
-import type { ReactElement } from "react";
-import { useEffect, useState } from "react";
-import {
-  BrightnessHighSVGIcon,
-  BrightnessLowSVGIcon,
-} from "@react-md/material-icons";
+import type { ReactElement } from 'voby';
+import { useEffect, $ } from 'voby';
+import { 
+ BrightnessHighSVGIcon, 
+ BrightnessLowSVGIcon,  } from "@react-md/material-icons";
 import { CircularProgress, getProgressA11y } from "@react-md/progress";
 
 import { randomInt } from "utils/random";
@@ -14,26 +13,26 @@ const id = "action-chip-lights";
 const progressId = `${id}-progress`;
 
 export default function ActionChipLights(): Child {
-  const [enabled, setEnabled] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const enabled = $(false);
+  const loading = $(false);
 
   useEffect(() => {
-    if (!loading) {
+    if (!loading()) {
       return;
     }
 
     const timeout = window.setTimeout(() => {
-      setLoading(false);
-      setEnabled((prevEnabled) => !prevEnabled);
+      loading(false);
+      enabled((prevEnabled) => !prevEnabled);
     }, randomInt({ min: 3, max: 5 }) * 1000);
 
     return () => {
       window.clearTimeout(timeout);
     };
-  }, [loading]);
+  });
 
-  let leftIcon = enabled ? <BrightnessHighSVGIcon /> : <BrightnessLowSVGIcon />;
-  if (loading) {
+  let leftIcon = enabled() ? <BrightnessHighSVGIcon /> : <BrightnessLowSVGIcon />;
+  if (loading()) {
     leftIcon = <CircularProgress id={progressId} centered={false} />;
   }
 
@@ -48,7 +47,7 @@ export default function ActionChipLights(): Child {
           return;
         }
 
-        setLoading(!loading);
+        loading(!loading);
       }}
       yellow={enabled}
     >

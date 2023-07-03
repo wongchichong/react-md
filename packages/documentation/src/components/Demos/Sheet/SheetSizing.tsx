@@ -1,22 +1,20 @@
-import type { ReactElement } from "react"
-import { useEffect, useState } from "react"
+import type { ReactElement } from 'voby'
+import { useEffect, $ } from 'voby'
 import { AppBar, AppBarAction } from "@react-md/app-bar"
 import { Button } from "@react-md/button"
 import { DialogContent } from "@react-md/dialog"
-import {
-    Checkbox,
-    Fieldset,
-    Form,
-    Select,
-    useSelectState,
-} from "@react-md/form"
+import { 
+ Checkbox, 
+ Fieldset, 
+ Form, 
+ Select, 
+ useSelectState,  } from "@react-md/form"
 import { List, ListItem } from "@react-md/list"
 import { ArrowDropDownSVGIcon, CloseSVGIcon } from "@react-md/material-icons"
-import type {
-    SheetHorizontalSize,
-    SheetPosition,
-    SheetVerticalSize,
-} from "@react-md/sheet"
+import type { 
+ SheetHorizontalSize, 
+ SheetPosition, 
+ SheetVerticalSize,  } from "@react-md/sheet"
 import { Sheet } from "@react-md/sheet"
 import { GridList, useAppSize, useToggle } from "@react-md/utils"
 
@@ -40,14 +38,14 @@ export default function SheetSizing(): Child {
         useSelectState<SheetVerticalSize>("recommended")
 
     const isHorizontal = position === "left" || position === "right"
-    const [emulate, setEmulate] = useState(false)
+    const emulate = $(false)
     const { isDesktop } = useAppSize()
 
     useEffect(() => {
-        if (emulate && !isDesktop) {
-            setEmulate(false)
+        if (emulate() && !isDesktop) {
+            emulate(false)
         }
-    }, [emulate, isDesktop])
+    })
 
     return (
         <Form>
@@ -83,7 +81,7 @@ export default function SheetSizing(): Child {
                         <Checkbox
                             id="sheet-sizing-emulate"
                             checked={emulate}
-                            onChange={() => setEmulate(!emulate)}
+                            onChange={() => emulate(!emulate)}
                             label="Emulate?"
                         />
                     )}

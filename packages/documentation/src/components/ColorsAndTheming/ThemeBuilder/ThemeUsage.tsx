@@ -1,13 +1,12 @@
-import type { ReactElement } from "react";
+import type { ReactElement } from 'voby';
 import { GridCell } from "@react-md/utils";
 
 import { Markdown } from "components/Markdown";
-import type {
-  ColorAccent,
-  PrimaryColor,
-  SecondaryColor,
-  ThemeMode,
-} from "components/Theme";
+import type { 
+ ColorAccent, 
+ PrimaryColor, 
+ SecondaryColor, 
+ ThemeMode,  } from "components/Theme";
 
 export interface ThemeUsageProps {
   primary: PrimaryColor;

@@ -1,4 +1,4 @@
-import type { ReactElement } from "react"
+import type { ReactElement } from 'voby'
 import { Portal } from "@react-md/portal"
 import { useToggle } from "@react-md/utils"
 

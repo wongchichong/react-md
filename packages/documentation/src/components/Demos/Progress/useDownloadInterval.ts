@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { $ } from 'voby';
 import { useInterval } from "@react-md/utils";
 
 interface ReturnValue {
@@ -12,18 +12,18 @@ interface ReturnValue {
  * progress bars with an incremental interval.
  */
 export default function useDownloadInterval(delay = 100): ReturnValue {
-  const [value, setValue] = useState(0);
+  const value = $(0);
   const [running, start] = useInterval((stop) => {
-    const nextValue = Math.min(100, value + 1);
-    if (value === nextValue) {
+    const nextValue = Math.min(100, value() + 1);
+    if (value() === nextValue) {
       stop();
     } else {
-      setValue(nextValue);
+      value(nextValue);
     }
   }, delay);
 
   return {
-    value,
+    value(),
     start,
     running,
   };

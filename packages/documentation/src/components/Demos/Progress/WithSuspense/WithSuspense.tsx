@@ -1,5 +1,5 @@
-import type { ReactElement } from "react"
-import { Suspense, useState, useRef, useEffect, useCallback } from "react"
+import type { ReactElement } from 'voby'
+import { Suspense, $, useEffect } from 'voby'
 
 import { APP_BAR_OFFSET_PROMINENT_CLASSNAME } from "@react-md/app-bar"
 import { Button } from "@react-md/button"
@@ -23,40 +23,39 @@ enum State {
 }
 
 export default function WithSuspense(): Child {
-    const [state, setState] = useState(State.READY)
-    const stateRef = useRef(state)
-    const key = useRef(Date.now())
+    const state = $(State.READY)
+    const stateRef = $(state())
+    const key = $(Date.now())
     useEffect(() => {
-        if (stateRef.current === State.COMPLETED && state === State.READY) {
-            key.current = Date.now()
+        if (stateRef() === State.COMPLETED && state() === State.READY      key(Date.now())
         }
 
-        stateRef.current = state
+        stateRef(state())
     })
 
-    const reset = useCallback(() => {
-        setState(State.READY)
-    }, [])
-    const complete = useCallback(() => {
-        setState(State.COMPLETED)
-    }, [])
+    const reset = (() => {
+        state(State.READY)
+    })
+    const complete = (() => {
+        state(State.COMPLETED)
+    })
 
-    const handleClick = useCallback(() => {
-        switch (stateRef.current) {
+    const handleClick = (() => {
+        switch (stateRef()) {
             case State.READY:
-                setState(State.LOADING)
+                state(State.LOADING)
                 break
             case State.COMPLETED:
                 reset()
             // no default
         }
-    }, [reset])
+    })
     const { isPhone } = useAppSize()
 
-    const loading = state === State.LOADING
-    const completed = state === State.COMPLETED
+    const loading = state() === State.LOADING
+    const completed = state() === State.COMPLETED
 
-    const LazyComponent = useFakeLazyImport(WithSuspenseFiles, key.current)
+    const LazyComponent = useFakeLazyImport(WithSuspenseFiles, key())
     return (
         <Phone
             id="with-suspense"

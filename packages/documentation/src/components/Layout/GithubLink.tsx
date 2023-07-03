@@ -1,4 +1,4 @@
-import type { ReactElement } from "react";
+import type { ReactElement } from 'voby';
 import { useActionClassName } from "@react-md/app-bar";
 import { MenuItemLink } from "@react-md/menu";
 import { Tooltip, useTooltip } from "@react-md/tooltip";

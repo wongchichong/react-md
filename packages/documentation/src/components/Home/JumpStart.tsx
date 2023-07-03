@@ -1,5 +1,3 @@
-import type { ReactElement } from "react";
-
 import GettingStarted from "./GettingStarted";
 import Components from "./Components";
 import Customization from "./Customization";

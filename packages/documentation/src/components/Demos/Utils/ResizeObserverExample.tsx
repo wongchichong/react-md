@@ -1,5 +1,5 @@
-import type { ReactElement } from "react"
-import { useCallback, useEffect, useState } from "react"
+import type { ReactElement } from 'voby'
+import { $, useEffect } from 'voby'
 import { Button } from "@react-md/button"
 import { Table, TableBody, TableCell, TableRow } from "@react-md/table"
 import type { OnResizeObserverChange } from "@react-md/utils"
@@ -13,7 +13,7 @@ const DEFAULT_HEIGHT = 110
 const DEFAULT_WIDTH = 150
 
 export default function ResizeObserverExample(): Child {
-    const [state, setState] = useState({
+    const state = $({
         enabled: false,
         height: DEFAULT_HEIGHT,
         width: DEFAULT_WIDTH,
@@ -27,22 +27,19 @@ export default function ResizeObserverExample(): Child {
      * your resize event handler causes a lot of re-renders since each time the
      * resize handler changes, the resize observer will be re-initiated.
      */
-    const handleResize = useCallback<OnResizeObserverChange>(
-        ({
+    const handleResize = (({
             height,
             width,
             /* element, */
             /* scrollHeight, */
             /* scrollWidth, */
         }) => {
-            setState((prevState) => ({
+            state((prevState) => ({
                 ...prevState,
                 height,
                 width,
             }))
-        },
-        []
-    )
+        })
     const [ref, refHandler] = useResizeObserver(handleResize, {
         // an optional ref that will be merged with the `refHandler` if you need to
         // merge multiple refs together
@@ -65,9 +62,9 @@ export default function ResizeObserverExample(): Child {
             const maxHeight = randomInt({ min: 100, max: 500 })
             const maxWidth = randomInt({
                 min: 150,
-                max: ref.current?.offsetWidth ?? 300,
+                max: ref.current.offsetWidth ?? 300,
             })
-            setState((prevState) => ({
+            state((prevState) => ({
                 ...prevState,
                 maxHeight,
                 maxWidth,
@@ -84,13 +81,13 @@ export default function ResizeObserverExample(): Child {
         return () => {
             window.clearTimeout(timeout)
         }
-    }, [enabled, ref])
+    })
 
     return (
         <>
             <Button
                 onClick={() => {
-                    setState((prevState) => ({
+                    state((prevState) => ({
                         ...prevState,
                         enabled: !prevState.enabled,
                     }))

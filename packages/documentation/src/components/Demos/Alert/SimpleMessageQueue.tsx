@@ -1,5 +1,5 @@
-import React from 'react'
-import type { ReactElement } from "react"
+import React from 'voby'
+import type { ReactElement } from 'voby'
 import type { ToastMessage } from "@react-md/alert"
 import { MessageQueue, useAddMessage } from "@react-md/alert"
 import { Button } from "@react-md/button"

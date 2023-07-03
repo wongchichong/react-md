@@ -1,9 +1,8 @@
-import type { ReactElement } from "react";
+import type { ReactElement } from 'voby';
 import { AppBarAction } from "@react-md/app-bar";
-import {
-  FormatAlignLeftSVGIcon,
-  FormatAlignRightSVGIcon,
-} from "@react-md/material-icons";
+import { 
+ FormatAlignLeftSVGIcon, 
+ FormatAlignRightSVGIcon,  } from "@react-md/material-icons";
 import { MenuItem } from "@react-md/menu";
 import { Tooltip, useTooltip } from "@react-md/tooltip";
 import { useDir } from "@react-md/utils";

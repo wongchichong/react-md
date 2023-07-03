@@ -1,4 +1,4 @@
-@use 'react-md' as *;
+@use '@react-md/react-md/dist/styles' as *;
 
 .card {
   @include rmd-utils-tablet-media {

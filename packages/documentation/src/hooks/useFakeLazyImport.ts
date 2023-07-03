@@ -1,5 +1,5 @@
-import type { FC, LazyExoticComponent } from "react";
-import { useMemo, lazy } from "react";
+import type { FC, LazyExoticComponent } from 'voby';
+import { useMemo, lazy } from 'voby';
 
 function fakeImport<P>(
   Component: FC<P>,
@@ -27,10 +27,5 @@ export default function useFakeLazyImport<P = {}>(
   key: string | number | null = null,
   delay = 5000
 ): LazyExoticComponent<FC<P>> {
-  return useMemo(
-    () => lazy(() => fakeImport(Component, delay)),
-    // disabled since this is really hacky and want it to also update if the key changes
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [Component, key, delay]
-  );
+  return useMemo(() => lazy(() => fakeImport(Component, delay)));
 }

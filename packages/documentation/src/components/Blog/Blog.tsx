@@ -1,4 +1,3 @@
-import type { ReactElement } from "react";
 import { Divider } from "@react-md/divider";
 import { Typography, TextContainer } from "@react-md/typography";
 

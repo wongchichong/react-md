@@ -1,15 +1,14 @@
-import type { ReactElement } from "react"
-import { useState } from "react"
+import type { ReactElement } from 'voby'
+import { $ } from 'voby'
 import { upperFirst } from "lodash"
 import type { SortOrder } from "@react-md/table"
-import {
-    TableContainer,
-    Table,
-    TableHeader,
-    TableRow,
-    TableCell,
-    TableBody,
-} from "@react-md/table"
+import { 
+ TableContainer, 
+ Table, 
+ TableHeader, 
+ TableRow, 
+ TableCell, 
+ TableBody,  } from "@react-md/table"
 import type { Dessert } from "constants/desserts"
 import desserts from "constants/desserts"
 
@@ -44,14 +43,14 @@ const sort = (key: DessertKey, ascending: boolean): readonly Dessert[] => {
 }
 
 export default function SortableColumns(): Child {
-    const [state, setState] = useState<SortState>(() => ({
+    const state = $<SortState>(() => ({
         data: sort("name", true),
         sortKey: "name",
         sortOrder: "ascending",
     }))
 
     const update = (sortKey: DessertKey): void => {
-        setState((prevState) => {
+        state((prevState) => {
             const prevSortKey = prevState.sortKey
             const prevSortOrder = prevState.sortOrder
 

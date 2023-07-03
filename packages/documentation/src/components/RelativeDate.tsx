@@ -1,4 +1,4 @@
-import type { ReactElement } from "react";
+import type { ReactElement } from 'voby';
 import { differenceInDays, parse, isAfter } from "date-fns";
 
 export interface RelativeDateProps {

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect } from 'voby';
 import { useToggle } from "@react-md/utils";
 
 const TEN_SECONDS = 10000;
@@ -20,7 +20,7 @@ export default function useTemporaryToggle(
     }, duration);
 
     return () => window.clearTimeout(timeout);
-  }, [toggled, disable, duration]);
+  });
 
   return { toggle, toggled, disable };
 }

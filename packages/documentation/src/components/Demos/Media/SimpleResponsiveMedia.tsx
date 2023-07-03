@@ -1,4 +1,4 @@
-import type { ReactElement } from "react"
+import type { ReactElement } from 'voby'
 import { MediaContainer } from "@react-md/media"
 
 import styles from "./Container.module.scss"

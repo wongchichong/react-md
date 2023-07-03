@@ -1,4 +1,4 @@
-import type { ReactElement } from "react"
+import type { ReactElement } from 'voby'
 import { Button } from "@react-md/button"
 import { Fieldset, Radio, useChoice } from "@react-md/form"
 import { List, ListItem } from "@react-md/list"

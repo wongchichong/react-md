@@ -1,4 +1,4 @@
-import type { ReactElement, ReactNode } from "react"
+import type { ReactElement, ReactNode } from 'voby'
 import type { AppBarActionProps } from "@react-md/app-bar"
 import { AppBarAction as RMDAppBarAction } from "@react-md/app-bar"
 import { Tooltip, useTooltip } from "@react-md/tooltip"

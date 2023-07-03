@@ -1,13 +1,12 @@
-import type { ReactElement } from "react"
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableFooter,
-    TableHeader,
-    TableRow,
-} from "@react-md/table"
+import type { ReactElement } from 'voby'
+import { 
+ Table, 
+ TableBody, 
+ TableCell, 
+ TableContainer, 
+ TableFooter, 
+ TableHeader, 
+ TableRow,  } from "@react-md/table"
 
 const columns = Array.from({ length: 10 }, (_, i) => `Column ${i + 1}`)
 

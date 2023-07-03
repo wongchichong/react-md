@@ -4,8 +4,9 @@
     "outDir": "./dist",
     "rootDir": "./src",
     "declarationDir": "./dist/types",
-    "downlevelIteration": true
-    //"composite": true,
+    "downlevelIteration": true,
+    "tsBuildInfoFile": "./dist/tsconfig.tsbuildinfo",
+    "types": ["node"]
   },
   "include": ["./src"],
   "exclude": [

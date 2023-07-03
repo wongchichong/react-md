@@ -1,12 +1,11 @@
-import type { ElementType, ReactElement } from "react"
-import { useMemo } from "react"
+import type { ElementType, ReactElement } from 'voby'
+import { useMemo } from 'voby'
 
 import { AppBar } from "@react-md/app-bar"
-import {
-    FolderOpenSVGIcon,
-    FolderSVGIcon,
-    KeyboardArrowDownSVGIcon,
-} from "@react-md/material-icons"
+import { 
+ FolderOpenSVGIcon, 
+ FolderSVGIcon, 
+ KeyboardArrowDownSVGIcon,  } from "@react-md/material-icons"
 import { Sheet } from "@react-md/sheet"
 import type { GetItemProps, TreeData } from "@react-md/tree"
 import { getItemsFrom, Tree, useTreeItemExpansion } from "@react-md/tree"
@@ -105,9 +104,9 @@ export default function SandboxFileTree({
         )
 
         return Array.from(new Set(["src", "public", ...children]))
-    }, [folders, files, fileName])
+    })
     const isKeyboard = useIsUserInteractionMode("keyboard")
-    const values = useMemo(() => Object.values(files), [files])
+    const values = useMemo(() => Object.values(files))
 
     return (
         <Sheet

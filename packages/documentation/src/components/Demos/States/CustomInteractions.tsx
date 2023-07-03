@@ -1,4 +1,4 @@
-import type { ReactElement } from "react"
+import type { ReactElement } from 'voby'
 import { Button } from "@react-md/button"
 
 import styles from "./CustomInteractions.module.scss"

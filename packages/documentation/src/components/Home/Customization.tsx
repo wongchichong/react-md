@@ -1,17 +1,16 @@
-import type { ReactElement } from "react";
 import Image from "next/image";
-import {
-  CardHeader,
-  CardTitle,
-  CardContent,
-  CardActions,
-} from "@react-md/card";
+import { 
+ CardHeader, 
+ CardTitle, 
+ CardContent, 
+ CardActions, 
+ } from "@react-md/card";
 import { Divider } from "@react-md/divider";
 import { MediaContainer } from "@react-md/media";
 import { Typography } from "@react-md/typography";
 
-import Code from "components/Code";
-import LinkButton from "components/LinkButton";
+import Code from "../Code";
+import LinkButton from "../LinkButton";
 
 import customization from "./customization.svg";
 import JumpStartCard from "./JumpStartCard";

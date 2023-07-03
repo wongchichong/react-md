@@ -1,5 +1,5 @@
 import type { IFiles } from "codesandbox-import-utils/lib/api/define"
-import { useMemo } from "react"
+import { useMemo } from 'voby'
 import type { TreeData, TreeItemIds } from "@react-md/tree"
 
 export type FileType =
@@ -105,8 +105,7 @@ function getType(fileName: string): FileType {
  * - filter the list based on expanded ids and determine what is currently visible
  */
 export default function useFiles(sandbox: IFiles): TreeData<FileTreeData> {
-    return useMemo(
-        () =>
+    return useMemo(() =>
             Object.entries(sandbox).reduce<FileTree>(
                 (tree, [filePath, { content }]) => {
                     addParentFolders(filePath, tree)
@@ -129,7 +128,5 @@ export default function useFiles(sandbox: IFiles): TreeData<FileTreeData> {
                     return tree
                 },
                 { ...BASE_TREE }
-            ),
-        [sandbox]
-    )
+            ))
 }

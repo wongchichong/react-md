@@ -1,10 +1,10 @@
-/// <reference types="vitest" />
 /// <reference types="vite/client" />
 
 import { defineConfig } from 'vite'
-import voby from 'voby-vite';
+import autoExternal from 'rollup-plugin-auto-external';
 import sassDts from 'vite-plugin-sass-dts'
 import { viteStaticCopy } from 'vite-plugin-static-copy'
+import externalGlobals from "rollup-plugin-external-globals";
 
 const config = defineConfig({
     build: {
@@ -15,30 +15,25 @@ const config = defineConfig({
             formats: ['cjs', 'es'],
             fileName: (format: string, entryName: string) => `${entryName}.${format}.js`
         },
-        // rollupOptions: {
-        //   output: {
-        //     preserveModules: true,
-        //   }
-        // },
-    },
-    test: {
-        globals: true,
-        environment: 'jsdom',
-        transformMode: {
-            web: [/.[jt]sx?/],
+        
+        rollupOptions: {
+            external: ['react', 'react-dom', 'voby', 'oby', "voby/jsx-runtime"],
+            output: {
+                globals: {
+                    'react': 'React',
+                    'react-dom': 'ReactDOM',
+                    'voby': 'voby',
+                    'oby': 'oby',
+                    'voby/jsx-runtime':'jsxRuntime'
+                }
+            }
         },
-        threads: false,
-        isolate: false,
-
-        include: ['**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}', '**/__tests__/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
-
+    },
         // browser: {
         //     enabled: true,
         //     name: 'chrome', // browser name is required
         // },
         // reporters: ['html'],
-    },
-
     esbuild: {
         jsx: 'automatic',
       

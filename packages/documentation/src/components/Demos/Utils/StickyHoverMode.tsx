@@ -1,5 +1,5 @@
-import type { ReactElement } from "react"
-import { useRef } from "react"
+import type { ReactElement } from 'voby'
+import { $ } from 'voby'
 import { Button } from "@react-md/button"
 import { DialogContent, FixedDialog } from "@react-md/dialog"
 import { BELOW_CENTER_ANCHOR, useHoverMode } from "@react-md/utils"
@@ -7,7 +7,7 @@ import { BELOW_CENTER_ANCHOR, useHoverMode } from "@react-md/utils"
 export default function StickyHoverMode(): Child {
     const { stuck, active, handlers, hoverHandlers, visible, setVisible } =
         useHoverMode()
-    const buttonRef = useRef<HTMLButtonElement>(null)
+    const buttonRef = $<HTMLButtonElement>(null)
 
     return (
         <>

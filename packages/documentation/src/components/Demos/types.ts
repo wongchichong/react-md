@@ -1,4 +1,4 @@
-import type { ReactNode } from "react"
+import type { ReactNode } from 'voby'
 import type { PhoneConfiguration } from "components/Phone/Phone"
 import type { ConditionalFullPageDialogProps } from "components/ConditionalFullPageDialog"
 

@@ -1,4 +1,4 @@
-import type { ReactElement } from "react";
+import type { ReactElement } from 'voby';
 import { AppBarTitle, useActionClassName } from "@react-md/app-bar";
 import { useLayoutConfig, isToggleableLayout } from "@react-md/layout";
 import { ArrowDropDownSVGIcon } from "@react-md/material-icons";

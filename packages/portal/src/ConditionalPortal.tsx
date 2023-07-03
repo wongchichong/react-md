@@ -2,7 +2,7 @@
 
 import type { PortalInto } from "./getContainer"
 import { Portal } from "./Portal"
-import type { Element } from 'voby'
+import type { Element} from 'voby'
 
 /**
  * If any of these props are defined on a component, the component will render

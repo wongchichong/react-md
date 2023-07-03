@@ -1,5 +1,5 @@
-import type { ReactElement, ReactNode } from "react"
-import { Children } from "react"
+import type { ReactElement, ReactNode } from 'voby'
+import { Children } from 'voby'
 import { GridList, GridListCell } from "@react-md/utils"
 
 export default function ExampleGrid({

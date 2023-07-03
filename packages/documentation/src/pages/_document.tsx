@@ -1,5 +1,5 @@
 /* eslint-disable react/no-danger */
-import type { ReactElement } from "react"
+import type { ReactElement } from 'voby'
 import type { DocumentInitialProps, DocumentContext } from "next/document"
 import Document, { Html, Head, Main, NextScript } from "next/document"
 import Cookie from "js-cookie"

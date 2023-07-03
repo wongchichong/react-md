@@ -1,17 +1,15 @@
-import type { ReactElement } from "react"
-import type {
-    TableCellConfiguration,
-    TableRowConfiguration,
-} from "@react-md/table"
-import {
-    Caption,
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableHeader,
-    TableRow,
-} from "@react-md/table"
+import type { ReactElement } from 'voby'
+import type { 
+ TableCellConfiguration, 
+ TableRowConfiguration,  } from "@react-md/table"
+import { 
+ Caption, 
+ Table, 
+ TableBody, 
+ TableCell, 
+ TableContainer, 
+ TableHeader, 
+ TableRow,  } from "@react-md/table"
 
 import { useDefaultStylesContext } from "./context"
 import styles from "./StyledTable.module.scss"

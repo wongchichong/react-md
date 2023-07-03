@@ -1,12 +1,11 @@
-import type { ReactElement } from "react"
+import type { ReactElement } from 'voby'
 import { Button } from "@react-md/button"
-import {
-    Dialog,
-    DialogHeader,
-    DialogTitle,
-    DialogContent,
-    DialogFooter,
-} from "@react-md/dialog"
+import { 
+ Dialog, 
+ DialogHeader, 
+ DialogTitle, 
+ DialogContent, 
+ DialogFooter,  } from "@react-md/dialog"
 import { Typography } from "@react-md/typography"
 import { useToggle } from "@react-md/utils"
 

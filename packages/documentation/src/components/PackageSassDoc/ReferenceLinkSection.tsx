@@ -1,5 +1,5 @@
-import type { ReactElement, ReactNode } from "react"
-import { useState } from "react"
+import type { ReactElement, ReactNode } from 'voby'
+import { $ } from 'voby'
 import { Button } from "@react-md/button"
 import { IconRotator } from "@react-md/icon"
 import { ChevronLeftSVGIcon } from "@react-md/material-icons"
@@ -21,7 +21,7 @@ export default function ReferenceLinkSection({
     children,
     links,
 }: ReferenceLinkSectionProps): ReactElement | null {
-    const [collapsed, setCollapsed] = useState(true)
+    const collapsed = $(true)
     if (!links || !links.length) {
         return null
     }
@@ -33,7 +33,7 @@ export default function ReferenceLinkSection({
                 <Button
                     aria-label="Expand"
                     aria-pressed={!collapsed}
-                    onClick={() => setCollapsed((p) => !p)}
+                    onClick={() => collapsed((p) => !p)}
                     buttonType="icon"
                 >
                     <IconRotator rotated={!collapsed}>

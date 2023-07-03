@@ -1,5 +1,5 @@
-import type { CSSProperties, ReactNode } from "react"
-import { forwardRef } from "react"
+import type { CSSProperties, ReactNode } from 'voby'
+import { forwardRef } from 'voby'
 import type { BadgedButtonProps } from "@react-md/badge"
 import { BadgedButton } from "@react-md/badge"
 import { Tooltip, useTooltip } from "@react-md/tooltip"

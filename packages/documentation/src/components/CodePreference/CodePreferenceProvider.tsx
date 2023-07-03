@@ -1,12 +1,10 @@
-import type { ReactElement, ReactNode } from "react"
-import {
-    createContext,
-    useContext,
-    useEffect,
-    useMemo,
-    useRef,
-    useState,
-} from "react"
+import { 
+ createContext, 
+ useContext, 
+ useEffect, 
+ useMemo, 
+ $, 
+ } from 'voby'
 import Cookie from "js-cookie"
 import '@react-md/react'
 
@@ -77,25 +75,21 @@ export function CodePreferenceProvider({
     children,
     defaultPreference,
 }: CodePreferenceProviderProps): Child {
-    const [pref, setPref] = useState(defaultPreference)
-    const value = useMemo(
-        () => ({
-            pref,
+    const pref = $(defaultPreference)
+    const value = useMemo(() => ({
             toggle() {
-                setPref((prev) => (prev === "js" ? "ts" : "js"))
+                pref((prev) => (prev === "js" ? "ts" : "js"))
             },
-        }),
-        [pref]
-    )
+        }))
 
-    const firstRender = useRef(true)
+    const firstRender = $(true)
     useEffect(() => {
-        if (firstRender.current) {
-            firstRender.current = false
+        if (firstRender()) {
+            firstRender(false)
             const def = getDefaultCodePreference()
-            if (def !== pref) {
+            if (def !== pref()) {
                 Cookie.set(CODE_PREFERENCE, def, { sameSite: "Strict" })
-                setPref(def)
+                pref(def)
             }
 
             return
@@ -103,11 +97,11 @@ export function CodePreferenceProvider({
 
         sendAnalyticsEvent({
             name: EventName.CodePreference,
-            lang: pref,
+            lang: pref(),
         })
-        Cookie.set(CODE_PREFERENCE, pref, { sameSite: "Strict" })
-        localStorage.setItem(CODE_PREFERENCE, pref)
-    }, [pref])
+        Cookie.set(CODE_PREFERENCE, pref(), { sameSite: "Strict" })
+        localStorage.setItem(CODE_PREFERENCE, pref())
+    })
 
     return <Provider value={value}>{children}</Provider>
 }

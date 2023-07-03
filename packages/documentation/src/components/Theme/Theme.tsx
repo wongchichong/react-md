@@ -1,5 +1,5 @@
-import type { ReactElement, ReactNode } from "react"
-import { useMemo } from "react"
+import type { ReactElement, ReactNode } from 'voby'
+import { useMemo } from 'voby'
 
 import type { ThemeMode } from "./colors"
 import { ThemeContext } from "./useTheme"
@@ -27,25 +27,19 @@ export default function Theme({
         reset,
     } = useThemeConfiguration(defaultTheme)
 
-    const currentTheme = useMemo(
-        () => ({
+    const currentTheme = useMemo(() => ({
             primary,
             secondary,
             accent,
             theme,
-        }),
-        [accent, primary, secondary, theme]
-    )
-    const actions = useMemo(
-        () => ({
+        }))
+    const actions = useMemo(() => ({
             setPrimary,
             setSecondary,
             setAccent,
             toggleTheme,
             reset,
-        }),
-        [reset, setAccent, setPrimary, setSecondary, toggleTheme]
-    )
+        }))
 
     return (
         <ThemeContext.Provider value={currentTheme}>

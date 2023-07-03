@@ -1,4 +1,4 @@
-import type { ReactElement } from "react";
+import type { ReactElement } from 'voby';
 import { IconProvider } from "@react-md/icon";
 
 import DemoPage from "components/Demos/DemoPage";
@@ -16,10 +16,9 @@ import simpleSelectExample from "./SimpleSelectExample.md";
 import SelectExample from "./SelectExample";
 import selectExample from "./SelectExample.md";
 
-import {
-  CustomizingSelectOptions,
-  customizingSelectOptions,
-} from "./CustomizingSelectOptions";
+import { 
+ CustomizingSelectOptions, 
+ customizingSelectOptions,  } from "./CustomizingSelectOptions";
 
 const demos: DemoConfig[] = [
   {

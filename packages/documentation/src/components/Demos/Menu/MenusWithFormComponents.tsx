@@ -1,23 +1,21 @@
-import type { ReactElement } from "react"
-import { useState } from "react"
-import {
-    MenuItemCheckbox,
-    MenuItemFileInput,
-    MenuItemRadio,
-    MenuItemSwitch,
-    MenuItemTextField,
-    Select,
-    useIndeterminateChecked,
-    useSelectState,
-} from "@react-md/form"
+import type { ReactElement } from 'voby'
+import { $ } from 'voby'
+import { 
+ MenuItemCheckbox, 
+ MenuItemFileInput, 
+ MenuItemRadio, 
+ MenuItemSwitch, 
+ MenuItemTextField, 
+ Select, 
+ useIndeterminateChecked, 
+ useSelectState,  } from "@react-md/form"
 import { SearchSVGIcon } from "@react-md/material-icons"
 import type { RenderMenuAsSheet } from "@react-md/menu"
-import {
-    DropdownMenu,
-    MenuConfigurationProvider,
-    MenuItemGroup,
-    MenuItemSeparator,
-} from "@react-md/menu"
+import { 
+ DropdownMenu, 
+ MenuConfigurationProvider, 
+ MenuItemGroup, 
+ MenuItemSeparator,  } from "@react-md/menu"
 import type { TextDecoration } from "@react-md/typography"
 import { Typography } from "@react-md/typography"
 
@@ -30,8 +28,8 @@ const labels = {
 } as const
 
 function CheckboxesDropdown(): Child {
-    const [bold, setBold] = useState(false)
-    const [italic, setItalic] = useState(false)
+    const bold = $(false)
+    const italic = $(false)
     const { rootProps, getProps } = useIndeterminateChecked(values, {
         menu: true,
     })
@@ -58,14 +56,14 @@ function CheckboxesDropdown(): Child {
             <MenuItemCheckbox
                 id="font-bold"
                 checked={bold}
-                onCheckedChange={(checked) => setBold(checked)}
+                onCheckedChange={(checked) => bold(checked)}
             >
                 Bold
             </MenuItemCheckbox>
             <MenuItemCheckbox
                 id="font-italic"
                 checked={italic}
-                onCheckedChange={(checked) => setItalic(checked)}
+                onCheckedChange={(checked) => italic(checked)}
             >
                 Italic
             </MenuItemCheckbox>
@@ -91,8 +89,8 @@ const getDecoration = (decoration: Decoration): TextDecoration | undefined => {
 }
 
 function RadioAndSwitchDropdown(): Child {
-    const [decoration, setDecoration] = useState<Decoration>("none")
-    const [checked, setChecked] = useState(false)
+    const decoration = $<Decoration>("none")
+    const checked = $(false)
 
     return (
         <DropdownMenu
@@ -108,7 +106,7 @@ function RadioAndSwitchDropdown(): Child {
                         key={dec}
                         id={`decoration-${dec}`}
                         checked={decoration === dec}
-                        onCheckedChange={() => setDecoration(dec)}
+                        onCheckedChange={() => decoration(dec)}
                     >
                         <Typography decoration={getDecoration(dec)} component="span">
                             {dec}
@@ -120,7 +118,7 @@ function RadioAndSwitchDropdown(): Child {
             <MenuItemSwitch
                 id="toggle-thing"
                 checked={checked}
-                onCheckedChange={(checked) => setChecked(checked)}
+                onCheckedChange={(checked) => checked(checked)}
             >
                 Do Stuff?
             </MenuItemSwitch>

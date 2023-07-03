@@ -1,25 +1,23 @@
-import type { ReactElement } from "react"
-import { useEffect, useState } from "react"
+import type { ReactElement } from 'voby'
+import { useEffect, $ } from 'voby'
 import filesize from "filesize"
 
 import { Button } from "@react-md/button"
 import { Card, CardContent } from "@react-md/card"
 import { DialogFooter } from "@react-md/dialog"
-import {
-    FileInput,
-    Form,
-    FormMessage,
-    FormMessageCounter,
-    getSplitFileUploads,
-    useFileUpload,
-} from "@react-md/form"
+import { 
+ FileInput, 
+ Form, 
+ FormMessage, 
+ FormMessageCounter, 
+ getSplitFileUploads, 
+ useFileUpload,  } from "@react-md/form"
 import { List, SimpleListItem } from "@react-md/list"
-import {
-    CheckCircleSVGIcon,
-    CloseSVGIcon,
-    FileUploadSVGIcon,
-    WatchSVGIcon,
-} from "@react-md/material-icons"
+import { 
+ CheckCircleSVGIcon, 
+ CloseSVGIcon, 
+ FileUploadSVGIcon, 
+ WatchSVGIcon,  } from "@react-md/material-icons"
 import { LinearProgress } from "@react-md/progress"
 import { Typography } from "@react-md/typography"
 import { useAppSize, useDropzone } from "@react-md/utils"
@@ -47,7 +45,7 @@ const extensions = [
 const maxFiles = 5
 
 export default function ServerUploadExample(): Child {
-    const [errored, setErrored] = useState(false)
+    const errored = $(false)
     const { isPhone } = useAppSize()
     const {
         stats,
@@ -70,19 +68,19 @@ export default function ServerUploadExample(): Child {
     })
     const [isOver, dndHandlers] = useDropzone({ onDrop })
     const { complete } = getSplitFileUploads(stats)
-    const [progress, setProgress] = useState<number | undefined>()
+    const progress = $<number | undefined>()
     useEffect(() => {
-        if (progress !== 100) {
+        if (progress() !== 100) {
             return
         }
 
         const timeout = window.setTimeout(() => {
-            setProgress(undefined)
+            progress(undefined)
         }, 5000)
         return () => {
             window.clearTimeout(timeout)
         }
-    }, [progress])
+    })
     const roundedSize = Math.min(MAX_UPLOAD_SIZE, Math.round(totalBytes))
     const percentage = (totalBytes / MAX_UPLOAD_SIZE) * 100
 
@@ -103,20 +101,20 @@ export default function ServerUploadExample(): Child {
                                 const percentage = Math.round(
                                     (event.loaded * 100) / event.total
                                 )
-                                setProgress(percentage)
+                                progress(percentage)
                             }
                         })
                         xhr.upload.addEventListener("load", () => {
-                            setProgress(100)
+                            progress(100)
                         })
                         xhr.upload.addEventListener("error", () => {
-                            setErrored(true)
+                            errored(true)
                         })
                         xhr.addEventListener("error", () => {
-                            setErrored(true)
+                            errored(true)
                         })
                         xhr.open("POST", "/api/devnull", true)
-                        setProgress(0)
+                        progress(0)
                         xhr.send(data)
                     }}
                 >
@@ -220,8 +218,8 @@ export default function ServerUploadExample(): Child {
             <UnknownErrorDialog
                 reset={() => {
                     reset()
-                    setProgress(undefined)
-                    setErrored(false)
+                    progress(undefined)
+                    errored(false)
                 }}
                 visible={errored}
             />

@@ -1,5 +1,5 @@
-import type { ReactElement } from "react";
-import { useState } from "react";
+import type { ReactElement } from 'voby';
+import { $ } from 'voby';
 import { UnstyledButton } from "@react-md/button";
 import { Collapse } from "@react-md/transition";
 
@@ -16,16 +16,16 @@ export default function ExpandableCode({
   code,
   sourceCode,
 }: ExpandableCodeProps): Child {
-  const [collapsed, setCollapsed] = useState(true);
-  const [currentCode, setCurrentCode] = useState(code);
+  const collapsed = $(true);
+  const currentCode = $(code);
 
   return (
     <UnstyledButton
       aria-label="Source code"
       aria-pressed={!collapsed}
       onClick={() => {
-        setCollapsed(!collapsed);
-        setCurrentCode(sourceCode);
+        collapsed(!collapsed);
+        currentCode(sourceCode);
       }}
       className={styles.container}
     >
@@ -34,7 +34,7 @@ export default function ExpandableCode({
         minHeight={56}
         minPaddingTop={16}
         minPaddingBottom={16}
-        onExited={() => setCurrentCode(code)}
+        onExited={() => currentCode(code)}
       >
         <CodeBlock language="scss">{currentCode}</CodeBlock>
       </Collapse>

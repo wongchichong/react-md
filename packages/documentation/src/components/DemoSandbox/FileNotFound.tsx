@@ -1,4 +1,4 @@
-import type { ReactElement } from "react"
+import type { ReactElement } from 'voby'
 
 import type { IFiles } from "codesandbox-import-utils/lib/api/define"
 import { Card, CardContent, CardHeader, CardTitle } from "@react-md/card"

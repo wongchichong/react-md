@@ -1,4 +1,4 @@
-import type { ReactElement } from "react";
+import type { ReactElement } from 'voby';
 import { Typography } from "@react-md/typography";
 //@ts-ignore
 import type { ItemThrow } from "@react-md/dev-utils/@types/sassdoc";

@@ -1,5 +1,5 @@
-import type { ReactElement } from "react"
-import { Suspense, useState } from "react"
+import type { ReactElement } from 'voby'
+import { Suspense, $ } from 'voby'
 import { AppBar } from "@react-md/app-bar"
 import { CircularProgress } from "@react-md/progress"
 import { Tabs, TabsManager } from "@react-md/tabs"
@@ -30,14 +30,14 @@ function CurrentPage({ page }: CurrentPageProps): Child {
 
 export default function CrossFadeExamplesAsync(): Child {
     // just make it so it doesn't start loading until a new tab is shown
-    const [page, setPage] = useState<number>(-1)
-    const Content = useFakeLazyImport<CurrentPageProps>(CurrentPage, page, 5000)
+    const page = $<number>(-1)
+    const Content = useFakeLazyImport<CurrentPageProps>(CurrentPage, page(), 5000)
 
     return (
         <>
             <TabsManager
                 activeIndex={page === -1 ? 0 : page}
-                onActiveIndexChange={(index) => setPage(index)}
+                onActiveIndexChange={(index) => page(index)}
                 tabs={["Page 1", "Page 2", "Page 3"]}
                 tabsId="static-transition"
             >

@@ -1,4 +1,4 @@
-import type { ReactElement } from "react";
+import type { ReactElement } from 'voby';
 import { Divider } from "@react-md/divider";
 import { TextArea, TextField, FormThemeProvider } from "@react-md/form";
 import { useIsUserInteractionMode } from "@react-md/utils";

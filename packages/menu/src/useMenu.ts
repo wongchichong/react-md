@@ -222,7 +222,7 @@ export function useMenu<ToggleEl extends HTMLElement>(options: MenuHookOptions<T
   const {
     style,
     transitionOptions: { nodeRef, ...transitionOptions },
-  } = useFixedPositioning<HTMLDivElement, HTMLDivElement>({
+  } = useFixedPositioning<HTMLElement, HTMLDivElement>({
     nodeRef: menuNodeRef,
     style: propStyle,
     fixedTo: toggleRef,

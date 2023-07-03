@@ -1,4 +1,4 @@
-import type { ReactElement } from "react";
+import type { ReactElement } from 'voby';
 import type { AutoCompleteData } from "@react-md/autocomplete";
 import { AutoComplete } from "@react-md/autocomplete";
 import { Avatar } from "@react-md/avatar";

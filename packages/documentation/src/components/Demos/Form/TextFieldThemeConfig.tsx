@@ -1,21 +1,19 @@
-import type { ReactElement, ReactNode } from "react"
-import { useEffect } from "react"
-import type {
-    TextFieldProps,
-    FormTheme,
-    FormUnderlineDirection,
-} from "@react-md/form"
-import {
-    Checkbox,
-    Fieldset,
-    Form,
-    Radio,
-    FormThemeProvider,
-    useChecked,
-    useChoice,
-    Select,
-    useSelectState,
-} from "@react-md/form"
+import type { ReactElement, ReactNode } from 'voby'
+import { useEffect } from 'voby'
+import type { 
+ TextFieldProps, 
+ FormTheme, 
+ FormUnderlineDirection,  } from "@react-md/form"
+import { 
+ Checkbox, 
+ Fieldset, 
+ Form, 
+ Radio, 
+ FormThemeProvider, 
+ useChecked, 
+ useChoice, 
+ Select, 
+ useSelectState,  } from "@react-md/form"
 import { FavoriteSVGIcon, LocationOnSVGIcon } from "@react-md/material-icons"
 
 import styles from "./TextFieldThemeConfig.module.scss"
@@ -91,22 +89,13 @@ export default function TextFieldThemeConfig({
         if (disableDense && dense) {
             setDense(false)
         }
-    }, [
-        disabled,
-        error,
-        readOnly,
-        dense,
-        disableDense,
-        setError,
-        setReadOnly,
-        setDense,
-    ])
+    })
 
     useEffect(() => {
         if (disableRightIcon && useRight) {
             setRightIcon(false)
         }
-    }, [disableRightIcon, setRightIcon, useRight])
+    })
 
     return (
         <Form className={styles.container}>

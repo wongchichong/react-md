@@ -7,7 +7,6 @@ import { defineConfig } from 'vite'
 import sassDts from 'vite-plugin-sass-dts'
 import { viteStaticCopy } from 'vite-plugin-static-copy'
 
-import '@react-md/react'
 
 const config = defineConfig({
     build: {
@@ -17,6 +16,18 @@ const config = defineConfig({
             name: "elevation",
             formats: ['cjs', 'es', 'umd'],
             fileName: (format: string, entryName: string) => `${entryName}.${format}.js`
+        },
+        rollupOptions: {
+            external: ['react', 'react-dom', 'voby', 'oby', "voby/jsx-runtime"],
+            output: {
+                globals: {
+                    'react': 'React',
+                    'react-dom': 'ReactDOM',
+                    'voby': 'voby',
+                    'oby': 'oby',
+                    'voby/jsx-runtime':'jsxRuntime'
+                }
+            }
         },
     },
 
@@ -37,7 +48,7 @@ const config = defineConfig({
             enabledMode: ['development', 'production'],
             global: {
                 generate: true,
-                // outFile: path.resolve(__dirname, './src/style.d.ts'),
+               // outFile: path.resolve(__dirname, './src/style.d.ts'),
             },
         }),
         viteStaticCopy({

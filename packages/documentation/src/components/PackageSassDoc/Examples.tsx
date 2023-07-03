@@ -1,4 +1,4 @@
-import type { ReactElement } from "react";
+import type { ReactElement } from 'voby';
 import { Typography } from "@react-md/typography";
 
 import type { CompiledExample } from "@react-md/dev-utils/src/utils/";

@@ -1,4 +1,4 @@
-import type { ReactElement } from "react"
+import type { ReactElement } from 'voby'
 import { Select } from "@react-md/form"
 
 import immutableStates from "constants/states"

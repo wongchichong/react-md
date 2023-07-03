@@ -1,12 +1,11 @@
-import type { ReactElement } from "react"
+import type { ReactElement } from 'voby'
 import { HomeSVGIcon, InfoOutlineSVGIcon } from "@react-md/material-icons"
 import type { DropdownMenuProps } from "@react-md/menu"
-import {
-    DropdownMenu,
-    MenuItem,
-    MenuItemLink,
-    MenuItemSeparator,
-} from "@react-md/menu"
+import { 
+ DropdownMenu, 
+ MenuItem, 
+ MenuItemLink, 
+ MenuItemSeparator,  } from "@react-md/menu"
 
 export default function SimpleExample(
     props: Partial<DropdownMenuProps>

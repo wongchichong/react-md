@@ -1,4 +1,4 @@
-import type { ReactElement, ReactNode } from "react"
+import type { ReactElement, ReactNode } from 'voby'
 import { GridCell } from "@react-md/utils"
 
 export interface ConfigurationCellProps {

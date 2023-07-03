@@ -1,11 +1,10 @@
-import type { ReactElement } from "react";
+import type { ReactElement } from 'voby';
 import { Button } from "@react-md/button";
 import { TextIconSpacing } from "@react-md/icon";
-import {
-  ChatSVGIcon,
-  CloseSVGIcon,
-  DeleteSVGIcon,
-} from "@react-md/material-icons";
+import { 
+ ChatSVGIcon, 
+ CloseSVGIcon, 
+ DeleteSVGIcon,  } from "@react-md/material-icons";
 
 import Container from "./Container";
 

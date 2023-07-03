@@ -1,4 +1,4 @@
-import type { HTMLAttributes, ReactElement, ReactNode } from "react";
+import type { HTMLAttributes, ReactElement, ReactNode } from 'voby';
 import { ViewHeadlineSVGIcon, CloseSVGIcon } from "@react-md/material-icons";
 
 import Button from "components/Button";

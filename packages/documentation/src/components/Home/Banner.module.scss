@@ -1,4 +1,4 @@
-@use 'react-md' as *;
+@use '@react-md/typography/dist/styles' as *;
 
 .banner {
   @include rmd-theme(background-color, primary);

@@ -1,22 +1,20 @@
-import type { ReactElement, ReactNode } from "react";
-import { useCallback, useMemo, useState } from "react";
+import type { ReactElement, ReactNode } from 'voby';
+import { $, useMemo } from 'voby';
 import { useRouter } from "next/router";
 import type { FilterFunction } from "@react-md/autocomplete";
 import { AutoComplete } from "@react-md/autocomplete";
 import { Button } from "@react-md/button";
 import { Dialog } from "@react-md/dialog";
 import { SearchSVGIcon } from "@react-md/material-icons";
-import {
-  ABOVE_CENTER_ANCHOR,
-  caseInsensitiveFilter,
-  useAppSize,
-} from "@react-md/utils";
+import { 
+ ABOVE_CENTER_ANCHOR, 
+ caseInsensitiveFilter, 
+ useAppSize,  } from "@react-md/utils";
 
 import Code from "components/Code";
-import type {
-  FormattedSassDocItem,
-  FormattedVariableItem,
-} from "@react-md/dev-utils/src/utils";
+import type { 
+ FormattedSassDocItem, 
+ FormattedVariableItem,  } from "@react-md/dev-utils/src/utils";
 import "@react-md/dev-utils/@types/sassdoc";
 
 import getId from "./getId";
@@ -30,9 +28,8 @@ interface FindProps {
 
 export default function Find({ items }: FindProps): ReactElement | null {
   const router = useRouter();
-  const [visible, setVisible] = useState(false);
-  const searchables = useMemo(
-    () =>
+  const visible = $(false);
+  const searchables = useMemo(() =>
       items.map((item) => {
         const { name, packageName } = item;
         const type = getType(item.type);
@@ -50,18 +47,16 @@ export default function Find({ items }: FindProps): ReactElement | null {
           to: getId(name, type, packageName),
           secondaryText,
         };
-      }),
-    [items]
-  );
+      }));
 
-  const filter = useCallback<FilterFunction>((query, data, options) => {
+  const filter = ((query, data, options) => {
     const filtered = caseInsensitiveFilter(query, data, options);
     if (filtered.length) {
       return filtered;
     }
 
     return ["No matches..."];
-  }, []);
+  });
   const { isDesktop } = useAppSize();
   if (!isDesktop) {
     return null;
@@ -72,7 +67,7 @@ export default function Find({ items }: FindProps): ReactElement | null {
       <Button
         id="sassdoc-find"
         aria-label="Find in page"
-        onClick={() => setVisible(!visible)}
+        onClick={() => visible(!visible)}
         buttonType="icon"
         theme="secondary"
         themeType="contained"
@@ -84,7 +79,7 @@ export default function Find({ items }: FindProps): ReactElement | null {
         id="sassdoc-autocomplete-dialog"
         aria-label="Search for SassDoc"
         visible={visible}
-        onRequestClose={() => setVisible(false)}
+        onRequestClose={() => visible(false)}
         type="custom"
         className={styles.dialog}
       >
@@ -104,7 +99,7 @@ export default function Find({ items }: FindProps): ReactElement | null {
             // the router.asPath seems to break while hot reloading
             const href = router.asPath.replace(/#.*$/, "");
             router.push(`${href}#${result.to}`);
-            setVisible(false);
+            visible(false);
           }}
           anchor={ABOVE_CENTER_ANCHOR}
           yMargin={12}

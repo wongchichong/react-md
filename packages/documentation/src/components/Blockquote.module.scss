@@ -1,4 +1,4 @@
-@use '../everything' as *;
+@use '@react-md/react-md/dist/styles' as *;
 
 .blockquote {
   $border-style: 0.25em solid rmd-divider-theme-var(background-color);

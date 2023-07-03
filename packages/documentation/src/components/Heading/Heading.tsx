@@ -1,4 +1,4 @@
-import type { ReactElement } from "react"
+import type { ReactElement } from 'voby'
 
 import type { TypographyProps, TypographyType } from "@react-md/typography"
 import { Typography } from "@react-md/typography"

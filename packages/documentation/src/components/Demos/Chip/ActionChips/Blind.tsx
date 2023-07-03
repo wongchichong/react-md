@@ -1,4 +1,4 @@
-import type { ReactElement } from "react"
+import type { ReactElement } from 'voby'
 
 import type { CSSTransitionClassNames } from "@react-md/transition"
 import { CSSTransition } from "@react-md/transition"

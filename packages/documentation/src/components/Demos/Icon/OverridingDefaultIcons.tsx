@@ -1,13 +1,12 @@
-import type { ReactElement } from "react"
-import { useState } from "react"
+import type { ReactElement } from 'voby'
+import { $ } from 'voby'
 import { Checkbox, Select } from "@react-md/form"
 import type { ConfigurableIcons } from "@react-md/icon"
 import { IconProvider, TextIconSpacing, useIcon } from "@react-md/icon"
-import {
-    ArrowDropDownSVGIcon,
-    CheckBoxSVGIcon,
-    ArrowDropDownFontIcon,
-} from "@react-md/material-icons"
+import { 
+ ArrowDropDownSVGIcon, 
+ CheckBoxSVGIcon, 
+ ArrowDropDownFontIcon,  } from "@react-md/material-icons"
 import { Typography } from "@react-md/typography"
 import { Grid } from "@react-md/utils"
 
@@ -34,8 +33,8 @@ function PulledFromContext(): Child {
 }
 
 export default function OverridingDefaultIcons(): Child {
-    const [value1, setValue1] = useState("")
-    const [value2, setValue2] = useState("")
+    const value1 = $("")
+    const value2 = $("")
     return (
         <IconProvider {...overrides}>
             <Grid clone columns={1} desktopColumns={2}>
@@ -45,7 +44,7 @@ export default function OverridingDefaultIcons(): Child {
                     placeholder="Item..."
                     options={Array.from({ length: 10 }, (_, i) => `Item ${i + 1}`)}
                     value={value1}
-                    onChange={(value) => setValue1(value)}
+                    onChange={(value) => value1(value)}
                 />
                 <Select
                     id="select-2"
@@ -53,7 +52,7 @@ export default function OverridingDefaultIcons(): Child {
                     placeholder="Item..."
                     options={Array.from({ length: 10 }, (_, i) => `Item ${i + 1}`)}
                     value={value2}
-                    onChange={(value) => setValue2(value)}
+                    onChange={(value) => value2(value)}
                     rightChildren={<ArrowDropDownFontIcon />}
                 />
                 <Checkbox id="checkbox-1" name="checkbox" label="Checkbox inherits" />

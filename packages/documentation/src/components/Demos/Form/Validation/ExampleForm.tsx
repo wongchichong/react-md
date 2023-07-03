@@ -1,21 +1,19 @@
-import type { ReactElement } from "react"
+import type { ReactElement } from 'voby'
 
 import type { FormTheme } from "@react-md/form"
-import {
-    Fieldset,
-    Form,
-    NativeSelect,
-    Radio,
-    TextField,
-    useChoice,
-    FormThemeProvider,
-} from "@react-md/form"
-import {
-    EmailSVGIcon,
-    LocationOnSVGIcon,
-    PersonSVGIcon,
-    PhoneSVGIcon,
-} from "@react-md/material-icons"
+import { 
+ Fieldset, 
+ Form, 
+ NativeSelect, 
+ Radio, 
+ TextField, 
+ useChoice, 
+ FormThemeProvider,  } from "@react-md/form"
+import { 
+ EmailSVGIcon, 
+ LocationOnSVGIcon, 
+ PersonSVGIcon, 
+ PhoneSVGIcon,  } from "@react-md/material-icons"
 
 import Phone from "components/Phone"
 import states from "constants/states"

@@ -1,4 +1,4 @@
-import type { ReactElement } from "react"
+import type { ReactElement } from 'voby'
 import * as MaterialIcons from "@react-md/material-icons"
 import { Tooltip, useTooltip } from "@react-md/tooltip"
 

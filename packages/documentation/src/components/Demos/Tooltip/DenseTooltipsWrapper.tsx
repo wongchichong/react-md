@@ -1,5 +1,5 @@
-import type { ReactElement, ReactNode } from "react"
-import { useEffect, useRef, useState } from "react"
+import type { ReactElement, ReactNode } from 'voby'
+import { useEffect, $ } from 'voby'
 import scssVariables from "@react-md/tooltip/dist/scssVariables"
 import { useUserInteractionMode } from "@react-md/utils"
 
@@ -43,27 +43,27 @@ export default function DenseTooltipsWrapper({
 }: {
     children: Children
 }): Child {
-    const [variables, setVariables] = useState<CSSVariable[]>([])
-    const container = useRef<HTMLDivElement | null>(null)
+    const variables = $<CSSVariable[]>([])
+    const container = $<HTMLDivElement | null>(null)
     const mode = useUserInteractionMode()
 
     const enableVariables = (): void => {
-        setVariables(VARIABLES)
+        variables(VARIABLES)
     }
 
     useEffect(() => {
-        if (!variables.length) {
+        if (!variables().length) {
             return
         }
 
         const handleLeave = (event: Event): void => {
             if (
-                !container.current ||
+                !container() ||
                 !event.target ||
                 !(event.target instanceof Node) ||
-                !container.current.contains(event.target)
+                !container().contains.target)
             ) {
-                setVariables([])
+                variables([])
             }
         }
 
@@ -79,20 +79,20 @@ export default function DenseTooltipsWrapper({
             window.removeEventListener("click", handleLeave, true)
             window.removeEventListener("focus", handleLeave, true)
         }
-    }, [variables, mode])
+    })
 
     useEffect(() => {
         const { style } = document.documentElement
-        variables.forEach((variable) => {
+        variables().forEach((variable) => {
             style.setProperty(variable.name, variable.value)
         })
 
         return () => {
-            variables.forEach((variable) => {
+            variables().forEach((variable) => {
                 style.setProperty(variable.name, "")
             })
         }
-    }, [variables])
+    })
     return (
         <div
             ref={container}

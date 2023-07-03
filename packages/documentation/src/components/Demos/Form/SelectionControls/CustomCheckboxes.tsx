@@ -1,11 +1,10 @@
-import type { ReactElement } from "react";
+import type { ReactElement } from 'voby';
 import { Divider } from "@react-md/divider";
 import type { InputToggleProps } from "@react-md/form";
 import { Checkbox, Form, useChecked } from "@react-md/form";
-import {
-  FavoriteBorderFontIcon,
-  FavoriteSVGIcon,
-} from "@react-md/material-icons";
+import { 
+ FavoriteBorderFontIcon, 
+ FavoriteSVGIcon,  } from "@react-md/material-icons";
 
 import styles from "./CustomCheckboxes.module.scss";
 

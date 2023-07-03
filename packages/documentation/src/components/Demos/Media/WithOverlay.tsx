@@ -1,4 +1,4 @@
-import type { ReactElement } from "react"
+import type { ReactElement } from 'voby'
 import type { MediaOverlayPosition } from "@react-md/media"
 import { MediaContainer, MediaOverlay } from "@react-md/media"
 import { Typography } from "@react-md/typography"

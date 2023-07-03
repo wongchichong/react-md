@@ -1,13 +1,12 @@
-import type { ReactElement } from "react"
-import { useEffect } from "react"
-import {
-    Checkbox,
-    Fieldset,
-    NativeSelect,
-    TextField,
-    useChecked,
-    useChoice,
-} from "@react-md/form"
+import type { ReactElement } from 'voby'
+import { useEffect } from 'voby'
+import { 
+ Checkbox, 
+ Fieldset, 
+ NativeSelect, 
+ TextField, 
+ useChecked, 
+ useChoice,  } from "@react-md/form"
 
 import states from "constants/states"
 
@@ -55,7 +54,7 @@ export default function NativeSelectExample(): Child {
         if (multiple && icon) {
             setIcon(false)
         }
-    }, [multiple, icon, setIcon])
+    })
 
     return (
         <TextFieldThemeConfig

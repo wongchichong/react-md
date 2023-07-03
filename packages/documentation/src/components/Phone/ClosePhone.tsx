@@ -1,12 +1,11 @@
-import type { ReactElement } from "react"
-import { useCallback } from "react"
+import type { ReactElement } from 'voby'
+import { $ } from 'voby'
 import type { AppBarNavProps } from "@react-md/app-bar"
 import { AppBarNav } from "@react-md/app-bar"
 import { Button } from "@react-md/button"
-import {
-    KeyboardArrowLeftSVGIcon,
-    CloseSVGIcon,
-} from "@react-md/material-icons"
+import { 
+ KeyboardArrowLeftSVGIcon, 
+ CloseSVGIcon,  } from "@react-md/material-icons"
 
 import { usePhoneContext } from "./context"
 
@@ -22,16 +21,13 @@ export default function ClosePhone({
     ...props
 }: Props): Child {
     const { id: phoneId, closePhone } = usePhoneContext()
-    const handleClick = useCallback(
-        (event: React.JSX.TargetedMouseEvent<HTMLButtonElement>) => {
+    const handleClick = ((event: React.JSX.TargetedMouseEvent<HTMLButtonElement>) => {
             if (onClick) {
                 onClick(event)
             }
 
             closePhone()
-        },
-        [onClick, closePhone]
-    )
+        })
 
     const sharedProps = {
         ...props,

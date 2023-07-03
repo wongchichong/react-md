@@ -1,4 +1,4 @@
-import type { ReactElement, ReactNode } from "react";
+import type { ReactElement, ReactNode } from 'voby';
 import { TableCell, TableRow } from "@react-md/table";
 import { useAppSize } from "@react-md/utils";
 

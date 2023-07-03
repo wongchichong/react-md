@@ -1,4 +1,4 @@
-import type { ReactElement } from "react"
+import type { ReactElement } from 'voby'
 import { MarkdownPage } from "components/Markdown"
 
 export default function Demos(): Child {

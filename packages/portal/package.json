@@ -7,6 +7,7 @@
   "browser": "./dist/index.umd.js",
   "types": "./dist/types/index.d.ts",
   "sass": "./dist/styles.scss",
+  "type": "module",
   "sideEffects": [
     "dist/**/*"
   ],
@@ -58,8 +59,9 @@
     "access": "public"
   },
   "dependencies": {
-    "pnpm": "^8.3.1",
-    "react2voby": "workspace:../../../react2voby",
+    "pnpm": "^8.3.1"
+  },
+  "peerDependencies": {
     "voby": "workspace:../../../woby"
   }
 }

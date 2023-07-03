@@ -1,5 +1,5 @@
-import type { ReactElement, ReactNode } from "react";
-import { useState } from "react";
+import type { ReactElement, ReactNode } from 'voby';
+import { $ } from 'voby';
 import { Avatar } from "@react-md/avatar";
 import type { ListItemAddonPosition } from "@react-md/list";
 import { List, ListItem } from "@react-md/list";
@@ -25,17 +25,15 @@ const RIGHT_LOOKUPS: Record<AddonType, ReactNode> = {
 };
 
 export default function ConfigurableExample(): ReactElement | null {
-  const [disabled, setDisabled] = useState(false);
-  const [disabledOpacity, setDisabledOpacity] = useState(false);
-  const [leftAddon, setLeftAddon] = useState<AddonType>("none");
-  const [leftAddonPosition, setLeftAddonPosition] =
-    useState<ListItemAddonPosition>("middle");
-  const [rightAddonPosition, setRightAddonPosition] =
-    useState<ListItemAddonPosition>("middle");
-  const [rightAddon, setRightAddon] = useState<AddonType>("none");
-  const [primaryText, setPrimaryText] = useState("Hello, world!");
-  const [secondaryText, setSecondaryText] = useState("");
-  const [threeLines, setThreeLines] = useState(false);
+  const disabled = $(false);
+  const disabledOpacity = $(false);
+  const leftAddon = $<AddonType>("none");
+  const leftAddonPosition = $<ListItemAddonPosition>("middle");
+  const rightAddonPosition = $<ListItemAddonPosition>("middle");
+  const rightAddon = $<AddonType>("none");
+  const primaryText = $("Hello, world!");
+  const secondaryText = $("");
+  const threeLines = $(false);
 
   return (
     <>
@@ -55,7 +53,7 @@ export default function ConfigurableExample(): ReactElement | null {
         />
       </List>
       <ConfigurationForm
-        disabled={disabled}
+        disabled()={disabled}
         setDisabled={setDisabled}
         disabledOpacity={disabledOpacity}
         setDisabledOpacity={setDisabledOpacity}

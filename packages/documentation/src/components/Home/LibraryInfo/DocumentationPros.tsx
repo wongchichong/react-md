@@ -1,6 +1,6 @@
-import type { ReactElement } from "react";
+import type { ReactElement } from 'voby';
 
-import Link from "components/Link";
+import Link from "../../Link";
 
 import TableCellList from "./TableCellList";
 

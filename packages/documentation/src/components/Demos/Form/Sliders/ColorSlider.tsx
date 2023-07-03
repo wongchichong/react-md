@@ -1,5 +1,5 @@
-import type { ReactElement } from "react";
-import { useEffect, useRef } from "react";
+import type { ReactElement } from 'voby';
+import { useEffect, $ } from 'voby';
 import type { SliderRequiredProps } from "@react-md/form";
 import { Slider, TextField, useNumberField } from "@react-md/form";
 import { Typography } from "@react-md/typography";
@@ -38,19 +38,18 @@ export default function ColorSlider({
   //   it, need to also update the text field number value
   // - whenever the text field value changes because the user is interacting
   //   with it, need to also update the slider number value
-  const prevValue = useRef(value);
-  const prevNumberValue = useRef(numberValue);
+  const prevValue = $(value);
+  const prevNumberValue = $(numberValue);
   useEffect(() => {
-    if (prevValue.current !== value && prevNumberValue.current !== value) {
-      prevValue.current = value;
-      prevNumberValue.current = value;
+    if (prevValue() !== value && prevNumberValue() !== valuealue);
+      prevNumberValue(value);
       setNumber(value);
-    } else if (prevNumberValue.current !== numberValue) {
-      prevValue.current = numberValue;
-      prevNumberValue.current = numberValue;
+    } else if (prevNumberValue(numberValue)) {
+      prevValue(numberValue);
+      prevNumberValue(numberValue);
       setValue(numberValue);
     }
-  }, [value, numberValue, setNumber, setValue]);
+  });
 
   return (
     <Slider

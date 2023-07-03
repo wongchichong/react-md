@@ -1,10 +1,9 @@
-import type { ReactElement } from "react"
+import type { ReactElement } from 'voby'
 import { Button } from "@react-md/button"
-import {
-    CircularProgress,
-    getProgressA11y,
-    LinearProgress,
-} from "@react-md/progress"
+import { 
+ CircularProgress, 
+ getProgressA11y, 
+ LinearProgress,  } from "@react-md/progress"
 
 import Phone from "components/Phone"
 

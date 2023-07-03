@@ -1,5 +1,5 @@
-import type { CSSProperties, ReactElement } from "react"
-import { useCallback, useRef, useState } from "react"
+import type { CSSProperties, ReactElement } from 'voby'
+import { $ } from 'voby'
 import { Button } from "@react-md/button"
 import { TextIconSpacing } from "@react-md/icon"
 import { List, ListItem } from "@react-md/list"
@@ -12,25 +12,24 @@ import styles from "./SimpleExample.module.scss"
 
 export default function SimpleExample(): Child {
     const [visible, , hide, toggle] = useToggle(false)
-    const [style, setStyle] = useState<CSSProperties | undefined>()
-    const buttonRef = useRef<HTMLButtonElement | null>(null)
-    const listRef = useRef<HTMLUListElement | null>(null)
+    const style = $<CSSProperties | undefined>()
+    const buttonRef = $<HTMLButtonElement | null>(null)
+    const listRef = $<HTMLUListElement | null>(null)
 
-    const updatePosition = useCallback(() => {
-        setStyle(
+    const updatePosition = (() => {
+        style(
             getFixedPosition({
                 container: buttonRef.current,
                 element: listRef.current,
-            }).style
-        )
-    }, [])
-    const listRefCB = useCallback((list: HTMLUListElement | null) => {
-        listRef.current = list
+            }).style)
+    })
+    const listRefCB = ((list: HTMLUListElement | null) => {
+        listRef(list)
 
         updatePosition()
         // only want to call this once on mount
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    })
 
     return (
         <div className={styles.container}>

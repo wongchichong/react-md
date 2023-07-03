@@ -1,5 +1,5 @@
-import type { ReactNode } from "react";
-import { createContext, useContext } from "react";
+import type { ReactNode } from 'voby';
+import { createContext, useContext } from 'voby';
 
 interface PhoneContextType {
   id: string;

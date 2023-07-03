@@ -1,4 +1,4 @@
-import type { ReactElement } from "react"
+import type { ReactElement } from 'voby'
 import { Radio, useChoice } from "@react-md/form"
 import { Portal } from "@react-md/portal"
 import { Typography } from "@react-md/typography"

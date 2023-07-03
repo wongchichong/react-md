@@ -1,9 +1,8 @@
-import type { ReactElement } from "react"
-import {
-    ExpansionList,
-    ExpansionPanel,
-    usePanels,
-} from "@react-md/expansion-panel"
+import type { ReactElement } from 'voby'
+import { 
+ ExpansionList, 
+ ExpansionPanel, 
+ usePanels,  } from "@react-md/expansion-panel"
 import { Checkbox, Fieldset, useChecked } from "@react-md/form"
 import { Grid } from "@react-md/utils"
 

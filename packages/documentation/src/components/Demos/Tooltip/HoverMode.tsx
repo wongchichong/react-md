@@ -1,4 +1,4 @@
-import type { ReactElement } from "react"
+import type { ReactElement } from 'voby'
 import { HoverModeProvider } from "@react-md/utils"
 
 import Container from "./Container"

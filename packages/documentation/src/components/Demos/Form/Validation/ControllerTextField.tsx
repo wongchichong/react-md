@@ -1,4 +1,4 @@
-import type { ReactElement, ReactNode } from "react";
+import type { ReactElement, ReactNode } from 'voby';
 import type { Control, RegisterOptions } from "react-hook-form";
 import { Controller } from "react-hook-form";
 import type { TextFieldWithMessageProps } from "@react-md/form";

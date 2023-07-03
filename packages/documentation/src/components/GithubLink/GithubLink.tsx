@@ -1,4 +1,4 @@
-import type { ReactElement } from "react"
+import type { ReactElement } from 'voby'
 
 
 import { GITHUB_URL } from "../../constants/github"
@@ -6,7 +6,7 @@ import GithubSVGIcon from "../../icons/GithubSVGIcon"
 import type { LinkButtonProps } from "../../components/LinkButton"
 import LinkButton from "../../components/LinkButton"
 
-import styles from "./GithubLink.module.scss"
+// import styles from "./GithubLink.module.scss"
 
 export interface GithubLinkProps extends Omit<LinkButtonProps, "href"> {
     href?: FunctionMaybe<Nullable<string>>

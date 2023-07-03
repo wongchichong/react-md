@@ -5,9 +5,8 @@ import { $, Observable } from 'voby'
 type Enable = () => void
 type Disable = (boolean?) => void
 type Toggle = () => void
-type SetToggle = () => boolean
 
-type ReturnValue = [Observable<boolean>, Enable, Disable, Toggle, SetToggle]
+type ReturnValue = [Observable<boolean>, Enable, Disable, Toggle]
 
 /**
  * This hooks provides an easy way to toggle a boolean flag for React
@@ -42,5 +41,5 @@ export function useToggle(defaultToggled: boolean | (() => boolean)): ReturnValu
         toggled((prevVisible) => !prevVisible)
     }
 
-    return [toggled, enable, disable, toggle, toggled /* setToggled */]
+    return [toggled, enable, disable, toggle /* setToggled */]
 }

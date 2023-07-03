@@ -1,11 +1,10 @@
-import type { ReactElement } from "react"
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHeader,
-    TableRow,
-} from "@react-md/table"
+import type { ReactElement } from 'voby'
+import { 
+ Table, 
+ TableBody, 
+ TableCell, 
+ TableHeader, 
+ TableRow,  } from "@react-md/table"
 
 import styles from "./StickyColumnsPart2.module.scss"
 

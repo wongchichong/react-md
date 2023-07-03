@@ -1,5 +1,3 @@
-import type { ReactElement } from "react"
-
 import { TextContainer } from "@react-md/typography"
 
 import type { MarkdownProps } from "./Markdown"
@@ -15,7 +13,7 @@ export default function MarkdownPage({
     ...props
 }: MarkdownPageProps): Child {
     return (
-        <TextContainer className={cn("markdown-page", containerClassName)}>
+        <TextContainer className={["markdown-page", containerClassName]}>
             <Markdown {...props}>{children}</Markdown>
         </TextContainer>
     )

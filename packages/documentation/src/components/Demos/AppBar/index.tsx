@@ -1,4 +1,4 @@
-import type { ReactElement } from "react";
+import type { ReactElement } from 'voby';
 
 import styles from "./index.module.scss";
 import DemoPage from "../DemoPage";

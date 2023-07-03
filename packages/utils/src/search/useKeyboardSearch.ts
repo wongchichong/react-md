@@ -124,7 +124,7 @@ export function useKeyboardSearch<
 }: KeyboardSearchOptions<D, E>): ReturnValue<E> {
     const resetTime = $$(rt), valueKey = $$(vk)
 
-    const [value, setValue] = useTempValue("", resetTime)
+    const [value, ] = useTempValue("", resetTime)
     const values = useMemo(() => items.map((item) => getItemValue(item, valueKey)))
 
     const handleKeyDown = $<JSX.KeyboardEventHandler<E>>((event) => {
@@ -132,7 +132,6 @@ export function useKeyboardSearch<
             //@ts-ignore
             onKeyDown(event)
         }
-
         const { key, altKey, ctrlKey, metaKey } = event
         if (
             altKey ||
@@ -150,7 +149,7 @@ export function useKeyboardSearch<
         if ($$(value) !== key) {
             nextValue = `${$$(value)}${key}`
         }
-        setValue(nextValue)
+        value(nextValue)
 
         const index = findMatchIndex(nextValue, values(), $$(searchIndex), true)
         // don't want to trigger change events if the search didn't match anything

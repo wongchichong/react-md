@@ -1,5 +1,5 @@
 /* this file is automatically updated by `yarn dev-utils libsize` and should not be updated manually */
-import type { ReactElement } from "react";
+import type { ReactElement } from 'voby';
 
 import TableCellList from "./TableCellList";
 

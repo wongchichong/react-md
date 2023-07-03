@@ -1,15 +1,14 @@
-import type { ReactElement } from "react";
-import { useCallback, useMemo, useState } from "react";
+import type { ReactElement } from 'voby';
+import { $, useMemo } from 'voby';
 import { Button } from "@react-md/button";
 import type { ErrorChangeHandler, GetErrorMessage } from "@react-md/form";
-import {
-  defaultGetErrorMessage,
-  Form,
-  PasswordWithMessage,
-  TextAreaWithMessage,
-  TextFieldWithMessage,
-  useTextField,
-} from "@react-md/form";
+import { 
+ defaultGetErrorMessage, 
+ Form, 
+ PasswordWithMessage, 
+ TextAreaWithMessage, 
+ TextFieldWithMessage, 
+ useTextField,  } from "@react-md/form";
 
 type FieldId = string;
 type ErrorRecord = Record<FieldId, boolean | undefined>;
@@ -36,12 +35,9 @@ const getErrorMessage: GetErrorMessage = (options) => {
 };
 
 export default function TextFieldHookExamples(): ReactElement | null {
-  const [errors, setErrors] = useState<ErrorRecord>({});
-  const errored = useMemo(() => Object.values(errors).some(Boolean), [errors]);
-  const onErrorChange = useCallback<ErrorChangeHandler>(
-    (id, error) => setErrors((prevErrors) => ({ ...prevErrors, [id]: error })),
-    []
-  );
+  const errors = $<ErrorRecord>({});
+  const errored = useMemo(() => Object.values(errors()).some(Boolean));
+  const onErrorChange = ((id, error) => errors((prevErrors) => ({ ...prevErrors, [id]: error })));
 
   const [_name, nameFieldProps] = useTextField({
     id: "text-field-hook-1",

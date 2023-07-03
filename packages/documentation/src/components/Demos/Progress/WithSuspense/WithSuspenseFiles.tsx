@@ -1,12 +1,11 @@
-import type { ReactElement } from "react"
+import type { ReactElement } from 'voby'
 import { Divider } from "@react-md/divider"
 import { List, ListItem, ListSubheader } from "@react-md/list"
-import {
-    FilterSVGIcon,
-    FolderSVGIcon,
-    InfoSVGIcon,
-    SubjectSVGIcon,
-} from "@react-md/material-icons"
+import { 
+ FilterSVGIcon, 
+ FolderSVGIcon, 
+ InfoSVGIcon, 
+ SubjectSVGIcon,  } from "@react-md/material-icons"
 import { CrossFade } from "@react-md/transition"
 
 export default function WithSuspenseFiles(): Child {

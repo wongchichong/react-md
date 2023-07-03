@@ -1,4 +1,4 @@
-import type { ReactElement } from "react"
+import type { ReactElement } from 'voby'
 
 import Container from "./Container"
 import TooltippedButton from "./TooltippedButton"

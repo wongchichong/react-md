@@ -1,16 +1,15 @@
-import type { ReactElement } from "react";
-import { useCallback, useState } from "react";
+import type { ReactElement } from 'voby';
+import { $ } from 'voby';
 import type { ButtonTheme, ButtonThemeType } from "@react-md/button";
 import { Divider } from "@react-md/divider";
-import {
-  Checkbox,
-  Fieldset,
-  FileInput,
-  Form,
-  Radio,
-  useChecked,
-  useChoice,
-} from "@react-md/form";
+import { 
+ Checkbox, 
+ Fieldset, 
+ FileInput, 
+ Form, 
+ Radio, 
+ useChecked, 
+ useChoice,  } from "@react-md/form";
 import { SrOnly, Typography } from "@react-md/typography";
 
 import CodeBlock from "components/CodeBlock";
@@ -27,16 +26,13 @@ const themes: ButtonTheme[] = [
 const themeTypes: ButtonThemeType[] = ["flat", "outline", "contained"];
 
 export default function SimpleFileInputs(): Child {
-  const [file, setFile] = useState("");
-  const onChange = useCallback<React.ChangeEventHandler<HTMLInputElement>>(
-    (event) => {
+  const file = $("");
+  const onChange = ((event) => {
       const [file] = Array.from(event.currentTarget.files || [null]);
-      if (file) {
-        setFile(file.name);
+      if (file()) {
+        file(file().name);
       }
-    },
-    []
-  );
+    });
 
   const [theme, handleThemeChange] = useChoice<ButtonTheme>("clear");
   const [themeType, handleTypeChange] = useChoice<ButtonThemeType>("flat");

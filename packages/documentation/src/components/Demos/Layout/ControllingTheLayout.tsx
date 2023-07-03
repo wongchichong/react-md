@@ -1,5 +1,5 @@
-import type { ReactElement } from "react"
-import { useState } from "react"
+import type { ReactElement } from 'voby'
+import { $ } from 'voby'
 
 import { Checkbox, Select } from "@react-md/form"
 import type { SupportedWideLayout } from "@react-md/layout"
@@ -21,9 +21,8 @@ const options: SupportedWideLayout[] = [
 ]
 
 export default function ControllingTheLayout(): Child {
-    const [defaultVisible, setDefaultVisible] = useState(false)
-    const [desktopLayout, setDesktopLayout] =
-        useState<SupportedWideLayout>("full-height")
+    const defaultVisible = $(false)
+    const desktopLayout = $<SupportedWideLayout>("full-height")
 
     return (
         <Layout
@@ -49,7 +48,7 @@ export default function ControllingTheLayout(): Child {
                     id="visibility"
                     label="Toggleable default visible?"
                     checked={defaultVisible}
-                    onChange={(event) => setDefaultVisible(event.currentTarget.checked)}
+                    onChange={(event) => defaultVisible(event.currentTarget.checked)}
                     className={styles.center}
                 />
                 <Select
@@ -59,7 +58,7 @@ export default function ControllingTheLayout(): Child {
                     options={options}
                     onChange={(nextValue) => {
                         if (options.includes(nextValue as SupportedWideLayout)) {
-                            setDesktopLayout(nextValue as SupportedWideLayout)
+                            desktopLayout(nextValue as SupportedWideLayout)
                         }
                     }}
                     className={cn(styles.center, styles.select)}

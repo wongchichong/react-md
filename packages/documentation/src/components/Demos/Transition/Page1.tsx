@@ -1,5 +1,5 @@
-import type { HTMLAttributes } from "react";
-import { forwardRef } from "react";
+import type { HTMLAttributes } from 'voby';
+import { forwardRef } from 'voby';
 import { Typography } from "@react-md/typography";
 
 export default forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
